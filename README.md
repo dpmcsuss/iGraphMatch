@@ -1,2 +1,3 @@
 # iGraphMatch
-Tools to find the correspondences between vertices in different graphs.
+
+The eventual home of our R Package for graph matching.
