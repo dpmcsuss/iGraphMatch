@@ -10,7 +10,8 @@
 #' symmetric.
 #' @param block.sizes A numeric vector. Give the number of vertices in each group. The sum of the
 #' vector must match the number of vertices.
-#' @param rho A number. Must be in the open \code{(0,1)} interval. Correlation between two graphs.
+#' @param rho A number. The target Pearson correlation between the adjacency matrices of the generated 
+#' graphs. It must be in open (0,1) interval.
 #' @param check.corr A logical.
 #' @param core.block.size A numeric vector. Give the number of core vertices in each group. Entries
 #' should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.
