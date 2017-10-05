@@ -7,7 +7,7 @@
 #' @param p A number. Edge probability between two vertices. It must be in open
 #' (0,1) interval.
 #' @param rho A number. The target Pearson correlation between the adjacency matrices
-#' of the original generated graph. It must be in open (0,1) interval.
+#' of the generated graphs. It must be in open (0,1) interval.
 #' @param ncore An integer. Number of core vertices.
 #' @param directed A logical. Whether to generate directed graphs.
 #' @param permutation A vector of number. A permutation vector that is applied on the
