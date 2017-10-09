@@ -32,17 +32,9 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   if(is.null(soft_seeds)){
     start <- matrix(1/nns,nns,nns)
   } else{
-    if(is.vector(soft_seeds)){
-      seed_g1 <- soft_seeds
-      seed_g2 <- soft_seeds
-    } else if(is.matrix(soft_seeds)){
-      seed_g1 <- soft_seeds[,1]
-      seed_g2 <- soft_seeds[,2]
-    } else{
-      soft_seeds <- as.matrix(soft_seeds)
-      seed_g1 <- soft_seeds[,1]
-      seed_g2 <- soft_seeds[,2]
-    }
+    soft_seeds <- check_soft_seeds(soft_seeds)
+    seed_g1 <- soft_seeds$seed_A
+    seed_g2 <- soft_seeds$seed_B
     nseeds <- length(seed_g1)
 
     start <- matrix(1/(nns-nseeds),nns,nns)
@@ -70,19 +62,11 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
   if(is.null(soft_seeds)){
     start <- rds_sinkhorn(nns,distribution = distribution)
   } else{
-    if(is.vector(soft_seeds)){
-      seed_g1 <- soft_seeds
-      seed_g2 <- soft_seeds
-    } else if(is.matrix(soft_seeds)){
-      seed_g1 <- soft_seeds[,1]
-      seed_g2 <- soft_seeds[,2]
-    } else{
-      soft_seeds <- as.matrix(soft_seeds)
-      seed_g1 <- soft_seeds[,1]
-      seed_g2 <- soft_seeds[,2]
-    }
+    soft_seeds <- check_soft_seeds(soft_seeds)
+    seed_g1 <- soft_seeds$seed_A
+    seed_g2 <- soft_seeds$seed_B
     nseeds <- length(seed_g1)
-
+    
     start <- matrix(5,nrow = nns,ncol = nns)
     for (i in 1:nseeds) {
       start[seed_g1[i]-ns,] <- 0
