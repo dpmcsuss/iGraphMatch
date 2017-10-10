@@ -21,10 +21,10 @@
 #' @return Returns a list of graph matching results, including core matching error, ultimate matching
 #' error in selected seeds, and value for the objective function.
 #' @examples
-#' cgnp_pair <- sample_correlated_gnp_pair(n = 50, p =  0.5, rho = 0.3)
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, p =  0.5, rho = 0.3)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
-#' seeds <- 1:50 <= 10
+#' seeds <- 1:10 <= 3
 #' match <- graph_match_FW(g1, g2, seeds, start = "bari")
 #' select_seeds <- select_seeds(g1, g2, "row_cor", nseeds=5, x=!seeds, match_corr=match$corr)
 #' match_adpt <- graph_match_adpt_seeds(g1, g2, seeds, select_seeds=select_seeds)
@@ -58,12 +58,17 @@ graph_match_adpt_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
 
   # graph_match with updated seeds and calculate errors
   match_hard <- graph_match_FW(A, B_hard, seeds = seeds, start = start)
-  corr <- match_hard$corr
 
   # fix corr
   if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(nv=dim(A)[1], seed_g1_err = seed_A_err,
-                          seed_g2_err = seed_B_err, corr_hard = corr)
+    match_hard$corr <- fix_hard_corr(seed_A_err, seed_B_err, corr)
+    corr <- match_hard$corr
+  }
+
+  # fix P & D
+  if(sum(aseeds_err)!=0){
+    match_hard$P <- fix_hard_PD(seed_A_err,seed_B_err,match_hard$P)
+    match_hard$D <- fix_hard_PD(seed_A_err,seed_B_err,match_hard$D)
   }
 
   core_err_hard <- mean(corr[non_seed_core]!=which(non_seed_core)) # total error, including errors in added seeds
@@ -74,7 +79,7 @@ graph_match_adpt_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   new_seeds_err_hard <- sum(aseeds_err)/aseeds
 
   result_hard <- tibble(match_error_hard=core_err_hard, added_seeds_error_hard=new_seeds_err_hard,
-                        objective_hard=objective_hard)
+                        objective_hard=objective_hard, match_hard=match_hard)
   result_hard
 }
 #' @rdname adpt_seeds_match
@@ -102,7 +107,8 @@ graph_match_soft_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   } else if(start =="rds"){
     start <- rds_sinkhorn_start(nns,select_seeds)
   } else if(start == "convex"){
-    start <- graph_match_adpt_seeds(A, B, seeds, non_seed_core, select_seeds, start="convex")$D[!seeds,!seeds]
+    match <- graph_match_adpt_seeds(A, B, seeds, non_seed_core, select_seeds, start="convex")$match_hard
+    start <- match$D[!seeds,!seeds]
   }
 
   # graph_match with updated seeds and calculate errors
@@ -117,7 +123,7 @@ graph_match_soft_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   new_seeds_err_soft <- mean(match_soft$corr[seeds_add]!=which(seeds_add))
 
   result_soft <- tibble(match_error_soft=core_err_soft,added_seeds_error_soft=new_seeds_err_soft,
-                        objective_soft=objective_soft)
+                        objective_soft=objective_soft, match_soft=match_soft)
   result_soft
 }
 #'
@@ -193,18 +199,18 @@ g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
   }
 
   # swap columns of g2
-  g2_new <- g2
-  for(i in 1:length(seed_g1_err)){
-    g2_new[,c(seed_g1_err[i],seed_g2_err[i])] <-
-      g2_new[,c(seed_g2_err[i],seed_g1_err[i])]
-    g2_new[c(seed_g1_err[i],seed_g2_err[i]),] <-
-      g2_new[c(seed_g2_err[i],seed_g1_err[i]),]
+  nv <- nrow(g2)
+  g2_new_real <- 1:nv
+  for (i in 1:length(seed_g1_err)) {
+    g2_new_real[c(seed_g1_err[i],seed_g2_err[i])] <-
+      g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
   }
 
+  g2_new <- g2[g2_new_real,g2_new_real]
   g2_new
 }
 #'
-fix_hard_corr <- function(nv, seed_g1_err, seed_g2_err, corr_hard){
+fix_hard_corr <- function(seed_g1_err, seed_g2_err, corr_hard){
   aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
   if(length(seed_g1_err)>1)
   {
@@ -214,19 +220,35 @@ fix_hard_corr <- function(nv, seed_g1_err, seed_g2_err, corr_hard){
     seed_g2_err <- swap[2,]
   }
 
+  nv <- length(corr_hard)
   g2_new_real <- 1:nv
-  for (i in 1:length(seed_g1_err)) {
+  for (i in length(seed_g1_err):1) {
     g2_new_real[c(seed_g1_err[i],seed_g2_err[i])] <-
       g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
   }
 
-  # find position changes in nonseeds due to added seeds
-  g2_sig <- ifelse(g2_new_real!=1:nv, TRUE, FALSE)
-  g2_index <- which(g2_sig==TRUE)
-  g2_value <- g2_new_real[g2_sig]
-  index_corr <- sapply(g2_index, function(x) which(corr_hard==x))
-  corr_hard[index_corr] <- g2_value
-
+  corr_hard <- corr_hard[g2_new_real]
   corr_hard
 }
+#'
+fix_hard_PD <- function(seed_g1_err, seed_g2_err, PD){
+  aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
+  if(length(seed_g1_err)>1)
+  {
+    swap <- swap_order(aseeds_matrix)
+    swap <- as.matrix(swap)
+    seed_g1_err <- swap[1,]
+    seed_g2_err <- swap[2,]
+  }
 
+  # swap columns of P matrix or D matrix
+  nv <- nrow(PD)
+  PD_real <- 1:nv
+  for (i in length(seed_g1_err):1) {
+    PD_real[c(seed_g1_err[i],seed_g2_err[i])] <-
+      PD_real[c(seed_g2_err[i],seed_g1_err[i])]
+  }
+
+  PD_new <- PD[PD_real,PD_real]
+  PD_new
+}
