@@ -62,14 +62,13 @@ graph_match_adpt_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   # fix match results
   if(sum(aseeds_err)!=0){
     match_hard$corr <- fix_hard_corr(seed_A_err,seed_B_err,match_hard$corr)
-    corr <- match_hard$corr
     nv <- nrow(A)
-    match_hard$P <- Matrix::Diagonal(nv)[corr,]
+    match_hard$P <- Matrix::Diagonal(nv)[match_hard$corr,]
     match_hard$D <- fix_hard_D(seed_A_err,seed_B_err,match_hard$D)
   }
 
-  core_err_hard <- mean(corr[non_seed_core]!=which(non_seed_core)) # total error, including errors in added seeds
-  Bm_hard <- B[corr,corr]
+  core_err_hard <- mean(match_hard$corr[non_seed_core]!=which(non_seed_core)) # total error, including errors in added seeds
+  Bm_hard <- B[match_hard$corr,match_hard$corr]
   objective_hard <- sum(abs(A-Bm_hard))
 
   # errors of new added seeds
