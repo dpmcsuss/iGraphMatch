@@ -25,16 +25,7 @@
 sample_correlated_gnp_pair <- function (n, p, rho, directed = FALSE, permutation = NULL)
 {
   require(igraph)
-  n <- as.integer(n)
-  rho <- as.numeric(rho)
-  p <- as.numeric(p)
-  directed <- as.logical(directed)
-  if (!is.null(permutation))
-    permutation <- as.numeric(permutation) - 1
-  on.exit(.Call(C_R_igraph_finalizer))
-  res <- .Call(C_R_igraph_correlated_pair_game, n, rho, p,
-               directed, permutation)
-  res
+  igraph::sample_correlated_gnp_pair(n,rho,p,directed,permutation)
 }
 #' @export
 #' @rdname sample_gnp
