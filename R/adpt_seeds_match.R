@@ -223,12 +223,7 @@ fix_hard_corr <- function(seed_g1_err, seed_g2_err, corr_hard){
       g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
   }
 
-  g2_sig <- ifelse(g2_new_real!=1:nv, TRUE, FALSE)
-  g2_index <- which(g2_sig==TRUE)
-  g2_value <- g2_new_real[g2_sig]
-  index_corr <- sapply(g2_index, function(x) which(corr_hard==x))
-  corr_hard[index_corr] <- g2_value
-
+  corr_hard <- g2_new_real[corr_hard]
   corr_hard
 }
 #'
