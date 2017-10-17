@@ -48,8 +48,7 @@ graph_match_adpt_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   # swap columns corresponding to error seeds in B
   if(sum(aseeds_err)!=0){
     B_hard <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-  }
-  else{
+  }else{
     B_hard <- B
   }
 
@@ -148,8 +147,7 @@ swap_order <- function(aseeds_matrix){
           aseeds_matrix[1,i] <- 0
           circle_index[k] <- i
           k <- k+1
-        }
-        else{
+        }else{
           inter_match[i] <- "TRUE"
           ninter_new <- ninter_new+1
         }
