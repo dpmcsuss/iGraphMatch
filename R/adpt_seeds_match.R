@@ -1,6 +1,6 @@
 #' @title Graph matching with adpative seeds or soft seeds
 #'
-#' @description Match two given graphs with a set of selected best matched nodes as additional seeds.
+#' @description  Match two given graphs with a set of additional seeds as adaptive seeds or soft seeds.
 #'
 #' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
 #' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
@@ -18,8 +18,10 @@
 #' character value like "bari", "convex" or "rds" to initialize the starting matrix.
 #'
 #' @rdname adpt_seeds_match
-#' @return Returns a list of graph matching results, including core matching error, ultimate matching
-#' error in selected seeds, and value for the objective function.
+#' @return Returns a list of hard seeding or soft seeding graph matching results, including core matching error,
+#' ultimate matching error in selected seeds, value for the objective function, match correspondence
+#' vector of G_2 with respect to G_1 named corr, doubly stochastic matrix named D and permutation
+#' matrix named P.
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 50, p =  0.5, rho = 0.3)
 #' g1 <- cgnp_pair$graph1
@@ -37,7 +39,7 @@ graph_match_adpt_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   A <- as.matrix(A)
   B <- as.matrix(B)
 
-  select_seeds <- check_soft_seeds(select_seeds)
+  select_seeds <- check_seeds(select_seeds)
   seed_A <- select_seeds$seed_A
   seed_B <- select_seeds$seed_B
   aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
@@ -73,8 +75,9 @@ graph_match_adpt_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   # errors of new added seeds
   new_seeds_err_hard <- sum(aseeds_err)/aseeds
 
-  result_hard <- tibble(match_error_hard=core_err_hard, added_seeds_error_hard=new_seeds_err_hard,
-                        objective_hard=objective_hard, match_hard=match_hard)
+  result_hard <- list(match_error_hard=core_err_hard, added_seeds_error_hard=new_seeds_err_hard,
+                        objective_hard=objective_hard, corr_hard=match_hard$corr,
+                        P_hard=match_hard$P,D_hard=match_hard$D)
   result_hard
 }
 #' @rdname adpt_seeds_match
@@ -89,7 +92,7 @@ graph_match_soft_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   A <- as.matrix(A)
   B <- as.matrix(B)
 
-  select_seeds <- check_soft_seeds(select_seeds)
+  select_seeds <- check_seeds(select_seeds)
   seed_A <- select_seeds$seed_A
   seed_B <- select_seeds$seed_B
   ns <- sum(seeds)
@@ -102,8 +105,8 @@ graph_match_soft_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   } else if(start =="rds"){
     start <- rds_sinkhorn_start(nns,ns,select_seeds)
   } else if(start == "convex"){
-    match <- graph_match_adpt_seeds(A, B, seeds, non_seed_core, select_seeds, start="convex")$match_hard
-    start <- match$D[!seeds,!seeds]
+    D <- graph_match_adpt_seeds(A, B, seeds, non_seed_core, select_seeds, start="convex")$D_hard
+    start <- D[!seeds,!seeds]
   }
 
   # graph_match with updated seeds and calculate errors
@@ -117,11 +120,12 @@ graph_match_soft_seeds <- function(A, B, seeds, non_seed_core = !seeds, select_s
   seeds_add[seed_A] <- TRUE
   new_seeds_err_soft <- mean(match_soft$corr[seeds_add]!=which(seeds_add))
 
-  result_soft <- tibble(match_error_soft=core_err_soft,added_seeds_error_soft=new_seeds_err_soft,
-                        objective_soft=objective_soft)
+  result_soft <- list(match_error_soft=core_err_soft,added_seeds_error_soft=new_seeds_err_soft,
+                      objective_soft=objective_soft, corr_soft=match_soft$corr,
+                      P_soft=match_soft$P,D_soft=match_soft$D)
   result_soft
 }
-#'
+# correct the order of swapping graph2 according to new seeds
 swap_order <- function(aseeds_matrix){
   #aseeds_matrix: first row:added seeds index in g1, second row added seeds match
   naseeds_err <- dim(aseeds_matrix)[2]
@@ -181,7 +185,7 @@ swap_order <- function(aseeds_matrix){
 
   aseeds_match_order[,-dim(aseeds_match_order)[2]]
 }
-#'
+# swap columns and rows of G_2 according to hard seeds
 g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
   aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
   if(length(seed_g1_err)>1)
@@ -203,7 +207,7 @@ g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
   g2_new <- g2[g2_new_real,g2_new_real]
   g2_new
 }
-#'
+# returns the true correspondence between G_1 and G_2 for hard seeding
 fix_hard_corr <- function(seed_g1_err, seed_g2_err, corr_hard){
   aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
   if(length(seed_g1_err)>1)
@@ -224,7 +228,7 @@ fix_hard_corr <- function(seed_g1_err, seed_g2_err, corr_hard){
   corr_hard <- g2_new_real[corr_hard]
   corr_hard
 }
-#'
+# returns the true doubly stochastic matrix D and true permutation matrix for hard seeding
 fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
   aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
   if(length(seed_g1_err)>1)
