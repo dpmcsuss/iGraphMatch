@@ -23,7 +23,7 @@ vertex is a seed.}
 vertex is a core vertex and is not a seed. Note in the case without junk vertices,
 \code{non_seed_core=!seeds}.}
 
-\item{select_seeds, }{A vector. A vector, a matrix or a data frame. If there is no error in soft
+\item{select_seeds, }{A vector, a matrix or a data frame. If there is no error in soft
 seeds, input can be a vector of soft seed indices in \eqn{G_1}. Or if there is error in soft
 seeds, input in the form of a matrix or a data frame, with the first column being the
 indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}. Note
