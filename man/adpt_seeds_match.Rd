@@ -33,11 +33,13 @@ that if there are seeds in graphs, seeds should be put before non-seeds.}
 character value like "bari", "convex" or "rds" to initialize the starting matrix.}
 }
 \value{
-Returns a list of graph matching results, including core matching error, ultimate matching
-error in selected seeds, and value for the objective function.
+Returns a list of hard seeding or soft seeding graph matching results, including core matching error,
+ultimate matching error in selected seeds, value for the objective function, match correspondence
+vector of G_2 with respect to G_1 named corr, doubly stochastic matrix named D and permutation
+matrix named P.
 }
 \description{
-Match two given graphs with a set of selected best matched nodes as additional seeds.
+Match two given graphs with a set of additional seeds as adaptive seeds or soft seeds.
 }
 \examples{
 cgnp_pair <- sample_correlated_gnp_pair(n = 50, p =  0.5, rho = 0.3)
