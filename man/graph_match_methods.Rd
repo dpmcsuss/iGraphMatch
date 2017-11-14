@@ -15,8 +15,10 @@ graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
 
 \item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
 
-\item{seeds}{A logical vector. \code{TRUE} indicates the corresponding
-vertex is a seed.}
+\item{seeds}{A vector of integers or logicals, a matrix or a data frame. If there is no error in seeds input can be
+a vector of seed indices in \eqn{G_1}. Or if there exists error in seeds, input in the form of a
+matrix or a data frame, with the first column being the indices of \eqn{G_1} and the second
+column being the corresponding indices of \eqn{G_2}.}
 
 \item{start}{A matrix or a character. Any \code{nns-by-nns} matrix or
 character value like "bari" or "convex" to initialize the starting matrix.}
@@ -42,16 +44,22 @@ including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
 doubly stochastic matrix and permutation matrix.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 50, rho =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, rho =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
 graph_match_FW(g1, g2)
 
 # match G_1 & G_2 with some known node pairs as seeds
-seeds <- 1:50 <= 10
+seeds <- 1:10 <= 3
 graph_match_FW(g1, g2, seeds, start = "bari")
 
+# match G_1 & G_2 with some incorrect seeds
+hard_seeds <- matrix(c(4,6,5,4),2)
+seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+graph_match_FW(g1, g2, seeds, start = "convex")
+
+seeds <- 1:10 <= 3
 graph_match_convex(g1, g2, seeds)
 
 }
