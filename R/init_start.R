@@ -66,7 +66,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
       seeds <- check_seeds(seeds)
       seeds_log <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
       seeds <- rbind(seeds,soft_seeds)
-      P <- graph_match_FW(A, B, seeds, start="convex")$D[!seeds_log,!seeds_log]
+      P <- graph_match_convex(A, B, seeds)$D[!seeds_log,!seeds_log]
     }
   }
   P
