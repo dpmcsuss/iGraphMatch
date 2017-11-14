@@ -98,11 +98,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
   Bnn <- B[nonseeds,nonseeds]
   Bns <- B[nonseeds,seeds]
 
-  if(start == "convex"){
-    P <- init_start(start = start, nns = nn, A = A, B = B, seeds = seeds)
-  } else{
-    P <- init_start(start = start, nns = nn)
-  }
+  P <- init_start(start = start, nns = nn, A = A, B = B, seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
@@ -287,14 +283,7 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
       g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
   }
 
-  corr_hard <- apply(D,1,function(v) which(v==1))
-  g2_sig <- ifelse(g2_new_real!=1:nv, TRUE, FALSE)
-  g2_index <- which(g2_sig==TRUE)
-  g2_value <- g2_new_real[g2_sig]
-  index_corr <- sapply(g2_index, function(x) which(corr_hard==x))
-  corr_hard[index_corr] <- g2_value
-
-  D <- Matrix::Diagonal(nv)[corr_hard,]
+  D <- D[g2_new_real,g2_new_real]
   D
 }
 #'
@@ -306,6 +295,10 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #'
 #' @examples
 #' seeds <- 1:10 <= 3
+#' graph_match_convex(g1, g2, seeds)
+#'
+#' hard_seeds <- matrix(c(4,6,5,4),2)
+#' seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
 #' graph_match_convex(g1, g2, seeds)
 #'
 #' @export
@@ -320,20 +313,31 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
 
   # Add support for graphs with different orders ?
   nv <- nrow(A)
-  if(length(seeds)==1){
-    seeds <- 1:seeds
-  }
-  if(length(seeds)<nv){
-    temp <- seeds
+  if(is.null(seeds)){
     seeds <- rep(FALSE,nv)
-    seeds[temp]<- TRUE
-  }else{
-    seeds <- (seeds>0)
-  }
-  nonseeds <- !seeds
+    aseeds_err <- FALSE
+    ns <- sum(seeds)
+  } else{
+    seeds_pair <- check_seeds(seeds)
+    ns <- nrow(seeds_pair)
 
-  ns <- sum(seeds)
+    seeds <- rep(FALSE,nv)
+    seeds[seeds_pair$seed_A] <- TRUE
+
+    # detect incorrect seeds
+    seed_A <- seeds_pair$seed_A
+    seed_B <- seeds_pair$seed_B
+    aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
+    seed_A_err <- seed_A[aseeds_err]
+    seed_B_err <- seed_B[aseeds_err]
+
+    if(sum(aseeds_err)!=0){
+      B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
+    }
+  }
+
   nn <- nv-ns
+  nonseeds <- !seeds
 
   Asn <- A[seeds,nonseeds]
   Ann <- A[nonseeds,nonseeds]
@@ -401,6 +405,14 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
   D[nonseeds,nonseeds] <- D_ns
+
+  # fix match results if there are incorrect seeds
+  if(sum(aseeds_err)!=0){
+    corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
+    P <- Matrix::Diagonal(nv)[corr,]
+    D <- fix_hard_D(seed_A_err,seed_B_err,D)
+  }
+
   list(corr = corr, P = P, D = D)
 }
 #'
