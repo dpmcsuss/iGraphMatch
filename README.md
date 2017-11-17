@@ -7,12 +7,11 @@ iGraphMatch is a R package for graph matching. The package works for both igraph
 Installation
 ------------
 
+Currently only the development version of this package is available. This can be installed via devtools with
 ``` r
-# Alternatively, install iGraphMatch: (This method is not available for now, please use the second method.)
-install.packages("iGraphMatch")
-
-# Or the the development version from GitHub:
 # install.packages("devtools")
-devtools::install_github("dpmcsuss/iGraphMatch")
+devtools::install_github("dpmcsuss/iGraphMatch", auth_token = "AUTH_TOKEN")
 ```
+You will need to generate an authorization token using the following instructions.
 
+> To install from a private repo, generate a personal access token (PAT) in https://github.com/settings/tokens and supply to this argument. This is safer than using a password because you can easily delete a PAT without affecting any others. Defaults to the GITHUB_PAT environment variable.
