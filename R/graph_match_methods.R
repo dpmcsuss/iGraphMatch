@@ -283,7 +283,7 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
       g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
   }
 
-  D <- D[g2_new_real,g2_new_real]
+  D <- D[,g2_new_real]
   D
 }
 #'
@@ -311,7 +311,6 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   A <- as.matrix(A)
   B <- as.matrix(B)
 
-  # Add support for graphs with different orders ?
   nv <- nrow(A)
   if(is.null(seeds)){
     seeds <- rep(FALSE,nv)
