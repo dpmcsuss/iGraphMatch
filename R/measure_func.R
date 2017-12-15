@@ -2,15 +2,15 @@
 #'
 #' @description Measures for computing the goodness of matching for each vertex.
 #'
-#' @param g1 A matrix. Adjacency matrix of \eqn{G_1}.
-#' @param g2 A matrix. Adjacency matrix of \eqn{G_2} after adjusting rows and columns
+#' @param g1 A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
+#' @param g2 A matrix or an igraph object. Adjacency matrix of \eqn{G_2} after adjusting rows and columns
 #' according to the correlation of matching between two graphs.
 #' @param exact A logical. If \code{g1} and \code{g2} are binary, then set \code{exact=TRUE},
 #' if \code{g1} and \code{g2} are weighted graphs, then set \code{exact=FALSE}.
 #'
 #'
 #' @rdname measure_func
-#' @return \code{row_cor} returns a vector, each element is the row correlation value for
+#' @return \code{row_cor} returns a vector, each element is 1 minus the row correlation value for
 #' the corresponding vertex.
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3,p =  0.5)
@@ -23,6 +23,10 @@
 #' @export
 #'
 row_cor <- function(g1,g2){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
   require(tidyverse)
   1:nrow(g1) %>% map_dbl(~suppressWarnings(1-cor(g1[.x,],g2[.x,])))
 }
@@ -35,6 +39,10 @@ row_cor <- function(g1,g2){
 #' @export
 #'
 row_diff <- function(g1,g2){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
   rowSums(abs(g1-g2))
 }
 #'
@@ -46,6 +54,11 @@ row_diff <- function(g1,g2){
 #' @export
 #'
 row_perm_stat <- function(g1,g2,exact=TRUE,...){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
+
   if(exact){
     m <- mean_row_diff(g1,g2)
     v <- var_row_diff(g1,g2)
@@ -60,6 +73,11 @@ row_perm_stat <- function(g1,g2,exact=TRUE,...){
   (d-m)/sqrt(v)
 }
 row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
+
   n <- nrow(g2)
   A <- matrix(0,n,nmc)
 
@@ -77,6 +95,10 @@ row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
   list(mean=m,var=v)
 }
 mean_row_diff <- function(g1,g2,sym=FALSE){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
 
   dg1 <- rowSums(g1)
   dg2 <- rowSums(g2)
@@ -92,6 +114,10 @@ mean_row_diff <- function(g1,g2,sym=FALSE){
   ED
 }
 var_row_diff <- function(g1,g2,sym=FALSE){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
 
   dg1 <- rowSums(g1)
   dg2 <- rowSums(g2)
