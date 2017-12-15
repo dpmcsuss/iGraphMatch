@@ -69,5 +69,5 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
       P <- graph_match_convex(A, B, seeds)$D[!seeds_log,!seeds_log]
     }
   }
-  P
+  as.matrix(P)
 }
