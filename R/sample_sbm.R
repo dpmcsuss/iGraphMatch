@@ -6,7 +6,7 @@
 #' @param n An integer. Number of vertices in the graph.
 #' @param pref.matrix The matrix giving the Bernoulli rates. This is a \code{K-by-K} matrix, where
 #' \code{k} is the number of groups. The probability of creating an edge between vertices from groups
-#' \code{i} abd \code{j} is given by element \code{i,j}. For undirected graphs, this matrix must be
+#' \code{i} and \code{j} is given by element \code{i,j}. For undirected graphs, this matrix must be
 #' symmetric.
 #' @param block.sizes A numeric vector. Give the number of vertices in each group. The sum of the
 #' vector must match the number of vertices.
