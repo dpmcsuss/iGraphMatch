@@ -102,7 +102,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
 
   iter <- 0
   toggle <- TRUE
-  tol <- 0.05
+  tol <- 1
 
   # seed to non-seed info
   s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
