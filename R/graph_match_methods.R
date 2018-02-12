@@ -102,7 +102,6 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
 
   iter <- 0
   toggle <- TRUE
-  tol <- 1
 
   # seed to non-seed info
   s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
@@ -135,7 +134,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
     f1 <- c - e + u - v
     falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
-    if (alpha < tol && alpha > 0 && falpha > f0 && falpha >
+    if (alpha < 1 && alpha > 0 && falpha > f0 && falpha >
         f1) {
       P <- alpha * P + (1 - alpha) * Pdir
     } else if (f0 > f1) {
