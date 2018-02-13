@@ -10,8 +10,5 @@ Installation
 Currently only the development version of this package is available. This can be installed via devtools with
 ``` r
 # install.packages("devtools")
-devtools::install_github("dpmcsuss/iGraphMatch", auth_token = "AUTH_TOKEN")
+devtools::install_github("dpmcsuss/iGraphMatch")
 ```
-You will need to generate an authorization token using the following instructions.
-
-> To install from a private repo, generate a personal access token (PAT) in https://github.com/settings/tokens and supply to this argument. This is safer than using a password because you can easily delete a PAT without affecting any others. Defaults to the GITHUB_PAT environment variable.
