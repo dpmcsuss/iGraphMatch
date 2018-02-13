@@ -52,6 +52,6 @@ check_seeds <- function(seeds, nv = 0, logical = FALSE){
     seeds[seed_g1] <- TRUE
     seeds
   } else{
-    data_frame(seed_A=seed_g1, seed_B=seed_g2)
+    data.frame(seed_A=seed_g1, seed_B=seed_g2)
   }
 }
