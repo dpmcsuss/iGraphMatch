@@ -4,10 +4,10 @@
 #' two graphs being \code{rho} and edge probability being \code{p}.
 #'
 #' @param n An integer. Number of total vertices for the sampled graphs.
+#' @param corr A number. The target Pearson correlation between the adjacency matrices
+#' of the generated graphs. It must be in open (0,1) interval.
 #' @param p A number. Edge probability between two vertices. It must be in open
 #' (0,1) interval.
-#' @param rho A number. The target Pearson correlation between the adjacency matrices
-#' of the generated graphs. It must be in open (0,1) interval.
 #' @param ncore An integer. Number of core vertices.
 #' @param directed A logical. Whether to generate directed graphs.
 #' @param permutation A vector of number. A permutation vector that is applied on the
@@ -22,10 +22,10 @@
 #' sample_correlated_gnp_pair(50, 0.3, 0.5)
 #' @export
 #'
-sample_correlated_gnp_pair <- function (n, p, rho, directed = FALSE, permutation = NULL)
+sample_correlated_gnp_pair <- function (n, corr, p, directed = FALSE, permutation = NULL)
 {
   require(igraph)
-  igraph::sample_correlated_gnp_pair(n,rho,p,directed,permutation)
+  igraph::sample_correlated_gnp_pair(n,corr,p,directed,permutation)
 }
 #' @export
 #' @rdname sample_gnp
@@ -37,12 +37,12 @@ sample_correlated_gnp_pair <- function (n, p, rho, directed = FALSE, permutation
 #' sample_correlated_gnp_pair_w_junk(50, 0.3, 0.5, 40)
 #'
 #'
-sample_correlated_gnp_pair_w_junk <- function(n, p, rho, ncore=n){
+sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n){
   require(igraph)
   core <- 1:ncore
   junk <- (ncore+1):n
 
-  cgnp_pair <- sample_correlated_gnp_pair(ncore,rho,p)
+  cgnp_pair <- sample_correlated_gnp_pair(ncore,corr,p)
 
   if(ncore != n){
     pref_junk <- matrix(c(0,p,p,p),2,2)
