@@ -5,18 +5,17 @@
 \alias{sample_correlated_gnp_pair_w_junk}
 \title{Sample correlated G(n,p) random graphs}
 \usage{
-sample_correlated_gnp_pair(n, p, rho, directed = FALSE, permutation = NULL)
+sample_correlated_gnp_pair(n, corr, p, directed = FALSE, permutation = NULL)
 
-sample_correlated_gnp_pair_w_junk(n, p, rho, ncore = n)
+sample_correlated_gnp_pair_w_junk(n, corr, p, ncore = n)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
 
-\item{p}{A number. Edge probability between two vertices. It must be in open
+\item{corr}{A number. The target Pearson correlation between the adjacency matrices
+of the original generated graph. It must be in open (0,1) interval.
+#' @param p A number. Edge probability between two vertices. It must be in open
 (0,1) interval.}
-
-\item{rho}{A number. The target Pearson correlation between the adjacency matrices
-of the original generated graph. It must be in open (0,1) interval.}
 
 \item{directed}{A logical. Whether to generate directed graphs.}
 
@@ -29,16 +28,16 @@ are not permuted.}
 \value{
 \code{sample_correlated_gnp_pair} returns a list of two igraph object, named
 \code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
-correlated with \code{rho}.
+correlated with \code{corr}.
 
 \code{sample_correlated_gnp_pair_w_junk} returns a list of two igraph object, named
 \code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
-correlated with \code{rho} and with first ncore vertices being core vertices and the rest being
+correlated with \code{corr} and with first ncore vertices being core vertices and the rest being
 junk vertices.
 }
 \description{
 Sample a pair of correlated G(n,p) random graphs with correlation between
-two graphs being \code{rho} and edge probability being \code{p}.
+two graphs being \code{corr} and edge probability being \code{p}.
 }
 \examples{
 sample_correlated_gnp_pair(50, 0.3, 0.5)
