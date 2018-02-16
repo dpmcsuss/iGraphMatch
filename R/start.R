@@ -32,7 +32,7 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   if(is.null(soft_seeds)){
     start <- matrix(1/nns,nns,nns)
   } else{
-    soft_seeds <- check_soft_seeds(soft_seeds)
+    soft_seeds <- check_seeds(soft_seeds)
     seed_g1 <- soft_seeds$seed_A
     seed_g2 <- soft_seeds$seed_B
     nseeds <- length(seed_g1)
@@ -62,7 +62,7 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
   if(is.null(soft_seeds)){
     start <- rds_sinkhorn(nns,distribution = distribution)
   } else{
-    soft_seeds <- check_soft_seeds(soft_seeds)
+    soft_seeds <- check_seeds(soft_seeds)
     seed_g1 <- soft_seeds$seed_A
     seed_g2 <- soft_seeds$seed_B
     nseeds <- length(seed_g1)
