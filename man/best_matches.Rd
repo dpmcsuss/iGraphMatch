@@ -30,7 +30,7 @@ Find a set of vertices pairs in the order of goodness of matching according to a
 specified measure.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 50, rho =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:50 <= 10
