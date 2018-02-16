@@ -50,7 +50,7 @@ init_start("bari", nns = 5, ns = 3, soft_seeds = c(5,7,8))
 init_start(start = "rds", nns = 5, soft_seeds = ss)
 
 #initialize start matrix for convex graph matching
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, rho =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 2
