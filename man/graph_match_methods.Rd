@@ -3,12 +3,18 @@
 \name{graph_match_FW}
 \alias{graph_match_FW}
 \alias{graph_match_convex}
+\alias{graph_match_percolation}
+\alias{graph_match_ExpandWhenStuck}
 \title{Graph Match Methods}
 \usage{
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 100)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
   tol = 1e-05)
+
+graph_match_percolation(A, B, seeds, r = 2)
+
+graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
@@ -26,6 +32,8 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 \item{max_iter}{An integer. Maximum iteration time.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
+
+\item{r}{A number. Threshold of neighboring pair scores.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
@@ -34,13 +42,21 @@ named \code{corr}, doubly stochastic matrix named \code{D} and permutation
 matrix named \code{P} based on Frank-Wolfe methodology.
 
 \code{graph_match_convex} returns a list of graph matching results,
-including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
+including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
 named \code{corr}, doubly stochastic matrix named \code{D} and permutation
 matrix named \code{P} based on convex relaxation method for undirected graphs.
+
+\code{graph_match_percolation} returns matching correspondence of matched pairs with
+index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
+\code{corr_B}.
+
+\code{graph_match_ExpandWhenStuck} returns matching correspondence of matched pairs with
+index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
+\code{corr_B}.
 }
 \description{
 Match two given graphs, returns a list of graph matching results,
-including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
+including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
 doubly stochastic matrix and permutation matrix.
 }
 \examples{
@@ -62,4 +78,25 @@ graph_match_FW(g1, g2, seeds, start = "convex")
 seeds <- 1:10 <= 3
 graph_match_convex(g1, g2, seeds)
 
+hard_seeds <- matrix(c(4,6,5,4),2)
+seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+graph_match_convex(g1, g2, seeds)
+
+# match G_1 & G_2 using percolation graph matching method
+seeds <- 1:5
+graph_match_percolation(g1, g2, seeds, r = 2)
+
+# match G_1 & G_2 using Expand When Stuck graph matching method
+seeds <- 1:5
+graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
+
+}
+\references{
+L. Yartseva and M. Grossglauser (2013),
+\emph{On the performance of percolation graph matching}.
+COSN, Boston, MA, USA, pages 119–130.
+
+E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
+\emph{Growing a graph matching from a handful of seeds}.
+Proc. of the VLDB Endowment, 8(10):1010–1021.
 }
