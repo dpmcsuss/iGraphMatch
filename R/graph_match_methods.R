@@ -1,7 +1,7 @@
 #' @title Graph Match Methods
 #'
 #' @description Match two given graphs, returns a list of graph matching results,
-#' including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
+#' including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
 #' doubly stochastic matrix and permutation matrix.
 #'
 #' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
@@ -14,6 +14,7 @@
 #' character value like "bari" or "convex" to initialize the starting matrix.
 #' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
+#' @param r A number. Threshold of neighboring pair scores.
 #'
 #' @rdname graph_match_methods
 #'
@@ -102,6 +103,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
 
   iter <- 0
   toggle <- TRUE
+  tol <- 0.05
 
   # seed to non-seed info
   s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
@@ -134,7 +136,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
     f1 <- c - e + u - v
     falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
-    if (alpha < 1 && alpha > 0 && falpha > f0 && falpha >
+    if (alpha < tol && alpha > 0 && falpha > f0 && falpha >
         f1) {
       P <- alpha * P + (1 - alpha) * Pdir
     } else if (f0 > f1) {
@@ -288,7 +290,7 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_convex} returns a list of graph matching results,
-#' including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
+#' including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
 #' named \code{corr}, doubly stochastic matrix named \code{D} and permutation
 #' matrix named \code{P} based on convex relaxation method for undirected graphs.
 #'
@@ -310,6 +312,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   A <- as.matrix(A)
   B <- as.matrix(B)
 
+  # Add support for graphs with different orders ?
   nv <- nrow(A)
   if(is.null(seeds)){
     seeds <- rep(FALSE,nv)
@@ -527,4 +530,161 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
   D <- P
   D[nonseeds,nonseeds] <- D_ns
   list(corr = corr, P = P, D = D)
+}
+#'
+#' @rdname graph_match_methods
+#' @return \code{graph_match_percolation} returns matching correspondence of matched pairs with
+#' index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
+#' \code{corr_B}.
+#'
+#' @references
+#' L. Yartseva and M. Grossglauser (2013),
+#' \emph{On the performance of percolation graph matching}.
+#' COSN, Boston, MA, USA, pages 119–130.
+#'
+#' @examples
+#' # match G_1 & G_2 using percolation graph matching method
+#' seeds <- 1:5
+#' graph_match_percolation(g1, g2, seeds, r = 2)
+#'
+#' @export
+#'
+#'
+graph_match_percolation <- function(A, B, seeds, r = 2){
+
+  # this will make the graphs be matrices if they are igraph objects
+  A <- A[]
+  B <- B[]
+  A <- as.matrix(A)
+  B <- as.matrix(B)
+
+  n <- nrow(A)
+  seeds <- check_seeds(seeds) #unused seeds
+  Z <- seeds #matched nodes
+  M <- matrix(0,n,n) #marks matrix
+  M[seeds$seed_A,] <- -n
+  M[,seeds$seed_B] <- -n
+
+  # mark neighbors
+  for(i in 1:nrow(seeds)){
+    A_adj <- which(A[seeds$seed_A[i],]==1)
+    B_adj <- which(B[seeds$seed_B[i],]==1)
+    M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+  }
+
+  # choose pairs with marks ge r
+  while(max(M) >= r){
+    max_ind <- which(M == max(M), arr.ind = TRUE)
+    max_ind <- max_ind[sample(nrow(max_ind),1),]
+
+    Z <- rbind(Z,max_ind)
+
+    # update mark matrix
+    A_adj <- which(A[max_ind[1],]==1)
+    B_adj <- which(B[max_ind[2],]==1)
+    M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+    M[max_ind[1],] <- -n
+    M[,max_ind[2]] <- -n
+  }
+
+  if(nrow(Z) == n-1){
+    all <- 1:n
+    seed_A <- all[!(all %in% Z$seed_A)]
+    seed_B <- all[!(all %in% Z$seed_B)]
+    Z <- rbind(Z,cbind(seed_A,seed_B))
+  }
+
+  # matching result
+  corr <- Z[order(Z$seed_A),]
+  names(corr) <- c("corr_A","corr_B")
+  corr
+}
+#'
+#' @rdname graph_match_methods
+#' @return \code{graph_match_ExpandWhenStuck} returns matching correspondence of matched pairs with
+#' index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
+#' \code{corr_B}.
+#'
+#' @references
+#' E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
+#' \emph{Growing a graph matching from a handful of seeds}.
+#' Proc. of the VLDB Endowment, 8(10):1010–1021.
+#'
+#' @examples
+#' # match G_1 & G_2 using Expand When Stuck graph matching method
+#' seeds <- 1:5
+#' graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
+#'
+#' @export
+#'
+#'
+graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
+  # this will make the graphs be matrices if they are igraph objects
+  A <- A[]
+  B <- B[]
+  A <- as.matrix(A)
+  B <- as.matrix(B)
+
+
+  n <- nrow(A)
+  seeds <- check_seeds(seeds) #unused seeds
+  Z <- seeds #matched nodes
+  M <- matrix(0,n,n) #marks matrix
+  M[seeds$seed_A,] <- -n*n
+  M[,seeds$seed_B] <- -n*n
+
+  # deferred percolation graph matching
+  while(nrow(seeds) != 0){
+    # mark neighbors
+    for(i in 1:nrow(seeds)){
+      A_adj <- which(A[seeds$seed_A[i],]==1)
+      B_adj <- which(B[seeds$seed_B[i],]==1)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+    }
+
+    # choose pairs with marks ge r
+    while(max(M) >= r){
+      max_ind <- which(M == max(M), arr.ind = TRUE)
+      if(nrow(max_ind) != 1){
+        degree_diff <- abs(rowSums(A)[max_ind[,1]]-rowSums(B)[max_ind[,2]])
+        max_ind <- max_ind[which(degree_diff == min(degree_diff)),]
+        if(is.vector(max_ind) == FALSE){
+          max_ind <- max_ind[sample(nrow(max_ind),1),]
+        }
+      }
+
+      Z <- rbind(Z, as.vector(max_ind))
+
+      # update mark matrix
+      A_adj <- which(A[max_ind[1],]==1)
+      B_adj <- which(B[max_ind[2],]==1)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+      M[max_ind[1],] <- -n*n
+      M[,max_ind[2]] <- -n*n
+    }
+
+    if(nrow(Z) == n-1){
+      all <- 1:n
+      seed_A <- all[!(all %in% Z$seed_A)]
+      seed_B <- all[!(all %in% Z$seed_B)]
+      Z <- rbind(Z,cbind(seed_A,seed_B))
+      break
+    }
+
+    seeds_old <- seeds
+    seeds <- which(M > 0, arr.ind = TRUE)
+    seeds <- tibble(seed_A=seeds[,1], seed_B=seeds[,2])
+
+    if(nrow(seeds) == nrow(seeds_old)){
+      if(sum(seeds == seeds_old)==2*nrow(seeds)){
+        break
+      }
+    }
+
+  }
+
+  # matching result
+  corr <- Z[order(Z$seed_A),]
+  names(corr) <- c("corr_A","corr_B")
+  corr
 }
