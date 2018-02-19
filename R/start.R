@@ -47,6 +47,7 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
 
   start
 }
+
 #' @rdname start
 #' @return \code{rds_sinkhorn_start} returns a \code{nns-by-nns} doubly stochastic matrix
 #' with 1's corresponding to adaptive seeds.
@@ -80,6 +81,7 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
 
   start
 }
+
 sinkhorn <- function(m,niter=20){
   # m <- matrix(abs(runif(n^2)),n)
   for(i in 1:niter){
@@ -90,4 +92,46 @@ sinkhorn <- function(m,niter=20){
 }
 rds_sinkhorn <- function(n,distribution="runif"){
   sinkhorn(matrix(abs(do.call(distribution,list(n^2))),n))
+}
+
+
+#' @rdname start
+#' @return \code{rds_perm_bar} returns a \code{nns-by-nns} doubly stochastic matrix
+#' with 1's corresponding to adaptive seeds.
+#' @examples
+#' ## Case without soft seeds
+#' rds_perm_bari_start(5)
+#'
+#' ## Case with soft seeds and the input is a data frame
+#' rds_perm_bari_start(nns=5, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)), distribution = "rnorm")
+#' @export
+#' 
+rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1){
+  if(is.null(soft_seeds)){
+    start <- rds_perm_bari(nns, g = g)
+  } else{
+    soft_seeds <- check_seeds(soft_seeds)
+    seed_g1 <- soft_seeds$seed_A
+    seed_g2 <- soft_seeds$seed_B
+    nseeds <- length(seed_g1)
+    
+    start <- matrix(5,nrow = nns,ncol = nns)
+    for (i in 1:nseeds) {
+      start[seed_g1[i]-ns,] <- 0
+      start[,seed_g2[i]-ns] <- 0
+      start[seed_g1[i]-ns,seed_g2[i]-ns] <- 1
+    }
+
+    rds <- rds_perm_bari(nns-nseeds, g = g)
+    start[start==5] <- rds
+  }
+
+  start
+}
+
+
+rds_perm_bari <- function(nns, g){
+    alpha <- runif(1, 0, g)
+    (1 - alpha) * bari_start(nns) +
+        alpha * Matrix::Diagonal(nns)[sample(nns), ]
 }
