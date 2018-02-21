@@ -41,7 +41,7 @@
 #'
 #' @export
 #'
-graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100){
+graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -160,7 +160,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 100)
     D <- fix_hard_D(seed_A_err,seed_B_err,D)
   }
 
-  list(corr = corr, P = P, D = D)
+  list(corr = corr, P = P, D = D, iter = iter)
 }
 # correct the order of swapping graph2 according to new seeds
 swap_order <- function(aseeds_matrix){
