@@ -43,8 +43,9 @@ matrix named \code{P} based on Frank-Wolfe methodology.
 
 \code{graph_match_convex} returns a list of graph matching results,
 including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D} and permutation
-matrix named \code{P} based on convex relaxation method for undirected graphs.
+named \code{corr}, doubly stochastic matrix named \code{D}, permutation
+matrix named \code{P} based on convex relaxation method for undirected graphs and 
+iteration time of the algorithm named \code{iter}.
 
 \code{graph_match_percolation} returns matching correspondence of matched pairs with
 index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
