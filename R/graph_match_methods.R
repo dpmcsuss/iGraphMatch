@@ -20,8 +20,9 @@
 #'
 #' @return \code{graph_match_FW} returns a list of graph matching results,
 #' including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-#' named \code{corr}, doubly stochastic matrix named \code{D} and permutation
-#' matrix named \code{P} based on Frank-Wolfe methodology.
+#' named \code{corr}, doubly stochastic matrix named \code{D}, permutation
+#' matrix named \code{P} based on Frank-Wolfe methodology and iteration time of
+#' the algorithm named \code{iter}.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
