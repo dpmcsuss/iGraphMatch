@@ -47,22 +47,16 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
 
   # Add support for graphs with different orders
   totv1<-ncol(A)
   totv2<-ncol(B)
   if(totv1>totv2){
-    A[A==0]<- -1
-    B[B==0]<- -1
     diff<-totv1-totv2
-    for (j in 1:diff){B<-cbind(rbind(B,0),0)}
+    B <- Matrix::bdiag(B[], Matrix(0,diff,diff))
   }else if(totv1<totv2){
-    A[A==0]<- -1
-    B[B==0]<- -1
     diff<-totv2-totv1
-    for (j in 1:diff){A<-cbind(rbind(A,0),0)}
+    A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
   }
   nv <- nrow(A)
 
@@ -100,7 +94,8 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   Bnn <- B[nonseeds,nonseeds]
   Bns <- B[nonseeds,seeds]
 
-  P <- init_start(start = start, nns = nn, A = A, B = B, seeds = seeds)
+  P <- init_start(start = start, nns = nn,
+    A = A, B = B, seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
@@ -115,7 +110,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn
-    Grad <- round(nn^2*(Grad-min(Grad)))
+    Grad <- Grad-min(Grad)
 
     ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
     ind2 <- cbind(1:nn, ind)
@@ -136,8 +131,9 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
     f1 <- c - e + u - v
     falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
-    if (alpha < 1 && alpha > 0 && falpha > f0 && falpha >
-        f1) {
+
+    if (alpha < 1 && alpha > 0 &&
+        falpha > f0 && falpha > f1) {
       P <- alpha * P + (1 - alpha) * Pdir
     } else if (f0 > f1) {
       P <- Pdir
@@ -145,7 +141,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
       toggle <- F
     }
   }
-
+  
   D_ns <- P
   corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
   corr <- 1:nv
