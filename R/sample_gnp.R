@@ -24,7 +24,6 @@
 #'
 sample_correlated_gnp_pair <- function (n, corr, p, directed = FALSE, permutation = NULL)
 {
-  require(igraph)
   igraph::sample_correlated_gnp_pair(n,corr,p,directed,permutation)
 }
 #' @export
@@ -38,7 +37,6 @@ sample_correlated_gnp_pair <- function (n, corr, p, directed = FALSE, permutatio
 #'
 #'
 sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n){
-  require(igraph)
   core <- 1:ncore
   junk <- (ncore+1):n
 
