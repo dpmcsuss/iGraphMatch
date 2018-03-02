@@ -12,3 +12,10 @@ Currently only the development version of this package is available. This can be
 # install.packages("devtools")
 devtools::install_github("dpmcsuss/iGraphMatch")
 ```
+
+Usage
+------------
+
+After installation, attach the package before using it
+``` r
+library(iGraphMatch)
