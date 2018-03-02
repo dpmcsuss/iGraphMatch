@@ -669,7 +669,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
 
     seeds_old <- seeds
     seeds <- which(M > 0, arr.ind = TRUE)
-    seeds <- tibble(seed_A=seeds[,1], seed_B=seeds[,2])
+    seeds <- data.frame(seed_A=seeds[,1], seed_B=seeds[,2])
 
     if(nrow(seeds) == nrow(seeds_old)){
       if(sum(seeds == seeds_old)==2*nrow(seeds)){
