@@ -22,6 +22,6 @@ Imports:
 Suggests:
     dplyr (>= 0.5.0),
     testthat (>= 2.0.0)
-License: file LICENSE
+License: GPL (>= 2)
 LazyData: TRUE
 RoxygenNote: 6.0.1
