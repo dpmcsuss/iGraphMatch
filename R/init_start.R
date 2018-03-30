@@ -28,15 +28,17 @@
 #'
 #' @examples
 #' ss <- matrix(c(5,4,4,3), nrow = 2)
-#' # initialize start matrix for FW graph matching
-#' init_start("bari",5)
-#' init_start("rds",3)
+#' # initialize start matrix without soft seeds
+#' init_start(start = "bari", nns = 5)
+#' init_start(start = "rds", nns = 3)
+#' init_start(start = "rds_perm_bari", nns = 5)
 #'
-#' # initialize start matrix for soft seeding
-#' init_start("bari", nns = 5, ns = 3, soft_seeds = c(5,7,8))
+#' # initialize start matrix with soft seeds
+#' init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5,7,8))
 #' init_start(start = "rds", nns = 5, soft_seeds = ss)
+#' init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 #'
-#' #initialize start matrix for convex graph matching
+#' # initialize start matrix for convex graph matching
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
@@ -46,6 +48,7 @@
 #' # FW graph matching with incorrect seeds to start at convex start
 #' init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
 #'
+#' # 
 #'
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL, g = 1){
