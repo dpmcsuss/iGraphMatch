@@ -17,6 +17,8 @@
 #' convex.
 #' @param seeds A logical vector. \code{TRUE} indicates the corresponding vertex is a seed. Needed
 #' only when start is convex.
+#' @param g A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+#' barycenter matrix.
 #'
 #' @rdname init_start
 #' @return \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
@@ -46,7 +48,7 @@
 #'
 #'
 #' @export
-init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL){
+init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL, g = 1){
   if(grepl("atrix",class(start))){
     P <- start
   } else if(start == "bari"){
@@ -54,7 +56,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
   } else if(start =="rds"){
     P <- rds_sinkhorn_start(nns,ns,soft_seeds, ...)
   } else if(start =="rds_perm_bari"){
-    P <- rds_sinkhorn_start(nns,ns,soft_seeds)
+    P <- rds_perm_bari_start(nns,ns,soft_seeds,g)
   } else if(start == "convex"){
     A <- A[]
     B <- B[]
