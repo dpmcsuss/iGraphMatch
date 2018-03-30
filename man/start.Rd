@@ -3,11 +3,14 @@
 \name{bari_start}
 \alias{bari_start}
 \alias{rds_sinkhorn_start}
+\alias{rds_perm_bari_start}
 \title{Start matrix initialization}
 \usage{
 bari_start(nns, ns = 0, soft_seeds = NULL)
 
 rds_sinkhorn_start(nns, ns = 0, soft_seeds = NULL, distribution = "runif")
+
+rds_perm_bari_start(nns, ns = 0, soft_seeds = NULL, g = 1)
 }
 \arguments{
 \item{nns}{An integer. Number of non-seeds.}
@@ -23,12 +26,18 @@ that if there are seeds in graphs, seeds should be put before non-seeds.}
 \item{distribution}{A charactor. Specify the distribution from which the random doubly stochastic
 matrix is sampled. Should input the name of the function for generating random deviates from that
 distribution.}
+
+\item{g}{A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+barycenter matrix.}
 }
 \value{
 \code{bari_start} returns a \code{nns-by-nns} matrix with 1's corresponding to the
 adaptive seeds and being bari-centered at other places.
 
 \code{rds_sinkhorn_start} returns a \code{nns-by-nns} doubly stochastic matrix
+with 1's corresponding to adaptive seeds.
+
+\code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 with 1's corresponding to adaptive seeds.
 }
 \description{
@@ -49,4 +58,9 @@ rds_sinkhorn_start(5)
 
 ## Case with soft seeds and the input is a data frame
 rds_sinkhorn_start(nns=5, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)), distribution = "rnorm")
+## Case without soft seeds
+rds_perm_bari_start(nns=5)
+
+## Case with soft seeds and the input is a data frame
+rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)))
 }
