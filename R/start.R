@@ -12,6 +12,8 @@
 #' @param distribution A charactor. Specify the distribution from which the random doubly stochastic
 #' matrix is sampled. Should input the name of the function for generating random deviates from that
 #' distribution.
+#' @param g A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+#' barycenter matrix.
 #'
 #' @rdname start
 #' @return \code{bari_start} returns a \code{nns-by-nns} matrix with 1's corresponding to the
@@ -93,17 +95,15 @@ sinkhorn <- function(m,niter=20){
 rds_sinkhorn <- function(n,distribution="runif"){
   sinkhorn(matrix(abs(do.call(distribution,list(n^2))),n))
 }
-
-
 #' @rdname start
-#' @return \code{rds_perm_bar} returns a \code{nns-by-nns} doubly stochastic matrix
+#' @return \code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 #' with 1's corresponding to adaptive seeds.
 #' @examples
 #' ## Case without soft seeds
-#' rds_perm_bari_start(5)
+#' rds_perm_bari_start(nns=5)
 #'
 #' ## Case with soft seeds and the input is a data frame
-#' rds_perm_bari_start(nns=5, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)), distribution = "rnorm")
+#' rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)))
 #' @export
 #' 
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1){
@@ -133,5 +133,5 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1){
 rds_perm_bari <- function(nns, g){
     alpha <- runif(1, 0, g)
     (1 - alpha) * bari_start(nns) +
-        alpha * Matrix::Diagonal(nns)[sample(nns), ]
+        alpha * rperm(nns)
 }
