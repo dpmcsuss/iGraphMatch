@@ -1,5 +1,7 @@
 # iGraphMatch
 
+THIS IS THE DEV BRANCH
+
 Overview
 --------
 iGraphMatch is a R package for graph matching. The package works for both igraph objects and matrix objects. You provide the adjacency matrices of two graphs and some other information you might know, choose the graph matching method, and it returns the graph matching results. iGraphMatch also provides a bunch of useful functions you might need during the process of graph matching.
