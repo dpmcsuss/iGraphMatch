@@ -26,24 +26,19 @@
 #' the algorithm named \code{iter}.
 #'
 #' @examples
-#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
-#' g1 <- cgnp_pair$graph1
-#' g2 <- cgnp_pair$graph2
-#' # match G_1 & G_2 with no seeds
-#' graph_match_FW(g1, g2)
-#'
-#' # match G_1 & G_2 with some known node pairs as seeds
-#' seeds <- 1:10 <= 3
-#' graph_match_FW(g1, g2, seeds, start = "bari")
-#'
-#' # match G_1 & G_2 with some incorrect seeds
-#' hard_seeds <- matrix(c(4,6,5,4),2)
-#' seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
-#' graph_match_FW(g1, g2, seeds, start = "convex")
+#'  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
+#'  A <- lapply(gp_list, function(gp)gp[[1]])
+#'  B <- lapply(gp_list, function(gp)gp[[2]])
+#'  match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+#'  match$corr
 #'
 #' @export
 #'
-graph_match_FW_multi <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
+graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 20){
+
+  if(start == "convex"){
+    stop("Convex start is not yet implemented for multiplex matching")
+  }
 
   # this will make the graphs be matrices if they are igraph objects
   A <- lapply(A, function(Al) Al[])
@@ -88,6 +83,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "convex", max_iter 
 
   nn <- nv-ns
   nonseeds <- !seeds
+
 
   P <- init_start(start = start, nns = nn,
     A = A, B = B, seeds = seeds)
@@ -178,16 +174,4 @@ get_s_to_ns <- function(Alist, Blist, seeds){
     Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
   }
   Reduce("+", mapply(s_to_ns, Alist, Blist, SIMPLIFY = FALSE))
-}
-
-
-
-
-
-
-test <- function(){
-  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
-  A <- lapply(gp_list, function(gp)gp[[1]])
-  B <- lapply(gp_list, function(gp)gp[[2]])
-  graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)$corr
 }
