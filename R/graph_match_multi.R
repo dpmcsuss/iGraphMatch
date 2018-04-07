@@ -17,8 +17,6 @@
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
 #'
-#' @rdname graph_match_methods
-#'
 #' @return \code{graph_match_FW} returns a list of graph matching results,
 #' including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
 #' named \code{corr}, doubly stochastic matrix named \code{D}, permutation
