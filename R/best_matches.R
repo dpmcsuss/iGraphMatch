@@ -24,7 +24,7 @@
 #' match <- graph_match_FW(g1, g2, seeds)
 #'
 #' # Application: select best matched seeds from non seeds as new seeds, and do the
-#' graph matching iteratively to get higher matching accuracy
+#' # graph matching iteratively to get higher matching accuracy
 #' best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr)
 #'
 #'
