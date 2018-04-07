@@ -412,6 +412,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
 
   list(corr = corr, P = P, D = D)
 }
+
 #'
 #' @return \code{graph_match_convex_directed} returns graph matching results based
 #' on convex relaxation method for directed graphs.

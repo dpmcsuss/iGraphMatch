@@ -1,5 +1,5 @@
 
-#' @title Graph Match Methods (Multiple)
+#' @title Multiple Graph Match Methods
 #'
 #' @description Match two lists of graphs, returns a list of graph matching results,
 #' including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
