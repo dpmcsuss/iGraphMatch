@@ -45,8 +45,7 @@ best_matches <- function(A, B, measure, num, x, match_corr){
   # find top ranking nodes pairs
   rstat <- sort(stat_in)
   topstat <- rstat[1:num]
-  topindex <- sapply(topstat, function(top) which(stat==top)) %>%
-    unlist %>% unique # solve ties in topstat
+  topindex <- unique(unlist(sapply(topstat, function(top) which(stat==top))))
   topindex <- sapply(topindex, function(top){ifelse(top %in% c(1:nv)[!x],0,top)})
   topindex <- topindex[topindex!=0]
   topindex <- topindex[1:num]
