@@ -412,15 +412,16 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
 
   list(corr = corr, P = P, D = D)
 }
-#'
-#' @return \code{graph_match_convex_directed} returns graph matching results based
-#' on convex relaxation method for directed graphs.
-#'
-#' @examples
-#' graph_match_convex_directed(g1, g2, seeds)
-#'
-#'
-#'
+
+# '
+# ' @return \code{graph_match_convex_directed} returns graph matching results based
+# ' on convex relaxation method for directed graphs.
+# '
+# ' @examples
+# ' graph_match_convex_directed(g1, g2, seeds)
+# '
+# '
+# '
 graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100, tol2=1e-5){
 
   print("Warning, this doesn't work as expected. Need to think more.")

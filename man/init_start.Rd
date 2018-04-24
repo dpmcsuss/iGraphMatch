@@ -64,6 +64,6 @@ init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
 # FW graph matching with incorrect seeds to start at convex start
 init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
 
-#
+# 
 
 }

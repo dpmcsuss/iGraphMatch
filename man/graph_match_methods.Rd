@@ -7,7 +7,7 @@
 \alias{graph_match_ExpandWhenStuck}
 \title{Graph Match Methods}
 \usage{
-graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 100)
+graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
   tol = 1e-05)
@@ -38,14 +38,14 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
 including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D} and permutation
-matrix named \code{P} based on Frank-Wolfe methodology.
+named \code{corr}, doubly stochastic matrix named \code{D}, permutation
+matrix named \code{P} based on Frank-Wolfe methodology and iteration time of
+the algorithm named \code{iter}.
 
 \code{graph_match_convex} returns a list of graph matching results,
 including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D}, permutation
-matrix named \code{P} based on convex relaxation method for undirected graphs and 
-iteration time of the algorithm named \code{iter}.
+named \code{corr}, doubly stochastic matrix named \code{D} and permutation
+matrix named \code{P} based on convex relaxation method for undirected graphs.
 
 \code{graph_match_percolation} returns matching correspondence of matched pairs with
 index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named

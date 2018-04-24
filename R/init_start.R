@@ -57,7 +57,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
   } else if(start == "bari"){
     P <- bari_start(nns,ns,soft_seeds)
   } else if(start =="rds"){
-    P <- rds_sinkhorn_start(nns,ns,soft_seeds, ...)
+    P <- rds_sinkhorn_start(nns,ns,soft_seeds)
   } else if(start =="rds_perm_bari"){
     P <- rds_perm_bari_start(nns,ns,soft_seeds,g)
   } else if(start == "convex"){
