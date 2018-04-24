@@ -31,5 +31,6 @@ A <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)$graph1
 center_graph(A, scheme = "naive")
 center_graph(A, scheme = "center")
 center_graph(A, scheme = 2)
+center_graph(A, scheme = 1)
 
 }
