@@ -9,6 +9,8 @@
 #' the number of singular values used to estimate the expectation of adjacency matrix. Suitable
 #' choice of scheme can be obtained with rank of order logn, where n is the dimension of A, expecially
 #' in the setting of latent space graph models.
+#' @param use_splr A boolean indicating whether to use the splrMatrix object when storing the 
+#' centered graph.  Defaults to TRUE.
 #'
 #' @import irlba
 #' 
@@ -27,31 +29,37 @@
 #'
 #' @export
 #'
-center_graph <- function(A, scheme){
+center_graph <- function(A, scheme, use_splr = TRUE){
   if ( scheme == "naive" ){
     g <- A[]
   } else if ( scheme == "center" ){
+    if (use_splr) {
+      x <- 2*A[]
+      g <- splr(x = x, a = rep(-1,dim(A[])[1]),b = rep(1,dim(A[])[1]))
+    } else {
+      g <- 2*A[] - 1
+    }
   
-    x <- 2*A[]
-    g <- splr(x = x, a = rep(-1,dim(A[])[1]),b = rep(1,dim(A[])[1]))
-   
   } else {
     r <- as.numeric(scheme)
-    #g <- A[] - low_rank_approx(A[], r)
-    g <- splr(x=A[],a = -A[], rank = r, factorize = TRUE)
+    if (use_splr) {
+      g <- splr(x=A[],a = -A[], rank = r, factorize = TRUE)
+    } else {
+      g <- A[] - low_rank_approx(A[], r)
+    }
     
   }
   g
 }
 
 
-# low_rank_approx <- function(A,ndim){
-#   usv <- irlba(A, ndim)
-#   if ( ndim > 1 ){
-#     #with(usv, u %*% diag(d) %*% t(v))
-#     splr(x = A, a = usv$u %*% diag(usv$d), b = usv$v)
-#   } else{
-#     splr(x = A, a = usv$u, b = usv$v * usv$d)
-#     #dwith(usv, outer(as.vector(u), as.vector(v)) * d)
-#   }
-# }
+low_rank_approx <- function(A,ndim){
+  usv <- irlba(A, ndim)
+  if ( ndim > 1 ){
+    with(usv, u %*% diag(d) %*% t(v))
+  } else{
+    with(usv, outer(as.vector(u), as.vector(v)) * d)
+  }
+}
+
+
