@@ -564,7 +564,8 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
   for(i in 1:nrow(seeds)){
     A_adj <- which(A[seeds$seed_A[i],]>0)
     B_adj <- which(B[seeds$seed_B[i],]>0)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+    mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
   }
   M[seeds$seed_A,] <- -n
   M[,seeds$seed_B] <- -n
@@ -579,7 +580,8 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
     # update mark matrix
     A_adj <- which(A[max_ind[1],]>0)
     B_adj <- which(B[max_ind[2],]>0)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+    mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
     M[max_ind[1],] <- -n
     M[,max_ind[2]] <- -n
   }
@@ -595,6 +597,9 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
   corr <- Z[order(Z$seed_A),]
   names(corr) <- c("corr_A","corr_B")
   corr
+}
+cal_mark <- function(x,y){
+  1 - abs(x - y) / max(x, y)
 }
 #'
 #' @rdname graph_match_methods
@@ -636,7 +641,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
     for(i in 1:nrow(seeds)){
       A_adj <- which(A[seeds$seed_A[i],]>0)
       B_adj <- which(B[seeds$seed_B[i],]>0)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+      mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
     }
 
     # choose pairs with marks ge r
@@ -655,7 +661,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
       # update mark matrix
       A_adj <- which(A[max_ind[1],]>0)
       B_adj <- which(B[max_ind[2],]>0)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
       M[max_ind[1],] <- -n*n
       M[,max_ind[2]] <- -n*n
     }
