@@ -95,7 +95,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   Bns <- B[nonseeds,seeds]
 
   P <- init_start(start = start, nns = nn,
-    A = A, B = B, seeds = seeds)
+                  A = A, B = B, seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
@@ -141,7 +141,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
       toggle <- F
     }
   }
-  
+
   D_ns <- P
   corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
   corr <- 1:nv
@@ -412,16 +412,15 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
 
   list(corr = corr, P = P, D = D)
 }
-
-# '
-# ' @return \code{graph_match_convex_directed} returns graph matching results based
-# ' on convex relaxation method for directed graphs.
-# '
-# ' @examples
-# ' graph_match_convex_directed(g1, g2, seeds)
-# '
-# '
-# '
+#'
+#' @return \code{graph_match_convex_directed} returns graph matching results based
+#' on convex relaxation method for directed graphs.
+#'
+#' @examples
+#' graph_match_convex_directed(g1, g2, seeds)
+#'
+#'
+#'
 graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100, tol2=1e-5){
 
   print("Warning, this doesn't work as expected. Need to think more.")
@@ -556,18 +555,19 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
   B <- as.matrix(B)
 
   n <- nrow(A)
+  m <- nrow(B)
   seeds <- check_seeds(seeds) #unused seeds
   Z <- seeds #matched nodes
-  M <- matrix(0,n,n) #marks matrix
-  M[seeds$seed_A,] <- -n
-  M[,seeds$seed_B] <- -n
+  M <- matrix(0,n,m) #marks matrix
 
   # mark neighbors
   for(i in 1:nrow(seeds)){
-    A_adj <- which(A[seeds$seed_A[i],]==1)
-    B_adj <- which(B[seeds$seed_B[i],]==1)
+    A_adj <- which(A[seeds$seed_A[i],]>0)
+    B_adj <- which(B[seeds$seed_B[i],]>0)
     M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
   }
+  M[seeds$seed_A,] <- -n
+  M[,seeds$seed_B] <- -n
 
   # choose pairs with marks ge r
   while(max(M) >= r){
@@ -577,8 +577,8 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
     Z <- rbind(Z,max_ind)
 
     # update mark matrix
-    A_adj <- which(A[max_ind[1],]==1)
-    B_adj <- which(B[max_ind[2],]==1)
+    A_adj <- which(A[max_ind[1],]>0)
+    B_adj <- which(B[max_ind[2],]>0)
     M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
     M[max_ind[1],] <- -n
     M[,max_ind[2]] <- -n
@@ -622,11 +622,11 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   A <- as.matrix(A)
   B <- as.matrix(B)
 
-
   n <- nrow(A)
+  m <- nrow(B)
   seeds <- check_seeds(seeds) #unused seeds
   Z <- seeds #matched nodes
-  M <- matrix(0,n,n) #marks matrix
+  M <- matrix(0,n,m) #marks matrix
   M[seeds$seed_A,] <- -n*n
   M[,seeds$seed_B] <- -n*n
 
@@ -634,8 +634,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   while(nrow(seeds) != 0){
     # mark neighbors
     for(i in 1:nrow(seeds)){
-      A_adj <- which(A[seeds$seed_A[i],]==1)
-      B_adj <- which(B[seeds$seed_B[i],]==1)
+      A_adj <- which(A[seeds$seed_A[i],]>0)
+      B_adj <- which(B[seeds$seed_B[i],]>0)
       M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
     }
 
@@ -653,8 +653,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
       Z <- rbind(Z, as.vector(max_ind))
 
       # update mark matrix
-      A_adj <- which(A[max_ind[1],]==1)
-      B_adj <- which(B[max_ind[2],]==1)
+      A_adj <- which(A[max_ind[1],]>0)
+      B_adj <- which(B[max_ind[2],]>0)
       M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
       M[max_ind[1],] <- -n*n
       M[,max_ind[2]] <- -n*n
