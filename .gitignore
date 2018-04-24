@@ -4,7 +4,7 @@
 
 .Rapp.history
 
-
+.Rbuildignore
 
 # Session Data files
 
@@ -33,7 +33,7 @@
 # RStudio files
 
 .Rproj.user/
-
+/*.Rproj
 
 
 # produced vignettes
