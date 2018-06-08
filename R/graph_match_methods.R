@@ -302,13 +302,12 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #'
 #'
 graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 100, tol = 1e-5){
-
+ 
   A <- A[]
   B <- B[]
   A <- as.matrix(A)
   B <- as.matrix(B)
-
-  # Add support for graphs with different orders ?
+  
   nv <- nrow(A)
   if(is.null(seeds)){
     seeds <- rep(FALSE,nv)
@@ -317,101 +316,82 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   } else{
     seeds_pair <- check_seeds(seeds)
     ns <- nrow(seeds_pair)
-
+    
     seeds <- rep(FALSE,nv)
     seeds[seeds_pair$seed_A] <- TRUE
-
+    
     # detect incorrect seeds
     seed_A <- seeds_pair$seed_A
     seed_B <- seeds_pair$seed_B
     aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
     seed_A_err <- seed_A[aseeds_err]
     seed_B_err <- seed_B[aseeds_err]
-
+    
     if(sum(aseeds_err)!=0){
       B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
     }
   }
-
+  
   nn <- nv-ns
   nonseeds <- !seeds
-
+  
   Asn <- A[seeds,nonseeds]
   Ann <- A[nonseeds,nonseeds]
   Ans <- A[nonseeds,seeds]
-
+  
   Bsn <- B[seeds,nonseeds]
   Bnn <- B[nonseeds,nonseeds]
   Bns <- B[nonseeds,seeds]
-
-  tol0 <- 1
+  tol0 <- 1e-5
   P <- init_start(start = start, nns = nn)
   iter<-0
   toggle <- TRUE
-
+  
   AtA <- t(Asn)%*%Asn + t(Ann)%*%Ann
   BBt <- Bns%*%t(Bns)+Bnn%*%t(Bnn)
-
   ABns_sn <- Ans%*%t(Bns) + t(Asn)%*%Bsn
-  f <- sum((Ann %*% P - P%*% Bnn)^2)
-
+  f <- sum((Asn%*%P-Bsn)^2)+sum((Ans-P%*%Bns)^2)+sum((Ann%*%P-P%*%Bnn)^2)
   while(toggle && iter<max_iter){
     f_old <- f
     iter<-iter+1
-
-    Grad<- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn)
+    Grad<- 2*(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn))
     # print("asdf")
-
-    Grad <- round(as.matrix(nn^2*(Grad-min(Grad))))
+    Grad <- as.matrix(nn^2*(Grad-min(Grad)))
     corr <- as.vector(clue::solve_LSAP(Grad))
     Pdir <- Matrix::Diagonal(nn)[corr,]
-
-
-    # C <- rbind(Ann,Asn) %*% (P-Pdir) + t((Pdir-P) %*% cbind(Bnn,Bns))
-    Cnn <- Ann %*% (P-Pdir) - (P-Pdir) %*% Bnn
-    Dnn <- Ann %*% Pdir - Pdir %*% Bnn
-
-    if(ns > 0){
-      Cns <- -(P-Pdir) %*% Bns
-      Csn <- Asn %*% (P-Pdir)
-
-      Dns <- Ans - Pdir %*% Bns
-      Dsn <- Asn %*% Pdir - Bsn
-    }else{
-      Dns <- Dsn <-Cns <- Csn <- 0
-    }
-
-    aq <- sum(Cnn^2)+sum(Cns^2)+sum(Csn^2)
-    bq <- sum(Cnn*Dnn)+sum(Cns*Dns)+sum(Csn*Dsn)
+    difPPdir<-Pdir-P
+    aq <- sum((Asn%*%difPPdir)^2)+sum((difPPdir%*%Bns)^2)+sum((Ann %*% difPPdir - difPPdir %*% Bnn)^2)
+    bq <- sum(diag(t(Asn%*%P-Bsn)%*%Asn%*%difPPdir))+sum(diag(t(P%*%Bns-Ans)%*%difPPdir%*%Bns))+sum(diag((Ann %*% difPPdir - difPPdir %*% Bnn)%*%t(Ann %*%P - P%*% Bnn)))
     aopt <- -bq/aq
-
-    P_new <- aopt*P+(1-aopt)*Pdir;
-    f <- sum((Ann %*% P_new - P_new %*% Bnn)^2)
-
+    aopt<-aopt*(aopt>0)*(aopt<1)+(aopt>1) #restrict the step size in (0,1)
+    P_new <- (1-aopt)*P+aopt*Pdir;
+    f <- sum((Asn%*%P_new-Bsn)^2)+sum((Ans-P_new%*%Bns)^2)+sum((Ann%*%P_new-P_new%*%Bnn)^2)
     f_diff <- abs(f-f_old)
     P_diff <- sum(abs(P-P_new))
     P <- P_new
-
+    
     toggle <- f_diff > tol0 && f > tol && P_diff > tol0
   }
-
+  
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
+  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(P),maximum = TRUE))
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
   D[nonseeds,nonseeds] <- D_ns
-
+  
   # fix match results if there are incorrect seeds
   if(sum(aseeds_err)!=0){
     corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
     P <- Matrix::Diagonal(nv)[corr,]
     D <- fix_hard_D(seed_A_err,seed_B_err,D)
   }
-
+  
   list(corr = corr, P = P, D = D)
 }
+
+
 #'
 #' @return \code{graph_match_convex_directed} returns graph matching results based
 #' on convex relaxation method for directed graphs.
