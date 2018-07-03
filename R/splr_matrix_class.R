@@ -19,6 +19,16 @@
 setClass("splrMatrix",representation(x="sparseMatrix",a="Matrix",b="Matrix"
                                             ),contains = 'Matrix')
 
+
+#' @title splrMatrix constructor
+#'
+#' @description Construct a sparse plus low rank matrix
+#'
+#' @import irlba
+#' @import Matrix
+#' 
+#' @export
+#'
 splr <- function(x,a=NULL,b=NULL, rank = NULL,factorize = FALSE,tol = .00001,dimnames = list(NULL,NULL)){
   
   # x+ab' 
