@@ -16,21 +16,17 @@
 #'@import Matrix
 #'@import methods
 #'@importClassesFrom Matrix sparseMatrix
-setClass("splrMatrix",representation(x="sparseMatrix",a="Matrix",b="Matrix"
-                                            ),contains = 'Matrix')
+setClass("splrMatrix",
+  slots = c(x="sparseMatrix",a="Matrix",b="Matrix"),
+  contains = 'sparseMatrix')
 
 
-#' @title splrMatrix constructor
-#'
-#' @description Construct a sparse plus low rank matrix
-#'
-#' @import irlba
-#' @import Matrix
-#' 
-#' @export
-#'
-splr <- function(x,a=NULL,b=NULL, rank = NULL,factorize = FALSE,tol = .00001,dimnames = list(NULL,NULL)){
+setGeneric(
+  name = "splr",
+  def = function(x,a=NULL,b=NULL, ...){
   
+  # rank = NULL,factorize = FALSE,tol = .00001,dimnames = list(NULL,NULL)
+
   # x+ab' 
   # x is mxn
   # and is an mxr and b is a rxm matrix
@@ -100,7 +96,16 @@ splr <- function(x,a=NULL,b=NULL, rank = NULL,factorize = FALSE,tol = .00001,dim
   
  
   
-}
+})
+
+
+setMethod(
+  f = "splr",
+  signature = signature(x = "Matrix", a = "Matrix", b = "Matrix"),
+  definition = function(x, a, b, ...){
+    new("splrMatrix", x=x, a=a,b=b, Dim = dim(x),Dimnames = list(NULL,NULL))
+  }
+)
 
 as.matrix.splr=function(x,...)  {
   
@@ -112,9 +117,9 @@ as.matrix.splr=function(x,...)  {
 setMethod("as.matrix","splrMatrix",as.matrix.splr)
 
 
-setAs('splrMatrix','Matrix',function(from) {
-  as(from@x + from@a%*%t(from@b),'Matrix')
-})
+# setAs('splrMatrix','Matrix',function(from) {
+#   as(from@x + from@a%*%t(from@b),'Matrix')
+# })
 
 as.character.splr <- function(x) {
   as.character(as.matrix(x))
