@@ -105,28 +105,34 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     print(iter)
 
     # non-seed to non-seed info
-    tAnn_P_Bnn <- 0
-    for(ch in 1:nc){
+    tAnn_P_Bnn <- Matrix::t(A[[1]]) %*% P %*% B[[1]]
+    for(ch in 2:nc){
+      print(ch)
       tAnn_P_Bnn <- tAnn_P_Bnn + Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
       gc()
     }
   
     Grad <- s_to_ns + tAnn_P_Bnn
     for(ch in 1:nc){
+      print(ch)
       Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
       gc()
     }
     Grad <- Grad - min(Grad)
+    print(object.size(Grad))
 
     ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    ns_Pdir_ns <- 0
-    for(ch in 1:nc){
+    ns_Pdir_ns <- Matrix::t(A[[1]])[, order(ind)] %*% B[[1]]
+    for(ch in 2:nc){
+      print(ch)
       ns_Pdir_ns <- ns_Pdir_ns + Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
       gc()
     }
+
+    print("bla")
     c <- sum(tAnn_P_Bnn * P)
     d <- sum(ns_Pdir_ns * P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
@@ -141,6 +147,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     f1 <- c - e + u - v
     falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
+    print("bla")
 
     if (alpha < 1 && alpha > 0 &&
         falpha > f0 && falpha > f1) {
@@ -150,6 +157,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     } else {
       toggle <- F
     }
+    print("bla")
   }
   
   D_ns <- P

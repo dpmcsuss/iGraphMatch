@@ -162,21 +162,20 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'missing'),function(e
   }
 }
 
-setMethod("%*%",signature(x="splrMatrix",y="splrMatrix"), function(x,y) {
-  p <- as(x@x %*% y@x + x@x %*% y@a %*% t(y@b) + x@a %*% t(x@b) %*% y@x,'sparseMatrix')
-  new('splrMatrix'
-      ,x= p
-      ,a =  x@a %*% t(x@b) %*% y@a
- 
-      ,b=y@b, Dim = dim(x))
+setMethod("%*%", signature(x = "splrMatrix", y = "splrMatrix"), function(x, y) {
+  new("splrMatrix",
+    x = x@x %*% y@x,
+    a = cbind(x@a %*% t(x@b) %*% y@a, x@a         , x@x %*% y@a) ,
+    b = cbind(y@b                    , x@b %*% y@x , y@b),
+    Dim = dim(x))
 })
 
-setMethod("%*%",signature(x="Matrix",y="splrMatrix"),.leftmult)
+setMethod("%*%", signature(x = "Matrix", y = "splrMatrix"), .leftmult)
 
-setMethod("%*%",signature(x="matrix",y="splrMatrix"),.leftmult)
-setMethod("%*%",signature(x="numeric",y="splrMatrix"),.leftmult)
+setMethod("%*%", signature(x = "matrix", y = "splrMatrix"), .leftmult)
+setMethod("%*%", signature(x = "numeric", y = "splrMatrix"), .leftmult)
 
-setMethod("%*%",signature(x="numLike",y="splrMatrix"),.leftmult)
+setMethod("%*%", signature(x = "numLike", y = "splrMatrix"), .leftmult)
 
 
 setMethod("%*%",signature(x="ANY",y="splrMatrix"),.leftmult)
@@ -226,7 +225,7 @@ setMethod('*',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
 #return sparse
 .multiply <- function(e1,e2) {
   if (length(e2) == 1) {
-    new('splrMatrix',x=e1@x*e2,a=e2*e1@a, b=e1@b,Dim = dim(e1@x*e2))
+    new('splrMatrix',x=e1@x*e2,a=e2*e1@a, b=e1@b, Dim = dim(e1@x*e2))
   } else {
     return(e1@x*e2 + e1@a %*% t(e1@b)*e2) 
   }
@@ -278,8 +277,8 @@ setMethod("/",signature (e1 = 'splrMatrix',e2 = 'ANY'), function(e1,e2) {
 
 
 #doesn't create another SPLR...
-.addSplr <- function(e1,e2) {
-  e1@x + e2@x + (e1@a %*% t(e1@b)) + e2@a %*% t(e2@b)
+.addSplr <- function(e1, e2) {
+  new("splrMatrix", x = as(e1@x + e2@x,"sparseMatrix"), a = cbind(e1@a, e2@a), b = cbind(e1@b, e2@b), Dim = dim(e1))
 }
 
 setMethod('+',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),.addSplr)
@@ -289,42 +288,35 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
 
 
 
-.leftadd=function(e1,e2) {
+.leftadd <- function(e1, e2) {
   #e1 is splr
-  
-  
   if (is(e2,"sparseMatrix")) {
-    new("splrMatrix",x = as(e1@x + e2,"sparseMatrix"),a=e1@a,b=e1@b,Dim = dim(e2))
-  } else {
+    new("splrMatrix", x = as(e1@x + e2,"sparseMatrix"), a = e1@a, b = e1@b, Dim = dim(e2))
+  }else {
     e1@x + e1@a %*% t(e1@b) + e2
   }
-    
-  
 }
+
 setMethod("+", signature(e1="splrMatrix",e2="Matrix"), function(e1,e2) {
-  .leftadd(e1 = e1,e2=e2)
+  .leftadd(e1 = e1, e2 = e2)
 })
 setMethod("+", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
-  .leftadd(e1 = e1,e2=e2)
+  .leftadd(e1 = e1, e2 = e2)
 })
 setMethod("-", signature(e1="splrMatrix",e2="Matrix"), function(e1,e2) {
-  .leftadd(e1 = e1,e2=-e2)
+  .leftadd(e1 = e1, e2 = -e2)
 })
 setMethod("-", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
-  .leftadd(e1 = e1,e2=-e2)
+  .leftadd(e1 = e1, e2 = -e2)
 })
 
 .rightadd=function(e1,e2) {
-  
 
-    if (is(e1,"sparseMatrix")) {
-      splr(as(e2@x + e1,"sparseMatrix"),a=e2@a,b=e2@b)
-    } else { #e1 is not sparse
-      e2@x + e2@a%*%t(e2@b) + e1
+    if (is(e1, "sparseMatrix")) {
+      splr(as(e2@x + e1,"sparseMatrix"), a = e2@a, b = e2@b)
+    } else{ #e1 is not sparse
+      e2@x + e2@a %*% t(e2@b) + e1
     }
-  
-  
-  
 }
 
 setMethod("+", signature("Matrix","splrMatrix"), function(e1,e2) {
