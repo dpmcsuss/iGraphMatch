@@ -23,9 +23,9 @@ setClass("splrMatrix",
 
 setGeneric(
   name = "splr",
-  def = function(x,a=NULL,b=NULL, ...){
+  def = function(x,a=NULL,b=NULL, rank = NULL,factorize = FALSE,tol = .00001,dimnames = list(NULL,NULL), ...){
   
-  # rank = NULL,factorize = FALSE,tol = .00001,dimnames = list(NULL,NULL)
+  # 
 
   # x+ab' 
   # x is mxn
@@ -165,8 +165,8 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'missing'),function(e
 setMethod("%*%", signature(x = "splrMatrix", y = "splrMatrix"), function(x, y) {
   new("splrMatrix",
     x = x@x %*% y@x,
-    a = cbind(x@a %*% t(x@b) %*% y@a, x@a         , x@x %*% y@a) ,
-    b = cbind(y@b                    , x@b %*% y@x , y@b),
+    a = cbind2(x@a %*% (t(x@b) %*% y@a) + x@x %*% y@a, x@a) ,
+    b = cbind2(y@b, t(y@x) %*% x@b),
     Dim = dim(x))
 })
 
@@ -278,7 +278,7 @@ setMethod("/",signature (e1 = 'splrMatrix',e2 = 'ANY'), function(e1,e2) {
 
 #doesn't create another SPLR...
 .addSplr <- function(e1, e2) {
-  new("splrMatrix", x = as(e1@x + e2@x,"sparseMatrix"), a = cbind(e1@a, e2@a), b = cbind(e1@b, e2@b), Dim = dim(e1))
+  new("splrMatrix", x = as(e1@x + e2@x,"sparseMatrix"), a = cbind2(e1@a, e2@a), b = cbind2(e1@b, e2@b), Dim = dim(e1))
 }
 
 setMethod('+',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),.addSplr)
@@ -292,7 +292,11 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
   #e1 is splr
   if (is(e2,"sparseMatrix")) {
     new("splrMatrix", x = as(e1@x + e2,"sparseMatrix"), a = e1@a, b = e1@b, Dim = dim(e2))
-  }else {
+  } else if( is.numeric(e2) && is.atomic(e2) ){
+    new("splrMatrix", x = as(e1@x,"sparseMatrix"),
+      a = cbind2(e1@a, rep(e2, nrow(e1@a))),
+      b = cbind2(e1@b, rep(1, nrow(e1@b))), Dim = dim(e2))
+  } else {
     e1@x + e1@a %*% t(e1@b) + e2
   }
 }
@@ -300,10 +304,23 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
 setMethod("+", signature(e1="splrMatrix",e2="Matrix"), function(e1,e2) {
   .leftadd(e1 = e1, e2 = e2)
 })
+setMethod("+", signature(e1="splrMatrix",e2="numeric"), function(e1,e2) {
+  if(!is.atomic(e2)){
+    stop("Can only add atomic numerics to splrmatrix")
+  }
+  .leftadd(e1 = e1, e2 = e2)
+})
 setMethod("+", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
   .leftadd(e1 = e1, e2 = e2)
 })
 setMethod("-", signature(e1="splrMatrix",e2="Matrix"), function(e1,e2) {
+  .leftadd(e1 = e1, e2 = -e2)
+})
+
+setMethod("-", signature(e1="splrMatrix",e2="numeric"), function(e1,e2) {
+  if(!is.atomic(e2)){
+    stop("Can only add atomic numerics to splrmatrix")
+  }
   .leftadd(e1 = e1, e2 = -e2)
 })
 setMethod("-", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
@@ -314,7 +331,12 @@ setMethod("-", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
 
     if (is(e1, "sparseMatrix")) {
       splr(as(e2@x + e1,"sparseMatrix"), a = e2@a, b = e2@b)
-    } else{ #e1 is not sparse
+    } else if( is.numeric(e1) ){
+      new("splrMatrix", x = as(e1@x,"sparseMatrix"),
+        a = cbind2(e1@a, rep(1, nrow(e1@a))),
+        b = cbind2(e1@b, rep(e2, nrow(e1@b))),
+        Dim = dim(e2))
+    }  else{ #e1 is not sparse
       e2@x + e2@a %*% t(e2@b) + e1
     }
 }
@@ -322,10 +344,22 @@ setMethod("-", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
 setMethod("+", signature("Matrix","splrMatrix"), function(e1,e2) {
   .rightadd(e1,e2)
 })
+setMethod("+", signature("numeric","splrMatrix"), function(e1,e2) {
+  if(!is.atomic(e1)){
+    stop("Can only add atomic numerics to splrmatrix")
+  }
+  .rightadd(e1,e2)
+})
 setMethod("+", signature("ANY","splrMatrix"), function(e1,e2) {
   .rightadd(e1,e2)
 })
 setMethod("-", signature("Matrix","splrMatrix"), function(e1,e2) {
+  .rightadd(e1,-e2)
+})
+setMethod("-", signature("numeric","splrMatrix"), function(e1,e2) {
+  if(!is.atomic(e1)){
+    stop("Can only add atomic numerics to splrmatrix")
+  }
   .rightadd(e1,-e2)
 })
 setMethod("-", signature("ANY","splrMatrix"), function(e1,e2) {
@@ -365,6 +399,17 @@ setMethod("norm",signature(x="splrMatrix",type="character"),
           },valueClass="numeric")
 
 
+setGeneric("innerproduct", function(x,y){
+  sum(x * y)
+})
+
+setMethod("innerproduct", signature(x = "splrMatrix", y = "splrMatrix"),
+  function(x, y){
+    sum(diag(t(y@a) %*% x@x %*% y@b)) + 
+      sum(diag(t(x@b) %*% t(y@x) %*% x@a)) +
+      sum(diag( (t(x@b) %*% y@b) %*% (t(y@a) %*% x@a) )) +
+      sum(x@x * y@x)
+  })
 
 
 #complete
@@ -403,7 +448,6 @@ setMethod("colSums","splrMatrix",.csum)
   
 }
 
-
 setMethod("rowMeans","splrMatrix",.rmean)
 
 
@@ -418,6 +462,17 @@ setMethod("rowMeans","splrMatrix",.rmean)
 }
 
 setMethod("colMeans","splrMatrix",.cmean)
+
+
+.sum <- function(x, ...){
+  sum(.csum(x)) 
+}
+
+setMethod("sum", "splrMatrix", .sum)
+
+setMethod("mean", "splrMatrix", function(x){
+  sum(x@x)/ x@Dim[1] / x@Dim[2]
+})
 
 setMethod("[",signature(x="splrMatrix",i = 'missing',j = 'missing',drop = 'missing') ,function(x) {
           x
@@ -439,7 +494,10 @@ setMethod("[",signature(x="splrMatrix",i = 'missing',j = 'numeric',drop = 'logic
             if (drop) {
               return(x@x[i,j,...] + (x@a[i,,drop =FALSE]%*%t(x@b)[,j,drop =FALSE]) )
             } else {
-              return(new("splrMatrix",x@x[i,j,...,drop = FALSE],x@a[i,,drop =FALSE],x@b[j,,drop =FALSE]
+              return(new("splrMatrix",
+                x = x@x[i,j,...,drop = FALSE],
+                a = x@a[i,,drop =FALSE],
+                b = x@b[j,,drop =FALSE]
                          , Dim = dim(x@x[i,j,...,drop = FALSE])) )
             }
             
