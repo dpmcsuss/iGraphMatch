@@ -14,7 +14,10 @@
 #' character value like "bari" or "convex" to initialize the starting matrix.
 #' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
-#' @param r A number. Threshold of neighboring pair scores.
+#' @param similarity A matrix which is added to the gradient at each step which indicates similarity scores 
+#' between each pair of nodes across graphs. If NULL, nothing is added to the graph. If the similarity score 
+#' does not match the size of the larger network then it is padded with zeros.
+#' 
 #'
 #' @rdname graph_match_methods
 #'
@@ -25,7 +28,7 @@
 #' the algorithm named \code{iter}.
 #'
 #' @examples
-#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 with no seeds
@@ -42,26 +45,42 @@
 #'
 #' @export
 #'
-graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
+graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, similarity = NULL){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
 
+
+
   # Add support for graphs with different orders
-  totv1<-ncol(A)
-  totv2<-ncol(B)
+  totv1 <- ncol(A)
+  totv2 <- ncol(B)
   if(totv1>totv2){
-    diff<-totv1-totv2
+    diff <- totv1 - totv2
     B <- Matrix::bdiag(B[], Matrix(0,diff,diff))
   }else if(totv1<totv2){
-    diff<-totv2-totv1
+    diff <- totv2 - totv1
     A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
   }
   nv <- nrow(A)
 
+
+  if( is.null(similarity) ){
+    similarity <- Matrix::Matrix(0, nrow = nv, ncol = nv)
+  }
+  if( nrow(similarity) != nv ){
+    similarity <- rbind2(similarity,
+      Matrix(0, nv - nrow(similarity), ncol(similarity)))
+  }
+  if( ncol(similarity) != nv ){
+    similarity <- cbind2(similarity,
+      Matrix(0, nv, nv - ncol(similarity)))
+  }
+
+
   if(is.null(seeds)){
-    seeds <- rep(FALSE,nv)
+    seeds <- rep(FALSE, nv)
     aseeds_err <- FALSE
     ns <- sum(seeds)
   } else{
@@ -79,11 +98,14 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
     seed_B_err <- seed_B[aseeds_err]
 
     if(sum(aseeds_err)!=0){
+      
       B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
+      similarity <- sim_hard_seeding(
+        seed_A_err, seed_B_err, similarity)
     }
   }
 
-  nn <- nv-ns
+  nn <- nv - ns
   nonseeds <- !seeds
 
   Asn <- A[seeds,nonseeds]
@@ -94,42 +116,55 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   Bnn <- B[nonseeds,nonseeds]
   Bns <- B[nonseeds,seeds]
 
+  similarity <- similarity[nonseeds, nonseeds]
+
   P <- init_start(start = start, nns = nn,
     A = A, B = B, seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
 
+
   # seed to non-seed info
-  s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
+  if(ns > 1){
+    s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
+  } else if( ns == 1){
+    s_to_ns <- outer(Ans,Bns) + outer(Asn, Bsn)
+  } else {
+    s_to_ns <- Matrix(0, nv, nv)
+  }
+
+
 
   while(toggle && iter < max_iter){
     iter <- iter + 1
-
     # non-seed to non-seed info
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
-    Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn
-    Grad <- Grad-min(Grad)
+    Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
+    Grad <- (Grad - min(Grad))
+    
 
-    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), 
+      maximum = TRUE))
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
     ns_Pdir_ns <- Matrix::t(Ann)[, order(ind)] %*% Bnn
-    c <- sum(tAnn_P_Bnn * P)
+    
+    cc <- sum(tAnn_P_Bnn * P)
     d <- sum(ns_Pdir_ns * P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
-    u <- sum(P * (s_to_ns))
-    v <- sum((s_to_ns)[ind2])
-    if (c - d + e == 0 && d - 2 * e + u - v == 0) {
+    u <- sum(P * (s_to_ns + similarity))
+    v <- sum((s_to_ns + similarity)[ind2])
+    if (cc - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
-      alpha <- -(d - 2 * e + u - v)/(2 * (c - d + e))
+      alpha <- -(d - 2 * e + u - v)/(2 * (cc - d + e))
     }
     f0 <- 0
-    f1 <- c - e + u - v
-    falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
+    f1 <- cc - e + u - v
+    falpha <- (cc - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
 
     if (alpha < 1 && alpha > 0 &&
@@ -141,6 +176,8 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
       toggle <- F
     }
   }
+
+
   
   D_ns <- P
   corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
@@ -159,6 +196,8 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
 
   list(corr = corr, P = P, D = D, iter = iter)
 }
+
+
 # correct the order of swapping graph2 according to new seeds
 swap_order <- function(aseeds_matrix){
   #aseeds_matrix: first row:added seeds index in g1, second row added seeds match
@@ -412,6 +451,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
 
   list(corr = corr, P = P, D = D)
 }
+
 #'
 #' @return \code{graph_match_convex_directed} returns graph matching results based
 #' on convex relaxation method for directed graphs.
@@ -529,6 +569,9 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 }
 #'
 #' @rdname graph_match_methods
+#' 
+#' @param r A number. Threshold of neighboring pair scores.
+#' 
 #' @return \code{graph_match_percolation} returns matching correspondence of matched pairs with
 #' index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
 #' \code{corr_B}.

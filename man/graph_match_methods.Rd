@@ -7,7 +7,8 @@
 \alias{graph_match_ExpandWhenStuck}
 \title{Graph Match Methods}
 \usage{
-graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 100)
+graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
+  similarity = NULL)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
   tol = 1e-05)
@@ -31,6 +32,10 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{An integer. Maximum iteration time.}
 
+\item{similarity}{A matrix which is added to the gradient at each step which indicates similarity scores 
+between each pair of nodes across graphs. If NULL, nothing is added to the graph. If the similarity score 
+does not match the size of the larger network then it is padded with zeros.}
+
 \item{tol}{A number. Tolerance of edge disagreements.}
 
 \item{r}{A number. Threshold of neighboring pair scores.}
@@ -38,14 +43,14 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
 including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D} and permutation
-matrix named \code{P} based on Frank-Wolfe methodology.
+named \code{corr}, doubly stochastic matrix named \code{D}, permutation
+matrix named \code{P} based on Frank-Wolfe methodology and iteration time of
+the algorithm named \code{iter}.
 
 \code{graph_match_convex} returns a list of graph matching results,
 including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D}, permutation
-matrix named \code{P} based on convex relaxation method for undirected graphs and 
-iteration time of the algorithm named \code{iter}.
+named \code{corr}, doubly stochastic matrix named \code{D} and permutation
+matrix named \code{P} based on convex relaxation method for undirected graphs.
 
 \code{graph_match_percolation} returns matching correspondence of matched pairs with
 index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
@@ -61,7 +66,7 @@ including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
 doubly stochastic matrix and permutation matrix.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds

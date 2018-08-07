@@ -15,13 +15,14 @@ sample_correlated_sbm_pair_w_junk(n, pref.matrix, block.sizes, rho,
 
 \item{pref.matrix}{The matrix giving the Bernoulli rates. This is a \code{K-by-K} matrix, where
 \code{k} is the number of groups. The probability of creating an edge between vertices from groups
-\code{i} abd \code{j} is given by element \code{i,j}. For undirected graphs, this matrix must be
+\code{i} and \code{j} is given by element \code{i,j}. For undirected graphs, this matrix must be
 symmetric.}
 
 \item{block.sizes}{A numeric vector. Give the number of vertices in each group. The sum of the
 vector must match the number of vertices.}
 
-\item{rho}{A number. Must be in the open \code{(0,1)} interval. Correlation between two graphs.}
+\item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated 
+graphs. It must be in open (0,1) interval.}
 
 \item{check.corr}{A logical.}
 
