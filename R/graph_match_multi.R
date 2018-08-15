@@ -98,12 +98,15 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds])
   nc <- length(A)
 
+  zero_mat <- Matrix(0,
+    nrow = nrow(A[[1]]), ncol = ncol(A[[1]]))
+
   while(toggle && iter < max_iter){
 
     iter <- iter + 1
     # non-seed to non-seed info
-    tAnn_P_Bnn <- Matrix::t(A[[1]]) %*% P %*% B[[1]]
-    for (ch in 2:nc){
+    tAnn_P_Bnn <- zero_mat
+    for( ch in 1:nc ){
       tAnn_P_Bnn <- tAnn_P_Bnn + Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
       gc()
     }
@@ -119,8 +122,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    ns_Pdir_ns <- Matrix::t(A[[1]])[, order(ind)] %*% B[[1]]
-    for(ch in 2:nc){
+    ns_Pdir_ns <- zero_mat
+    for(ch in 1:nc){
       ns_Pdir_ns <- ns_Pdir_ns + Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
       gc()
     }
@@ -182,8 +185,9 @@ get_s_to_ns <- function(Alist, Blist, seeds){
     (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
   }
   nc <- length(Alist)
-  s2ns <- s_to_ns(Alist[[1]], Blist[[1]])
-  for(ch in 2:nc){
+  s2ns <- Matrix(0,
+      nrow = nrow(Alist[[1]]), ncol = ncol(Alist[[1]]))
+  for(ch in 1:nc){
     s2ns <- s2ns + s_to_ns(Alist[[ch]], Blist[[ch]])
     gc()
   }
