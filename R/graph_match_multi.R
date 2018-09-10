@@ -34,9 +34,9 @@
 #'
 graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 20){
 
-  if(start == "convex"){
-    stop("Convex start is not yet implemented for multiplex matching")
-  }
+  # if(start == "convex"){
+  #   stop("Convex start is not yet implemented for multiplex matching")
+  # }
 
   # this will make the graphs be matrices if they are igraph objects
   A <- lapply(A, function(Al) Al[])
@@ -83,8 +83,9 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   nonseeds <- !seeds
 
 
-  P <- init_start(start = start, nns = nn,
-    A = A, B = B, seeds = seeds)
+  # P <- init_start(start = start, nns = nn,
+  #   A = A, B = B, seeds = seeds)
+  P <- start
 
   iter <- 0
   toggle <- TRUE
@@ -95,31 +96,42 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
   B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds])
+  nc <- length(A)
+
+  zero_mat <- Matrix(0,
+    nrow = nrow(A[[1]]), ncol = ncol(A[[1]]))
 
   while(toggle && iter < max_iter){
+
     iter <- iter + 1
-
     # non-seed to non-seed info
-    tAnn_P_Bnn <- Reduce("+", mapply(
-      function(Ann, Bnn){ Matrix::t(Ann) %*% P %*% Bnn},
-      A, B))
+    tAnn_P_Bnn <- zero_mat
+    for( ch in 1:nc ){
+      tAnn_P_Bnn <- tAnn_P_Bnn + Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
+      gc()
+    }
 
-    Grad <- s_to_ns + tAnn_P_Bnn + Reduce("+", mapply(
-        function(Ann, Bnn){ Ann %*% P %*% Matrix::t(Bnn)},
-      A, B))
-    Grad <- Grad-min(Grad)
+    Grad <- s_to_ns + tAnn_P_Bnn
+    for(ch in 1:nc){
+      Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
+      gc()
+    }
+    Grad <- as.matrix(Grad)
 
-    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+    ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), maximum = TRUE))
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    ns_Pdir_ns <- Reduce("+", mapply(
-        function(Ann, Bnn) Matrix::t(Ann)[, order(ind)] %*% Bnn,
-        A, B))
-    c <- sum(tAnn_P_Bnn * P)
-    d <- sum(ns_Pdir_ns * P) + sum(tAnn_P_Bnn[ind2])
+    ns_Pdir_ns <- zero_mat
+    for(ch in 1:nc){
+      ns_Pdir_ns <- ns_Pdir_ns + Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+      gc()
+    }
+
+    c <- innerproduct(tAnn_P_Bnn, P)
+    d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
-    u <- sum(P * (s_to_ns))
+    u <- innerproduct(P, s_to_ns)
     v <- sum((s_to_ns)[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
@@ -161,6 +173,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
 
 get_s_to_ns <- function(Alist, Blist, seeds){
   nonseeds <- !seeds
+  nns <- sum(nonseeds)
+  ns <- sum(seeds)
   s_to_ns <- function(A,B){
     Asn <- A[seeds,nonseeds]
     Ann <- A[nonseeds,nonseeds]
@@ -169,7 +183,19 @@ get_s_to_ns <- function(Alist, Blist, seeds){
     Bsn <- B[seeds,nonseeds]
     Bnn <- B[nonseeds,nonseeds]
     Bns <- B[nonseeds,seeds]
-    Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
+
+    if( ns == 1){
+      outer(Ans, Bns) + outer(Asn, Bsn)
+    } else {
+      (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
+    }
   }
-  Reduce("+", mapply(s_to_ns, Alist, Blist, SIMPLIFY = FALSE))
+  nc <- length(Alist)
+  s2ns <- Matrix(0, nrow = nns, ncol = nns)
+  for(ch in 1:nc){
+
+    s2ns <- s2ns + s_to_ns(Alist[[ch]], Blist[[ch]])
+    gc()
+  }
+  s2ns
 }

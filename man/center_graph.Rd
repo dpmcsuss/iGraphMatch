@@ -4,7 +4,7 @@
 \alias{center_graph}
 \title{Center adjacency matrix}
 \usage{
-center_graph(A, scheme)
+center_graph(A, scheme, use_splr = TRUE)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix.}
@@ -14,6 +14,9 @@ the adjacency matrix using Universal Singular Value Thresholding, specify \code{
 the number of singular values used to estimate the expectation of adjacency matrix. Suitable
 choice of scheme can be obtained with rank of order logn, where n is the dimension of A, expecially
 in the setting of latent space graph models.}
+
+\item{use_splr}{A boolean indicating whether to use the splrMatrix object when storing the 
+centered graph.  Defaults to TRUE.}
 }
 \value{
 \code{center_graph} returns a centered adjacency matrix. 'Naive' scheme returns the
@@ -31,5 +34,6 @@ A <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)$graph1
 center_graph(A, scheme = "naive")
 center_graph(A, scheme = "center")
 center_graph(A, scheme = 2)
+center_graph(A, scheme = 1)
 
 }
