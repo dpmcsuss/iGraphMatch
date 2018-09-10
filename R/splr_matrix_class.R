@@ -549,12 +549,12 @@ setMethod("[",signature(x="splrMatrix",i = 'logical',j = 'logical',drop = 'ANY')
  })
 
 
-setMethod("[",signature(x="splrMatrix",i = 'logical',j = 'logical',drop = 'missing') 
+setMethod("[",signature(x="splrMatrix", i = 'logical', j = 'logical',drop = 'missing') 
           ,function(x,i,j, ...) {
             
             
-            new('splrMatrix',x= x@x[i,j], a= x@a[i,,drop = FALSE],b= x@b[j,,drop = FALSE]
-                ,Dim = dim(x@x[i,j]))
+            new('splrMatrix',x= as(x@x[i,j], "Matrix"), a = x@a[i,,drop = FALSE],b= x@b[j,,drop = FALSE]
+                ,Dim = dim(as(x@x[i,j], "Matrix")))
     })
 
 

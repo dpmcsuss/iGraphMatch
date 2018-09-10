@@ -174,6 +174,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
 get_s_to_ns <- function(Alist, Blist, seeds){
   nonseeds <- !seeds
   nns <- sum(nonseeds)
+  ns <- sum(seeds)
   s_to_ns <- function(A,B){
     Asn <- A[seeds,nonseeds]
     Ann <- A[nonseeds,nonseeds]
@@ -183,11 +184,16 @@ get_s_to_ns <- function(Alist, Blist, seeds){
     Bnn <- B[nonseeds,nonseeds]
     Bns <- B[nonseeds,seeds]
 
-    (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
+    if( ns == 1){
+      outer(Ans, Bns) + outer(Asn, Bsn)
+    } else {
+      (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
+    }
   }
   nc <- length(Alist)
   s2ns <- Matrix(0, nrow = nns, ncol = nns)
   for(ch in 1:nc){
+
     s2ns <- s2ns + s_to_ns(Alist[[ch]], Blist[[ch]])
     gc()
   }
