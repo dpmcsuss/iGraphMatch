@@ -7,7 +7,8 @@
 \alias{graph_match_ExpandWhenStuck}
 \title{Graph Match Methods}
 \usage{
-graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20)
+graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
+  similarity = NULL)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
   tol = 1e-05)
@@ -30,6 +31,10 @@ column being the corresponding indices of \eqn{G_2}.}
 character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{An integer. Maximum iteration time.}
+
+\item{similarity}{A matrix which is added to the gradient at each step which indicates similarity scores 
+between each pair of nodes across graphs. If NULL, nothing is added to the graph. If the similarity score 
+does not match the size of the larger network then it is padded with zeros.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 
@@ -61,7 +66,7 @@ including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
 doubly stochastic matrix and permutation matrix.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
