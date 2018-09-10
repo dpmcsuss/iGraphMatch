@@ -121,6 +121,18 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
   P <- init_start(start = start, nns = nn,
     A = A, B = B, seeds = seeds)
 
+  # permute B matrices by a random perm to avoid bias
+  # call the below Q
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
+  # B <- QBQ^T
+  Bnn <- rpmat %*% Bnn %*% Matrix::t(rpmat)
+  Bns <- rpmat %*% Bns
+  Bsn <- Bsn %*% Matrix::t(rpmat)
+  # change P <- PQ^T
+  P <- P %*% Matrix::t(rpmat)
+  similarity <- similarity %*% Matrix::t(rpmat)
+
   iter <- 0
   toggle <- TRUE
 
@@ -151,7 +163,7 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
     ns_Pdir_ns <- Matrix::t(Ann)[, order(ind)] %*% Bnn
-    
+
     cc <- sum(tAnn_P_Bnn * P)
     d <- sum(ns_Pdir_ns * P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
@@ -178,14 +190,19 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
   }
 
 
-  
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
+  corr_ns <- as.vector(clue::solve_LSAP(
+    as.matrix(round(P * nn ^ 2)), maximum = TRUE))
+  # undo rand perm here
+  corr_ns <- rp[corr_ns]
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
-  D[nonseeds,nonseeds] <- D_ns
+  # and undo it right quick here too
+  D[nonseeds, nonseeds] <- D_ns %*% rpmat
+  # and we should be home clear
+
 
   # fix match results if there are incorrect seeds
   if(sum(aseeds_err)!=0){
