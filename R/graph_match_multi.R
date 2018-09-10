@@ -90,12 +90,16 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   iter <- 0
   toggle <- TRUE
 
+  # make a random permutation
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
+
   # seed to non-seed info
   s_to_ns <- get_s_to_ns(A,B, seeds)
 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
-  B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds])
+  B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds][rp,rp])
   nc <- length(A)
 
   zero_mat <- Matrix(0,
@@ -152,14 +156,20 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
       toggle <- F
     }
   }
-  
+
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
+  corr_ns <- as.vector(clue::solve_LSAP(
+    as.matrix(round(P * nn ^ 2)), maximum = TRUE))
+  # undo rand perm here
+  corr_ns <- rp[corr_ns]
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
-  D[nonseeds,nonseeds] <- D_ns
+  # and undo it right quick here too
+  D[nonseeds, nonseeds] <- D_ns %*% rpmat
+  # and we should be home clear
+
 
   # fix match results if there are incorrect seeds
   if(sum(aseeds_err)!=0){
@@ -171,18 +181,20 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   list(corr = corr, P = P, D = D, iter = iter)
 }
 
-get_s_to_ns <- function(Alist, Blist, seeds){
+get_s_to_ns <- function(Alist, Blist, seeds,
+    perm = seq(length(seeds))){
+
   nonseeds <- !seeds
   nns <- sum(nonseeds)
   ns <- sum(seeds)
+  # permute if needed
+  pmat <- Matrix::Diagonal(nns, )[perm, ]
   s_to_ns <- function(A,B){
     Asn <- A[seeds,nonseeds]
-    Ann <- A[nonseeds,nonseeds]
     Ans <- A[nonseeds,seeds]
 
-    Bsn <- B[seeds,nonseeds]
-    Bnn <- B[nonseeds,nonseeds]
-    Bns <- B[nonseeds,seeds]
+    Bsn <- B[seeds,nonseeds] %*% t(pmat)
+    Bns <- pmat %*% B[nonseeds,seeds]
 
     if( ns == 1){
       outer(Ans, Bns) + outer(Asn, Bsn)
