@@ -154,10 +154,11 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
+    Grad <- as.matrix(Grad)
     Grad <- (Grad - min(Grad))
     
 
-    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), 
+    ind <- as.vector(clue::solve_LSAP(Grad, 
       maximum = TRUE))
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
