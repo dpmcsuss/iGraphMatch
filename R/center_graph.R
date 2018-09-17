@@ -35,7 +35,7 @@ center_graph <- function(A, scheme, use_splr = TRUE){
   } else if ( scheme == "center" ){
     if (use_splr) {
       x <- 2*A[]
-      g <- splr(x = x, a = rep(-1,dim(A[])[1]),b = rep(1,dim(A[])[1]))
+      g <- splr(x = x, a = rep(-1,dim(A[])[1]),b = rep(1,dim(A[])[2]))
     } else {
       g <- 2*A[] - 1
     }
