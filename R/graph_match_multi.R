@@ -1,4 +1,3 @@
-
 #' @title Multiple Graph Match Methods
 #'
 #' @description Match two lists of graphs, returns a list of graph matching results,
@@ -83,9 +82,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   nonseeds <- !seeds
 
 
-  # P <- init_start(start = start, nns = nn,
-  #   A = A, B = B, seeds = seeds)
-  P <- start
+  P <- init_start(start = start, nns = nn,
+    A = A[[1]], B = B[[1]], seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
@@ -95,7 +93,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A,B, seeds)
+  s_to_ns <- get_s_to_ns(A,B, seeds, rp)
 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
@@ -182,7 +180,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
 }
 
 get_s_to_ns <- function(Alist, Blist, seeds,
-    perm = seq(length(seeds))){
+    perm = seq(sum(seeds))){
 
   nonseeds <- !seeds
   nns <- sum(nonseeds)
