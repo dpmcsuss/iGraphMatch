@@ -20,24 +20,20 @@ setClass("splrMatrix",
   slots = c(x="sparseMatrix",a="Matrix",b="Matrix"),
   contains = 'sparseMatrix')
 
-
+#' @export
 setGeneric(
   name = "splr",
   def = function(x,a=NULL,b=NULL, rank = NULL,factorize = FALSE,tol = .00001,dimnames = list(NULL,NULL), ...){
-  
   # 
-
   # x+ab' 
   # x is mxn
-  # and is an mxr and b is a rxm matrix
-
-  
+  # and is an mxr and b is a rxm matrix  
   dx=dim(x)
   
   #neither a nor b should be null
   if(is.null(a) & is.null(b)) {
     stop("\nEither specify \n1.) a \n or \n2.) a and b \n otherwise you can just save x as a sparse Matrix object")
-  }
+  }  
   
   if(is.null(b)) {
     da = dim(a)
@@ -47,12 +43,9 @@ setGeneric(
     #dimensions of a can't be bigger than dimensions of x
     if (da[1] > dx[1] | da[2] > dx[2]) {
         stop("please provide a such that dim(a) <= dim(x)")
-    }
-    
+    }    
     
     if (da[1] == dx[1] & da[2] == dx[2]) { #then we factorize (maybe)
-     
-      
       #if we know rank, we factorize on that
       if (!is.null(rank) ) {
         
@@ -90,15 +83,12 @@ setGeneric(
     if(da[2]!=db[2]) {
       stop("number of columns of a not equal to number of columns of n")
     }
-    
+
     new("splrMatrix",x=x,a=a,b=b,Dim = dim(x),Dimnames = dimnames)
   }
-  
- 
-  
 })
 
-
+#' @export
 setMethod(
   f = "splr",
   signature = signature(x = "Matrix", a = "Matrix", b = "Matrix"),

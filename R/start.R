@@ -114,32 +114,56 @@ rds_sinkhorn <- function(n,distribution="runif"){
 #' 
 #' @export
 #' 
-rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1){
+rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
+  
   if(is.null(soft_seeds)){
-    start <- rds_perm_bari(nns, g = g)
+    start <- rds_perm_bari(nns, g, is_splr)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
     seed_g1 <- soft_seeds$seed_A
     seed_g2 <- soft_seeds$seed_B
     nseeds <- length(seed_g1)
-    
-    start <- matrix(5,nrow = nns,ncol = nns)
+
+    not_seed_g1 <- not_seed_g2 <- rep(TRUE, nns)
+    not_seed_g1[seed_g1 - ns] <- FALSE
+    not_seed_g2[seed_g2 - ns] <- FALSE
+
+    rds <- rds_perm_bari(nns - nseeds, g, is_splr)
+
+    start <- Matrix(0,nrow = nns,ncol = nns)
     for (i in 1:nseeds) {
-      start[seed_g1[i]-ns,] <- 0
-      start[,seed_g2[i]-ns] <- 0
-      start[seed_g1[i]-ns,seed_g2[i]-ns] <- 1
+      start[seed_g1[i] - ns, seed_g2[i] - ns] <- 1
     }
 
-    rds <- rds_perm_bari(nns-nseeds, g = g)
-    start[start==5] <- rds
-  }
 
+    if( is_splr ){
+      a <- b <- Matrix(0, nns)
+      a[not_seed_g1] <- rds@a
+      b[not_seed_g2] <- rds@b
+      start[not_seed_g1, not_seed_g2] <- rds@x
+      start <- new("splrMatrix",
+        x = start, a = a, b =b,
+        Dim = c(as.integer(nns), as.integer(nns)),
+        Dimnames = list(NULL, NULL))
+    } else {
+      start[not_seed_g1, not_seed_g2] <- rds
+    }
+
+
+  }
   start
 }
 
 
-rds_perm_bari <- function(nns, g){
-    alpha <- runif(1, 0, g)
+rds_perm_bari <- function(nns, g, is_splr = TRUE){
+  alpha <- runif(1, 0, g)
+  if(is_splr){
+    new("splrMatrix",
+        x = alpha * rperm(nns), a = Matrix(1 - alpha, nns), b = Matrix(1 / nns, nns),
+        Dim = c(as.integer(nns), as.integer(nns)),
+        Dimnames = list(NULL, NULL))
+  } else {
     (1 - alpha) * bari_start(nns) +
         alpha * rperm(nns)
+  }
 }

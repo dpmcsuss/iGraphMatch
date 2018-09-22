@@ -58,10 +58,10 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
   totv2 <- ncol(B)
   if(totv1>totv2){
     diff <- totv1 - totv2
-    B <- Matrix::bdiag(B[], Matrix(0,diff,diff))
+    B <- pad(B[], diff)
   }else if(totv1<totv2){
     diff <- totv2 - totv1
-    A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
+    A <- pad(A[], diff)
   }
   nv <- nrow(A)
 
@@ -732,3 +732,5 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   names(corr) <- c("corr_A","corr_B")
   corr
 }
+
+

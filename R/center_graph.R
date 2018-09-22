@@ -63,3 +63,19 @@ low_rank_approx <- function(A,ndim){
 }
 
 
+
+
+#' @export
+pad <- function(m, nr, nc = nr){
+  if(is(m, "splrMatrix")){
+    dx <- as.integer(dim(m) + c(nr, nc))
+    da <- dim(m@a)[2]
+    splr(
+      x = bdiag(m@x, Matrix(0, nr, nc)),
+      a = rbind2(m@a, Matrix(0, nr, da)),
+      b = rbind2(m@b, Matrix(0, nc, da)))
+  }
+  else{
+    Matrix::bdiag(m, Matrix(0, nr, nc))
+  }
+}
