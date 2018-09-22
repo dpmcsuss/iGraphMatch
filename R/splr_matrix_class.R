@@ -120,6 +120,20 @@ setAs("splrMatrix","character",function(from) {
   as(as.matrix(from),'character')
 })
 
+setMethod("show", signature("splrMatrix"),
+  function(object){
+    show(object@x)
+    show(object@a)
+    show(object@b)
+})
+
+setMethod("print", signature("splrMatrix"),
+  function(x){
+    print(x@x)
+    print(x@a)
+    print(x@b)
+})
+# 
 
 
 
@@ -283,7 +297,7 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
   if (is(e2,"sparseMatrix")) {
     new("splrMatrix", x = as(e1@x + e2,"sparseMatrix"), a = e1@a, b = e1@b, Dim = dim(e2))
   } else if( is.numeric(e2) && is.atomic(e2) ){
-    new("splrMatrix", x = as(e1@x,"sparseMatrix"),
+    new("splrMatrix", x = as(e1@x, "sparseMatrix"),
       a = cbind2(e1@a, rep(e2, nrow(e1@a))),
       b = cbind2(e1@b, rep(1, nrow(e1@b))), Dim = dim(e2))
   } else {

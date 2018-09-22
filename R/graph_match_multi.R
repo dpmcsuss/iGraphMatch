@@ -47,11 +47,11 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   if(totv1>totv2){
     diff<-totv1-totv2
     B <- lapply(B, function(Bl)
-      pad(Bl[], diff)
+      pad(Bl[], diff))
   }else if(totv1<totv2){
     diff<-totv2-totv1
     A <- lapply(A, function(Al)
-      pad(Al[], diff)
+      pad(Al[], diff))
   }
   nv <- nrow(A[[1]])
 
