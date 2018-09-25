@@ -25,8 +25,7 @@
 row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
+
   require(tidyverse)
   1:nrow(g1) %>% map_dbl(~suppressWarnings(1-cor(g1[.x,],g2[.x,])))
 }
@@ -56,8 +55,6 @@ row_diff <- function(g1,g2){
 row_perm_stat <- function(g1,g2,exact=TRUE,...){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   if(exact){
     m <- mean_row_diff(g1,g2)
@@ -72,14 +69,13 @@ row_perm_stat <- function(g1,g2,exact=TRUE,...){
 
   (d-m)/sqrt(v)
 }
+
 row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   n <- nrow(g2)
-  A <- matrix(0,n,nmc)
+  A <- Matrix(0,n,nmc)
 
   for(mc in 1:nmc){
     p <- sample(n)
@@ -94,11 +90,9 @@ row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
   }
   list(mean=m,var=v)
 }
-mean_row_diff <- function(g1,g2,sym=FALSE){
+mean_row_diff <- function(g1, g2, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   dg1 <- rowSums(g1)
   dg2 <- rowSums(g2)
@@ -106,18 +100,16 @@ mean_row_diff <- function(g1,g2,sym=FALSE){
   n <- nrow(g1)
 
   r1 <- mdg2
-  r2 <- dg1*(1-2*mdg2/(n-1))
-  ED <- r1+r2
-  if(sym){
-    ED <- (ED+mean_row_diff(g2,g1))/2
+  r2 <- dg1 * (1 - 2 * mdg2 / (n - 1))
+  ED <- r1 + r2
+  if (sym){
+    ED <- (ED + mean_row_diff(g2, g1)) / 2
   }
   ED
 }
-var_row_diff <- function(g1,g2,sym=FALSE){
+var_row_diff <- function(g1, g2, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   dg1 <- rowSums(g1)
   dg2 <- rowSums(g2)
