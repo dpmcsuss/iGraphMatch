@@ -45,7 +45,9 @@
 #'
 #' @export
 #'
-graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, similarity = NULL){
+graph_match_FW <- function(A, B, seeds = NULL,
+  start = "convex", max_iter = 20,
+  similarity = NULL, return_big = TRUE){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -100,8 +102,6 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
     if(sum(aseeds_err)!=0){
       
       B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-      similarity <- sim_hard_seeding(
-        seed_A_err, seed_B_err, similarity)
     }
   }
 
@@ -156,10 +156,14 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
     Grad <- as.matrix(Grad)
     Grad <- (Grad - min(Grad))
-    
 
-    ind <- as.vector(clue::solve_LSAP(Grad, 
-      maximum = TRUE))
+    if ( require(rlapjv) ){
+      ind <- rlapjv::lapjv(Grad, maximize = TRUE)
+    } else {
+      ind <- as.vector(clue::solve_LSAP(Grad, 
+        maximum = TRUE))
+    }
+
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
@@ -211,8 +215,11 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20, 
     P <- Matrix::Diagonal(nv)[corr,]
     D <- fix_hard_D(seed_A_err,seed_B_err,D)
   }
-
-  list(corr = corr, P = P, D = D, iter = iter)
+  if( return_big ){
+    list(corr = corr, P = P, D = D, iter = iter)
+  } else { 
+    list(corr = corr, iter = iter)
+  }
 }
 
 
@@ -414,7 +421,12 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     Grad<- 2*(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn))
     # print("asdf")
     Grad <- as.matrix(nn^2*(Grad-min(Grad)))
-    corr <- as.vector(clue::solve_LSAP(Grad))
+    if ( require(rlapjv) ){
+      corr <- rlapjv::lapjv(Grad, maximize = TRUE)
+    } else {
+      corr <- as.vector(clue::solve_LSAP(Grad, 
+        maximum = TRUE))
+    }
     Pdir <- Matrix::Diagonal(nn)[corr,]
     difPPdir<-Pdir-P
     aq <- sum((Asn%*%difPPdir)^2)+sum((difPPdir%*%Bns)^2)+sum((Ann %*% difPPdir - difPPdir %*% Bnn)^2)

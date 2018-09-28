@@ -33,8 +33,6 @@
 best_matches <- function(A, B, measure, num, x, match_corr){
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
   Bm <- B[match_corr, match_corr]
   nv <- nrow(A)
 
