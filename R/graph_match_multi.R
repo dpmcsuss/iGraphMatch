@@ -119,8 +119,12 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
       gc()
     }
     Grad <- as.matrix(Grad)
-
-    ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), maximum = TRUE))
+    if ( require(rlapjv) ){
+        ind <- rlapjv::lapjv(Grad - min(Grad), maximize = TRUE)
+      } else {
+        ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), 
+          maximum = TRUE))
+    }
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
