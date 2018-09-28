@@ -103,6 +103,13 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   zero_mat <- Matrix(0,
     nrow = nrow(A[[1]]), ncol = ncol(A[[1]]))
 
+  if("rlapjv" %in% rownames(installed.packages())){
+    library(rlapjv)
+    usejv <- TRUE
+  } else {
+    usejv <- FALSE
+  }
+
   while(toggle && iter < max_iter){
 
     iter <- iter + 1
@@ -119,7 +126,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
       gc()
     }
     Grad <- as.matrix(Grad)
-    if ( require(rlapjv) ){
+    if ( usejv ){
         ind <- rlapjv::lapjv(Grad - min(Grad), maximize = TRUE)
       } else {
         ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), 

@@ -146,7 +146,12 @@ graph_match_FW <- function(A, B, seeds = NULL,
     s_to_ns <- Matrix(0, nv, nv)
   }
 
-
+  if("rlapjv" %in% rownames(installed.packages())){
+    library(rlapjv)
+    usejv <- TRUE
+  } else {
+    usejv <- FALSE
+  }
 
   while(toggle && iter < max_iter){
     iter <- iter + 1
@@ -157,7 +162,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     Grad <- as.matrix(Grad)
     Grad <- (Grad - min(Grad))
 
-    if ( require(rlapjv) ){
+    if ( usejv ){
       ind <- rlapjv::lapjv(Grad, maximize = TRUE)
     } else {
       ind <- as.vector(clue::solve_LSAP(Grad, 
@@ -415,16 +420,24 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   BBt <- Bns%*%t(Bns)+Bnn%*%t(Bnn)
   ABns_sn <- Ans%*%t(Bns) + t(Asn)%*%Bsn
   f <- sum((Asn%*%P-Bsn)^2)+sum((Ans-P%*%Bns)^2)+sum((Ann%*%P-P%*%Bnn)^2)
+
+  if ( "rlapjv" %in% rownames(installed.packages()) ){
+    library(rlapjv)
+    usejv <- TRUE
+  } else {
+    usejv <- FALSE
+  }
+
   while(toggle && iter<max_iter){
     f_old <- f
     iter<-iter+1
     Grad<- 2*(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn))
     # print("asdf")
     Grad <- as.matrix(nn^2*(Grad-min(Grad)))
-    if ( require(rlapjv) ){
+    if ( usejv ){
       corr <- rlapjv::lapjv(Grad, maximize = TRUE)
     } else {
-      corr <- as.vector(clue::solve_LSAP(Grad, 
+      corr <- as.vector(clue::solve_LSAP(Grad,
         maximum = TRUE))
     }
     Pdir <- Matrix::Diagonal(nn)[corr,]
