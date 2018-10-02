@@ -6,7 +6,7 @@ Authors@R: c(
     person("Daniel", "Sussman", email = "sussman@bu.edu", role = "aut"),
     person("Zihuan", "Qiao", email = "zhqiao@bu.edu", role = c("aut", "cre"))
     )
-Description: iGraphMatch is a R package for graph matching. The package
+Description: iGraphMatch is an R package for graph matching. The package
   works for both igraph objects and matrix objects. You provide the adjacency
   matrices of two graphs and some other information you might know, choose the
   graph matching method, and it returns the graph matching results. iGraphMatch

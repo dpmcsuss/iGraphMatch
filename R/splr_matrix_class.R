@@ -88,6 +88,8 @@ setGeneric(
   }
 })
 
+# Do I need the below?
+
 #' @export
 setMethod(
   f = "splr",
@@ -97,12 +99,19 @@ setMethod(
   }
 )
 
+#' @export
+splr.to.sparse <- function(data, ...){
+    Matrix(data@x + data@a %*% t(data@b), sparse = TRUE, ...)
+}
+
 as.matrix.splr=function(x,...)  {
   
   as.matrix(as.matrix(x@x,...)+x@a%*%t(x@b),...)
   
   
 }
+
+
 
 setMethod("as.matrix","splrMatrix",as.matrix.splr)
 
@@ -223,7 +232,7 @@ setMethod("%*%",signature(x="splrMatrix",y="ANY"),.rightmult)
 #doesn't return an splr
 setMethod('*',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),function(e1,e2) {
   x <- as(e1@x * e2@x,'sparseMatrix')
-  new("splrMatrix", x = x, a= e1@a %*% t(e1@b) * e2@a ,b =e2@b,Dim = dim(x))
+  new("splrMatrix", x = x, a= e1@a %*% t(e1@b) * e2@a,b =e2@b,Dim = dim(x))
 })
 
 #return sparse
@@ -231,50 +240,65 @@ setMethod('*',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
   if (length(e2) == 1) {
     new('splrMatrix',x=e1@x*e2,a=e2*e1@a, b=e1@b, Dim = dim(e1@x*e2))
   } else {
-    return(e1@x*e2 + e1@a %*% t(e1@b)*e2) 
+    return(e1@x * e2 + (e1@a %*% t(e1@b)) * e2) 
   }
 }
 
-setMethod("*",signature (e1 = 'Matrix',e2 = 'splrMatrix'), function(e1,e2) {
-  
+setMethod("*",
+  signature (e1 = 'Matrix',e2 = 'splrMatrix'), function(e1,e2) {
   .multiply(e2,e1)
 })
 
-setMethod("*",signature (e1 = 'splrMatrix',e2 = 'ddiMatrix'), function(e1,e2) {
-  
+setMethod("*",
+  signature (e1 = 'splrMatrix',e2 = 'ddiMatrix'), function(e1,e2) {
   .multiply(e1,e2)
 })
 
-setMethod("*",signature (e1 = 'matrix',e2 = 'splrMatrix'), function(e1,e2) {
-  
-  .multiply(e2,e1)
-})
-setMethod("*",signature (e1 = 'ANY',e2 = 'splrMatrix'), function(e1,e2) {
-  
+setMethod("*",
+  signature (e1 = 'matrix',e2 = 'splrMatrix'), function(e1,e2) {
   .multiply(e2,e1)
 })
 
-setMethod("*",signature (e1 = 'splrMatrix',e2 = 'matrix'), function(e1,e2) {
-  
+setMethod("*",
+  signature (e1 = 'numeric',e2 = 'splrMatrix'), function(e1,e2) {
+  .multiply(e2,e1)
+})
+
+setMethod("*",
+  signature (e1 = 'ANY',e2 = 'splrMatrix'), function(e1,e2) {
+  .multiply(e2,e1)
+})
+
+
+
+setMethod("*",
+  signature (e1 = 'splrMatrix',e2 = 'matrix'), function(e1,e2) {
   .multiply(e1,e2)
 })
-setMethod("*",signature (e1 = 'splrMatrix',e2 = 'Matrix'), function(e1,e2) {
-  
+setMethod("*",
+  signature (e1 = 'splrMatrix',e2 = 'Matrix'), function(e1,e2) {
   .multiply(e1,e2)
 })
-setMethod("*",signature (e1 = 'splrMatrix',e2 = 'ANY'), function(e1,e2) {
-  
+
+setMethod("*",
+  signature (e1 = 'splrMatrix',e2 = 'numeric'), function(e1,e2) {
   .multiply(e1,e2)
 })
-setMethod("/",signature (e1 = 'splrMatrix',e2 = 'matrix'), function(e1,e2) {
-  
+
+setMethod("*",
+  signature (e1 = 'splrMatrix',e2 = 'ANY'), function(e1,e2) {
+  .multiply(e1,e2)
+})
+setMethod("/",
+  signature (e1 = 'splrMatrix',e2 = 'matrix'), function(e1,e2) {
   .multiply(e1,1/e2)
 })
-setMethod("/",signature (e1 = 'splrMatrix',e2 = 'Matrix'), function(e1,e2) {
-  
+setMethod("/",
+  signature (e1 = 'splrMatrix',e2 = 'Matrix'), function(e1,e2) {
   .multiply(e1,1/e2)
 })
-setMethod("/",signature (e1 = 'splrMatrix',e2 = 'ANY'), function(e1,e2) {
+setMethod("/",
+  signature (e1 = 'splrMatrix',e2 = 'ANY'), function(e1,e2) {
   
   .multiply(e1,1/e2)
 })
@@ -415,6 +439,17 @@ setMethod("innerproduct", signature(x = "splrMatrix", y = "splrMatrix"),
       sum(x@x * y@x)
   })
 
+.innerproduct_Matrix <- function(x, y){
+    sum(diag(t(x@b) %*% t(y) %*% x@a)) +
+      sum(x@x * y)
+}
+
+setMethod("innerproduct", signature(x = "splrMatrix", y = "Matrix"),
+  function(x, y){ .innerproduct_Matrix(x, y)})
+
+setMethod("innerproduct", signature(x = "Matrix", y = "splrMatrix"),
+  function(x, y){ .innerproduct_Matrix(y, x)})
+
 
 #complete
 .rsum=function(x,...){
@@ -433,9 +468,9 @@ setMethod("rowSums","splrMatrix",.rsum)
 .csum=function(x,...){
   #x is splrMatrix matrix
    
-    cx=colSums(x@x)
-    ca=colSums(x@a)
-    drop( cx+x@b%*%ca)
+    cx <- colSums(x@x)
+    ca <- colSums(x@a)
+    drop( cx + x@b %*% ca)
   
 }
 
@@ -475,7 +510,7 @@ setMethod("colMeans","splrMatrix",.cmean)
 setMethod("sum", "splrMatrix", .sum)
 
 setMethod("mean", "splrMatrix", function(x){
-  sum(x@x)/ x@Dim[1] / x@Dim[2]
+  sum(x) / x@Dim[1] / x@Dim[2]
 })
 
 setMethod("[",signature(x="splrMatrix",i = 'missing',j = 'missing',drop = 'missing') ,function(x) {
@@ -588,10 +623,13 @@ setMethod("[",signature(x="splrMatrix",i = 'numeric',j = 'missing',drop='missing
           })
 
 #can fix this
-setMethod("[",signature(x="splrMatrix",i = 'matrix',j = 'missing',drop='missing') 
-          ,function(x,i , ...) {
-          x@x[i] + x@a[i[,2],]%*% t(x@b[i[,2],])
-           #as.matrix(x@x + x@a%*%t(x@b))[i]
+setMethod("[",
+    signature(x = "splrMatrix", i = "matrix", j = "missing", drop = "missing"),
+    function(x,i , ...) {
+          x@x[i] +
+            (x@a[i[, 1], ] * x@b[i[, 2], ]) %*%
+              Matrix(1, dim(x@a)[2], 1)
+          #as.matrix(x@x + x@a%*%t(x@b))[i]
  })
 
 #document the issues with doing this

@@ -47,7 +47,7 @@
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
-  similarity = NULL, return_big = TRUE){
+  similarity = NULL, return_big = TRUE, usejv = TRUE){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -133,6 +133,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
   P <- P %*% Matrix::t(rpmat)
   similarity <- similarity %*% Matrix::t(rpmat)
 
+  rm(A,B)
+  gc()
+
   iter <- 0
   toggle <- TRUE
 
@@ -148,23 +151,28 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   if("rlapjv" %in% rownames(installed.packages())){
     library(rlapjv)
-    usejv <- TRUE
+    # usejv <- TRUE
+    if( totv1 / totv2 < 0.5 ){
+      usejvmod <- TRUE
+      usejv <- FALSE
+    }
   } else {
     usejv <- FALSE
   }
-
   while(toggle && iter < max_iter){
     iter <- iter + 1
     # non-seed to non-seed info
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
-    Grad <- as.matrix(Grad)
-    Grad <- (Grad - min(Grad))
 
     if ( usejv ){
       ind <- rlapjv::lapjv(Grad, maximize = TRUE)
+    } else if ( usejvmod ) {
+      ind <- rlapjv::lapmod(splr.to.sparse(Grad), maximize = TRUE)
     } else {
+      Grad <- as.matrix(Grad)
+      Grad <- (Grad - min(Grad))
       ind <- as.vector(clue::solve_LSAP(Grad, 
         maximum = TRUE))
     }
@@ -174,11 +182,13 @@ graph_match_FW <- function(A, B, seeds = NULL,
     Pdir <- Pdir[ind, ]
     ns_Pdir_ns <- Matrix::t(Ann)[, order(ind)] %*% Bnn
 
-    cc <- sum(tAnn_P_Bnn * P)
-    d <- sum(ns_Pdir_ns * P) + sum(tAnn_P_Bnn[ind2])
+    cc <- innerproduct(tAnn_P_Bnn, P)
+    d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
-    u <- sum(P * (s_to_ns + similarity))
+    u <- innerproduct(P, s_to_ns + similarity)
     v <- sum((s_to_ns + similarity)[ind2])
+    
+
     if (cc - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
@@ -201,8 +211,20 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
 
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(
-    as.matrix(round(P * nn ^ 2)), maximum = TRUE))
+
+  if ( usejv ){
+    corr_ns <- rlapjv::lapjv(P, maximize = TRUE)
+  } else if ( usejvmod ) {
+    if (class(P) == "splrMatrix") {
+      corr_ns <- rlapjv::lapmod(splr.to.sparse(P), maximize = TRUE)
+    } else {
+      corr_ns <- rlapjv::lapmod(P, maximize = TRUE)
+    }
+  } else {
+    corr_ns <- as.vector(clue::solve_LSAP(P, 
+      maximum = TRUE))
+  }
+
   # undo rand perm here
   corr_ns <- rp[corr_ns]
   corr <- 1:nv
