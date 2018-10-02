@@ -100,8 +100,8 @@ setMethod(
 )
 
 #' @export
-splr.to.sparse <- function(data, ...){
-    Matrix(data@x + data@a %*% t(data@b), sparse = TRUE, ...)
+splr.to.sparse <- function(data){
+    data@x + Matrix(data@a,sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
 }
 
 as.matrix.splr=function(x,...)  {

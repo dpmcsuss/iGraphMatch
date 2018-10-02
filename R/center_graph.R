@@ -72,8 +72,8 @@ pad <- function(m, nr, nc = nr){
     da <- dim(m@a)[2]
     splr(
       x = bdiag(m@x, Matrix(0, nr, nc)),
-      a = rbind2(m@a, Matrix(0, nr, da)),
-      b = rbind2(m@b, Matrix(0, nc, da)))
+      a = Matrix(rbind2(m@a, Matrix(0, nr, da)), sparse = TRUE),
+      b = Matrix(rbind2(m@b, Matrix(0, nc, da)), sparse = TRUE))
   }
   else{
     Matrix::bdiag(m, Matrix(0, nr, nc))

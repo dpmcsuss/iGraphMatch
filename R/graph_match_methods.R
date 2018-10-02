@@ -149,7 +149,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     s_to_ns <- Matrix(0, nv, nv)
   }
 
-  if("rlapjv" %in% rownames(installed.packages())){
+  if("rlapjv" %in% rownames(installed.packages()) && usejv){
     library(rlapjv)
     # usejv <- TRUE
     if( totv1 / totv2 < 0.5 ){
@@ -158,6 +158,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     }
   } else {
     usejv <- FALSE
+    usejvmod <- FALSE
   }
   while(toggle && iter < max_iter){
     iter <- iter + 1
@@ -165,15 +166,17 @@ graph_match_FW <- function(A, B, seeds = NULL,
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
-
+    
     if ( usejv ){
-      ind <- rlapjv::lapjv(Grad, maximize = TRUE)
+      ind <- rlapjv::lapjv(as.matrix(Grad),
+        maximize = TRUE)
     } else if ( usejvmod ) {
-      ind <- rlapjv::lapmod(splr.to.sparse(Grad), maximize = TRUE)
+      ind <- rlapjv::lapmod(splr.to.sparse(Grad),
+        maximize = TRUE)
     } else {
       Grad <- as.matrix(Grad)
       Grad <- (Grad - min(Grad))
-      ind <- as.vector(clue::solve_LSAP(Grad, 
+      ind <- as.vector(clue::solve_LSAP(Grad,
         maximum = TRUE))
     }
 
@@ -221,7 +224,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
       corr_ns <- rlapjv::lapmod(P, maximize = TRUE)
     }
   } else {
-    corr_ns <- as.vector(clue::solve_LSAP(P, 
+    corr_ns <- as.vector(clue::solve_LSAP(as.matrix(P), 
       maximum = TRUE))
   }
 
