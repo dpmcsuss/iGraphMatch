@@ -166,9 +166,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
-    
+
     if ( usejv ){
-      ind <- rlapjv::lapjv(as.matrix(Grad),
+      ind <- rlapjv::lapjv(round(as.matrix(Grad) * nn ^ 2),
         maximize = TRUE)
     } else if ( usejvmod ) {
       ind <- rlapjv::lapmod(splr.to.sparse(Grad),
@@ -190,7 +190,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     e <- sum(ns_Pdir_ns[ind2])
     u <- innerproduct(P, s_to_ns + similarity)
     v <- sum((s_to_ns + similarity)[ind2])
-    
+
 
     if (cc - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
