@@ -162,13 +162,15 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
   while(toggle && iter < max_iter){
     iter <- iter + 1
+    print(iter)
     # non-seed to non-seed info
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
 
     if ( usejv ){
-      ind <- rlapjv::lapjv(round(as.matrix(Grad) * nn ^ 2),
+      Grad <- as.matrix(Grad)
+      ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
         maximize = TRUE)
     } else if ( usejvmod ) {
       ind <- rlapjv::lapmod(splr.to.sparse(Grad),
