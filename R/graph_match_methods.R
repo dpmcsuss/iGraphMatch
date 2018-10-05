@@ -162,7 +162,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
   while(toggle && iter < max_iter){
     iter <- iter + 1
-    print(iter)
+    
     # non-seed to non-seed info
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
@@ -221,7 +221,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     corr_ns <- rlapjv::lapjv(P, maximize = TRUE)
   } else if ( usejvmod ) {
     if (class(P) == "splrMatrix") {
-      corr_ns <- rlapjv::lapmod(splr.to.sparse(P), maximize = TRUE)
+      # this is pretty hacky but it breaks it otherwise
+      corr_ns <- rlapjv::lapmod(P@x, maximize = TRUE)
     } else {
       corr_ns <- rlapjv::lapmod(P, maximize = TRUE)
     }
