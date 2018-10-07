@@ -49,6 +49,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
   similarity = NULL, return_big = TRUE, usejv = TRUE){
 
+  browser()
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
@@ -162,7 +163,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
   while(toggle && iter < max_iter){
     iter <- iter + 1
-    
+
     # non-seed to non-seed info
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
@@ -173,7 +174,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
       ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
         maximize = TRUE)
     } else if ( usejvmod ) {
-      ind <- rlapjv::lapmod(splr.to.sparse(Grad),
+      ind <- rlapjv::lapmod(splr.to.sparse(Grad * nn ^ 2),
         maximize = TRUE)
     } else {
       Grad <- as.matrix(Grad)
@@ -199,11 +200,13 @@ graph_match_FW <- function(A, B, seeds = NULL,
     } else {
       alpha <- -(d - 2 * e + u - v)/(2 * (cc - d + e))
     }
+
     f0 <- 0
     f1 <- cc - e + u - v
     falpha <- (cc - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
 
+    Pold <- P
     if (alpha < 1 && alpha > 0 &&
         falpha > f0 && falpha > f1) {
       P <- alpha * P + (1 - alpha) * Pdir
@@ -212,8 +215,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     } else {
       toggle <- F
     }
+    
   }
-
 
   D_ns <- P
 
@@ -460,7 +463,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     f_old <- f
     iter<-iter+1
     Grad<- 2*(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn))
-    # print("asdf")
+
     Grad <- as.matrix(nn^2*(Grad-min(Grad)))
     if ( usejv ){
       corr <- rlapjv::lapjv(Grad, maximize = TRUE)

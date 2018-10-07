@@ -320,6 +320,8 @@ setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
   #e1 is splr
   if (is(e2,"sparseMatrix")) {
     new("splrMatrix", x = as(e1@x + e2,"sparseMatrix"), a = e1@a, b = e1@b, Dim = dim(e2))
+  } else if (is(e2, "splrMatrix")){
+    new("splrMatrix", x = as(e1@x + e2@x,"sparseMatrix"), a = cbind2(e1@a, e2@a), b = cbind(e1@b, e2@b), Dim = dim(e2))
   } else if( is.numeric(e2) && is.atomic(e2) ){
     new("splrMatrix", x = as(e1@x, "sparseMatrix"),
       a = cbind2(e1@a, rep(e2, nrow(e1@a))),
