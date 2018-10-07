@@ -49,7 +49,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
   similarity = NULL, return_big = TRUE, usejv = TRUE){
 
-  browser()
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
