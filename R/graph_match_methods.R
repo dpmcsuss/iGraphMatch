@@ -173,7 +173,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
       ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
         maximize = TRUE)
     } else if ( usejvmod ) {
-      ind <- rlapjv::lapmod(splr.to.sparse(Grad * nn ^ 2),
+      ind <- rlapjv::lapmod(splr.to.sparse(Grad),
         maximize = TRUE)
     } else {
       Grad <- as.matrix(Grad)
