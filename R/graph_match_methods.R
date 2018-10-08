@@ -240,7 +240,14 @@ graph_match_FW <- function(A, B, seeds = NULL,
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
   # and undo it right quick here too
-  D[nonseeds, nonseeds] <- D_ns %*% rpmat
+  if ( class(D_ns) == "splrMatrix"){
+    if ( nns < nv){
+      warning("Only returning non-seed D.")
+    }
+    D <- D_ns
+  } else {
+    D[nonseeds, nonseeds] <- D_ns %*% rpmat
+  }
   # and we should be home clear
 
 
