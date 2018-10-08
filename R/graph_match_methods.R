@@ -241,7 +241,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   D <- P
   # and undo it right quick here too
   if ( class(D_ns) == "splrMatrix"){
-    if ( nns < nv){
+    if ( nn < nv){
       warning("Only returning non-seed D.")
     }
     D <- D_ns
