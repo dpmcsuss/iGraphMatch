@@ -31,7 +31,7 @@
 #' @export
 #'
 bari_start <- function(nns, ns = 0, soft_seeds = NULL){
-  if(is.null(soft_seeds)){
+  if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- matrix(1/nns,nns,nns)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
@@ -65,7 +65,7 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
 #' @export
 #'
 rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif"){
-  if(is.null(soft_seeds)){
+  if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_sinkhorn(nns,distribution = distribution)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
@@ -116,7 +116,7 @@ rds_sinkhorn <- function(n,distribution="runif"){
 #' 
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
   
-  if(is.null(soft_seeds)){
+  if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_perm_bari(nns, g, is_splr)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
