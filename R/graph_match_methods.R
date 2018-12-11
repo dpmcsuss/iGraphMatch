@@ -708,17 +708,17 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
 #'
 #'
 graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
-
+  
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
   A <- as.matrix(A)
   B <- as.matrix(B)
-
+  
   # initialization of score matrix M & MM
   n <- nrow(A)
   max_iter <- max_iter * n
-  minusinf <- -max_iter
+  minusinf <- -n
   M <- matrix(0,n,n) # actual score matrix
   seeds <- check_seeds(seeds)
   ns <- nrow(seeds)
@@ -730,67 +730,74 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
   M[seeds$seed_A,] <- minusinf # hard seeds
   M[,seeds$seed_B] <- minusinf # hard seeds
   MM <- M # score matrix w. socres to matched pairs be -infinity
-
-  # initialization for checking replacing cycle
+  
+  # initialization for checking replacing cycle 
   num <- 0 # # of removal seeds
   remove <- rbind(c(0,0),c(0,0)) # list of removed seeds
   remove_by <- rbind(c(0,0),c(0,0))
   colnames(remove) <- paste0(c("seed_A","seed_B"))
   cyc <- FALSE
-
+  
   # percolate
   Z <- seeds # set of matched pairs
   ZZ <- c(0,0) # set of dominant conflict existing matches
-  num <- 0 # count the number of replacing matches
-  while(max(MM)>=r & num<=max_iter){
-    # locate best match
+  while(max(MM)>=r & num<=max_iter & cyc==FALSE){
+    # locate one best match
     max_ind <- which(MM==max(MM), arr.ind = TRUE)
     conflict_log <- conflict_check(Z, max_ind, logical = TRUE)
     sum_conf <- sum(conflict_log)
     if(sum_conf>0 & sum_conf<length(conflict_log)){
-      max_ind <- max_ind[!conflict_log,] # subset of non-conflict matches
+      max_ind <- max_ind[!conflict_log,] # subset of non-conflict matches 
     }
     if(!is.null(nrow(max_ind))){
       rnum <- sample(nrow(max_ind),1)
       max_ind <- max_ind[rnum,] # solve tie: give priority to non-conflict matches
     }
-
-    # non-conflict new match
-    if(sum_conf != length(conflict_log)){
-
-      Z <- rbind(Z,max_ind)
-
+    #rnum <- sample(nrow(max_ind),1)
+    #max_ind <- max_ind[rnum,]
+    
+    conflict_log <- conflict_check(Z, matrix(max_ind,1), logical = TRUE)
+    # non-conflict new match 
+    if(conflict_log==FALSE){
+      
       # correct MM caused by ZZ
       if(!is.null(nrow(ZZ))){
         MM[ZZ$seed_A,] <- M[ZZ$seed_A,]
         MM[,ZZ$seed_B] <- M[,ZZ$seed_B]
+        for (i in 1:nrow(ZZ)) {
+          ZZi <- ZZ[i,]
+          MM[ZZi$seed_A, ZZi$seed_B] <- minusinf
+        }
         ZZ <- c(0,0)
       }
-
+      
       # update mark matrix M & MM
       A_adj <- which(A[unlist(max_ind[1]),]>0)
       B_adj <- which(B[unlist(max_ind[2]),]>0)
       M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
-
+      
       MM[A_adj, B_adj] <- MM[A_adj, B_adj] + 1
       MM[max_ind[1], max_ind[2]] <- minusinf
-
-    } else{ # conflict new match: only when all the ties correspond to conflict match
-
+      
+      Z <- rbind(Z,max_ind)
+      
+    } else{ # conflict new match
+      
       conf_row_ind <- conflict_check(Z, matrix(max_ind,1), logical = FALSE)
-      conf_ind <- Z[conf_row_ind,]
-      if(nrow(conf_ind==2)==2){ # conflict with two existing matches
+      if(length(conf_row_ind)==2){ # conflict with two existing matches
+        conf_ind <- Z[conf_row_ind,]
         score1 <- M[conf_ind[1,1], conf_ind[1,2]]
         score2 <- M[conf_ind[2,1], conf_ind[2,2]]
         score <- max(score1,score2)
       } else{
+        conf_ind <- Z[conf_row_ind[1],]
         score <- M[conf_ind$seed_A,conf_ind$seed_B]
       }
-
+      
       if(M[max_ind[1], max_ind[2]]>score){ #replace
-
+        
         num <- num + 1
-
+        
         # check cycle
         if(length(conf_row_ind)==2){
           remove <- rbind(remove,Z[conf_row_ind[1],])
@@ -805,17 +812,18 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
           remove_by <- rbind(remove_by, max_ind)
         }
         cyc <- cyc_remove & cyc_remove_by
-
-        Z <- Z[-conf_row_ind,] # remove conflict match
-        Z <- rbind(Z,max_ind) # add new match
-
+        
         # correct MM caused by ZZ
         if(!is.null(nrow(ZZ))){
           MM[ZZ$seed_A,] <- M[ZZ$seed_A,]
           MM[,ZZ$seed_B] <- M[,ZZ$seed_B]
+          for (i in 1:nrow(ZZ)) {
+            ZZi <- ZZ[i,]
+            MM[ZZi$seed_A, ZZi$seed_B] <- minusinf
+          }
           ZZ <- c(0,0)
         }
-
+        
         # update mark matrix: subtract removed seed's effect
         for (i in 1:length(conf_row_ind)) {
           A_adj <- which(A[Z$seed_A[conf_row_ind[i]],]>0)
@@ -824,30 +832,33 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
           MM[A_adj, B_adj] <- MM[A_adj, B_adj] - 1
           MM[conf_ind[i,1], conf_ind[i,2]] <- M[conf_ind[i,1], conf_ind[i,2]]
         }
-
+        
         # update mark matrix M & MM: add new match's effect
         A_adj <- which(A[unlist(max_ind[1]),]>0)
         B_adj <- which(B[unlist(max_ind[2]),]>0)
         M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
         MM[A_adj, B_adj] <- MM[A_adj, B_adj] + 1
         MM[max_ind[1], max_ind[2]] <- minusinf
-
+        
+        Z <- Z[-conf_row_ind,] # remove conflict match
+        Z <- rbind(Z,max_ind) # add new match
+        
       } else{ # choose another qualified match
         ZZ <- rbind(ZZ, conf_ind)
         MM[conf_ind[,1],] <- minusinf
         MM[,conf_ind[,2]] <- minusinf
       }
     }
-
-  }# end while: percolate
-
+    
+  }# end while: percolate 
+  
   if(nrow(Z) == n-1){
     all <- 1:n
     seed_A <- all[!(all %in% Z$seed_A)]
     seed_B <- all[!(all %in% Z$seed_B)]
     Z <- rbind(Z,cbind(seed_A,seed_B))
   }
-
+  
   # matching result
   corr <- Z[order(Z$seed_A),]
   names(corr) <- c("corr_A","corr_B")
