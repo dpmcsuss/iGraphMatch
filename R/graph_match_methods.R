@@ -16,8 +16,7 @@
 #' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
-#' @param max_iter A number. Maximum number of replacing matches equals to
-#'   max_iter times number of total vertices of \eqn{G_1}.
+#' @param max_iter A number. Maximum number of replacing matches.
 #'
 #' @rdname graph_match_methods
 #'
@@ -707,7 +706,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
 #' @export
 #'
 #'
-graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
+graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50){
   
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -717,7 +716,6 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
   
   # initialization of score matrix M & MM
   n <- nrow(A)
-  max_iter <- max_iter * n
   minusinf <- -n
   M <- matrix(0,n,n) # actual score matrix
   seeds <- check_seeds(seeds)
@@ -744,17 +742,8 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
   while(max(MM)>=r & num<=max_iter & cyc==FALSE){
     # locate one best match
     max_ind <- which(MM==max(MM), arr.ind = TRUE)
-    conflict_log <- conflict_check(Z, max_ind, logical = TRUE)
-    sum_conf <- sum(conflict_log)
-    if(sum_conf>0 & sum_conf<length(conflict_log)){
-      max_ind <- max_ind[!conflict_log,] # subset of non-conflict matches 
-    }
-    if(!is.null(nrow(max_ind))){
-      rnum <- sample(nrow(max_ind),1)
-      max_ind <- max_ind[rnum,] # solve tie: give priority to non-conflict matches
-    }
-    #rnum <- sample(nrow(max_ind),1)
-    #max_ind <- max_ind[rnum,]
+    rnum <- sample(nrow(max_ind),1)
+    max_ind <- max_ind[rnum,]
     
     conflict_log <- conflict_check(Z, matrix(max_ind,1), logical = TRUE)
     # non-conflict new match 
