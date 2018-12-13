@@ -39,8 +39,7 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{r}{A number. Threshold of neighboring pair scores.}
 
-\item{max_iter}{A number. Maximum number of replacing matches equals to
-max_iter times number of total vertices of \eqn{G_1}.}
+\item{max_iter}{A number. Maximum number of replacing matches.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
