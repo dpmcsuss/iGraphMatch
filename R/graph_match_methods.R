@@ -547,56 +547,47 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' @export
 #'
 #'
-graph_match_percolation <- function(A, B, seeds, r = 2){
-
-  # this will make the graphs be matrices if they are igraph objects
+graph_match_percolation <- function (A, B, seeds, r = 2, center = FALSE) 
+{
   A <- A[]
   B <- B[]
   A <- as.matrix(A)
   B <- as.matrix(B)
-
-  n <- nrow(A)
-  m <- nrow(B)
-  seeds <- check_seeds(seeds) #unused seeds
-  Z <- seeds #matched nodes
-  M <- matrix(0,n,m) #marks matrix
-
-  # mark neighbors
-  for(i in 1:nrow(seeds)){
-    A_adj <- which(A[seeds$seed_A[i],]>0)
-    B_adj <- which(B[seeds$seed_B[i],]>0)
-    mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+  n_A <- dim(A)[1]
+  n_B <- dim(B)[1]
+  P <- matrix(0, nrow=n_A, ncol = n_B)
+  seeds <- check_seeds(seeds)
+  for (i in 1:nrow(seeds)){
+    si <- seeds[i,]
+    P[si$seed_A,si$seed_B] <- 1
   }
+  Z <- seeds
+  M <- A %*% P %*% B
   M[seeds$seed_A,] <- -n
   M[,seeds$seed_B] <- -n
-
-  # choose pairs with marks ge r
-  while(max(M) >= r){
+  while (max(M) >= r) {
     max_ind <- which(M == max(M), arr.ind = TRUE)
-    max_ind <- max_ind[sample(nrow(max_ind),1),]
-
-    Z <- rbind(Z,max_ind)
-
-    # update mark matrix
-    A_adj <- which(A[max_ind[1],]>0)
-    B_adj <- which(B[max_ind[2],]>0)
-    mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-    M[max_ind[1],] <- -n
-    M[,max_ind[2]] <- -n
+    max_ind <- max_ind[sample(nrow(max_ind), 1), ]
+    Pi <- matrix(0, nrow=n_A, ncol = n_B)
+    Pi[max_ind[1], max_ind[2]] <- 1 
+    delta <- A %*% Pi %*% B
+    delta_norm <- (delta - min(delta)) / (max(delta) - min(delta))
+    if(center){
+      delta_norm <- 2*delta_norm - matrix(1, nrow = n_A, ncol = n_B)
+    }
+    M <- M + delta_norm
+    M[max_ind[1], ] <- -n
+    M[, max_ind[2]] <- -n
+    Z <- rbind(Z, max_ind)
   }
-
-  if(nrow(Z) == n-1){
+  if (nrow(Z) == n - 1) {
     all <- 1:n
     seed_A <- all[!(all %in% Z$seed_A)]
     seed_B <- all[!(all %in% Z$seed_B)]
-    Z <- rbind(Z,cbind(seed_A,seed_B))
+    Z <- rbind(Z, cbind(seed_A, seed_B))
   }
-
-  # matching result
-  corr <- Z[order(Z$seed_A),]
-  names(corr) <- c("corr_A","corr_B")
+  corr <- Z[order(Z$seed_A), ]
+  names(corr) <- c("corr_A", "corr_B")
   corr
 }
 cal_mark <- function(x,y){
@@ -715,16 +706,17 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50){
   B <- as.matrix(B)
   
   # initialization of score matrix M & MM
-  n <- nrow(A)
-  minusinf <- -n
-  M <- matrix(0,n,n) # actual score matrix
+  n_A <- dim(A)[1]
+  n_B <- dim(B)[1]
+  P <- matrix(0, nrow=n_A, ncol = n_B)
   seeds <- check_seeds(seeds)
   ns <- nrow(seeds)
-  for(i in 1:nrow(seeds)){ # mark neighbors
-    A_adj <- which(A[seeds$seed_A[i],]==1)
-    B_adj <- which(B[seeds$seed_B[i],]==1)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+  for (i in 1:nrow(seeds)){
+    si <- seeds[i,]
+    P[si$seed_A,si$seed_B] <- 1
   }
+  M <- A %*% P %*% B
+  minusinf <- -n
   M[seeds$seed_A,] <- minusinf # hard seeds
   M[,seeds$seed_B] <- minusinf # hard seeds
   MM <- M # score matrix w. socres to matched pairs be -infinity
@@ -761,11 +753,16 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50){
       }
       
       # update mark matrix M & MM
-      A_adj <- which(A[unlist(max_ind[1]),]>0)
-      B_adj <- which(B[unlist(max_ind[2]),]>0)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
+      Pi <- matrix(0, nrow=n_A, ncol = n_B)
+      Pi[unlist(max_ind[1]), unlist(max_ind[2])] <- 1 
+      delta <- A %*% Pi %*% B
+      delta_norm <- (delta - min(delta)) / (max(delta) - min(delta))
+      if(center){
+        delta_norm <- 2*delta_norm - matrix(1, nrow = n_A, ncol = n_B)
+      }
+      M <- M + delta_norm
       
-      MM[A_adj, B_adj] <- MM[A_adj, B_adj] + 1
+      MM <- MM + delta_norm
       MM[max_ind[1], max_ind[2]] <- minusinf
       
       Z <- rbind(Z,max_ind)
@@ -814,19 +811,29 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50){
         }
         
         # update mark matrix: subtract removed seed's effect
+        Pi <- matrix(0, nrow=n_A, ncol = n_B)
         for (i in 1:length(conf_row_ind)) {
-          A_adj <- which(A[Z$seed_A[conf_row_ind[i]],]>0)
-          B_adj <- which(B[Z$seed_B[conf_row_ind[i]],]>0)
-          M[A_adj, B_adj] <- M[A_adj, B_adj] - 1
-          MM[A_adj, B_adj] <- MM[A_adj, B_adj] - 1
+          Pi[Z$seed_A[conf_row_ind[i]], Z$seed_B[conf_row_ind[i]]] <- 1 
+          delta <- A %*% Pi %*% B
+          delta_norm <- (delta - min(delta)) / (max(delta) - min(delta))
+          if(center){
+            delta_norm <- 2*delta_norm - matrix(1, nrow = n_A, ncol = n_B)
+          }
+          M <- M - delta_norm
+          MM <- MM - delta_norm
           MM[conf_ind[i,1], conf_ind[i,2]] <- M[conf_ind[i,1], conf_ind[i,2]]
         }
         
         # update mark matrix M & MM: add new match's effect
-        A_adj <- which(A[unlist(max_ind[1]),]>0)
-        B_adj <- which(B[unlist(max_ind[2]),]>0)
-        M[A_adj, B_adj] <- M[A_adj, B_adj] + 1
-        MM[A_adj, B_adj] <- MM[A_adj, B_adj] + 1
+        Pi <- matrix(0, nrow=n_A, ncol = n_B)
+        Pi[unlist(max_ind[1]), unlist(max_ind[2])] <- 1 
+        delta <- A %*% Pi %*% B
+        delta_norm <- (delta - min(delta)) / (max(delta) - min(delta))
+        if(center){
+          delta_norm <- 2*delta_norm - matrix(1, nrow = n_A, ncol = n_B)
+        }
+        M <- M + delta_norm
+        MM <- MM + delta_norm
         MM[max_ind[1], max_ind[2]] <- minusinf
         
         Z <- Z[-conf_row_ind,] # remove conflict match
