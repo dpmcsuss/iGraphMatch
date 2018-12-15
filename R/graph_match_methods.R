@@ -697,7 +697,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
 #' @export
 #'
 #'
-graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50){
+graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50, center = FALSE){
   
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
