@@ -5,10 +5,10 @@
 \alias{graph_match_convex}
 \alias{graph_match_percolation}
 \alias{graph_match_ExpandWhenStuck}
+\alias{graph_match_soft_percolation}
 \title{Graph Match Methods}
 \usage{
-graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
-  similarity = NULL)
+graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
   tol = 1e-05)
@@ -16,57 +16,63 @@ graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
 graph_match_percolation(A, B, seeds, r = 2)
 
 graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
+
+graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 2)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
 
 \item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
 
-\item{seeds}{A vector of integers or logicals, a matrix or a data frame. If there is no error in seeds input can be
-a vector of seed indices in \eqn{G_1}. Or if there exists error in seeds, input in the form of a
-matrix or a data frame, with the first column being the indices of \eqn{G_1} and the second
-column being the corresponding indices of \eqn{G_2}.}
+\item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
+there is no error in seeds input can be a vector of seed indices in
+\eqn{G_1}. Or if there exists error in seeds, input in the form of a matrix
+or a data frame, with the first column being the indices of \eqn{G_1} and
+the second column being the corresponding indices of \eqn{G_2}.}
 
 \item{start}{A matrix or a character. Any \code{nns-by-nns} matrix or
 character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{An integer. Maximum iteration time.}
 
-\item{similarity}{A matrix which is added to the gradient at each step which indicates similarity scores 
-between each pair of nodes across graphs. If NULL, nothing is added to the graph. If the similarity score 
-does not match the size of the larger network then it is padded with zeros.}
-
 \item{tol}{A number. Tolerance of edge disagreements.}
 
 \item{r}{A number. Threshold of neighboring pair scores.}
+
+\item{max_iter}{A number. Maximum number of replacing matches.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
-including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D}, permutation
-matrix named \code{P} based on Frank-Wolfe methodology and iteration time of
-the algorithm named \code{iter}.
+  including match correspondence vector of \eqn{G_2} with respect to
+  \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D},
+  permutation matrix named \code{P} based on Frank-Wolfe methodology and
+  iteration time of the algorithm named \code{iter}.
 
 \code{graph_match_convex} returns a list of graph matching results,
-including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
-named \code{corr}, doubly stochastic matrix named \code{D} and permutation
-matrix named \code{P} based on convex relaxation method for undirected graphs.
+  including matching correspondence vector of \eqn{G_2} with respect to
+  \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D} and
+  permutation matrix named \code{P} based on convex relaxation method for
+  undirected graphs.
 
-\code{graph_match_percolation} returns matching correspondence of matched pairs with
-index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
-\code{corr_B}.
+\code{graph_match_percolation} returns matching correspondence of
+  matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+  index of nodes in \eqn{G_2} named \code{corr_B}.
 
-\code{graph_match_ExpandWhenStuck} returns matching correspondence of matched pairs with
-index of nodes in \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
-\code{corr_B}.
+\code{graph_match_ExpandWhenStuck} returns matching correspondence of
+  matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+  index of nodes in \eqn{G_2} named \code{corr_B}.
+
+\code{graph_match_soft_percolation} returns matching correspondence
+  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+  index of nodes in \eqn{G_2} named \code{corr_B}.
 }
 \description{
-Match two given graphs, returns a list of graph matching results,
-including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
-doubly stochastic matrix and permutation matrix.
+Match two given graphs, returns a list of graph matching
+  results, including matching correspondence vector of \eqn{G_2} with respect
+  to \eqn{G_1}, doubly stochastic matrix and permutation matrix.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
@@ -96,13 +102,16 @@ graph_match_percolation(g1, g2, seeds, r = 2)
 seeds <- 1:5
 graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 
+# match G_1 & G_2 using soft percolation graph matching method
+seeds <- 1:5
+graph_match_soft_percolation(g1, g2, seeds, r = 2, max_iter = 2)
+
 }
 \references{
-L. Yartseva and M. Grossglauser (2013),
-\emph{On the performance of percolation graph matching}.
-COSN, Boston, MA, USA, pages 119–130.
+L. Yartseva and M. Grossglauser (2013), \emph{On the performance
+  of percolation graph matching}. COSN, Boston, MA, USA, pages 119–130.
 
 E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
-\emph{Growing a graph matching from a handful of seeds}.
-Proc. of the VLDB Endowment, 8(10):1010–1021.
+\emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
+Endowment, 8(10):1010–1021.
 }
