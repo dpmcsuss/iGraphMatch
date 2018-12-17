@@ -168,7 +168,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
 
   D_ns <- P
   corr_ns <- as.vector(clue::solve_LSAP(
-    as.matrix(round(P * nn ^ 2)), maximum = TRUE))
+    round(as.matrix(P * nn ^ 2)), maximum = TRUE))
   # undo rand perm here
   corr_ns <- rp[corr_ns]
   corr <- 1:nv
