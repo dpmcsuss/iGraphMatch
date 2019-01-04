@@ -39,7 +39,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho){
 
   list(graph1=graph1,graph2=graph2)
 }
-#'
+
 #' @rdname sample_sbm
 #' @examples
 #' sample_correlated_sbm_pair_w_junk(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5,

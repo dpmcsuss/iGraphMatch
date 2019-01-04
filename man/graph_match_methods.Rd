@@ -11,8 +11,8 @@
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
   similarity = NULL, return_big = TRUE, usejv = TRUE)
 
-graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
-  tol = 1e-05)
+graph_match_convex(A, B, seeds = NULL, start = "bari",
+  max_iter = 100, tol = 1e-05)
 
 graph_match_percolation(A, B, seeds, r = 2, center = FALSE)
 
@@ -115,5 +115,5 @@ L. Yartseva and M. Grossglauser (2013), \emph{On the performance
 
 E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
-Endowment, 8(10):1010–1021.
+Endowment, 8(10):1010-1021.
 }

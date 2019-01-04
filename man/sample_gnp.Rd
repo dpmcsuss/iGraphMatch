@@ -5,7 +5,8 @@
 \alias{sample_correlated_gnp_pair_w_junk}
 \title{Sample correlated G(n,p) random graphs}
 \usage{
-sample_correlated_gnp_pair(n, corr, p, directed = FALSE, permutation = NULL)
+sample_correlated_gnp_pair(n, corr, p, directed = FALSE,
+  permutation = NULL)
 
 sample_correlated_gnp_pair_w_junk(n, corr, p, ncore = n)
 }

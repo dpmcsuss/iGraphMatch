@@ -43,7 +43,6 @@
 #' graph_match_FW(g1, g2, seeds, start = "convex")
 #'
 #' @export
-#'
 graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
   similarity = NULL, return_big = TRUE, usejv = TRUE){
@@ -112,7 +111,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   # change P <- PQ^T
   P <- P %*% Matrix::t(rpmat)
   if(is.null(similarity)){
-    similarity <- 0
+    similarity <- Matrix::Matrix(0,nn,nn)
   } else {
     similarity <- similarity %*% Matrix::t(rpmat)
   }
@@ -185,12 +184,12 @@ graph_match_FW <- function(A, B, seeds = NULL,
     if (cc - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
-      alpha <- -(d - 2 * e + u - v)/(2 * (c - d + e))
+      alpha <- -(d - 2 * e + u - v)/(2 * (cc - d + e))
     }
 
     f0 <- 0
-    f1 <- c - e + u - v
-    falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
+    f1 <- cc - e + u - v
+    falpha <- (cc - d + e) * alpha^2 + (d - 2 * e + u - v) *
       alpha
 
     Pold <- P
@@ -225,7 +224,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr_ns <- rp[corr_ns]
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
-  P <- Matrix::Diagonal(nv)[corr,]
+  P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
   # and undo it right quick here too
   if ( class(D_ns) == "splrMatrix"){
@@ -375,8 +374,10 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
   D <- D[,g2_new_real]
   D
 }
-#'
+
+
 #' @rdname graph_match_methods
+#' @title bla
 #' @return \code{graph_match_convex} returns a list of graph matching results,
 #'   including matching correspondence vector of \eqn{G_2} with respect to
 #'   \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D} and
@@ -392,8 +393,6 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #' graph_match_convex(g1, g2, seeds)
 #'
 #' @export
-#'
-#'
 graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 100, tol = 1e-5){
  
   A <- A[]
@@ -497,15 +496,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   list(corr = corr, P = P, D = D)
 }
 
-#'
-#' @return \code{graph_match_convex_directed} returns graph matching results based
-#' on convex relaxation method for directed graphs.
-#'
-#' @examples
-#' graph_match_convex_directed(g1, g2, seeds)
-#'
-#'
-#'
+
 graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100, tol2=1e-5){
 
   print("Warning, this doesn't work as expected. Need to think more.")
@@ -612,7 +603,8 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
   D[nonseeds,nonseeds] <- D_ns
   list(corr = corr, P = P, D = D)
 }
-#'
+
+
 #' @rdname graph_match_methods
 #' @return \code{graph_match_percolation} returns matching correspondence of
 #'   matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
@@ -627,8 +619,6 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' graph_match_percolation(g1, g2, seeds, r = 2)
 #'
 #' @export
-#'
-#'
 graph_match_percolation <- function (A, B, seeds, r = 2, center = FALSE) 
 {
   A <- A[]
@@ -676,7 +666,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2, center = FALSE)
 cal_mark <- function(x,y){
   1 - abs(x - y) / max(x, y)
 }
-#'
+
 #' @rdname graph_match_methods
 #' @return \code{graph_match_ExpandWhenStuck} returns matching correspondence of
 #'   matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
@@ -684,7 +674,7 @@ cal_mark <- function(x,y){
 #'
 #' @references E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 #' \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
-#' Endowment, 8(10):1010–1021.
+#' Endowment, 8(10):1010-1021.
 #'
 #' @examples
 #' # match G_1 & G_2 using Expand When Stuck graph matching method
@@ -692,8 +682,6 @@ cal_mark <- function(x,y){
 #' graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 #'
 #' @export
-#'
-#'
 graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -767,8 +755,6 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   corr
 }
 
-
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_soft_percolation} returns matching correspondence
 #'   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
@@ -780,8 +766,6 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
 #' graph_match_soft_percolation(g1, g2, seeds, r = 2, max_iter = 2)
 #'
 #' @export
-#'
-#'
 graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 50, center = FALSE){
   
   # this will make the graphs be matrices if they are igraph objects

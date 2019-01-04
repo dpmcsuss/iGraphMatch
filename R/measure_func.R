@@ -21,7 +21,6 @@
 #' g1 <- g1[]
 #' row_cor(g1, g2m)
 #' @export
-#'
 row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -29,14 +28,13 @@ row_cor <- function(g1,g2){
   require(tidyverse)
   1:nrow(g1) %>% map_dbl(~suppressWarnings(1-cor(g1[.x,],g2[.x,])))
 }
-#'
+
 #' @rdname measure_func
 #' @return \code{row_diff} returns a vector, each element is the row difference value for
 #' the corresponding vertex.
 #' @examples
 #' row_diff(g1, g2m)
 #' @export
-#'
 row_diff <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -44,14 +42,13 @@ row_diff <- function(g1,g2){
   g2 <- as.matrix(g2)
   rowSums(abs(g1-g2))
 }
-#'
+
 #' @rdname measure_func
 #' @return \code{row_perm_stat} returns a vector, each element is the row permutation statistics
 #' value for the corresponding vertex.
 #' @examples
 #' row_perm_stat(g1, g2m)
 #' @export
-#'
 row_perm_stat <- function(g1,g2,exact=TRUE,...){
   g1 <- g1[]
   g2 <- g2[]
@@ -90,6 +87,7 @@ row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
   }
   list(mean=m,var=v)
 }
+
 mean_row_diff <- function(g1, g2, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
@@ -107,6 +105,7 @@ mean_row_diff <- function(g1, g2, sym=FALSE){
   }
   ED
 }
+
 var_row_diff <- function(g1, g2, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
