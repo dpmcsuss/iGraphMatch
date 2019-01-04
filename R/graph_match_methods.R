@@ -111,7 +111,11 @@ graph_match_FW <- function(A, B, seeds = NULL,
   Bsn <- Bsn %*% Matrix::t(rpmat)
   # change P <- PQ^T
   P <- P %*% Matrix::t(rpmat)
-  similarity <- similarity %*% Matrix::t(rpmat)
+  if(is.null(similarity)){
+    similarity <- 0
+  } else {
+    similarity <- similarity %*% Matrix::t(rpmat)
+  }
 
   rm(A,B)
   gc()
