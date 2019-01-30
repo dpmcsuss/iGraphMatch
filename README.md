@@ -13,6 +13,8 @@ Currently only the development version of this package is available. This can be
 devtools::install_github("dpmcsuss/iGraphMatch")
 ```
 
+You might want to try the `dev` branch since it might be more stable at the moment.
+
 Usage
 ------------
 
