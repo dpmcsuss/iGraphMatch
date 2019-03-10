@@ -11,8 +11,8 @@
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
   similarity = NULL, return_big = TRUE, usejv = TRUE)
 
-graph_match_convex(A, B, seeds = NULL, start = "bari",
-  max_iter = 100, tol = 1e-05)
+graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
+  tol = 0.00001)
 
 graph_match_percolation(A, B, seeds, r = 2, center = FALSE)
 

@@ -93,7 +93,9 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A,B, seeds, rp)
+  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
+
+  P <- P[, rp]
 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
@@ -116,14 +118,13 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     # non-seed to non-seed info
     tAnn_P_Bnn <- zero_mat
     for( ch in 1:nc ){
-      tAnn_P_Bnn <- tAnn_P_Bnn + Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
-      gc()
+      tAnn_P_Bnn <- tAnn_P_Bnn +
+        Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
     }
 
     Grad <- s_to_ns + tAnn_P_Bnn
     for(ch in 1:nc){
       Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
-      gc()
     }
     Grad <- as.matrix(Grad)
     if ( usejv ){
@@ -137,15 +138,15 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     Pdir <- Pdir[ind, ]
     ns_Pdir_ns <- zero_mat
     for(ch in 1:nc){
-      ns_Pdir_ns <- ns_Pdir_ns + Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
-      gc()
+      ns_Pdir_ns <- ns_Pdir_ns +
+        Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
     }
 
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
     u <- innerproduct(P, s_to_ns)
-    v <- sum((s_to_ns)[ind2])
+    v <- sum(s_to_ns[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
