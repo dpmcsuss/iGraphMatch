@@ -31,7 +31,8 @@
 #'
 #' @export
 #'
-graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 20){
+graph_match_FW_multi <- function(A, B, seeds = NULL,
+  start = "bari", max_iter = 20, similarity = NULL, usejv = TRUE){
 
   # if(start == "convex"){
   #   stop("Convex start is not yet implemented for multiplex matching")
@@ -97,6 +98,12 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
 
   P <- P[, rp]
 
+  if(is.null(similarity)){
+    similarity <- Matrix::Matrix(0,nn,nn)
+  } else {
+    similarity <- similarity %*% Matrix::t(rpmat)
+  }
+
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
   B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds][rp,rp])
@@ -105,11 +112,16 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   zero_mat <- Matrix(0,
     nrow = nrow(A[[1]]), ncol = ncol(A[[1]]))
 
-  if("rlapjv" %in% rownames(installed.packages())){
+  if("rlapjv" %in% rownames(installed.packages()) && usejv){
     library(rlapjv)
-    usejv <- TRUE
+    # usejv <- TRUE
+    if( totv1 / totv2 < 0.5 ){
+      usejvmod <- TRUE
+      usejv <- FALSE
+    }
   } else {
     usejv <- FALSE
+    usejvmod <- FALSE
   }
 
   while(toggle && iter < max_iter){
@@ -122,17 +134,35 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
         Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
     }
 
-    Grad <- s_to_ns + tAnn_P_Bnn
+    Grad <- s_to_ns + tAnn_P_Bnn + similarity
     for(ch in 1:nc){
       Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
     }
-    Grad <- as.matrix(Grad)
     if ( usejv ){
-        ind <- rlapjv::lapjv(Grad - min(Grad), maximize = TRUE)
+      Grad <- as.matrix(Grad)
+      ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
+        maximize = TRUE)
+    } else if ( usejvmod ) {
+      if( class(Grad) == "splrMatrix" ){
+        ind <- rlapjv::lapmod(splr.to.sparse(Grad),
+          maximize = TRUE)
       } else {
-        ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), 
-          maximum = TRUE))
+        ind <- rlapjv::lapmod(Grad, maximize = TRUE)
+      }
+    } else {
+      Grad <- as.matrix(Grad)
+      Grad <- (Grad - min(Grad))
+      ind <- as.vector(clue::solve_LSAP(Grad,
+        maximum = TRUE))
     }
+    
+    # Grad <- as.matrix(Grad)
+    # if ( usejv ){
+    #   ind <- rlapjv::lapjv(Grad - min(Grad), maximize = TRUE)
+    # } else {
+    #   ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), 
+    #     maximum = TRUE))
+    # }
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
@@ -145,8 +175,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
-    u <- innerproduct(P, s_to_ns)
-    v <- sum(s_to_ns[ind2])
+    u <- innerproduct(P, s_to_ns + similarity)
+    v <- sum((s_to_ns + similarity)[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
