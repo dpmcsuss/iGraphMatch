@@ -222,6 +222,7 @@ setMethod("%*%",signature(x="ANY",y="splrMatrix"),.leftmult)
   
 }
 setMethod("dim", signature(x= "splrMatrix"),function(x) { dim(x@x)})
+setMethod("length", signature(x= "splrMatrix"),function(x) { length(x@x)})
 setMethod("%*%",signature(x="splrMatrix",y="Matrix"),.rightmult)
 setMethod("%*%",signature(x="splrMatrix",y="matrix"),.rightmult)
 setMethod("%*%",signature(x="splrMatrix",y="numeric"),.rightmult)
@@ -238,9 +239,19 @@ setMethod('*',signature = signature(e1 = 'splrMatrix',e2 = 'splrMatrix'),functio
 #return sparse
 .multiply <- function(e1,e2) {
   if (length(e2) == 1) {
-    new('splrMatrix',x=e1@x*e2,a=e2*e1@a, b=e1@b, Dim = dim(e1@x*e2))
+    new('splrMatrix',x=e1@x*e2,a=e2*e1@a, b=e1@b, Dim = dim(e1@x))
   } else {
-    return(e1@x * e2 + (e1@a %*% t(e1@b)) * e2) 
+    # can we speed this up for sparse e2?
+    # right now it constructs a fully dense matrix
+    # by calling (e1@a %*% t(e1@b)) which could be bad
+    # if e2 itself is sparse
+    return(e1@x * e2 + (e1@a %*% t(e1@b)) * e2)
+    # the following should be faster
+    # need to test
+    # rank <- ncol(e1@a)
+    # return(e1@x + Reduce("+", lapply(1:rank, function(r){
+    #   Diagonal(e1@a[, r]) %*% e2 %*% Diagonal(e1@b[, r])
+    # }))
   }
 }
 
@@ -402,7 +413,6 @@ setMethod("-", signature("ANY","splrMatrix"), function(e1,e2) {
 #frobenius norm
 Frobsmlr=function(x,a,b){
  
-  
     #expansion due to trevor hastie
     xnorm <- norm(x,type = 'f')
     xab=as.matrix(x%*%b)
@@ -412,23 +422,21 @@ Frobsmlr=function(x,a,b){
     ab=sum(aa*bb)
     sqrt(pmax(0,xnorm^2+2*xab+ab))
 
-    
-  
   
   
 }
 
 
 setMethod("norm",signature(x="splrMatrix",type="character"),
-          function(x,type,...){
-            switch(type,
-                   "F"=Frobsmlr(x=x@x,a=x@a,b=x@b),
-                   "f"=Frobsmlr(x=x@x,a=x@a,b=x@b),
-                   norm(as.matrix(x),type = type,...)
-            )
-          },valueClass="numeric")
+  function(x,type,...){
+    switch(type,
+      "F" = Frobsmlr(x = x@x,a = x@a,b = x@b),
+      "f" = Frobsmlr(x = x@x,a = x@a,b = x@b),
+      norm(as.matrix(x), type = type,...)
+    )
+  },valueClass="numeric")
 
-
+#' @export
 setGeneric("innerproduct", function(x,y){
   sum(x * y)
 })
