@@ -59,6 +59,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   if(is.null(seeds)){
     seeds <- rep(FALSE,nv)
     aseeds_err <- FALSE
+    # seeds <- Matrix(FALSE,nv, ng)
     ns <- sum(seeds)
   } else{
     seeds_pair <- check_seeds(seeds)
@@ -251,3 +252,198 @@ get_s_to_ns <- function(Alist, Blist, seeds,
   }
   s2ns
 }
+
+
+# graph_match_FW_simul <- function(Alist, seeds = NULL,
+#   start = "bari", max_iter = 20, similarity = NULL, usejv = TRUE){
+
+#   # this will make the graphs be (sparse) matrices
+#   # of the same dimensions
+#   nv <- max(sapply(Alist, function(A) dim(A[])[1]))
+#   ng <- length(Alist)
+#   # Need to check all square, 
+
+#   Alist <- lapply(Alist, function(A) pad(A[], nv - dim(A[])[1]))
+
+#   if(is.null(seeds)){
+#     seeds <- replicate(ng, NULL)
+#     nonseeds <- replicate(1:nv, NULL)
+    
+#   } else{
+#     if(is.list(seeds)){
+#       ns <- length(seeds[[1]])
+#       if(any(sapply(seeds,length) != ns)){
+#         stop("There must be the same number of seeds for each graph")
+#       }
+#       nonseeds <- lapply(seeds, function(s){
+#         setdiff(1:nv, s)
+#       })
+#     }
+#   }
+#   ns <- length(seeds[[1]])
+
+#   nn <- nv-ns
+#   nonseeds <- !seeds
+
+#   Asn <- A[seeds,nonseeds]
+#   Ann <- A[nonseeds,nonseeds]
+#   Ans <- A[nonseeds,seeds]
+
+#   Bsn <- B[seeds,nonseeds]
+#   Bnn <- B[nonseeds,nonseeds]
+#   Bns <- B[nonseeds,seeds]
+
+#   P <- init_start(start = start, nns = nn,
+#                   A = A, B = B, seeds = seeds)
+
+#   # permute B matrices by a random perm to avoid bias
+#   # call the below Q
+#   rp <- sample(nn)
+#   rpmat <- Matrix::Diagonal(nn)[rp, ]
+#   # B <- QBQ^T
+#   Bnn <- rpmat %*% Bnn %*% Matrix::t(rpmat)
+#   Bns <- rpmat %*% Bns
+#   Bsn <- Bsn %*% Matrix::t(rpmat)
+#   # change P <- PQ^T
+#   P <- P %*% Matrix::t(rpmat)
+#   if(is.null(similarity)){
+#     similarity <- Matrix::Matrix(0,nn,nn)
+#   } else {
+#     similarity <- similarity %*% Matrix::t(rpmat)
+#   }
+
+#   rm(A,B)
+#   gc()
+
+#   iter <- 0
+#   toggle <- TRUE
+
+#   # seed to non-seed info
+#   if(ns > 1){
+#     s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
+#   } else if( ns == 1){
+#     s_to_ns <- outer(Ans,Bns) + outer(Asn, Bsn)
+#   } else {
+#     s_to_ns <- Matrix(0, nv, nv)
+#   }
+
+#   if("rlapjv" %in% rownames(installed.packages()) && usejv){
+#     library(rlapjv)
+#     # usejv <- TRUE
+#     if( totv1 / totv2 < 0.5 ){
+#       usejvmod <- TRUE
+#       usejv <- FALSE
+#     }
+#   } else {
+#     usejv <- FALSE
+#     usejvmod <- FALSE
+#   }
+
+#   while(toggle && iter < max_iter){
+#     iter <- iter + 1
+
+#     # non-seed to non-seed info
+#     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
+
+#     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
+
+#     if ( usejv ){
+#       Grad <- as.matrix(Grad)
+#       ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
+#         maximize = TRUE)
+#     } else if ( usejvmod ) {
+#       if( class(Grad) == "splrMatrix" ){
+#         ind <- rlapjv::lapmod(splr.to.sparse(Grad),
+#           maximize = TRUE)
+#       } else {
+#         ind <- rlapjv::lapmod(Grad, maximize = TRUE)
+#       }
+#     } else {
+#       Grad <- as.matrix(Grad)
+#       Grad <- (Grad - min(Grad))
+#       ind <- as.vector(clue::solve_LSAP(Grad,
+#         maximum = TRUE))
+#     }
+
+#     ind2 <- cbind(1:nn, ind)
+#     Pdir <- Matrix::Diagonal(nn)
+#     Pdir <- Pdir[ind, ]
+#     ns_Pdir_ns <- Matrix::t(Ann)[, order(ind)] %*% Bnn
+
+#     cc <- innerproduct(tAnn_P_Bnn, P)
+#     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
+#     e <- sum(ns_Pdir_ns[ind2])
+#     u <- innerproduct(P, s_to_ns + similarity)
+#     v <- sum((s_to_ns + similarity)[ind2])
+
+
+#     if (cc - d + e == 0 && d - 2 * e + u - v == 0) {
+#       alpha <- 0
+#     } else {
+#       alpha <- -(d - 2 * e + u - v)/(2 * (cc - d + e))
+#     }
+
+#     f0 <- 0
+#     f1 <- cc - e + u - v
+#     falpha <- (cc - d + e) * alpha^2 + (d - 2 * e + u - v) *
+#       alpha
+
+#     Pold <- P
+#     if (alpha < 1 && alpha > 0 &&
+#         falpha > f0 && falpha > f1) {
+#       P <- alpha * P + (1 - alpha) * Pdir
+#     } else if (f0 > f1) {
+#       P <- Pdir
+#     } else {
+#       toggle <- F
+#     }
+    
+#   }
+
+#   D_ns <- P
+
+#   if ( usejv ){
+#     corr_ns <- rlapjv::lapjv(P, maximize = TRUE)
+#   } else if ( usejvmod ) {
+#     if (class(P) == "splrMatrix") {
+#       # this is pretty hacky but it breaks it otherwise
+#       corr_ns <- rlapjv::lapmod(P@x, maximize = TRUE)
+#     } else {
+#       corr_ns <- rlapjv::lapmod(P, maximize = TRUE)
+#     }
+#   } else {
+#     corr_ns <- as.vector(clue::solve_LSAP(as.matrix(P), 
+#       maximum = TRUE))
+#   }
+
+#   # undo rand perm here
+#   corr_ns <- rp[corr_ns]
+#   corr <- 1:nv
+#   corr[nonseeds] <- corr[nonseeds][corr_ns]
+#   P <- Matrix::Diagonal(nv)[corr, ]
+#   D <- P
+#   # and undo it right quick here too
+#   if ( class(D_ns) == "splrMatrix"){
+#     if ( nn < nv){
+#       warning("Only returning non-seed D.")
+#     }
+#     D <- D_ns
+#   } else {
+#     D[nonseeds, nonseeds] <- D_ns %*% rpmat
+#   }
+#   # and we should be home clear
+
+
+#   # fix match results if there are incorrect seeds
+#   if(sum(aseeds_err)!=0){
+#     corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
+#     P <- Matrix::Diagonal(nv)[corr,]
+#     D <- fix_hard_D(seed_A_err,seed_B_err,D)
+#   }
+#   if( return_big ){
+#     list(corr = corr, P = P, D = D, iter = iter)
+#   } else { 
+#     list(corr = corr, iter = iter)
+#   }
+
+# }

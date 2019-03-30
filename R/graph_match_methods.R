@@ -45,7 +45,7 @@
 #' @export
 graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
-  similarity = NULL, return_big = TRUE, usejv = TRUE){
+  similarity = NULL, return_big = TRUE, usejv = FALSE){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -85,7 +85,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
       B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
     }
   }
-
   nn <- nv-ns
   nonseeds <- !seeds
 
@@ -130,17 +129,14 @@ graph_match_FW <- function(A, B, seeds = NULL,
   } else {
     s_to_ns <- Matrix(0, nv, nv)
   }
-
-  if("rlapjv" %in% rownames(installed.packages()) && usejv){
+  
+  usejvmod <- FALSE
+  if("rlapjv" %in% rownames(installed.packages())){
     library(rlapjv)
     # usejv <- TRUE
     if( totv1 / totv2 < 0.5 ){
       usejvmod <- TRUE
-      usejv <- FALSE
     }
-  } else {
-    usejv <- FALSE
-    usejvmod <- FALSE
   }
 
   while(toggle && iter < max_iter){
@@ -150,10 +146,10 @@ graph_match_FW <- function(A, B, seeds = NULL,
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
-
     if ( usejv ){
       Grad <- as.matrix(Grad)
-      ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
+      ind <- rlapjv::lapjv(Grad+1000,
+        # round(Grad * nn ^ 2 * max(Grad)),
         maximize = TRUE)
     } else if ( usejvmod ) {
       if( class(Grad) == "splrMatrix" ){
@@ -219,6 +215,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     corr_ns <- as.vector(clue::solve_LSAP(as.matrix(P), 
       maximum = TRUE))
   }
+
 
   # undo rand perm here
   corr_ns <- rp[corr_ns]
