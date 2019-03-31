@@ -131,8 +131,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
   
   usejvmod <- FALSE
-  if("rlapjv" %in% rownames(installed.packages())){
-    library(rlapjv)]
+  if("rlapjv" %in% rownames(installed.packages()) ){
+    library(rlapjv)
     # usejv <- TRUE
     if( totv1 / totv2 < 0.5 ){
       usejvmod <- TRUE
