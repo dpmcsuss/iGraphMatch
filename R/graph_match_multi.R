@@ -489,6 +489,9 @@ graph_match_percolation_multi <- function (A, B, start = NULL, similarity = NULL
   }
   
   corr <- Z[-1,]
+  if(is.null(nrow(corr))){
+    corr <- Matrix(corr, ncol = 2)
+  }
   colnames(corr) <- c("corr_A", "corr_B")
   corr
 }
@@ -565,6 +568,9 @@ graph_match_ExpandWhenStuck_multi <- function(A, B, start = NULL, similarity = N
   
   # matching result
   corr <- Z[-1,]
+  if(is.null(nrow(corr))){
+    corr <- Matrix(corr, ncol = 2)
+  }
   colnames(corr) <- c("corr_A","corr_B")
   corr
 }
@@ -661,6 +667,9 @@ graph_match_mutual_multi <- function(A, B, start = NULL, similarity = NULL, alph
   }
   
   corr <- match
+  if(is.null(nrow(corr))){
+    corr <- Matrix(corr, ncol = 2)
+  }
   colnames(corr) <- c("corr_A", "corr_B") 
   corr
 }
