@@ -6,20 +6,22 @@
 \alias{graph_match_percolation}
 \alias{graph_match_ExpandWhenStuck}
 \alias{graph_match_soft_percolation}
+\alias{graph_match_IsoRank}
 \title{Graph Match Methods}
 \usage{
-graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
-  similarity = NULL, return_big = TRUE, usejv = FALSE)
+graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari",
   max_iter = 100, tol = 1e-05)
 
-graph_match_percolation(A, B, seeds, r = 2, center = FALSE)
+graph_match_percolation(A, B, seeds, r = 2)
 
 graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
 
-graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 50,
-  center = FALSE)
+graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 2)
+
+graph_match_IsoRank(A, B, start, alpha, max_iter = 1000,
+  method = "greedy")
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
@@ -41,7 +43,15 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{r}{A number. Threshold of neighboring pair scores.}
 
-\item{max_iter}{A number. Maximum number of replacing matches.}
+\item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
+on the information in network topology over other information such as 
+similarity scores}
+
+\item{method}{A character. Choice of method to extract mapping from score matrix,
+including greedy method and the Hungarian algorithm.}
+
+\item{max_iter}{A number. Maximum number of replacing matches equals to
+max_iter times number of total vertices of \eqn{G_1}.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
@@ -67,6 +77,12 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 \code{graph_match_soft_percolation} returns matching correspondence
   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
   index of nodes in \eqn{G_2} named \code{corr_B}.
+
+\code{graph_match_IsoRank} returns matching correspondence
+  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+  index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to 
+  extract mapping, the nodes correpondence is arranged in the order of getting 
+  matched.
 }
 \description{
 Match two given graphs, returns a list of graph matching
@@ -108,6 +124,11 @@ graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 seeds <- 1:5
 graph_match_soft_percolation(g1, g2, seeds, r = 2, max_iter = 2)
 
+# match G_1 & G_2 using IsoRank algorithm
+startm <- matrix(0, 10, 10)
+diag(startm)[1:4] <- 1
+GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
+
 }
 \references{
 L. Yartseva and M. Grossglauser (2013), \emph{On the performance
@@ -115,5 +136,5 @@ L. Yartseva and M. Grossglauser (2013), \emph{On the performance
 
 E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
-Endowment, 8(10):1010-1021.
+Endowment, 8(10):1010–1021.
 }
