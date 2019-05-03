@@ -17,6 +17,11 @@
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
 #' @param max_iter A number. Maximum number of replacing matches.
+#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
+#'   on the information in network topology over other information such as 
+#'   similarity scores
+#' @param method A character. Choice of method to extract mapping from score matrix,
+#'   including greedy method and the Hungarian algorithm.
 #'
 #' @rdname graph_match_methods
 #'
@@ -967,4 +972,77 @@ check_cycle <- function(rem, new){
   }
 
   result
+}
+#'
+#' @rdname graph_match_methods
+#' @return \code{graph_match_IsoRank} returns matching correspondence
+#'   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+#'   index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to 
+#'   extract mapping, the nodes correpondence is arranged in the order of getting 
+#'   matched.
+#'
+#' @examples
+#' # match G_1 & G_2 using IsoRank algorithm
+#' startm <- matrix(0, 10, 10)
+#' diag(startm)[1:4] <- 1
+#' GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
+#'
+#' @export
+#'
+graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "greedy"){
+  A <- A[]
+  B <- B[]
+  
+  # computing transition matrix A
+  A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
+  B <- B %*% Matrix::Diagonal(nrow(B), 1/Matrix::colSums(B))
+  mat_A <- Matrix::kronecker(A, B)
+  start <- c(t(start)) # sparsify if poss
+  E <- start/sum(abs(start))
+  
+  # computing R by power method
+  R_new <- E
+  tol <- 1e-5
+  iter <- 1
+  diff <- 1
+  while(diff > tol & iter <= max_iter){
+    
+    R <- R_new
+    if(alpha>0){
+      AR <- mat_A %*% R
+      AR <- alpha * AR + (1-alpha) * E
+    } else{
+      AR <- mat_A %*% R
+    }
+    R_new <- AR / sum(abs(AR))
+    diff <- sum(abs(R-R_new))
+    iter <- iter + 1
+  }
+  
+  if(alpha>0){
+    AR <- mat_A %*% R_new
+    R <- alpha * AR + (1-alpha) * E
+  } else{
+    R <- R_new
+  }
+  R <- matrix(R, byrow = TRUE, nrow = nrow(A))
+  
+  # find GNA
+  if(method == "greedy"){
+    corr <- NULL
+    while (max(R)>0) {
+      max_ind <- which(R == max(R), arr.ind = TRUE)
+      max_ind <- max_ind[sample(nrow(max_ind), 1), ]
+      corr <- rbind(corr, max_ind)
+      R[max_ind[1],] <- -1
+      R[,max_ind[2]] <- -1
+    }
+    corr <- data.frame(corr_A = corr[,1], corr_B = corr[,2])
+  } else if(method == "LAP"){
+    # Hungarian alg.
+    corr <- as.vector(clue::solve_LSAP(R, maximum = TRUE))
+    corr <- data.frame(corr_A = 1:nrow(A), corr_B = corr)
+  }
+  
+  corr
 }
