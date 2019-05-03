@@ -628,6 +628,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2, center = FALSE)
 
   n_A <- dim(A)[1]
   n_B <- dim(B)[1]
+  n <- max(n_A, n_B)
   P <- matrix(0, nrow=n_A, ncol = n_B)
   seeds <- check_seeds(seeds)
   for (i in 1:nrow(seeds)){
@@ -653,7 +654,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2, center = FALSE)
     M[, max_ind[2]] <- -n
     Z <- rbind(Z, max_ind)
   }
-  if (nrow(Z) == n - 1) {
+  if (n_A == n_B & nrow(Z) == n - 1) {
     all <- 1:n
     seed_A <- all[!(all %in% Z$seed_A)]
     seed_B <- all[!(all %in% Z$seed_B)]
