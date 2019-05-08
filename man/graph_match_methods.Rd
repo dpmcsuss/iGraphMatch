@@ -44,7 +44,7 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 \item{r}{A number. Threshold of neighboring pair scores.}
 
 \item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
-on the information in network topology over other information such as 
+on the information in network topology over other information such as
 similarity scores}
 
 \item{method}{A character. Choice of method to extract mapping from score matrix,
@@ -66,13 +66,17 @@ max_iter times number of total vertices of \eqn{G_1}.}
   permutation matrix named \code{P} based on convex relaxation method for
   undirected graphs.
 
-\code{graph_match_percolation} returns matching correspondence of
-  matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_percolation} returns a list consists of
+  matching correspondence of matched pairs with index of nodes in
+  \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
+  \code{corr_B} returns and the order of matching for matched nodes in
+  \eqn{G_1}.
 
-\code{graph_match_ExpandWhenStuck} returns matching correspondence of
-  matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_ExpandWhenStuck} returns a list consists of
+  matching correspondence of matched pairs with index of nodes in
+  \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
+  \code{corr_B} returns and the order of matching for matched nodes in
+  \eqn{G_1}.
 
 \code{graph_match_soft_percolation} returns matching correspondence
   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
@@ -80,9 +84,9 @@ max_iter times number of total vertices of \eqn{G_1}.}
 
 \code{graph_match_IsoRank} returns matching correspondence
   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to 
-  extract mapping, the nodes correpondence is arranged in the order of getting 
-  matched.
+  index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to
+  extract mapping, returns a list with mapping correspondence and order of
+  matching for matched nodes in \eqn{G_1}.
 }
 \description{
 Match two given graphs, returns a list of graph matching
@@ -137,4 +141,8 @@ L. Yartseva and M. Grossglauser (2013), \emph{On the performance
 E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
 Endowment, 8(10):1010–1021.
+
+R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
+multiple protein interaction networks with application to functional
+orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
 }
