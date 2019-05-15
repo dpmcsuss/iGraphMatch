@@ -951,13 +951,6 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
   }
-
-  if(alpha>0){
-    AR <- mat_A %*% R_new
-    R <- alpha * AR + (1-alpha) * E
-  } else{
-    R <- R_new
-  }
   R <- matrix(R, byrow = TRUE, nrow = nrow(A))
 
   # find GNA
