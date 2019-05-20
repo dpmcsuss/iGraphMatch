@@ -971,5 +971,41 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
     corr <- data.frame(corr_A = 1:nrow(A), corr_B = corr)
     corr
   }
+}
+#'
+#' @rdname graph_match_methods
+#' @return \code{graph_match_Umeyama} returns matching correspondence
+#'   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+#'   index of nodes in \eqn{G_2} named \code{corr_B}.
+#'
+#' @references S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
+#'   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
+#'
+#' @examples
+#' # match G_1 & G_2 using Umeyama algorithm
+#' G <- sample_correlated_gnp_pair(10, .9, .5)
+#' G1 <- G$graph1
+#' G2 <- G$graph2
+#' GM_U <- graph_match_Umeyama(G1, G2, startm, alpha = .3)
+#'
+#' @export
+#'
+graph_match_Umeyama <- function(A, B, start, alpha = 0){
+  A <- A[]
+  B <- B[]
 
+  if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
+    # construct Hermitian matrices by adjacency matrices
+    A <- as.matrix((A + Matrix::t(A))/2) + as.matrix((A - Matrix::t(A))/2)*1i
+    B <- as.matrix((B + Matrix::t(B))/2) + as.matrix((B - Matrix::t(B))/2)*1i
+  }
+
+  U_A <- eigen(A)$vectors
+  U_B <- eigen(B)$vectors
+  AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
+  Grad <- (1-alpha) * AB + alpha * Matrix::t(start)
+  ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+
+  corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
+  corr
 }
