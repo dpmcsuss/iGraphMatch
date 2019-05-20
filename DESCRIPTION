@@ -2,6 +2,7 @@ Package: iGraphMatch
 Type: Package
 Title: Tools for approximately solving graph matching problems
 Version: 0.0.0.9000
+Encoding: UTF-8
 Authors@R: c(
     person("Daniel", "Sussman", email = "sussman@bu.edu", role = "aut"),
     person("Zihuan", "Qiao", email = "zhqiao@bu.edu", role = c("aut", "cre"))
