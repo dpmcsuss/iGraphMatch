@@ -7,6 +7,7 @@
 \alias{graph_match_ExpandWhenStuck}
 \alias{graph_match_soft_percolation}
 \alias{graph_match_IsoRank}
+\alias{graph_match_Umeyama}
 \title{Graph Match Methods}
 \usage{
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20)
@@ -22,6 +23,8 @@ graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 2)
 
 graph_match_IsoRank(A, B, start, alpha, max_iter = 1000,
   method = "greedy")
+
+graph_match_Umeyama(A, B, start, alpha = 0)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
@@ -87,6 +90,10 @@ max_iter times number of total vertices of \eqn{G_1}.}
   index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to
   extract mapping, returns a list with mapping correspondence and order of
   matching for matched nodes in \eqn{G_1}.
+
+\code{graph_match_Umeyama} returns matching correspondence
+  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
+  index of nodes in \eqn{G_2} named \code{corr_B}.
 }
 \description{
 Match two given graphs, returns a list of graph matching
@@ -133,6 +140,12 @@ startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
 GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
 
+# match G_1 & G_2 using Umeyama algorithm
+G <- sample_correlated_gnp_pair(10, .9, .5)
+G1 <- G$graph1
+G2 <- G$graph2
+GM_U <- graph_match_Umeyama(G1, G2, startm, alpha = .3)
+
 }
 \references{
 L. Yartseva and M. Grossglauser (2013), \emph{On the performance
@@ -145,4 +158,7 @@ Endowment, 8(10):1010–1021.
 R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 multiple protein interaction networks with application to functional
 orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
+
+S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
+  graph matching problems}. IEEE TPAMI. USA, pages 695-703.
 }
