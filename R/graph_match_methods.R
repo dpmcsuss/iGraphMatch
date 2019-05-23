@@ -16,7 +16,6 @@
 #' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
-#' @param max_iter A number. Maximum number of replacing matches.
 #'
 #' @rdname graph_match_methods
 #'
