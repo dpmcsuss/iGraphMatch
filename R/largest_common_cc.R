@@ -1,0 +1,61 @@
+#' @title Find the largest common connected subgraph(LCCS)
+#'
+#' @description Assume two aligned graphs, find the largest common connect subgraph of these
+#' two graphs, which is an induced connected subgraph of both graphs that has as many vertices
+#' as possible.
+#'
+#' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
+#' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
+#' @param min_degree A number. Defines the level of connectness of the obtained largest common
+#' connected subgraph. The induced subgraph is an graph with a minimum degree of vertices equal
+#' to min_degree.
+#'
+#' @rdname largest_common_cc
+#'
+#' @return \code{largest_common_cc} returns the common largest connected subgraph of
+#' two graphs in the igraph object form and a logical vector indicating which vertices in
+#' the original graphs remain in the induced subgraph.
+#'
+#' @examples
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.2)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
+#' # put no constraint on the minimum degree of the common largest conncect subgraph
+#' lccs1 <- largest_common_cc(g1, g2, min_degree = 1)
+#' # induced subgraph
+#' lccs1$g
+#' # label of vertices of the induced subgraph in the original graph
+#' V(A)[lccs1_log]
+#' # obtain a common largest connect subgraph with each vertex having a minimum degree of 3
+#' lccs3 <- largest_common_cc(g1, g2, min_degree = 3)
+#' @export
+#'
+largest_common_cc <- function(A, B, min_degree = 1){
+  keep <- rep(TRUE, vcount(A))
+  while (!(is_connected(A) && is_connected(B))){
+    cc1 <- components(A)
+    cc2 <- components(B)
+
+    lcc1 <- which.max(cc1$csize)
+    lcc2 <- which.max(cc2$csize)
+
+    vlcc1 <- cc1$membership == lcc1
+    vlcc2 <- cc2$membership == lcc2
+
+    vlcc <- vlcc1 & vlcc2
+    keep[keep] <- vlcc
+
+    A <- induced_subgraph(A, V(A)[vlcc])
+    B <- induced_subgraph(B, V(B)[vlcc])
+
+    if(min_degree > 1){
+      good_deg <- (degree(A) >= min_degree) & (degree(B) >= min_degree)
+      keep[keep] <- good_deg
+
+      A <- induced_subgraph(A, good_deg)
+      B <- induced_subgraph(B, good_deg)
+    }
+  }
+
+  list(g = A, keep = keep)
+}
