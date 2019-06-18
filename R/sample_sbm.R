@@ -46,7 +46,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho,...){
 #' core.block.sizes=c(200,500))
 #' @export
 #'
-sample_correlated_sbm_pair_w_junk_1 <- function(
+sample_correlated_sbm_pair_w_junk <- function(
   n, pref.matrix, block.sizes, rho, core.block.sizes,...){
   
   K <- length(block.sizes)
