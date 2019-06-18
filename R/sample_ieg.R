@@ -25,19 +25,36 @@
 #' sample_correlated_ieg_pair(n,p_mat,c_mat)
 #'
 #' @export
-sample_correlated_ieg_pair <- function(n,p_mat,c_mat,directed=FALSE){
+sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE){
   g1 <- matrix(rbinom(n^2,1,p_mat),n)
   z0 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)),n)
   z1 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
   g2 <- z1*g1+z0*(1-g1)
-
+  
   if(!directed){
     g1[row(g1)>=col(g1)] <- 0
     g2[row(g2)>=col(g2)] <- 0
+    if(!loops){
+      list(graph1=graph_from_adjacency_matrix(g1,mode="undirected",diag=FALSE),
+           graph2=graph_from_adjacency_matrix(g2,mode="undirected",diag=FALSE))
+    }
+    else{
+    list(graph1=graph_from_adjacency_matrix(g1,mode="undirected",diag=TRUE),
+         graph2=graph_from_adjacency_matrix(g2,mode="undirected",diag=TRUE))
+    }
   }
-  list(graph1=graph_from_adjacency_matrix(g1,mode="undirected"),
-       graph2=graph_from_adjacency_matrix(g2,mode="undirected"))
+  else{
+    if(!loops){
+      list(graph1=graph_from_adjacency_matrix(g1,mode="directed",diag=FALSE),
+           graph2=graph_from_adjacency_matrix(g2,mode="directed",diag=FALSE))
+    }
+    else{
+      list(graph1=graph_from_adjacency_matrix(g1,mode="directed",diag=TRUE),
+           graph2=graph_from_adjacency_matrix(g2,mode="directed",diag=TRUE))
+    }
+  }
 }
+
 #' @rdname sample_ieg
 #' @return \code{sample_correlated_rdpg} returns two igraph objects named
 #' \code{graph1} and \code{graph2} that are sampled from random dot product
@@ -54,7 +71,7 @@ sample_correlated_ieg_pair <- function(n,p_mat,c_mat,directed=FALSE){
 #' sample_correlated_rdpg(X,rho=0.5)
 #'
 #' @export
-sample_correlated_rdpg <- function(X,rho,nc=nrow(X)){
+sample_correlated_rdpg <- function(X,rho,nc=nrow(X),...){
   p_mat <- X%*%t(X)
   n <- nrow(X)
   if(length(rho)==1){
@@ -63,5 +80,5 @@ sample_correlated_rdpg <- function(X,rho,nc=nrow(X)){
   }else{
     c_mat <- rho
   }
-  sample_correlated_ieg_pair(n,p_mat,c_mat)
+  sample_correlated_ieg_pair(n,p_mat,c_mat,...)
 }
