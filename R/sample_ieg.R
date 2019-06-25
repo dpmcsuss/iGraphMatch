@@ -13,6 +13,9 @@
 #' interval.
 #' @param rho A number. The target Pearson correlation between the adjacency
 #' matrices of the generated graphs. It must be in open (0,1) interval.
+#' @param directed Logical scalar, whether to generate directed graphs.
+#' @param loops Logical scalar, whether self-loops are allowed in the graph.
+#' @param permutation A numeric vector,permute second graph.
 #' @param nc An integer. Number of core vertices.
 #'
 #' @rdname sample_ieg
@@ -25,34 +28,23 @@
 #' sample_correlated_ieg_pair(n,p_mat,c_mat)
 #'
 #' @export
-sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE){
+sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,permutation){
   g1 <- matrix(rbinom(n^2,1,p_mat),n)
   z0 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)),n)
   z1 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
   g2 <- z1*g1+z0*(1-g1)
   
-  if(!directed){
+  if(directed){
+    mode <- "directed"
+  } else{
     g1[row(g1)>=col(g1)] <- 0
     g2[row(g2)>=col(g2)] <- 0
-    if(!loops){
-      list(graph1=graph_from_adjacency_matrix(g1,mode="undirected",diag=FALSE),
-           graph2=graph_from_adjacency_matrix(g2,mode="undirected",diag=FALSE))
-    }
-    else{
-    list(graph1=graph_from_adjacency_matrix(g1,mode="undirected",diag=TRUE),
-         graph2=graph_from_adjacency_matrix(g2,mode="undirected",diag=TRUE))
-    }
+    mode <- "undirected"
   }
-  else{
-    if(!loops){
-      list(graph1=graph_from_adjacency_matrix(g1,mode="directed",diag=FALSE),
-           graph2=graph_from_adjacency_matrix(g2,mode="directed",diag=FALSE))
-    }
-    else{
-      list(graph1=graph_from_adjacency_matrix(g1,mode="directed",diag=TRUE),
-           graph2=graph_from_adjacency_matrix(g2,mode="directed",diag=TRUE))
-    }
-  }
+  list(graph1 = graph_from_adjacency_matrix(g1, 
+         mode = mode, diag = loops),
+       graph2 = permute(graph_from_adjacency_matrix(g2,
+         mode = mode, diag = loops),permutation))
 }
 
 #' @rdname sample_ieg
