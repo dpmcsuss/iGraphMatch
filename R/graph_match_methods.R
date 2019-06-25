@@ -25,12 +25,11 @@
 #'   including greedy method and the Hungarian algorithm.
 #'
 #' @rdname graph_match_methods
-#'
+#'   
 #' @return \code{graph_match_FW} returns a list of graph matching results,
-#'   including match correspondence vector of \eqn{G_2} with respect to
-#'   \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D},
-#'   permutation matrix named \code{P} based on Frank-Wolfe methodology and
-#'   iteration time of the algorithm named \code{iter}.
+#'   including the graph matching formula, a data frame containing the matching 
+#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+#'   \code{corr_B} and the number of seeds. 
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
@@ -296,10 +295,9 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_convex} returns a list of graph matching results,
-#'   including matching correspondence vector of \eqn{G_2} with respect to
-#'   \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D} and
-#'   permutation matrix named \code{P} based on convex relaxation method for
-#'   undirected graphs.
+#'   including the graph matching formula, a data frame containing the matching 
+#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+#'   \code{corr_B} and the number of seeds. 
 #'
 #' @examples
 #' seeds <- 1:10 <= 3
@@ -421,7 +419,9 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     D <- fix_hard_D(seed_A_err,seed_B_err,D)
   }
 
-  list(corr = corr, P = P, D = D)
+  cl <- match.call()
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
+  z
 }
 #'
 #' @return \code{graph_match_convex_directed} returns graph matching results based
@@ -536,7 +536,10 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
   D[nonseeds,nonseeds] <- D_ns
-  list(corr = corr, P = P, D = D)
+  
+  cl <- match.call()
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
+  z
 }
 #'
 #' @rdname graph_match_methods
@@ -545,6 +548,10 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #'   \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
 #'   \code{corr_B} returns and the order of matching for matched nodes in
 #'   \eqn{G_1}.
+#' @return \code{graph_match_percolation} returns a list of graph matching results,
+#'   including the graph matching formula, a data frame containing the matching 
+#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+#'   \code{corr_B}, the number of seeds and the order of nodes getting matched.
 #'
 #' @references L. Yartseva and M. Grossglauser (2013), \emph{On the performance
 #'   of percolation graph matching}. COSN, Boston, MA, USA, pages 119–130.
@@ -568,6 +575,7 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
   n <- nrow(A)
   m <- nrow(B)
   seeds <- check_seeds(seeds) #unused seeds
+  ns <- nrow(seeds)
   Z <- seeds #matched nodes
   M <- matrix(0,n,m) #marks matrix
 
@@ -608,18 +616,20 @@ graph_match_percolation <- function(A, B, seeds, r = 2){
   order <- order(Z$seed_A)
   corr <- Z[order(Z$seed_A),]
   names(corr) <- c("corr_A","corr_B")
-  list(corr = corr, order = order)
+  
+  cl <- match.call()
+  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z
 }
 cal_mark <- function(x,y){
   1 - abs(x - y) / max(x, y)
 }
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_ExpandWhenStuck} returns a list consists of
-#'   matching correspondence of matched pairs with index of nodes in
-#'   \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
-#'   \code{corr_B} returns and the order of matching for matched nodes in
-#'   \eqn{G_1}.
+#' @return \code{graph_match_ExpandWhenStuck} returns a list of graph matching 
+#'   results, including the graph matching formula, a data frame containing the 
+#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+#'   and \code{corr_B}, the number of seeds and the order of nodes getting matched.
 #'
 #' @references E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 #' \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
@@ -643,6 +653,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   n <- nrow(A)
   m <- nrow(B)
   seeds <- check_seeds(seeds) #unused seeds
+  ns <- nrow(seeds)
   Z <- seeds #matched nodes
   M <- matrix(0,n,m) #marks matrix
   M[seeds$seed_A,] <- -n*n
@@ -704,13 +715,17 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   order <- order(Z$seed_A)
   corr <- Z[order(Z$seed_A),]
   names(corr) <- c("corr_A","corr_B")
-  list(corr = corr, order = order)
+  
+  cl <- match.call()
+  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z
 }
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_soft_percolation} returns matching correspondence
-#'   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-#'   index of nodes in \eqn{G_2} named \code{corr_B}.
+#' @return \code{graph_match_soft_percolation} returns a list of graph matching 
+#'   results, including the graph matching formula, a data frame containing the 
+#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+#'   and \code{corr_B}, the number of seeds and the order of nodes getting matched.
 #'
 #' @examples
 #' # match G_1 & G_2 using soft percolation graph matching method
@@ -862,9 +877,13 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
   }
 
   # matching result
-  corr <- Z[order(Z$seed_A),]
+  order <- order(Z$seed_A)
+  corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
-  corr
+  
+  cl <- match.call()
+  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z
 }
 conflict_check <- function(Matches, ind, logical = TRUE){
 
@@ -906,11 +925,11 @@ check_cycle <- function(rem, new){
 }
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_IsoRank} returns matching correspondence
-#'   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-#'   index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to
-#'   extract mapping, returns a list with mapping correspondence and order of
-#'   matching for matched nodes in \eqn{G_1}.
+#' @return \code{graph_match_IsoRank} returns a list of graph matching 
+#'   results, including the graph matching formula, a data frame containing the 
+#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+#'   and \code{corr_B} and the number of seeds. If choose the greedy method to
+#'   extract mapping, the order of nodes getting matched will also be returned.
 #'
 #' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 #' multiple protein interaction networks with application to functional
@@ -932,6 +951,7 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
   A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
   B <- B %*% Matrix::Diagonal(nrow(B), 1/Matrix::colSums(B))
   mat_A <- Matrix::kronecker(A, B)
+  ns <- sum(diag(start)==1)
   start <- c(t(start)) # sparsify if poss
   E <- start/sum(abs(start))
 
@@ -966,19 +986,26 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
       R[,max_ind[2]] <- -1
     }
     corr <- data.frame(corr_A = corr[,1], corr_B = corr[,2])
-    list(corr = corr, order = order(corr$corr_A))
+    
+    cl <- match.call()
+    z <- list(call = cl, corr = corr, ns = ns, order = order(corr$corr_A))
+    z
   } else if(method == "LAP"){
     # Hungarian alg.
     corr <- as.vector(clue::solve_LSAP(R, maximum = TRUE))
     corr <- data.frame(corr_A = 1:nrow(A), corr_B = corr)
-    corr
+    
+    cl <- match.call()
+    z <- list(call = cl, corr = corr, ns = ns)
+    z
   }
 }
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_Umeyama} returns matching correspondence
-#'   of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-#'   index of nodes in \eqn{G_2} named \code{corr_B}.
+#' @return \code{graph_match_IsoRank} returns a list of graph matching 
+#'   results, including the graph matching formula, a data frame containing the 
+#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+#'   and \code{corr_B} and the number of seeds. 
 #'
 #' @references S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
 #'   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
@@ -995,6 +1022,7 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
 graph_match_Umeyama <- function(A, B, start, alpha = 0){
   A <- A[]
   B <- B[]
+  ns <- sum(diag(start)==1)
 
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices
@@ -1009,5 +1037,7 @@ graph_match_Umeyama <- function(A, B, start, alpha = 0){
   ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
 
   corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
-  corr
+  cl <- match.call()
+  z <- list(call = cl, corr = corr, ns = ns)
+  z
 }
