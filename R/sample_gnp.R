@@ -10,7 +10,7 @@
 #' (0,1) interval.
 #' @param ncore An integer. Number of core vertices.
 #' @param permutation A numeric vector,permute second graph. 
-#' @param ... Passed to \code{sample_correlated_gnp_pair}
+#' @param ... Passed to \code{sample_correlated_gnp_pair}.
 #'
 #' @rdname sample_gnp
 #' @return \code{sample_correlated_gnp_pair} returns a list of two igraph object, named
