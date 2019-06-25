@@ -12,9 +12,11 @@
 #' vector must match the number of vertices.
 #' @param rho A number. The target Pearson correlation between the adjacency matrices of the generated 
 #' graphs. It must be in open (0,1) interval.
+#' @param permutation. A numeric vector, permute second graph.
 #' @param check.corr A logical.
 #' @param core.block.size A numeric vector. Give the number of core vertices in each group. Entries
 #' should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.
+#' @param ... Passed to \code{sample_correlated_sbm_pair}.
 #'
 #' @rdname sample_sbm
 #' @return A list of two igraph object, named \code{graph1} and \code{graph2}.
@@ -23,7 +25,7 @@
 #' sample_correlated_sbm_pair(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
 #' @export
 #'
-sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho,...){
+sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permutation, ...){
   
   K <- length(block.sizes)
   # Make the first graph
@@ -37,7 +39,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho,...){
   
   graph2 <- Z1 %s% graph1 %u% (Z0-graph1)
   
-  list(graph1=graph1,graph2=graph2)
+  list(graph1=graph1,graph2=permute(graph2,permutation))
 }
 #'
 #' @rdname sample_sbm
@@ -47,7 +49,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho,...){
 #' @export
 #'
 sample_correlated_sbm_pair_w_junk <- function(
-  n, pref.matrix, block.sizes, rho, core.block.sizes,...){
+  n, pref.matrix, block.sizes, rho, permutation, core.block.sizes,...){
   
   K <- length(block.sizes)
   ncore <- sum(core.block.sizes)
@@ -70,6 +72,6 @@ sample_correlated_sbm_pair_w_junk <- function(
   
   graph2 <- Z1 %s% graph1 %u% (Z0-graph1)
   
-  list(graph1=graph1,graph2=graph2)
+  list(graph1=graph1,graph2=permute(graph2,permutation))
 }
 
