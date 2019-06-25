@@ -2,41 +2,33 @@
 % Please edit documentation in R/match_report.R
 \name{match_report}
 \alias{match_report}
-\title{Matching report}
+\title{Matching performance summary}
 \usage{
-match_report(A, B, corr, seeds = NULL, label = TRUE)
+match_report(object, A = A, B = B, label = TRUE, ...)
 }
 \arguments{
-\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
+\item{object}{A list. calls the matching result of applying a specific graph matching
+algorithm.}
 
-\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
-
-\item{corr}{A matrix or a data frame. Matching correspondence with the first
-and second columns correspond to indices in \eqn{G_1} and \eqn{G_2} respectively.}
-
-\item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
-there is no error in seeds input can be a vector of seed indices in
-\eqn{G_1}. Or if there exists error in seeds, input in the form of a matrix
-or a data frame, with the first column being the indices of \eqn{G_1} and
-the second column being the corresponding indices of \eqn{G_2}.}
-
-\item{label}{A logical. TRUE if the true correspondence is known.}
+\item{label}{A logical. TRUE if the true correspondence between two graphs is known, such
+as the simulated data.}
 }
 \value{
 \code{match_report} returns a list of matching performance evaluation metrics
 including number of matches, true matches, common edges, common non-edges, edge correctness
 which is the fraction of common edges over number of edges in the first graph, and the
-objective value ||A-PBP^T||_F.
+objective value ||A-PBP^T||_F. The function also returns the matching result including the
+correspondence and the permutation matrix.
 }
 \description{
-Get a report of matching performance based on several evaluation metrics
- according to the mapping correspondence.
+Get a summary of the matching result and measures of the matching performance
+based on several evaluation metrics associated with nodes and edges of two graphs.
 }
 \examples{
 graphs <- sample_correlated_gnp_pair(10, .5, .3)
 A <- graphs$graph1
 B <- graphs$graph2
-corr <- graph_match_percolation(A, B, 1:4)$corr
-match_report(A, B, corr, seeds = 1:4)
+res <- graph_match_percolation(A, B, 1:4)
+match_report(res, A, B)
 
 }

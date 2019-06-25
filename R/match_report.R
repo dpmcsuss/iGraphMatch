@@ -1,62 +1,61 @@
-#' @title Matching report
+#' @title Matching performance summary
 #'
-#' @description Get a report of matching performance based on several evaluation metrics
-#'  according to the mapping correspondence.
+#' @description Get a summary of the matching result and measures of the matching performance
+#' based on several evaluation metrics associated with nodes and edges of two graphs.
 #'
-#' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
-#' @param corr A matrix or a data frame. Matching correspondence with the first
-#'   and second columns correspond to indices in \eqn{G_1} and \eqn{G_2} respectively.
-#' @param seeds A vector of integers or logicals, a matrix or a data frame. If
-#'   there is no error in seeds input can be a vector of seed indices in
-#'   \eqn{G_1}. Or if there exists error in seeds, input in the form of a matrix
-#'   or a data frame, with the first column being the indices of \eqn{G_1} and
-#'   the second column being the corresponding indices of \eqn{G_2}.
-#' @param label A logical. TRUE if the true correspondence is known.
+#' @param object A list. calls the matching result of applying a specific graph matching
+#'   algorithm.
+#' @param label A logical. TRUE if the true correspondence between two graphs is known, such
+#'   as the simulated data.
 #'
 #' @rdname match_report
 #'
 #' @return \code{match_report} returns a list of matching performance evaluation metrics
 #' including number of matches, true matches, common edges, common non-edges, edge correctness
 #' which is the fraction of common edges over number of edges in the first graph, and the
-#' objective value ||A-PBP^T||_F.
+#' objective value ||A-PBP^T||_F. The function also returns the matching result including the
+#' correspondence and the permutation matrix.
 #'
 #' @examples
 #' graphs <- sample_correlated_gnp_pair(10, .5, .3)
 #' A <- graphs$graph1
 #' B <- graphs$graph2
-#' corr <- graph_match_percolation(A, B, 1:4)$corr
-#' match_report(A, B, corr, seeds = 1:4)
+#' res <- graph_match_percolation(A, B, 1:4)
+#' match_report(res, A, B)
 #'
 #' @export
 #'
-match_report <- function(A, B, corr, seeds = NULL, label = TRUE){
+match_report <- function(object, A = A, B = B, label = TRUE, ...){
   A <- A[]
   B <- B[]
-  seeds <- check_seeds(seeds)
-  ns <- nrow(seeds)
-  corr <- as.matrix(corr)
-
-  # # matched pairs: not including seeds
-  cat("# Matches: ", nrow(corr) - ns)
-  # # true matches: not including seeds
+  
+  z <- object
+  cat("Call: \n")
+  print(z$call)
+  
+  # Matched nodes
+  corr <- z$corr
+  z$n.match <- nrow(corr) - z$ns
+  cat("\n# Matches:", z$n.match)
   if(label == TRUE){
-    cat("\n# True Matches: ", sum(corr[,1]==corr[,2]) - ns)
+    z$n.true.match <- sum(corr$corr_A==corr$corr_B) - z$ns
+    cat("\n# True Matches: ", z$n.true.match)
   }
-  # # common edges
-  CE <- sum(A==B & A==1)
-  CNE <- sum(A==B & A==0)
-  cat("\n# Common Edges: ", CE,
-      "\n# Common Non-edges: ", CNE)
-
-  # edge correctness: common edges / |E_1|
-  cat("\nEdge Correctness: ", CE/sum(A==1))
-
+  
+  A_m <- A[corr$corr_A, corr$corr_A]
+  B_m <- B[corr$corr_B, corr$corr_B]
+  # Matched edges
+  z$CE <- sum(A_m==B_m & A_m==1)
+  z$CNE <- sum(A_m==B_m & A_m==0)
+  z$EC <- z$CE/sum(A[]==1)
+  cat("\n# Common Edges: ", z$CE,
+      "\n# Common Non-edges: ", z$CNE)
+  cat("\nEdge Correctness: ", z$EC)
+  
   # objective value: ||A-PBP^T||_F
-  P <- get_perm(nrow(A), nrow(B), corr)
-  PB <- Matrix::crossprod(P, B)
-  PBPT <- Matrix::tcrossprod(PB, P)
-  cat("\nObjective Value: ", Matrix::norm(A - PBPT, type = "F"))
+  z$Permutation <- get_perm(nrow(A), nrow(B), corr)
+  z$Obj.Value <- Matrix::norm(A_m-B_m, type = "F")
+  cat("\nObjective Value: ", z$Obj.Value)
+  
+  z
 }
-
-
