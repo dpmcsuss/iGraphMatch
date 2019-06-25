@@ -165,7 +165,9 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
     D <- fix_hard_D(seed_A_err,seed_B_err,D)
   }
 
-  list(corr = corr, P = P, D = D, iter = iter)
+  cl <- match.call()
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
+  z
 }
 # correct the order of swapping graph2 according to new seeds
 swap_order <- function(aseeds_matrix){
