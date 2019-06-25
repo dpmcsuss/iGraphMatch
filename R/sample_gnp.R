@@ -9,10 +9,8 @@
 #' @param p A number. Edge probability between two vertices. It must be in open
 #' (0,1) interval.
 #' @param ncore An integer. Number of core vertices.
-#' @param directed A logical. Whether to generate directed graphs.
-#' @param permutation A vector of number. A permutation vector that is applied on the
-#' vertices of the first graph, to get the second graph. If \code{NULL}, the vertices
-#' are not permuted.
+#' @param permutation A numeric vector,permute second graph. 
+#' @param ... Passed to \code{sample_correlated_gnp_pair}
 #'
 #' @rdname sample_gnp
 #' @return \code{sample_correlated_gnp_pair} returns a list of two igraph object, named
@@ -22,10 +20,21 @@
 #' sample_correlated_gnp_pair(50, 0.3, 0.5)
 #' @export
 #'
-sample_correlated_gnp_pair <- function (n, corr, p, directed = FALSE, permutation = NULL)
-{
-  igraph::sample_correlated_gnp_pair(n,corr,p,directed,permutation)
+sample_correlated_gnp_pair <- function(n, corr, p, permutation=1:n, ...){
+  
+  # Make the first graph
+  graph1 <- sample_gnp(n,p,...)
+  
+  # Make two graphs which will be used to make the
+  # second graph
+  Z0 <- sample_gnp(n,p*(1-corr),...)
+  Z1 <- sample_gnp(n,p+corr*(1-p),...)
+  
+  graph2 <- Z1 %s% graph1 %u% (Z0-graph1)
+  
+  list(graph1=graph1,graph2=permute(graph2,permutation))
 }
+
 #' @export
 #' @rdname sample_gnp
 #' @return \code{sample_correlated_gnp_pair_w_junk} returns a list of two igraph object, named
