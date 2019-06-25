@@ -12,7 +12,7 @@
 #' vector must match the number of vertices.
 #' @param rho A number. The target Pearson correlation between the adjacency matrices of the generated 
 #' graphs. It must be in open (0,1) interval.
-#' @param permutation. A numeric vector, permute second graph.
+#' @param permutation. A numeric vector, permute second graph. 
 #' @param check.corr A logical.
 #' @param core.block.size A numeric vector. Give the number of core vertices in each group. Entries
 #' should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.
@@ -25,7 +25,7 @@
 #' sample_correlated_sbm_pair(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
 #' @export
 #'
-sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permutation, ...){
+sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permutation=1:n, ...){
   
   K <- length(block.sizes)
   # Make the first graph
