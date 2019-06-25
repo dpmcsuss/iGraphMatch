@@ -10,6 +10,10 @@ match_report(object, A = A, B = B, label = TRUE, ...)
 \item{object}{A list. calls the matching result of applying a specific graph matching
 algorithm.}
 
+\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
+
+\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
+
 \item{label}{A logical. TRUE if the true correspondence between two graphs is known, such
 as the simulated data.}
 }
@@ -17,8 +21,7 @@ as the simulated data.}
 \code{match_report} returns a list of matching performance evaluation metrics
 including number of matches, true matches, common edges, common non-edges, edge correctness
 which is the fraction of common edges over number of edges in the first graph, and the
-objective value ||A-PBP^T||_F. The function also returns the matching result including the
-correspondence and the permutation matrix.
+objective value ||A-PBP^T||_F.
 }
 \description{
 Get a summary of the matching result and measures of the matching performance
