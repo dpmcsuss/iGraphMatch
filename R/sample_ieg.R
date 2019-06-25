@@ -28,7 +28,7 @@
 #' sample_correlated_ieg_pair(n,p_mat,c_mat)
 #'
 #' @export
-sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,permutation){
+sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,permutation=1:n){
   g1 <- matrix(rbinom(n^2,1,p_mat),n)
   z0 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)),n)
   z1 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
