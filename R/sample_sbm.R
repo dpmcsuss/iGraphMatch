@@ -49,7 +49,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permuta
 #' @export
 #'
 sample_correlated_sbm_pair_w_junk <- function(
-  n, pref.matrix, block.sizes, rho, permutation, core.block.sizes,...){
+  n, pref.matrix, block.sizes, rho, core.block.sizes, permutation=1:n, ...){
   
   K <- length(block.sizes)
   ncore <- sum(core.block.sizes)
