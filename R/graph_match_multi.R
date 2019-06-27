@@ -16,7 +16,7 @@
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
 #'
-#' @return \code{graph_match_FW} returns a list of graph matching results,
+#' @return \code{graph_match_FW_multi} returns a list of graph matching results,
 #' including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
 #' named \code{corr}, doubly stochastic matrix named \code{D}, permutation
 #' matrix named \code{P} based on Frank-Wolfe methodology and iteration time of
@@ -43,20 +43,21 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   B <- lapply(B, function(Bl) Bl[])
 
   # Assume each list has all the same number of nodes within
-  totv1<-ncol(A[[1]])
-  totv2<-ncol(B[[1]])
-  if(totv1>totv2){
-    diff<-totv1-totv2
+  totv1 <- ncol(A[[1]])
+  totv2 <- ncol(B[[1]])
+
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
     B <- lapply(B, function(Bl)
       pad(Bl[], diff))
-  }else if(totv1<totv2){
-    diff<-totv2-totv1
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
     A <- lapply(A, function(Al)
       pad(Al[], diff))
   }
   nv <- nrow(A[[1]])
 
-  if(is.null(seeds)){
+  if (is.null(seeds)){
     seeds <- rep(FALSE,nv)
     aseeds_err <- FALSE
     # seeds <- Matrix(FALSE,nv, ng)
@@ -99,19 +100,17 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
 
   P <- P[, rp]
 
-  if(is.null(similarity)){
-    similarity <- Matrix::Matrix(0,nn,nn)
+  zero_mat <- Matrix::Matrix(0, nn, nn)
+  if (is.null(similarity)){
+    similarity <- zero_mat
   } else {
     similarity <- similarity %*% Matrix::t(rpmat)
   }
 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
-  B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds][rp,rp])
+  B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds][rp, rp])
   nc <- length(A)
-
-  zero_mat <- Matrix(0,
-    nrow = nrow(A[[1]]), ncol = ncol(A[[1]]))
 
   if("rlapjv" %in% rownames(installed.packages()) && usejv){
     library(rlapjv)
@@ -145,7 +144,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
         maximize = TRUE)
     } else if ( usejvmod ) {
       if( class(Grad) == "splrMatrix" ){
-        ind <- rlapjv::lapmod(splr.to.sparse(Grad),
+        ind <- rlapjv::lapmod(splr_to_sparse(Grad),
           maximize = TRUE)
       } else {
         ind <- rlapjv::lapmod(Grad, maximize = TRUE)
@@ -237,20 +236,59 @@ get_s_to_ns <- function(Alist, Blist, seeds,
     Bsn <- B[seeds,nonseeds] %*% t(pmat)
     Bns <- pmat %*% B[nonseeds,seeds]
 
-    if( ns == 1){
+    if (ns == 1){
       outer(Ans, Bns) + outer(Asn, Bsn)
     } else {
       (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
     }
   }
+
+  if (!is(Alist, "list")){
+    return(s_to_ns(Alist, Blist))
+  }
+
   nc <- length(Alist)
   s2ns <- Matrix(0, nrow = nns, ncol = nns)
-  for(ch in 1:nc){
-
+  for (ch in 1:nc){
     s2ns <- s2ns + s_to_ns(Alist[[ch]], Blist[[ch]])
     gc()
   }
   s2ns
+}
+
+
+get_graph_triple <- function(g, weight, first_graph){
+  if(first_graph){
+    w <- sign(weight) * w
+    list(w[1] * g[], w[2] * g[],
+      splr_sparse_plus_constant(- w[3] * g[], w[3]))
+  }
+  else{
+    list(g[], splr_sparse_plus_constant(- g[], 1), g[])
+  }
+}
+
+#' Calls graph match multi with more matrices to account for
+#' custom rewards.
+#' 
+#' @export
+graph_match_FW_multi_reward <- function(A, B, weight, ...){
+  if( is.igraph(A) ){
+    A <- list(A)
+  }
+  if( is.igraph(B) ){
+    B <- list(B)
+  }
+  if(!is.list(A) && !is.list(B)){
+    A <- list(A)
+    B <- list(B)
+  }
+  A <- unlist(lapply(A, get_graph_triple,
+    weight = weight, first_graph = TRUE), recursive = FALSE)
+  B <- unlist(lapply(B, get_graph_triple,
+    weight = weight, first_graph = FALSE), recursive = FALSE)
+
+  graph_match_FW_multi(A, B, ...)
 }
 
 
@@ -353,7 +391,7 @@ get_s_to_ns <- function(Alist, Blist, seeds,
 #         maximize = TRUE)
 #     } else if ( usejvmod ) {
 #       if( class(Grad) == "splrMatrix" ){
-#         ind <- rlapjv::lapmod(splr.to.sparse(Grad),
+#         ind <- rlapjv::lapmod(splr_to_sparse(Grad),
 #           maximize = TRUE)
 #       } else {
 #         ind <- rlapjv::lapmod(Grad, maximize = TRUE)

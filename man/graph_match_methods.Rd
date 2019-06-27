@@ -10,7 +10,8 @@
 \alias{graph_match_Umeyama}
 \title{Graph Match Methods}
 \usage{
-graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20)
+graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
+  similarity = NULL, usejv = TRUE)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari",
   max_iter = 100, tol = 1e-05)

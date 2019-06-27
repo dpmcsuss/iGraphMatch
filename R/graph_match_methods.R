@@ -50,21 +50,34 @@
 #'
 #' @export
 #'
-graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
+graph_match_FW <- function(A, B, seeds = NULL,
+  start = "convex", max_iter = 20,
+  similarity = NULL, usejv = TRUE){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
 
   # Add support for graphs with different orders
-  totv1<-ncol(A)
-  totv2<-ncol(B)
-  if(totv1>totv2){
-    diff<-totv1-totv2
-    B <- Matrix::bdiag(B[], Matrix(0,diff,diff))
-  }else if(totv1<totv2){
-    diff<-totv2-totv1
-    A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
+  totv1 <- ncol(A)
+  totv2 <- ncol(B)
+
+  # Check for square
+  if(nrow(A) != totv1){
+    stop("A is not square. iGraphMatch only supports ",
+      "square matrices for matching.")
+  }
+  if(nrow(B) != totv2){
+    stop("B is not square. iGraphMatch only supports ",
+      "square matrices for matching.")
+  }
+
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
   }
   nv <- nrow(A)
 
@@ -91,16 +104,16 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
     }
   }
 
-  nn <- nv-ns
+  nn <- nv - ns
   nonseeds <- !seeds
 
-  Asn <- A[seeds,nonseeds]
+  # Asn <- A[seeds,nonseeds]
   Ann <- A[nonseeds,nonseeds]
-  Ans <- A[nonseeds,seeds]
+  # Ans <- A[nonseeds,seeds]
 
-  Bsn <- B[seeds,nonseeds]
+  # Bsn <- B[seeds,nonseeds]
   Bnn <- B[nonseeds,nonseeds]
-  Bns <- B[nonseeds,seeds]
+  # Bns <- B[nonseeds,seeds]
 
   P <- init_start(start = start, nns = nn,
                   A = A, B = B, seeds = seeds)
@@ -108,8 +121,25 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   iter <- 0
   toggle <- TRUE
 
+
+  # make a random permutation to permute B
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
+
+
   # seed to non-seed info
-  s_to_ns <- Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
+  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
+  # Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
+
+  Bnn <- Bnn[rp, rp]
+
+  P <- P[, rp]
+
+  if (is.null(similarity)){
+    similarity <- Matrix::Matrix(0, nn, nn)
+  } else {
+    similarity <- similarity %*% Matrix::t(rpmat)
+  }
 
   while(toggle && iter < max_iter){
     iter <- iter + 1
@@ -117,8 +147,8 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
     # non-seed to non-seed info
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
-    Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn
-    Grad <- Grad-min(Grad)
+    Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
+    Grad <- Grad - min(Grad)
 
     ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
     ind2 <- cbind(1:nn, ind)
@@ -151,32 +181,37 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   }
 
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
+  corr_ns <- as.vector(clue::solve_LSAP(
+    as.matrix(round(P * nn ^ 2)),
+      maximum = TRUE))
+  corr_ns <- rp[corr_ns]
+
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
-  P <- Matrix::Diagonal(nv)[corr,]
+  P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds,nonseeds] <- D_ns
+  D[nonseeds, nonseeds] <- D_ns %*% rpmat
 
   # fix match results if there are incorrect seeds
   if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
+    corr <- fix_hard_corr(seed_A_err, seed_B_err,corr)
     P <- Matrix::Diagonal(nv)[corr,]
-    D <- fix_hard_D(seed_A_err,seed_B_err,D)
+    D <- fix_hard_D(seed_A_err, seed_B_err,D)
   }
 
   list(corr = corr, P = P, D = D, iter = iter)
 }
+
 # correct the order of swapping graph2 according to new seeds
 swap_order <- function(aseeds_matrix){
-  #aseeds_matrix: first row:added seeds index in g1, second row added seeds match
+  # aseeds_matrix: first row:added seeds index in g1, second row added seeds match
   naseeds_err <- dim(aseeds_matrix)[2]
   ninter <- 0
   ninter_new <- naseeds_err
-  aseeds_match_order <- matrix( ,2, )
+  aseeds_match_order <- matrix( , 2, )
   aseeds_matrix_T <- aseeds_matrix
 
-  while(ninter_new!=ninter & ninter_new>1){
+  while(ninter_new != ninter & ninter_new > 1){
     aseeds_matrix <- aseeds_matrix_T
     naseeds_err <- ninter_new
     inter_match <- rep("FALSE",times = naseeds_err)
@@ -187,12 +222,12 @@ swap_order <- function(aseeds_matrix){
 
     for(i in 1:naseeds_err){
       # eliminate circle of two vertices
-      if(aseeds_matrix[2,i] %in% aseeds_matrix[1,]){
-        index <- which(aseeds_matrix[1,]==aseeds_matrix[2,i])
-        if(aseeds_matrix[1,i]==aseeds_matrix[2,index]){
-          aseeds_matrix[1,i] <- 0
+      if (aseeds_matrix[2, i] %in% aseeds_matrix[1, ]){
+        index <- which(aseeds_matrix[1, ] == aseeds_matrix[2, i])
+        if(aseeds_matrix[1, i] == aseeds_matrix[2, index]){
+          aseeds_matrix[1, i] <- 0
           circle_index[k] <- i
-          k <- k+1
+          k <- k + 1
         } else{
           inter_match[i] <- "TRUE"
           ninter_new <- ninter_new+1
@@ -200,16 +235,16 @@ swap_order <- function(aseeds_matrix){
       }
     }
 
-    if(circle_index[1]!=0){
-      aseeds_matrix <- aseeds_matrix[,-circle_index]
+    if (circle_index[1] != 0){
+      aseeds_matrix <- aseeds_matrix[, -circle_index]
       inter_match <- inter_match[-circle_index]
     }
 
-    if(length(which(inter_match=="TRUE"))>=1){
+    if (length(which(inter_match == "TRUE")) >= 1){
       aseeds_matrix <- as.matrix(aseeds_matrix)
       aseeds_matrix_T <- aseeds_matrix[,which(inter_match=="TRUE")]
     }
-    if(length(which(inter_match=="FALSE"))>=1){
+    if (length(which(inter_match == "FALSE")) >= 1){
       aseeds_matrix <- as.matrix(aseeds_matrix)
       aseeds_matrix_F <- aseeds_matrix[,which(inter_match=="FALSE")]
       aseeds_match_order <- cbind(aseeds_matrix_F, aseeds_match_order)
@@ -217,7 +252,8 @@ swap_order <- function(aseeds_matrix){
 
   }
 
-  #end with circle: only consider one circle (circle with more than three vertices) case
+  # end with circle: only consider one circle
+  # (circle with more than three vertices) case
   if(length(which(inter_match=="TRUE"))>1){
     aseeds_matrix_T <- aseeds_matrix_T[,-1]
     aseeds_match_order <- cbind(aseeds_matrix_T,aseeds_match_order)
@@ -227,10 +263,13 @@ swap_order <- function(aseeds_matrix){
 
   aseeds_match_order[,-dim(aseeds_match_order)[2]]
 }
+
+
 # swap columns and rows of G_2 according to hard seeds
 g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
-  aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
-  if(length(seed_g1_err)>1)
+  aseeds_matrix <- matrix(c(seed_g1_err, seed_g2_err),
+    nrow = 2, byrow = TRUE)
+  if(length(seed_g1_err) > 1)
   {
     swap <- swap_order(aseeds_matrix)
     swap <- as.matrix(swap)
@@ -249,6 +288,9 @@ g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
   g2_new <- g2[g2_new_real,g2_new_real]
   g2_new
 }
+
+# combine these next two functions into one?
+
 # returns the true correspondence between G_1 and G_2 for hard seeding
 fix_hard_corr <- function(seed_g1_err, seed_g2_err, corr_hard){
   aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
@@ -291,6 +333,8 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
   D <- D[,g2_new_real]
   D
 }
+
+
 #'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_convex} returns a list of graph matching results,
@@ -364,7 +408,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   ABns_sn <- Ans%*%t(Bns) + t(Asn)%*%Bsn
   f <- sum((Ann %*% P - P%*% Bnn)^2)
 
-  while(toggle && iter<max_iter){
+  while(toggle && iter < max_iter){
     f_old <- f
     iter<-iter+1
 
@@ -401,7 +445,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     P_diff <- sum(abs(P-P_new))
     P <- P_new
 
-    toggle <- f_diff > tol0 && f > tol && P_diff > tol0
+    toggle <- f_diff > tol && f > tol && P_diff > tol
   }
 
   D_ns <- P
@@ -419,17 +463,19 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     D <- fix_hard_D(seed_A_err,seed_B_err,D)
   }
 
-  list(corr = corr, P = P, D = D)
+  list(corr = corr, P = P, D = D, iter = iter)
 }
-#'
-#' @return \code{graph_match_convex_directed} returns graph matching results based
-#' on convex relaxation method for directed graphs.
-#'
-#' @examples
-#' graph_match_convex_directed(g1, g2, seeds)
-#'
-#'
-#'
+
+
+# #'
+# #' @return \code{graph_match_convex_directed} returns graph matching results based
+# #' on convex relaxation method for directed graphs.
+# #'
+# #' @examples
+# #' graph_match_convex_directed(g1, g2, seeds)
+# #'
+# #'
+# #'
 graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100, tol2=1e-5){
 
   print("Warning, this doesn't work as expected. Need to think more.")
@@ -536,6 +582,8 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
   D[nonseeds,nonseeds] <- D_ns
   list(corr = corr, P = P, D = D)
 }
+
+
 #'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_percolation} returns a list consists of

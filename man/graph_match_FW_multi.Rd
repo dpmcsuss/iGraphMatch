@@ -27,7 +27,7 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 \item{r}{A number. Threshold of neighboring pair scores.}
 }
 \value{
-\code{graph_match_FW} returns a list of graph matching results,
+\code{graph_match_FW_multi} returns a list of graph matching results,
 including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
 named \code{corr}, doubly stochastic matrix named \code{D}, permutation
 matrix named \code{P} based on Frank-Wolfe methodology and iteration time of

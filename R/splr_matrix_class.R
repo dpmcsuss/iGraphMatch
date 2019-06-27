@@ -100,7 +100,7 @@ setMethod(
 )
 
 #' @export
-splr.to.sparse <- function(data){
+splr_to_sparse <- function(data){
     data@x + Matrix(data@a,sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
 }
 
@@ -111,7 +111,11 @@ as.matrix.splr=function(x,...)  {
   
 }
 
-
+#' @export
+splr_sparse_plus_constant <- function(x, a){
+  d <- dim(x)
+  splr(x = x, a = rep(a, d[1]), b = rep(1, d[2]), Dim = dim(x),Dimnames = list(NULL,NULL))
+}
 
 setMethod("as.matrix","splrMatrix",as.matrix.splr)
 
@@ -215,7 +219,7 @@ setMethod("%*%",signature(x="ANY",y="splrMatrix"),.leftmult)
     
     part1 <- sx %*% y
     part2 <- t(b) %*% y
-    part2 <- a%*% part2
+    part2 <- a %*% part2
     part1+part2
   }
   

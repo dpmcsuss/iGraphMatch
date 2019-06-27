@@ -167,3 +167,21 @@ rds_perm_bari <- function(nns, g, is_splr = TRUE){
         alpha * rperm(nns)
   }
 }
+
+
+
+# #' @rdname featurestart
+# #' 
+# #' @param f1
+# #' @param f2
+# #' @param s
+# #' 
+# #' @return \code{feature_tart} returns a 
+# #' \code{nns-by-nns} matrix
+# #' with entries corresponding to similiarity scores
+# #' for feature vectors.
+# #' 
+# #' @examples
+# feature_start <- function(f1, f2, s){
+
+# }
