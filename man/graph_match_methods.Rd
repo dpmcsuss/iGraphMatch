@@ -59,16 +59,14 @@ max_iter times number of total vertices of \eqn{G_1}.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
-  including match correspondence vector of \eqn{G_2} with respect to
-  \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D},
-  permutation matrix named \code{P} based on Frank-Wolfe methodology and
-  iteration time of the algorithm named \code{iter}.
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B} and the number of seeds.
 
 \code{graph_match_convex} returns a list of graph matching results,
-  including matching correspondence vector of \eqn{G_2} with respect to
-  \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D} and
-  permutation matrix named \code{P} based on convex relaxation method for
-  undirected graphs.
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B} and the number of seeds.
 
 \code{graph_match_percolation} returns a list consists of
   matching correspondence of matched pairs with index of nodes in
@@ -76,25 +74,31 @@ max_iter times number of total vertices of \eqn{G_1}.}
   \code{corr_B} returns and the order of matching for matched nodes in
   \eqn{G_1}.
 
-\code{graph_match_ExpandWhenStuck} returns a list consists of
-  matching correspondence of matched pairs with index of nodes in
-  \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
-  \code{corr_B} returns and the order of matching for matched nodes in
-  \eqn{G_1}.
+\code{graph_match_percolation} returns a list of graph matching results,
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B}, the number of seeds and the order of nodes getting matched.
 
-\code{graph_match_soft_percolation} returns matching correspondence
-  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_ExpandWhenStuck} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B}, the number of seeds and the order of nodes getting matched.
 
-\code{graph_match_IsoRank} returns matching correspondence
-  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}. If choose the greedy method to
-  extract mapping, returns a list with mapping correspondence and order of
-  matching for matched nodes in \eqn{G_1}.
+\code{graph_match_soft_percolation} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B}, the number of seeds and the order of nodes getting matched.
 
-\code{graph_match_Umeyama} returns matching correspondence
-  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_IsoRank} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B} and the number of seeds. If choose the greedy method to
+  extract mapping, the order of nodes getting matched will also be returned.
+
+\code{graph_match_IsoRank} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B} and the number of seeds.
 }
 \description{
 Match two given graphs, returns a list of graph matching
