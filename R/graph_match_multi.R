@@ -268,10 +268,7 @@ get_graph_triple <- function(g, weight, first_graph){
   }
 }
 
-#' Calls graph match multi with more matrices to account for
-#' custom rewards.
-#' 
-#' @export
+
 graph_match_FW_multi_reward <- function(A, B, weight, ...){
   if( is.igraph(A) ){
     A <- list(A)
@@ -613,7 +610,7 @@ graph_match_ExpandWhenStuck_multi <- function(A, B, start = NULL, similarity = N
   corr
 }
 
-#' export
+
 graph_match_mutual_multi <- function(A, B, start = NULL, similarity = NULL, alpha = 0.2, max_iter = 50){
   # this will make the graphs be matrices if they are igraph objects
   A <- lapply(A, function(Al) Al[])
