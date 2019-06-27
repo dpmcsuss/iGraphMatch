@@ -314,8 +314,6 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
 
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
 
   # Add support for graphs with different orders ?
   nv <- nrow(A)
