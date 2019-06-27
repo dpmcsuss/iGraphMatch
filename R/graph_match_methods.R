@@ -165,7 +165,8 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   }
 
   cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns,
+            P = P, D = D)
   z
 }
 # correct the order of swapping graph2 according to new seeds
@@ -418,7 +419,8 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   }
 
   cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
+            P = P, D = D)
   z
 }
 #'
