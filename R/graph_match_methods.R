@@ -612,61 +612,59 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' @export
 #'
 #'
-graph_match_percolation <- function(A, B, seeds, r = 2){
-
-  # this will make the graphs be matrices if they are igraph objects
+graph_match_percolation <- function (A, B, seeds, r = 2) 
+{
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
-
-  n <- nrow(A)
-  m <- nrow(B)
-  seeds <- check_seeds(seeds) #unused seeds
-  ns <- nrow(seeds)
-  Z <- seeds #matched nodes
-  M <- matrix(0,n,m) #marks matrix
-
-  # mark neighbors
-  for(i in 1:nrow(seeds)){
-    A_adj <- which(A[seeds$seed_A[i],]>0)
-    B_adj <- which(B[seeds$seed_B[i],]>0)
-    mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+  
+  n_A <- nrow(A)
+  n_B <- nrow(B)
+  n <- max(n_A, n_B)
+  P <- Matrix::Matrix(0, nrow=n_A, ncol = n_B)
+  seeds <- check_seeds(seeds)
+  P[as.matrix(seeds)] <- 1
+  Z <- seeds
+  weighted <- max(A) > 1
+  
+  if(weighted){
+    M <- Matrix::Matrix(0, n_A, n_B)
+    for(i in 1:nrow(seeds)){
+      A_adj <- which(A[seeds$seed_A[i],]>0)
+      B_adj <- which(B[seeds$seed_B[i],]>0)
+      mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+    }
+  } else{
+    M <- (Matrix::t(A) %*% P %*% B + A %*% P %*% Matrix::t(B)) / 2
   }
   M[seeds$seed_A,] <- -n
   M[,seeds$seed_B] <- -n
-
-  # choose pairs with marks ge r
-  while(max(M) >= r){
-    max_ind <- which(M == max(M), arr.ind = TRUE)
-    max_ind <- max_ind[sample(nrow(max_ind),1),]
-
-    Z <- rbind(Z,max_ind)
-
-    # update mark matrix
-    A_adj <- which(A[max_ind[1],]>0)
-    B_adj <- which(B[max_ind[2],]>0)
-    mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-    M[max_ind[1],] <- -n
-    M[,max_ind[2]] <- -n
+  
+  while (max(M) >= r) {
+    max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
+    max_ind <- max_ind[sample(nrow(max_ind), 1), ]
+    if(weighted){
+      A_adj <- which(A[max_ind[1],]>0)
+      B_adj <- which(B[max_ind[2],]>0)
+      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+    } else{
+      Pi <- Matrix::Matrix(0, nrow=n_A, ncol = n_B)
+      Pi[max_ind[1], max_ind[2]] <- 1 
+      delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
+      M <- M + delta
+    }
+    M[max_ind[1], ] <- -n 
+    M[, max_ind[2]] <- -n
+    Z <- rbind(Z, max_ind)
   }
-
-  if(nrow(Z) == n-1){
-    all <- 1:n
-    seed_A <- all[!(all %in% Z$seed_A)]
-    seed_B <- all[!(all %in% Z$seed_B)]
-    Z <- rbind(Z,cbind(seed_A,seed_B))
-  }
-
-  # matching result
+  
   order <- order(Z$seed_A)
-  corr <- Z[order(Z$seed_A),]
+  corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
   z
 }
 cal_mark <- function(x,y){
@@ -695,31 +693,39 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
 
-  n <- nrow(A)
-  m <- nrow(B)
-  seeds <- check_seeds(seeds) #unused seeds
-  ns <- nrow(seeds)
-  Z <- seeds #matched nodes
-  M <- matrix(0,n,m) #marks matrix
-  M[seeds$seed_A,] <- -n*n
-  M[,seeds$seed_B] <- -n*n
+  n_A <- nrow(A)
+  n_B <- nrow(B)
+  n <- max(n_A, n_B)
+  P <- Matrix::Matrix(0, nrow=n_A, ncol = n_B)
+  seeds <- check_seeds(seeds)
+  seeds_ori <- seeds
+  P[as.matrix(seeds)] <- 1
+  M <- Matrix::Matrix(0, n_A, n_B)
+  M[seeds_ori$seed_A,] <- -n
+  M[,seeds_ori$seed_B] <- -n
+  Z <- seeds
+  weighted <- max(A) > 1
 
   # deferred percolation graph matching
   while(nrow(seeds) != 0){
     # mark neighbors
-    for(i in 1:nrow(seeds)){
-      A_adj <- which(A[seeds$seed_A[i],]>0)
-      B_adj <- which(B[seeds$seed_B[i],]>0)
-      mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+    if(weighted){
+      for(i in 1:nrow(seeds)){
+        A_adj <- which(A[seeds$seed_A[i],]>0)
+        B_adj <- which(B[seeds$seed_B[i],]>0)
+        mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      }
+    } else{
+      Pi <- Matrix::Matrix(0, nrow=n_A, ncol = n_B)
+      Pi[as.matrix(seeds)] <- 1
+      M <- M + (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
     }
 
     # choose pairs with marks ge r
     while(max(M) >= r){
-      max_ind <- which(M == max(M), arr.ind = TRUE)
+      max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
       if(nrow(max_ind) != 1){
         degree_diff <- abs(rowSums(A)[max_ind[,1]]-rowSums(B)[max_ind[,2]])
         max_ind <- max_ind[which(degree_diff == min(degree_diff)),]
@@ -728,27 +734,25 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
         }
       }
 
-      Z <- rbind(Z, as.vector(max_ind))
-
       # update mark matrix
-      A_adj <- which(A[max_ind[1],]>0)
-      B_adj <- which(B[max_ind[2],]>0)
-      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-      M[max_ind[1],] <- -n*n
-      M[,max_ind[2]] <- -n*n
-    }
-
-    if(nrow(Z) == n-1){
-      all <- 1:n
-      seed_A <- all[!(all %in% Z$seed_A)]
-      seed_B <- all[!(all %in% Z$seed_B)]
-      Z <- rbind(Z,cbind(seed_A,seed_B))
-      break
+      if(weighted){
+        A_adj <- which(A[max_ind[1],]>0)
+        B_adj <- which(B[max_ind[2],]>0)
+        mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      } else{
+        Pi <- Matrix::Matrix(0, nrow=n_A, ncol = n_B)
+        Pi[max_ind[1], max_ind[2]] <- 1 
+        delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
+        M <- M + delta
+      }
+      M[max_ind[1],] <- -n
+      M[,max_ind[2]] <- -n
+      Z <- rbind(Z, max_ind)
     }
 
     seeds_old <- seeds
-    seeds <- which(M > 0, arr.ind = TRUE)
+    seeds <- which(M > 0 & M < r, arr.ind = TRUE)
     seeds <- data.frame(seed_A=seeds[,1], seed_B=seeds[,2])
 
     if(nrow(seeds) == nrow(seeds_old)){
@@ -756,7 +760,6 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
         break
       }
     }
-
   }
 
   # matching result
@@ -765,7 +768,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   names(corr) <- c("corr_A","corr_B")
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
   z
 }
 #'
@@ -788,8 +791,6 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
 
   # initialization of score matrix M & MM
   n <- nrow(A)
