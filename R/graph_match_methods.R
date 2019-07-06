@@ -613,7 +613,7 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' @export
 #'
 #'
-graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1e-2){
+graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = .01){
   D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
   D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
   A <- A[]
@@ -719,6 +719,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   
   if(!is.null(seeds)){
     ns <- nrow(check_seeds(seeds))
+  } else{
+    ns <- 0
   }
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
@@ -1123,7 +1125,7 @@ check_cycle <- function(rem, new){
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter=1000, method = "greedy"){
+graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
   A <- A[]
   B <- B[]
 
@@ -1131,7 +1133,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter=1000, met
   A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
   B <- B %*% Matrix::Diagonal(nrow(B), 1/Matrix::colSums(B))
   mat_A <- Matrix::kronecker(A, B)
-  start <- Matrix::c.sparseVector(similarity) # sparsify if poss
+  start <- Matrix::c.sparseVector(similarity) 
   E <- start/sum(abs(start))
 
   # computing R by power method
