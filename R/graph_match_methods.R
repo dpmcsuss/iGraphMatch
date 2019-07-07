@@ -444,7 +444,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     bq <- sum(Cnn*Dnn)+sum(Cns*Dns)+sum(Csn*Dsn)
     aopt <- -bq/aq
 
-    P_new <- aopt*P+(1-aopt)*Pdir;
+    P_new <- aopt*P+(1-aopt)*Pdir
     f <- sum((Ann %*% P_new - P_new %*% Bnn)^2)
 
     f_diff <- abs(f-f_old)
@@ -613,7 +613,7 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' @export
 #'
 #'
-graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = .01){
+graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 10){
   D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
   D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
   A <- A[]
@@ -627,13 +627,15 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   P <- convex_m$P
   lambda <- 0
   dlambda <- dlambda_min <-  1e-5
-  toggle <- TRUE
+  #toggle <- TRUE
   delta_cal <- function(x, y){
     (y - x) ^ 2
   }
   delta <- outer(diag(D_A), diag(D_B), delta_cal)
+  iter <- 0
   
-  while (lambda < 1 && toggle) {
+  while (lambda < 1) {
+    iter <- iter + 1
     # dlambda-adaptation
     F_cv <- (Matrix::norm(A %*% P - P %*% B, type = "F")) ^ 2
     F_cc <- - sum(diag(delta %*% P)) - 2 * t(Matrix::c.sparseVector(P)) %*% 
@@ -690,26 +692,13 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     Pdir <- Matrix::Diagonal(n)
     Pdir <- Pdir[ind, ]
     
-    ns_Pdir_ns <- Matrix::t(A)[, order(ind)] %*% B
-    c <- sum(tA_P_B * P)
-    d <- sum(ns_Pdir_ns * P) + sum(tA_P_B[ind2])
-    e <- sum(ns_Pdir_ns[ind2])
-    if (c - d + e == 0 && d - 2 * e == 0) {
-      alpha <- 0
-    } else {
-      alpha <- -(d - 2 * e)/(2 * (c - d + e))
-    }
-    f0 <- 0
-    f1 <- c - e
-    falpha <- (c - d + e) * alpha^2 + (d - 2 * e) * alpha
-    if (alpha < 1 && alpha > 0 &&
-        falpha > f0 && falpha > f1) {
-      P <- alpha * P + (1 - alpha) * Pdir
-    } else if (f0 > f1) {
-      P <- Pdir
-    } else {
-      toggle <- FALSE
-    }
+    C <- A %*% (P-Pdir) - (P-Pdir) %*% B
+    D <- A %*% Pdir - Pdir %*% B
+    aq <- sum(C^2)
+    bq <- sum(C*D)
+    alpha <- -bq/aq
+    
+    P <- alpha*P+(1-alpha)*Pdir
     
   }
   
@@ -724,7 +713,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   }
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
-            P = P, D = D)
+            P = P, D = D, iter = iter, lambda = lambda)
   z
 }
 #'
