@@ -613,7 +613,7 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' @export
 #'
 #'
-graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 10){
+graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
   D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
   D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
   A <- A[]
@@ -638,10 +638,11 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     iter <- iter + 1
     # dlambda-adaptation
     F_cv <- (Matrix::norm(A %*% P - P %*% B, type = "F")) ^ 2
-    F_cc <- - sum(diag(delta %*% P)) - 2 * t(Matrix::c.sparseVector(P)) %*% 
-      Matrix::kronecker(Matrix::t(L_B), Matrix::t(L_A)) %*% Matrix::c.sparseVector(P)
+    L <- Matrix::kronecker(Matrix::t(L_B), Matrix::t(L_A))
+    F_cc <- - sum(t(delta) %*% P) - 2 * t(Matrix::c.sparseVector(P)) %*% 
+      L %*% Matrix::c.sparseVector(P)
     if(!is.null(similarity)){
-      F_sim <- sum(diag(Matrix::t(similarity) %*% P))
+      F_sim <- sum(similarity * P)
       F <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     } else{
       F <- (1 - lambda) * F_cv + lambda * F_cc
@@ -649,7 +650,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     
     lambda <- lambda + dlambda
     if(!is.null(similarity)){
-      F_sim <- sum(diag(Matrix::t(similarity) %*% P))
+      F_sim <- sum(similarity * P)
       F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     } else{
       F_new <- (1 - lambda) * F_cv + lambda * F_cc
@@ -659,7 +660,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
       dlambda <- 2 * dlambda
       lambda <- lambda + dlambda
       if(!is.null(similarity)){
-        F_sim <- sum(diag(Matrix::t(similarity) %*% P))
+        F_sim <- sum(similarity * P)
         F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
       } else{
         F_new <- (1 - lambda) * F_cv + lambda * F_cc
@@ -669,7 +670,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
       dlambda <- dlambda / 2
       lambda <- lambda - dlambda
       if(!is.null(similarity)){
-        F_sim <- sum(diag(Matrix::t(similarity) %*% P))
+        F_sim <- sum(similarity * P)
         F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
       } else{
         F_new <- (1 - lambda) * F_cv + lambda * F_cc
@@ -689,17 +690,34 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     Grad <- Grad - min(Grad)
     ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
     ind2 <- cbind(1:n, ind)
-    Pdir <- Matrix::Diagonal(n)
-    Pdir <- Pdir[ind, ]
+    Pdir <- Matrix::Diagonal(n)[ind, ]
     
-    C <- A %*% (P-Pdir) - (P-Pdir) %*% B
+    delta_P <- P - Pdir
+    C <- A %*% delta_P - delta_P %*% B
     D <- A %*% Pdir - Pdir %*% B
     aq <- sum(C^2)
     bq <- sum(C*D)
-    alpha <- -bq/aq
-    
-    P <- alpha*P+(1-alpha)*Pdir
-    
+    vec_delta_P <- Matrix::c.sparseVector(delta_P)
+    vec_Pdir <- Matrix::c.sparseVector(Pdir)
+    c <- sum(t(delta) * delta_P)
+    e <- Matrix::t(vec_delta_P) %*% L %*% vec_Pdir
+    u <- Matrix::t(vec_Pdir) %*% L %*% vec_delta_P
+    v <- Matrix::t(vec_delta_P) %*% L %*% vec_delta_P
+    a <- 2 * (lambda - 1) * bq + lambda * (c - e + u)
+    b <- 2 * (1 - lambda) * aq - 4 * lambda * v
+    if(a[1,1] == 0 && b[1,1] == 0){
+      alpha <- 0
+    } else{
+      alpha <- (2 * (lambda - 1) * bq + lambda * (c - e + u)) / 
+        (2 * (1 - lambda) * aq - 4 * lambda * v)
+      alpha <- alpha[1,1]
+    }
+    if(alpha > 1){
+      alpha <- 1
+    } else if(alpha < 0){
+      alpha <- 0
+    }
+    P <- alpha * P + (1 - alpha) * Pdir
   }
   
   D <- P
