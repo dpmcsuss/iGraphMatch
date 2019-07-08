@@ -614,6 +614,17 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #'
 #'
 graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
+  totv1 <- vcount(A)
+  totv2 <- vcount(B)
+  
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
+  }
+  
   D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
   D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
   A <- A[]
@@ -659,6 +670,10 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     while (sum(abs(F - F_new)) < epsilon && lambda < 1) {
       dlambda <- 2 * dlambda
       lambda <- lambda + dlambda
+      if(lambda > 1){
+        lambda <- 1
+        break
+      }
       if(!is.null(similarity)){
         F_sim <- sum(similarity * P)
         F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
@@ -667,8 +682,13 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
       }    
     }
     while (sum(abs(F - F_new)) > epsilon && dlambda != dlambda_min) {
-      dlambda <- dlambda / 2
-      lambda <- lambda - dlambda
+      if(lambda > 1){
+        lambda <- 1
+        break
+      } else{
+        dlambda <- dlambda / 2
+        lambda <- lambda - dlambda
+      }
       if(!is.null(similarity)){
         F_sim <- sum(similarity * P)
         F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
@@ -1135,6 +1155,17 @@ check_cycle <- function(rem, new){
 graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
   A <- A[]
   B <- B[]
+  
+  totv1 <- nrow(A)
+  totv2 <- nrow(B)
+  
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
+  }
 
   # computing transition matrix A
   A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
@@ -1161,7 +1192,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
   }
-  R <- Matrix::Matrix(R, byrow = TRUE, nrow = nrow(A))
+  R <- Matrix::Matrix(as.vector(R), nrow = totv1, byrow = TRUE)
 
   # find GNA
   if(method == "greedy"){
@@ -1176,7 +1207,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     corr <- data.frame(corr_A = corr[,1], corr_B = corr[,2])
     
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = ns, order = order(corr$corr_A))
+    z <- list(call = cl, corr = corr, ns = 0, order = order(corr$corr_A))
     z
   } else if(method == "LAP"){
     # Hungarian alg.
@@ -1207,7 +1238,17 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
 #'
 #' @export
 #'
-graph_match_Umeyama <- function(A, B, similarity, alpha = .5){
+graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
+  totv1 <- vcount(A)
+  totv2 <- vcount(B)
+  
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
+  }
   A <- A[]
   B <- B[]
 
@@ -1220,7 +1261,12 @@ graph_match_Umeyama <- function(A, B, similarity, alpha = .5){
   U_A <- eigen(A)$vectors
   U_B <- eigen(B)$vectors
   AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
-  Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
+  if(!is.null(similarity)){
+    Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
+  } else{
+    Grad <- AB
+  }
+  Grad <- Grad - min(Grad)
   ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
 
   corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
