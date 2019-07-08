@@ -45,22 +45,21 @@ sample_correlated_gnp_pair <- function(n, corr, p, permutation=1:n, ...){
 #' sample_correlated_gnp_pair_w_junk(50, 0.3, 0.5, 40)
 #'
 #'
-sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n){
+sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n,permutation=1:n,...){
   core <- 1:ncore
   junk <- (ncore+1):n
-
-  cgnp_pair <- sample_correlated_gnp_pair(ncore,corr,p)
-
+  
+  cgnp_pair <- sample_correlated_gnp_pair(ncore,corr,p,...)
+  
   if(ncore != n){
     pref_junk <- matrix(c(0,p,p,p),2,2)
-    A <- sample_sbm(n,pref_junk,c(ncore,n-ncore))
-    B <- sample_sbm(n,pref_junk,c(ncore,n-ncore))
-
+    A <- sample_sbm(n,pref_junk,c(ncore,n-ncore),...)
+    B <- sample_sbm(n,pref_junk,c(ncore,n-ncore),...)
+    
     cgnp_pair <- with(cgnp_pair,{
-      list(graph1=A %u% graph1,graph2=B %u% graph2)
+      list(graph1=A %u% graph1,graph2=permute(B%u%graph2,permutation))
     })
   }
   cgnp_pair
 }
-
 
