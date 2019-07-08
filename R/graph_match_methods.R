@@ -791,8 +791,10 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
     for(i in 1:nrow(seeds)){
       A_adj <- which(A[seeds$seed_A[i],]>0)
       B_adj <- which(B[seeds$seed_B[i],]>0)
-      mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      if(length(A_adj) != 0 & length(B_adj) != 0){
+        mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      }
     }
   } else{
     M <- (Matrix::t(A) %*% P %*% B + A %*% P %*% Matrix::t(B)) / 2
@@ -806,8 +808,10 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
     if(weighted){
       A_adj <- which(A[max_ind[1],]>0)
       B_adj <- which(B[max_ind[2],]>0)
-      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      if(length(A_adj) != 0 & length(B_adj) != 0){
+        mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      }
     } else{
       Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
       Pi[max_ind[1], max_ind[2]] <- 1 
@@ -828,7 +832,11 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
   z
 }
 cal_mark <- function(x,y){
-  1 - abs(x - y) / max(x, y)
+  if(x == 0 & y == 0){
+    0
+  } else{
+    1 - abs(x - y) / max(x, y)
+  }
 }
 #'
 #' @rdname graph_match_methods
@@ -874,8 +882,10 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
       for(i in 1:nrow(seeds)){
         A_adj <- which(A[seeds$seed_A[i],]>0)
         B_adj <- which(B[seeds$seed_B[i],]>0)
-        mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        if(length(A_adj) != 0 & length(B_adj) != 0){
+          mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+          M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        }
       }
     } else{
       Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
@@ -898,8 +908,10 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
       if(weighted){
         A_adj <- which(A[max_ind[1],]>0)
         B_adj <- which(B[max_ind[2],]>0)
-        mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        if(length(A_adj) != 0 & length(B_adj) != 0){
+          mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+          M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        }
       } else{
         Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
         Pi[max_ind[1], max_ind[2]] <- 1 
@@ -1239,8 +1251,10 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
 #' @export
 #'
 graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
-  totv1 <- vcount(A)
-  totv2 <- vcount(B)
+  A <- A[]
+  B <- B[]
+  totv1 <- nrow(A)
+  totv2 <- nrow(B)
   
   if(totv1 > totv2){
     diff <- totv1 - totv2
@@ -1249,8 +1263,6 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
     diff <- totv2 - totv1
     A <- pad(A[], diff)
   }
-  A <- A[]
-  B <- B[]
 
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices
