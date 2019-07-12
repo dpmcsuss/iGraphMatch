@@ -115,7 +115,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   if("rlapjv" %in% rownames(installed.packages()) && usejv){
     library(rlapjv)
     # usejv <- TRUE
-    if( totv1 / totv2 < 0.5 ){
+    if( totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5){
       usejvmod <- TRUE
       usejv <- FALSE
     }
@@ -198,14 +198,30 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   }
 
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(
-    round(as.matrix(P * nn ^ 2)), maximum = TRUE))
-  # undo rand perm here
+
+
+  if ( usejv ){
+    P <- as.matrix(P)
+    corr_ns <- rlapjv::lapjv(round(P * nn ^ 2 * max(P)),
+      maximize = TRUE)
+  } else if ( usejvmod ) {
+    if( class(P) == "splrMatrix" ){
+      corr_ns <- rlapjv::lapmod(splr_to_sparse(P),
+        maximize = TRUE)
+    } else {
+      corr_ns <- rlapjv::lapmod(P, maximize = TRUE)
+    }
+  } else {
+    corr_ns <- as.vector(clue::solve_LSAP(
+      round(as.matrix(P * nn ^ 2)), maximum = TRUE))
+  }
+    # undo rand perm here
   corr_ns <- rp[corr_ns]
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
   P <- Matrix::Diagonal(nv)[corr,]
   D <- P
+
   # and undo it right quick here too
   D[nonseeds, nonseeds] <- D_ns %*% rpmat
   # and we should be home clear
