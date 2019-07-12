@@ -13,6 +13,7 @@
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #'   character value like "bari" or "convex" to initialize the starting matrix.
+#' @param similaity A matrix. An \code{n-by-n} matrix containing vertex similaities.
 #' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
@@ -355,7 +356,9 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #' @export
 #'
 #'
-graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 100, tol = 1e-5){
+graph_match_convex <- function(A, B, seeds = NULL, start = "bari", 
+                               max_iter = 100, similarity = NULL,
+                               tol = 1e-5){
 
   A <- A[]
   B <- B[]
@@ -396,6 +399,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
   Bnn <- B[nonseeds,nonseeds]
   Bns <- B[nonseeds,seeds]
 
+  similarity <- similarity[nonseeds,nonseeds]
   tol0 <- 1
   P <- init_start(start = start, nns = nn)
   iter<-0
@@ -411,7 +415,10 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     f_old <- f
     iter<-iter+1
 
-    Grad<- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn)
+    if(is.null(similarity)){
+      similarity <- Matrix::Matrix(0, nn, nn)
+    }
+    Grad<- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity
     # print("asdf")
 
     Grad <- round(as.matrix(nn^2*(Grad-min(Grad))))
@@ -437,7 +444,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari", max_iter = 10
     bq <- sum(Cnn*Dnn)+sum(Cns*Dns)+sum(Csn*Dsn)
     aopt <- -bq/aq
 
-    P_new <- aopt*P+(1-aopt)*Pdir;
+    P_new <- aopt*P+(1-aopt)*Pdir
     f <- sum((Ann %*% P_new - P_new %*% Bnn)^2)
 
     f_diff <- abs(f-f_old)
@@ -587,15 +594,168 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
   z
 }
-
-
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_percolation} returns a list consists of
-#'   matching correspondence of matched pairs with index of nodes in
-#'   \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
-#'   \code{corr_B} returns and the order of matching for matched nodes in
-#'   \eqn{G_1}.
+#' @return \code{graph_match_PATH} returns a list of graph matching results,
+#'   including the graph matching formula, a data frame containing the matching 
+#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+#'   \code{corr_B}, the number of seeds if any, the permutation matrix and the
+#'   doubly stochastic matrix before projection onto the permutation set. 
+#'
+#' @references M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
+#' algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
+#' pages 2227-2242.
+#'
+#' @examples
+#' # match G_1 & G_2 using PATH algorithm
+#' graph_match_PATH(g1, g2)
+#'
+#' @export
+#'
+#'
+graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
+  totv1 <- vcount(A)
+  totv2 <- vcount(B)
+  
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
+  }
+  
+  D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
+  D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
+  A <- A[]
+  B <- B[]
+  L_A <- D_A - A
+  L_B <- D_B - B
+  n <- nrow(A)
+  
+  # alpha=0, convex relaxation
+  convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, tol = 1e-10)
+  P <- convex_m$P
+  lambda <- 0
+  dlambda <- dlambda_min <-  1e-5
+  #toggle <- TRUE
+  delta_cal <- function(x, y){
+    (y - x) ^ 2
+  }
+  delta <- outer(diag(D_A), diag(D_B), delta_cal)
+  iter <- 0
+  
+  while (lambda < 1) {
+    iter <- iter + 1
+    # dlambda-adaptation
+    F_cv <- (Matrix::norm(A %*% P - P %*% B, type = "F")) ^ 2
+    L <- Matrix::kronecker(Matrix::t(L_B), Matrix::t(L_A))
+    F_cc <- - sum(t(delta) %*% P) - 2 * t(Matrix::c.sparseVector(P)) %*% 
+      L %*% Matrix::c.sparseVector(P)
+    if(!is.null(similarity)){
+      F_sim <- sum(similarity * P)
+      F <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
+    } else{
+      F <- (1 - lambda) * F_cv + lambda * F_cc
+    }
+    
+    lambda <- lambda + dlambda
+    if(!is.null(similarity)){
+      F_sim <- sum(similarity * P)
+      F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
+    } else{
+      F_new <- (1 - lambda) * F_cv + lambda * F_cc
+    }
+    
+    while (sum(abs(F - F_new)) < epsilon && lambda < 1) {
+      dlambda <- 2 * dlambda
+      lambda <- lambda + dlambda
+      if(lambda > 1){
+        lambda <- 1
+        break
+      }
+      if(!is.null(similarity)){
+        F_sim <- sum(similarity * P)
+        F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
+      } else{
+        F_new <- (1 - lambda) * F_cv + lambda * F_cc
+      }    
+    }
+    while (sum(abs(F - F_new)) > epsilon && dlambda != dlambda_min) {
+      if(lambda > 1){
+        lambda <- 1
+        break
+      } else{
+        dlambda <- dlambda / 2
+        lambda <- lambda - dlambda
+      }
+      if(!is.null(similarity)){
+        F_sim <- sum(similarity * P)
+        F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
+      } else{
+        F_new <- (1 - lambda) * F_cv + lambda * F_cc
+      }
+    }
+    
+    # Frank-Wolfe 
+    AtA <- t(A) %*% A
+    BBt <- B %*% t(B)
+    tA_P_B <- Matrix::t(A) %*% P %*% B
+    Grad_cv <- 2 * (AtA %*% P + P %*% BBt - tA_P_B - A %*% P %*% t(B))
+    Grad_cc <- - t(delta) - 2 * Matrix::t(L_A) %*% P %*% L_B
+    Grad <- (1 - lambda) * Grad_cv + lambda * Grad_cc
+    if(!is.null(similarity)){
+      Grad <- alpha * Grad + (1 - alpha) * similarity
+    }
+    Grad <- Grad - min(Grad)
+    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+    ind2 <- cbind(1:n, ind)
+    Pdir <- Matrix::Diagonal(n)[ind, ]
+    
+    delta_P <- P - Pdir
+    C <- A %*% delta_P - delta_P %*% B
+    D <- A %*% Pdir - Pdir %*% B
+    aq <- sum(C^2)
+    bq <- sum(C*D)
+    vec_delta_P <- Matrix::c.sparseVector(delta_P)
+    vec_Pdir <- Matrix::c.sparseVector(Pdir)
+    c <- sum(t(delta) * delta_P)
+    e <- Matrix::t(vec_delta_P) %*% L %*% vec_Pdir
+    u <- Matrix::t(vec_Pdir) %*% L %*% vec_delta_P
+    v <- Matrix::t(vec_delta_P) %*% L %*% vec_delta_P
+    a <- 2 * (lambda - 1) * bq + lambda * (c - e + u)
+    b <- 2 * (1 - lambda) * aq - 4 * lambda * v
+    if(a[1,1] == 0 && b[1,1] == 0){
+      alpha <- 0
+    } else{
+      alpha <- (2 * (lambda - 1) * bq + lambda * (c - e + u)) / 
+        (2 * (1 - lambda) * aq - 4 * lambda * v)
+      alpha <- alpha[1,1]
+    }
+    if(alpha > 1){
+      alpha <- 1
+    } else if(alpha < 0){
+      alpha <- 0
+    }
+    P <- alpha * P + (1 - alpha) * Pdir
+  }
+  
+  D <- P
+  corr <- as.vector(clue::solve_LSAP(as.matrix(round(P*n^2)), maximum = TRUE))
+  P <- Matrix::Diagonal(n)[corr,]
+  
+  if(!is.null(seeds)){
+    ns <- nrow(check_seeds(seeds))
+  } else{
+    ns <- 0
+  }
+  cl <- match.call()
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
+            P = P, D = D, iter = iter, lambda = lambda)
+  z
+}
+#'
+#' @rdname graph_match_methods
 #' @return \code{graph_match_percolation} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
 #'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
@@ -612,65 +772,71 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #' @export
 #'
 #'
-graph_match_percolation <- function(A, B, seeds, r = 2){
-
-  # this will make the graphs be matrices if they are igraph objects
+graph_match_percolation <- function (A, B, seeds, r = 2) 
+{
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
-
-  n <- nrow(A)
-  m <- nrow(B)
-  seeds <- check_seeds(seeds) #unused seeds
-  ns <- nrow(seeds)
-  Z <- seeds #matched nodes
-  M <- matrix(0,n,m) #marks matrix
-
-  # mark neighbors
-  for(i in 1:nrow(seeds)){
-    A_adj <- which(A[seeds$seed_A[i],]>0)
-    B_adj <- which(B[seeds$seed_B[i],]>0)
-    mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+  
+  totv1 <- nrow(A)
+  totv2 <- nrow(B)
+  n <- max(totv1, totv2)
+  P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+  seeds <- check_seeds(seeds)
+  P[as.matrix(seeds)] <- 1
+  Z <- seeds
+  weighted <- max(A) > 1
+  
+  if(weighted){
+    M <- Matrix::Matrix(0, totv1, totv2)
+    for(i in 1:nrow(seeds)){
+      A_adj <- which(A[seeds$seed_A[i],]>0)
+      B_adj <- which(B[seeds$seed_B[i],]>0)
+      if(length(A_adj) != 0 & length(B_adj) != 0){
+        mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      }
+    }
+  } else{
+    M <- (Matrix::t(A) %*% P %*% B + A %*% P %*% Matrix::t(B)) / 2
   }
   M[seeds$seed_A,] <- -n
   M[,seeds$seed_B] <- -n
-
-  # choose pairs with marks ge r
-  while(max(M) >= r){
-    max_ind <- which(M == max(M), arr.ind = TRUE)
-    max_ind <- max_ind[sample(nrow(max_ind),1),]
-
-    Z <- rbind(Z,max_ind)
-
-    # update mark matrix
-    A_adj <- which(A[max_ind[1],]>0)
-    B_adj <- which(B[max_ind[2],]>0)
-    mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-    M[max_ind[1],] <- -n
-    M[,max_ind[2]] <- -n
+  
+  while (max(M) >= r) {
+    max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
+    max_ind <- max_ind[sample(nrow(max_ind), 1), ]
+    if(weighted){
+      A_adj <- which(A[max_ind[1],]>0)
+      B_adj <- which(B[max_ind[2],]>0)
+      if(length(A_adj) != 0 & length(B_adj) != 0){
+        mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      }
+    } else{
+      Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+      Pi[max_ind[1], max_ind[2]] <- 1 
+      delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
+      M <- M + delta
+    }
+    M[max_ind[1], ] <- -n 
+    M[, max_ind[2]] <- -n
+    Z <- rbind(Z, max_ind)
   }
-
-  if(nrow(Z) == n-1){
-    all <- 1:n
-    seed_A <- all[!(all %in% Z$seed_A)]
-    seed_B <- all[!(all %in% Z$seed_B)]
-    Z <- rbind(Z,cbind(seed_A,seed_B))
-  }
-
-  # matching result
+  
   order <- order(Z$seed_A)
-  corr <- Z[order(Z$seed_A),]
+  corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
   z
 }
 cal_mark <- function(x,y){
-  1 - abs(x - y) / max(x, y)
+  if(x == 0 & y == 0){
+    0
+  } else{
+    1 - abs(x - y) / max(x, y)
+  }
 }
 #'
 #' @rdname graph_match_methods
@@ -695,31 +861,41 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
 
-  n <- nrow(A)
-  m <- nrow(B)
-  seeds <- check_seeds(seeds) #unused seeds
-  ns <- nrow(seeds)
-  Z <- seeds #matched nodes
-  M <- matrix(0,n,m) #marks matrix
-  M[seeds$seed_A,] <- -n*n
-  M[,seeds$seed_B] <- -n*n
+  totv1 <- nrow(A)
+  totv2 <- nrow(B)
+  n <- max(totv1, totv2)
+  P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+  seeds <- check_seeds(seeds)
+  seeds_ori <- seeds
+  P[as.matrix(seeds)] <- 1
+  M <- Matrix::Matrix(0, totv1, totv2)
+  M[seeds_ori$seed_A,] <- -n
+  M[,seeds_ori$seed_B] <- -n
+  Z <- seeds
+  weighted <- max(A) > 1
 
   # deferred percolation graph matching
   while(nrow(seeds) != 0){
     # mark neighbors
-    for(i in 1:nrow(seeds)){
-      A_adj <- which(A[seeds$seed_A[i],]>0)
-      B_adj <- which(B[seeds$seed_B[i],]>0)
-      mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+    if(weighted){
+      for(i in 1:nrow(seeds)){
+        A_adj <- which(A[seeds$seed_A[i],]>0)
+        B_adj <- which(B[seeds$seed_B[i],]>0)
+        if(length(A_adj) != 0 & length(B_adj) != 0){
+          mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+          M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        }
+      }
+    } else{
+      Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+      Pi[as.matrix(seeds)] <- 1
+      M <- M + (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
     }
 
     # choose pairs with marks ge r
     while(max(M) >= r){
-      max_ind <- which(M == max(M), arr.ind = TRUE)
+      max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
       if(nrow(max_ind) != 1){
         degree_diff <- abs(rowSums(A)[max_ind[,1]]-rowSums(B)[max_ind[,2]])
         max_ind <- max_ind[which(degree_diff == min(degree_diff)),]
@@ -728,27 +904,27 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
         }
       }
 
-      Z <- rbind(Z, as.vector(max_ind))
-
       # update mark matrix
-      A_adj <- which(A[max_ind[1],]>0)
-      B_adj <- which(B[max_ind[2],]>0)
-      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-      M[max_ind[1],] <- -n*n
-      M[,max_ind[2]] <- -n*n
-    }
-
-    if(nrow(Z) == n-1){
-      all <- 1:n
-      seed_A <- all[!(all %in% Z$seed_A)]
-      seed_B <- all[!(all %in% Z$seed_B)]
-      Z <- rbind(Z,cbind(seed_A,seed_B))
-      break
+      if(weighted){
+        A_adj <- which(A[max_ind[1],]>0)
+        B_adj <- which(B[max_ind[2],]>0)
+        if(length(A_adj) != 0 & length(B_adj) != 0){
+          mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+          M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        }
+      } else{
+        Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+        Pi[max_ind[1], max_ind[2]] <- 1 
+        delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
+        M <- M + delta
+      }
+      M[max_ind[1],] <- -n
+      M[,max_ind[2]] <- -n
+      Z <- rbind(Z, max_ind)
     }
 
     seeds_old <- seeds
-    seeds <- which(M > 0, arr.ind = TRUE)
+    seeds <- which(M > 0 & M < r, arr.ind = TRUE)
     seeds <- data.frame(seed_A=seeds[,1], seed_B=seeds[,2])
 
     if(nrow(seeds) == nrow(seeds_old)){
@@ -756,7 +932,6 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
         break
       }
     }
-
   }
 
   # matching result
@@ -765,7 +940,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   names(corr) <- c("corr_A","corr_B")
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
   z
 }
 #'
@@ -788,8 +963,6 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 2){
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
   B <- B[]
-  A <- as.matrix(A)
-  B <- as.matrix(B)
 
   # initialization of score matrix M & MM
   n <- nrow(A)
@@ -991,16 +1164,26 @@ check_cycle <- function(rem, new){
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "greedy"){
+graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
   A <- A[]
   B <- B[]
+  
+  totv1 <- nrow(A)
+  totv2 <- nrow(B)
+  
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
+  }
 
   # computing transition matrix A
   A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
   B <- B %*% Matrix::Diagonal(nrow(B), 1/Matrix::colSums(B))
   mat_A <- Matrix::kronecker(A, B)
-  ns <- sum(diag(start)==1)
-  start <- c(t(start)) # sparsify if poss
+  start <- Matrix::c.sparseVector(similarity) 
   E <- start/sum(abs(start))
 
   # computing R by power method
@@ -1021,13 +1204,13 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
   }
-  R <- matrix(R, byrow = TRUE, nrow = nrow(A))
+  R <- Matrix::Matrix(as.vector(R), nrow = totv1, byrow = TRUE)
 
   # find GNA
   if(method == "greedy"){
     corr <- NULL
     while (max(R)>0) {
-      max_ind <- which(R == max(R), arr.ind = TRUE)
+      max_ind <- Matrix::which(R == max(R), arr.ind = TRUE)
       max_ind <- max_ind[sample(nrow(max_ind), 1), ]
       corr <- rbind(corr, max_ind)
       R[max_ind[1],] <- -1
@@ -1036,15 +1219,15 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
     corr <- data.frame(corr_A = corr[,1], corr_B = corr[,2])
     
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = ns, order = order(corr$corr_A))
+    z <- list(call = cl, corr = corr, ns = 0, order = order(corr$corr_A))
     z
   } else if(method == "LAP"){
     # Hungarian alg.
-    corr <- as.vector(clue::solve_LSAP(R, maximum = TRUE))
+    corr <- as.vector(clue::solve_LSAP(as.matrix(R), maximum = TRUE))
     corr <- data.frame(corr_A = 1:nrow(A), corr_B = corr)
     
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = ns)
+    z <- list(call = cl, corr = corr, ns = 0)
     z
   }
 }
@@ -1067,10 +1250,19 @@ graph_match_IsoRank <- function(A, B, start, alpha, max_iter=1000, method = "gre
 #'
 #' @export
 #'
-graph_match_Umeyama <- function(A, B, start, alpha = 0){
+graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
   A <- A[]
   B <- B[]
-  ns <- sum(diag(start)==1)
+  totv1 <- nrow(A)
+  totv2 <- nrow(B)
+  
+  if(totv1 > totv2){
+    diff <- totv1 - totv2
+    B <- pad(B[], diff)
+  }else if(totv1 < totv2){
+    diff <- totv2 - totv1
+    A <- pad(A[], diff)
+  }
 
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices
@@ -1081,11 +1273,16 @@ graph_match_Umeyama <- function(A, B, start, alpha = 0){
   U_A <- eigen(A)$vectors
   U_B <- eigen(B)$vectors
   AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
-  Grad <- (1-alpha) * AB + alpha * Matrix::t(start)
+  if(!is.null(similarity)){
+    Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
+  } else{
+    Grad <- AB
+  }
+  Grad <- Grad - min(Grad)
   ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
 
   corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = ns)
+  z <- list(call = cl, corr = corr, ns = 0)
   z
 }

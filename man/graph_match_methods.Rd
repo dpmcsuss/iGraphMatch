@@ -3,6 +3,7 @@
 \name{graph_match_FW}
 \alias{graph_match_FW}
 \alias{graph_match_convex}
+\alias{graph_match_PATH}
 \alias{graph_match_percolation}
 \alias{graph_match_ExpandWhenStuck}
 \alias{graph_match_soft_percolation}
@@ -14,7 +15,10 @@ graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
   similarity = NULL, usejv = TRUE)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari",
-  max_iter = 100, tol = 1e-05)
+  max_iter = 100, similarity = NULL, tol = 1e-05)
+
+graph_match_PATH(A, B, similarity = NULL, seeds = NULL, alpha = 0.5,
+  epsilon = 0.01)
 
 graph_match_percolation(A, B, seeds, r = 2)
 
@@ -22,10 +26,10 @@ graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
 
 graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 2)
 
-graph_match_IsoRank(A, B, start, alpha, max_iter = 1000,
+graph_match_IsoRank(A, B, similarity, alpha = 0.5, max_iter = 1000,
   method = "greedy")
 
-graph_match_Umeyama(A, B, start, alpha = 0)
+graph_match_Umeyama(A, B, similarity, alpha = 0.5)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
@@ -45,14 +49,16 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 
-\item{r}{A number. Threshold of neighboring pair scores.}
-
 \item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
 on the information in network topology over other information such as
 similarity scores}
 
+\item{r}{A number. Threshold of neighboring pair scores.}
+
 \item{method}{A character. Choice of method to extract mapping from score matrix,
 including greedy method and the Hungarian algorithm.}
+
+\item{similaity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
 
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
@@ -68,11 +74,11 @@ max_iter times number of total vertices of \eqn{G_1}.}
   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
   \code{corr_B} and the number of seeds.
 
-\code{graph_match_percolation} returns a list consists of
-  matching correspondence of matched pairs with index of nodes in
-  \eqn{G_1} named \code{corr_A} and index of nodes in \eqn{G_2} named
-  \code{corr_B} returns and the order of matching for matched nodes in
-  \eqn{G_1}.
+\code{graph_match_PATH} returns a list of graph matching results,
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B}, the number of seeds if any, the permutation matrix and the
+  doubly stochastic matrix before projection onto the permutation set.
 
 \code{graph_match_percolation} returns a list of graph matching results,
   including the graph matching formula, a data frame containing the matching 
@@ -128,6 +134,9 @@ hard_seeds <- matrix(c(4,6,5,4),2)
 seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
 graph_match_convex(g1, g2, seeds)
 
+# match G_1 & G_2 using PATH algorithm
+graph_match_PATH(g1, g2)
+
 # match G_1 & G_2 using percolation graph matching method
 seeds <- 1:5
 graph_match_percolation(g1, g2, seeds, r = 2)
@@ -153,6 +162,10 @@ GM_U <- graph_match_Umeyama(G1, G2, startm, alpha = .3)
 
 }
 \references{
+M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
+algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
+pages 2227-2242.
+
 L. Yartseva and M. Grossglauser (2013), \emph{On the performance
   of percolation graph matching}. COSN, Boston, MA, USA, pages 119–130.
 
