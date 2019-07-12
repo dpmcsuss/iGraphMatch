@@ -780,9 +780,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
     if(min(A) < 0){
       weighted <- TRUE
     } else{
-      A <- graph_from_adjacency_matrix(A, weighted = TRUE)
-      weighted <- is.weighted(A)
-      A <- A[]
+      weighted <- max(A) > 1
     }
   }
   A <- A[]
@@ -875,9 +873,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
     if(min(A) < 0){
       weighted <- TRUE
     } else{
-      A <- graph_from_adjacency_matrix(A, weighted = TRUE)
-      weighted <- is.weighted(A)
-      A <- A[]
+      weighted <- max(A) > 1
     }
   }
   A <- A[]
@@ -988,9 +984,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
     if(min(A) < 0){
       weighted <- TRUE
     } else{
-      A <- graph_from_adjacency_matrix(A, weighted = TRUE)
-      weighted <- is.weighted(A)
-      A <- A[]
+      weighted <- max(A) > 1
     }
   }
   A <- A[]
