@@ -840,11 +840,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
   z
 }
 cal_mark <- function(x,y){
-  if(max(x, y) == 0){
-    0
-  } else{
-    1 - abs(x - y) / max(x, y)
-  }
+  1 - abs(x - y) / max(x, y)
 }
 #'
 #' @rdname graph_match_methods
