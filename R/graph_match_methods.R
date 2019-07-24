@@ -1238,8 +1238,10 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
   }
   
   # computing transition matrix A
-  A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
-  B <- B %*% Matrix::Diagonal(nrow(B), 1/Matrix::colSums(B))
+  colS_A <- Matrix::colSums(A)
+  colS_B <- Matrix::colSums(B)
+  A <- A %*% Matrix::Diagonal(nrow(A), ifelse(colS_A == 0, 0, 1/colS_A))
+  B <- B %*% Matrix::Diagonal(nrow(B), ifelse(colS_B == 0, 0, 1/colS_B))
   mat_A <- Matrix::kronecker(A, B)
   #start <- Matrix::c.sparseVector(similarity)
   start <- Matrix::c.sparseVector(Matrix::t(similarity)) 
@@ -1262,7 +1264,6 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     R_new <- AR / sum(abs(AR))
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
-    gc()
   }
   R <- ramify::resize(R, nrow = totv1, ncol = totv1, byrow = FALSE)
   
