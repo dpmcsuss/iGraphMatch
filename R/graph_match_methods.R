@@ -1221,7 +1221,7 @@ check_cycle <- function(rem, new){
 #'
 #' @export
 #'
-graph_match_IsoRank_vec <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
+graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
   A <- A[]
   B <- B[]
   
