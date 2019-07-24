@@ -1221,13 +1221,14 @@ check_cycle <- function(rem, new){
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
+graph_match_IsoRank_vec <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
   A <- A[]
   B <- B[]
   
   totv1 <- nrow(A)
   totv2 <- nrow(B)
   
+  # padding if two graphs different sizes
   if(totv1 > totv2){
     diff <- totv1 - totv2
     B <- pad(B[], diff)
@@ -1235,21 +1236,22 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     diff <- totv2 - totv1
     A <- pad(A[], diff)
   }
-
+  
   # computing transition matrix A
   A <- A %*% Matrix::Diagonal(nrow(A), 1/Matrix::colSums(A))
   B <- B %*% Matrix::Diagonal(nrow(B), 1/Matrix::colSums(B))
   mat_A <- Matrix::kronecker(A, B)
-  start <- Matrix::c.sparseVector(similarity) 
+  #start <- Matrix::c.sparseVector(similarity)
+  start <- Matrix::c.sparseVector(Matrix::t(similarity)) 
   E <- start/sum(abs(start))
-
+  
   # computing R by power method
   R_new <- E
   tol <- 1e-5
   iter <- 1
   diff <- 1
   while(diff > tol & iter <= max_iter){
-
+    
     R <- R_new
     if(alpha>0){
       AR <- mat_A %*% R
@@ -1260,9 +1262,10 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     R_new <- AR / sum(abs(AR))
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
+    gc()
   }
-  R <- Matrix::Matrix(as.vector(R), nrow = totv1, byrow = TRUE)
-
+  R <- ramify::resize(R, nrow = totv1, ncol = totv1, byrow = FALSE)
+  
   # find GNA
   if(method == "greedy"){
     corr <- NULL
