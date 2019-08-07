@@ -120,9 +120,9 @@ splr_sparse_plus_constant <- function(x, a){
 setMethod("as.matrix","splrMatrix",as.matrix.splr)
 
 
-# setAs('splrMatrix','Matrix',function(from) {
-#   as(from@x + from@a%*%t(from@b),'Matrix')
-# })
+setAs('splrMatrix','dMatrix',function(from) {
+  as(from@x + from@a %*% t(from@b),'Matrix')
+})
 
 as.character.splr <- function(x) {
   as.character(as.matrix(x))
@@ -146,8 +146,15 @@ setMethod("print", signature("splrMatrix"),
     print(x@a)
     print(x@b)
 })
-# 
 
+
+
+# setMethod("coerce", signature("splrMatrix", "character"),
+#   function(from, to){
+#     if(class == "dMatrix"){
+#       splr_to_sparse(x)
+#     }
+# })
 
 
 

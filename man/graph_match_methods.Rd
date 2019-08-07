@@ -18,18 +18,18 @@ graph_match_convex(A, B, seeds = NULL, start = "bari",
   max_iter = 100, similarity = NULL, tol = 1e-05)
 
 graph_match_PATH(A, B, similarity = NULL, seeds = NULL, alpha = 0.5,
-  epsilon = 0.01)
+  epsilon = 1)
 
 graph_match_percolation(A, B, seeds, r = 2)
 
 graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
 
-graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 2)
+graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 100)
 
 graph_match_IsoRank(A, B, similarity, alpha = 0.5, max_iter = 1000,
   method = "greedy")
 
-graph_match_Umeyama(A, B, similarity, alpha = 0.5)
+graph_match_Umeyama(A, B, similarity = NULL, alpha = 0.5)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}

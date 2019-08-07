@@ -89,6 +89,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     seeds_pair <- check_seeds(seeds)
     ns <- nrow(seeds_pair)
 
+
     seeds <- rep(FALSE,nv)
     seeds[seeds_pair$seed_A] <- TRUE
 
@@ -148,6 +149,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
+    Grad <- as.matrix(Grad)
     Grad <- Grad - min(Grad)
 
     ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
@@ -207,6 +209,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
 # correct the order of swapping graph2 according to new seeds
 swap_order <- function(aseeds_matrix){
+
   # aseeds_matrix: first row:added seeds index in g1, second row added seeds match
   naseeds_err <- dim(aseeds_matrix)[2]
   ninter <- 0
@@ -272,6 +275,7 @@ swap_order <- function(aseeds_matrix){
 g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
   aseeds_matrix <- matrix(c(seed_g1_err, seed_g2_err),
     nrow = 2, byrow = TRUE)
+  
   if(length(seed_g1_err) > 1)
   {
     swap <- swap_order(aseeds_matrix)
@@ -418,10 +422,11 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     if(is.null(similarity)){
       similarity <- Matrix::Matrix(0, nn, nn)
     }
-    Grad<- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity
+    Grad <- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity
+    Grad <- as.matrix(Grad)
     # print("asdf")
 
-    Grad <- round(as.matrix(nn^2*(Grad-min(Grad))))
+    Grad <- round(nn^2*(Grad-min(Grad)))
     corr <- as.vector(clue::solve_LSAP(Grad))
     Pdir <- Matrix::Diagonal(nn)[corr,]
 
