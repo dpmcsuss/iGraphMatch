@@ -151,10 +151,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
-    # Grad <- as.matrix(Grad)
-    # Grad <- Grad - min(Grad)
-
-    # ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
 
     ind <- do_lap(Grad, lap_method)
 
@@ -188,9 +184,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
 
   D_ns <- P
-  # corr_ns <- as.vector(clue::solve_LSAP(
-  #   as.matrix(round(P * nn ^ 2)),
-  #     maximum = TRUE))
+
   corr_ns <- do_lap(P, lap_method)
   corr_ns <- rp[corr_ns]
 
@@ -368,10 +362,13 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #'
 graph_match_convex <- function(A, B, seeds = NULL, start = "bari", 
                                max_iter = 100, similarity = NULL,
-                               tol = 1e-5){
+                               tol = 1e-5, usejv = TRUE){
 
   A <- A[]
   B <- B[]
+
+  totv1 <- nrow(A)
+  totv2 <- norw(B)
 
   # Add support for graphs with different orders ?
   nv <- nrow(A)
@@ -421,6 +418,10 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   ABns_sn <- Ans%*%t(Bns) + t(Asn)%*%Bsn
   f <- sum((Ann %*% P - P%*% Bnn)^2)
 
+
+
+  lap_method <- set_lap_method(usejv, totv1, totv2)
+
   while(toggle && iter < max_iter){
     f_old <- f
     iter<-iter+1
@@ -429,11 +430,9 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
       similarity <- Matrix::Matrix(0, nn, nn)
     }
     Grad <- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity
-    Grad <- as.matrix(Grad)
-    # print("asdf")
+   
 
-    Grad <- round(nn^2*(Grad-min(Grad)))
-    corr <- as.vector(clue::solve_LSAP(Grad))
+    corr <- do_lap(Grad, lap_method)
     Pdir <- Matrix::Diagonal(nn)[corr,]
 
 
@@ -466,7 +465,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   }
 
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
+  corr_ns <- do_lap(P, lap_method)
   corr <- 1:nv
   corr[nonseeds] <- corr[nonseeds][corr_ns]
   P <- Matrix::Diagonal(nv)[corr,]
