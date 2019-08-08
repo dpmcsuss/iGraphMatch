@@ -57,4 +57,5 @@ match_report <- function(object, A = A, B = B, label = TRUE, ...){
   z$Permutation <- get_perm(nrow(A), nrow(B), corr)
   z$Obj.Value <- Matrix::norm(A_m-B_m, type = "F")
   cat("\nObjective Value: ", z$Obj.Value)
+  cat("\n")
 }
