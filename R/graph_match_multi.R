@@ -81,7 +81,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
     }
   }
 
-  nn <- nv-ns
+  nn <- nv - ns
   nonseeds <- !seeds
 
 
@@ -237,20 +237,22 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   list(corr = corr, P = P, D = D, iter = iter)
 }
 
-get_s_to_ns <- function(Alist, Blist, seeds,
+get_s_to_ns <- function(Alist, Blist, seeds, nonseeds,
     perm = seq(sum(seeds))){
 
-  nonseeds <- !seeds
-  nns <- sum(nonseeds)
-  ns <- sum(seeds)
+  # NEED TO CHANGE ???
+  nns <- nrow(nonseeds)
+  ns <- nrow(nonseeds)
+
   # permute if needed
   pmat <- Matrix::Diagonal(nns, )[perm, ]
-  s_to_ns <- function(A,B){
-    Asn <- A[seeds,nonseeds]
-    Ans <- A[nonseeds,seeds]
 
-    Bsn <- B[seeds,nonseeds] %*% t(pmat)
-    Bns <- pmat %*% B[nonseeds,seeds]
+  s_to_ns <- function(A,B){
+    Asn <- A[seeds$A,nonseeds$A]
+    Ans <- A[nonseeds$A,seeds$A]
+
+    Bsn <- B[seeds$B,nonseeds$B] %*% t(pmat)
+    Bns <- pmat %*% B[nonseeds$B,seeds$B]
 
     if (ns == 1){
       outer(Ans, Bns) + outer(Asn, Bsn)

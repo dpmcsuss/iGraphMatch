@@ -83,38 +83,24 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   if(is.null(seeds)){
     seeds <- rep(FALSE,nv)
-    aseeds_err <- FALSE
-    ns <- sum(seeds)
+    seeds <- data.frame(A = seeds, B = seeds)
+    nonseeds <- !seeds
+    ns <- 0
   } else{
-    seeds_pair <- check_seeds(seeds)
-    ns <- nrow(seeds_pair)
-
-
-    seeds <- rep(FALSE,nv)
-    seeds[seeds_pair$seed_A] <- TRUE
-
-    # detect incorrect seeds
-    seed_A <- seeds_pair$seed_A
-    seed_B <- seeds_pair$seed_B
-    aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
-    seed_A_err <- seed_A[aseeds_err]
-    seed_B_err <- seed_B[aseeds_err]
-
-    if(sum(aseeds_err)!=0){
-      B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-    }
+    seeds <- check_seeds(seeds)
+    nonseeds <- data.frame(
+      A = (1:nv)[!(1:nv %in% seeds$A)],
+      B = (1:nv)[!(1:nv %in% seeds$B)])
+    ns <- nrow(seeds)
   }
 
+
+
   nn <- nv - ns
-  nonseeds <- !seeds
 
-  # Asn <- A[seeds,nonseeds]
-  Ann <- A[nonseeds,nonseeds]
-  # Ans <- A[nonseeds,seeds]
 
-  # Bsn <- B[seeds,nonseeds]
-  Bnn <- B[nonseeds,nonseeds]
-  # Bns <- B[nonseeds,seeds]
+  Ann <- A[nonseeds$A,nonseeds$A]
+  Bnn <- B[nonseeds$B,nonseeds$B]
 
   P <- init_start(start = start, nns = nn,
                   A = A, B = B, seeds = seeds)
@@ -129,7 +115,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
 
   # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
+  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
   # Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
 
   Bnn <- Bnn[rp, rp]
@@ -189,17 +175,11 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr_ns <- rp[corr_ns]
 
   corr <- 1:nv
-  corr[nonseeds] <- corr[nonseeds][corr_ns]
+  corr[nonseeds$A] <- nonseeds$B[corr_ns]
+  corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds, nonseeds] <- D_ns %*% rpmat
-
-  # fix match results if there are incorrect seeds
-  if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(seed_A_err, seed_B_err,corr)
-    P <- Matrix::Diagonal(nv)[corr,]
-    D <- fix_hard_D(seed_A_err, seed_B_err,D)
-  }
+  D[nonseeds$A, nonseeds$A] <- D_ns %*% rpmat
 
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns,
