@@ -34,9 +34,9 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- matrix(1/nns,nns,nns)
   } else{
-    soft_seeds <- check_seeds(soft_seeds)
-    seed_g1 <- soft_seeds$seed_A
-    seed_g2 <- soft_seeds$seed_B
+    soft_seeds <- check_seeds(soft_seeds)$seeds
+    seed_g1 <- soft_seeds$A
+    seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
 
     start <- matrix(1/(nns-nseeds),nns,nns)
@@ -68,9 +68,9 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_sinkhorn(nns,distribution = distribution)
   } else{
-    soft_seeds <- check_seeds(soft_seeds)
-    seed_g1 <- soft_seeds$seed_A
-    seed_g2 <- soft_seeds$seed_B
+    soft_seeds <- check_seeds(soft_seeds)$seeds
+    seed_g1 <- soft_seeds$A
+    seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
     
     start <- matrix(5,nrow = nns,ncol = nns)
@@ -119,9 +119,9 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_perm_bari(nns, g, is_splr)
   } else{
-    soft_seeds <- check_seeds(soft_seeds)
-    seed_g1 <- soft_seeds$seed_A
-    seed_g2 <- soft_seeds$seed_B
+    soft_seeds <- check_seeds(soft_seeds)$seeds
+    seed_g1 <- soft_seeds$A
+    seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
 
     not_seed_g1 <- not_seed_g2 <- rep(TRUE, nns)
