@@ -4,7 +4,7 @@
 \alias{check_seeds}
 \title{Standardize seeds input data type}
 \usage{
-check_seeds(seeds, nv = 0, logical = FALSE)
+check_seeds(seeds, nv, logical = FALSE)
 }
 \arguments{
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If there is no error in seeds input can be

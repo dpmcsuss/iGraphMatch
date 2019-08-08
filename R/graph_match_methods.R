@@ -81,23 +81,12 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
   nv <- nrow(A)
 
-  if(is.null(seeds)){
-    seeds <- rep(FALSE,nv)
-    seeds <- data.frame(A = seeds, B = seeds)
-    nonseeds <- !seeds
-    ns <- 0
-  } else{
-    seeds <- check_seeds(seeds)
-    nonseeds <- data.frame(
-      A = (1:nv)[!(1:nv %in% seeds$A)],
-      B = (1:nv)[!(1:nv %in% seeds$B)])
-    ns <- nrow(seeds)
-  }
+  seed_check <- check_seeds(seeds, nv)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
 
-
-
+  ns <- nrow(seeds)
   nn <- nv - ns
-
 
   Ann <- A[nonseeds$A,nonseeds$A]
   Bnn <- B[nonseeds$B,nonseeds$B]
@@ -114,7 +103,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
 
-  # seed to non-seed info
+  # seed to non-seed portion of gradient
   s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
   # Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
 
@@ -179,7 +168,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$A] <- D_ns %*% rpmat
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns,
@@ -349,41 +338,24 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 
   # Add support for graphs with different orders ?
   nv <- nrow(A)
-  if(is.null(seeds)){
-    seeds <- rep(FALSE,nv)
-    aseeds_err <- FALSE
-    ns <- sum(seeds)
-  } else{
-    seeds_pair <- check_seeds(seeds)
-    ns <- nrow(seeds_pair)
 
-    seeds <- rep(FALSE,nv)
-    seeds[seeds_pair$seed_A] <- TRUE
 
-    # detect incorrect seeds
-    seed_A <- seeds_pair$seed_A
-    seed_B <- seeds_pair$seed_B
-    aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
-    seed_A_err <- seed_A[aseeds_err]
-    seed_B_err <- seed_B[aseeds_err]
 
-    if(sum(aseeds_err)!=0){
-      B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-    }
-  }
+  seed_check <- check_seeds(seeds, nv)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
 
-  nn <- nv-ns
-  nonseeds <- !seeds
+  ns <- nrow(seeds)
+  nn <- nv - ns
 
-  Asn <- A[seeds,nonseeds]
-  Ann <- A[nonseeds,nonseeds]
-  Ans <- A[nonseeds,seeds]
+  Asn <- A[seeds$A,nonseeds$A]
+  Ann <- A[nonseeds$A,nonseeds$A]
+  Ans <- A[nonseeds$A,seeds$A]
 
-  Bsn <- B[seeds,nonseeds]
-  Bnn <- B[nonseeds,nonseeds]
-  Bns <- B[nonseeds,seeds]
+  Bsn <- B[seeds$B,nonseeds$B]
+  Bnn <- B[nonseeds$B,nonseeds$B]
+  Bns <- B[nonseeds$B,seeds$B]
 
-  similarity <- similarity[nonseeds,nonseeds]
   tol0 <- 1
   P <- init_start(start = start, nns = nn)
   iter<-0
@@ -439,20 +411,20 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     toggle <- f_diff > tol && f > tol && P_diff > tol
   }
 
-  D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
-  corr <- 1:nv
-  corr[nonseeds] <- corr[nonseeds][corr_ns]
-  P <- Matrix::Diagonal(nv)[corr,]
-  D <- P
-  D[nonseeds,nonseeds] <- D_ns
 
-  # fix match results if there are incorrect seeds
-  if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
-    P <- Matrix::Diagonal(nv)[corr,]
-    D <- fix_hard_D(seed_A_err,seed_B_err,D)
-  }
+
+  D_ns <- P
+  corr_ns <- as.vector(clue::solve_LSAP(
+    as.matrix(round(P * nn ^ 2)),
+      maximum = TRUE))
+  # corr_ns <- rp[corr_ns]
+
+  corr <- 1:nv
+  corr[nonseeds$A] <- nonseeds$B[corr_ns]
+  corr[seeds$A] <- seeds$B
+  P <- Matrix::Diagonal(nv)[corr, ]
+  D <- P
+  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
@@ -705,7 +677,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     vec_delta_P <- Matrix::c.sparseVector(delta_P)
     vec_Pdir <- Matrix::c.sparseVector(Pdir)
     c <- sum(t(delta) * delta_P)
-    e <- Matrix::t(vec_delta_P) %*% L %*% vec_Pdir
+    e <- Matrix::t(f) %*% L %*% vec_Pdir
     u <- Matrix::t(vec_Pdir) %*% L %*% vec_delta_P
     v <- Matrix::t(vec_delta_P) %*% L %*% vec_delta_P
     a <- 2 * (lambda - 1) * bq + lambda * (c - e + u)

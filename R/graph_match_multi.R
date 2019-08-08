@@ -237,42 +237,6 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   list(corr = corr, P = P, D = D, iter = iter)
 }
 
-get_s_to_ns <- function(Alist, Blist, seeds, nonseeds,
-    perm = seq(sum(seeds))){
-
-  # NEED TO CHANGE ???
-  nns <- nrow(nonseeds)
-  ns <- nrow(nonseeds)
-
-  # permute if needed
-  pmat <- Matrix::Diagonal(nns, )[perm, ]
-
-  s_to_ns <- function(A,B){
-    Asn <- A[seeds$A,nonseeds$A]
-    Ans <- A[nonseeds$A,seeds$A]
-
-    Bsn <- B[seeds$B,nonseeds$B] %*% t(pmat)
-    Bns <- pmat %*% B[nonseeds$B,seeds$B]
-
-    if (ns == 1){
-      outer(Ans, Bns) + outer(Asn, Bsn)
-    } else {
-      (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
-    }
-  }
-
-  if (!is(Alist, "list")){
-    return(s_to_ns(Alist, Blist))
-  }
-
-  nc <- length(Alist)
-  s2ns <- Matrix(0, nrow = nns, ncol = nns)
-  for (ch in 1:nc){
-    s2ns <- s2ns + s_to_ns(Alist[[ch]], Blist[[ch]])
-    gc()
-  }
-  s2ns
-}
 
 
 get_graph_triple <- function(g, weight, first_graph){

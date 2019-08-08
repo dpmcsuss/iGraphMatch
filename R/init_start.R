@@ -66,12 +66,14 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
     B <- B[]
 
     if(is.null(soft_seeds)){
-      seeds <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
-      P <- graph_match_convex(A,B,seeds)$D[!seeds,!seeds]
+      cs <- check_seeds(seeds, nv = nrow(A))
+      P <- graph_match_convex(A,B,seeds)$D
+      P <- P[cs$nonseeds$A,cs$nonseeds$B]
     } else{
       start <- init_start(start = "bari", nns, ns, soft_seeds)
-      seeds_log <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
-      P <- graph_match_convex(A, B, seeds = seeds, start = start)$D[!seeds_log,!seeds_log]
+      seeds_log <- check_seeds(seeds, nv = nrow(A))
+      P <- graph_match_convex(A, B, seeds = seeds, start = start)$D 
+      P <- P[cs$nonseeds$A,cd$nonseeds$B]
     }
   }
   P
