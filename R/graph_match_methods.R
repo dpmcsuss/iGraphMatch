@@ -136,6 +136,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   P <- P[, rp]
 
+  lap_method <- set_lap_method(usejv, totv1, totv2)
+
   if (is.null(similarity)){
     similarity <- Matrix::Matrix(0, nn, nn)
   } else {
@@ -149,10 +151,13 @@ graph_match_FW <- function(A, B, seeds = NULL,
     tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
 
     Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
-    Grad <- as.matrix(Grad)
-    Grad <- Grad - min(Grad)
+    # Grad <- as.matrix(Grad)
+    # Grad <- Grad - min(Grad)
 
-    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+    # ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+
+    ind <- do_lap(Grad, lap_method)
+
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
@@ -183,9 +188,10 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
 
   D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(
-    as.matrix(round(P * nn ^ 2)),
-      maximum = TRUE))
+  # corr_ns <- as.vector(clue::solve_LSAP(
+  #   as.matrix(round(P * nn ^ 2)),
+  #     maximum = TRUE))
+  corr_ns <- do_lap(P, lap_method)
   corr_ns <- rp[corr_ns]
 
   corr <- 1:nv

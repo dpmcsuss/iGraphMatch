@@ -112,17 +112,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds][rp, rp])
   nc <- length(A)
 
-  if("rlapjv" %in% rownames(installed.packages()) && usejv){
-    library(rlapjv)
-    # usejv <- TRUE
-    if( totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5){
-      usejvmod <- TRUE
-      usejv <- FALSE
-    }
-  } else {
-    usejv <- FALSE
-    usejvmod <- FALSE
-  }
+  lap_method <- set_lap_method(usejv, totv1, totv2)
+
 
   while(toggle && iter < max_iter){
 
@@ -138,31 +129,9 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
     for(ch in 1:nc){
       Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
     }
-    if ( usejv ){
-      Grad <- as.matrix(Grad)
-      ind <- rlapjv::lapjv(round(Grad * nn ^ 2 * max(Grad)),
-        maximize = TRUE)
-    } else if ( usejvmod ) {
-      if( class(Grad) == "splrMatrix" ){
-        ind <- rlapjv::lapmod(splr_to_sparse(Grad),
-          maximize = TRUE)
-      } else {
-        ind <- rlapjv::lapmod(Grad, maximize = TRUE)
-      }
-    } else {
-      Grad <- as.matrix(Grad)
-      Grad <- (Grad - min(Grad))
-      ind <- as.vector(clue::solve_LSAP(Grad,
-        maximum = TRUE))
-    }
-    
-    # Grad <- as.matrix(Grad)
-    # if ( usejv ){
-    #   ind <- rlapjv::lapjv(Grad - min(Grad), maximize = TRUE)
-    # } else {
-    #   ind <- as.vector(clue::solve_LSAP(Grad - min(Grad), 
-    #     maximum = TRUE))
-    # }
+
+    ind <- do_lap(Grad, lap_method)
+
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
