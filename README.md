@@ -11,6 +11,8 @@ This is the development version of the package. This can be installed via devtoo
 devtools::install_github("dpmcsuss/iGraphMatch", ref = "dev")
 ```
 
+You might want to try the `dev` branch since it might be more stable at the moment.
+
 Usage
 ------------
 
