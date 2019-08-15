@@ -14,8 +14,8 @@
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
   similarity = NULL, usejv = TRUE)
 
-graph_match_convex(A, B, seeds = NULL, start = "bari",
-  max_iter = 100, similarity = NULL, tol = 1e-05)
+graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
+  similarity = NULL, tol = 1e-05)
 
 graph_match_PATH(A, B, similarity = NULL, seeds = NULL, alpha = 0.5,
   epsilon = 1)

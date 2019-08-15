@@ -80,7 +80,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
     A <- pad(A[], diff)
   }
   nv <- nrow(A)
-
   seed_check <- check_seeds(seeds, nv)
   seeds <- seed_check$seeds
   nonseeds <- seed_check$nonseeds

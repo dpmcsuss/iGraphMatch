@@ -32,10 +32,10 @@
 #' @export
 check_seeds <- function(seeds, nv, logical = FALSE){
   if(is.null(seeds)){
-    seeds_g1 <- numeric()
-    seeds_g2 <- numeric()
+    seed_g1 <- numeric()
+    seed_g2 <- numeric()
   }
-  if(is.logical(seeds)){
+  else if(is.logical(seeds)){
     seeds <- which(seeds==TRUE)
     seed_g1 <- seeds
     seed_g2 <- seeds
