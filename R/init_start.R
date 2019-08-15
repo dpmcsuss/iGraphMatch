@@ -57,24 +57,21 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
   } else if(start == "bari"){
     P <- bari_start(nns,ns,soft_seeds)
   } else if(start =="rds"){
-    P <- rds_sinkhorn_start(nns,ns,soft_seeds, ...)
+    P <- rds_sinkhorn_start(nns,ns,soft_seeds)
   } else if(start =="rds_perm_bari"){
     P <- rds_perm_bari_start(nns,ns,soft_seeds,g)
   } else if(start == "convex"){
     A <- A[]
     B <- B[]
-    A <- as.matrix(A)
-    B <- as.matrix(B)
+
     if(is.null(soft_seeds)){
       seeds <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
       P <- graph_match_convex(A,B,seeds)$D[!seeds,!seeds]
     } else{
-      soft_seeds <- check_seeds(soft_seeds)
-      seeds <- check_seeds(seeds)
+      start <- init_start(start = "bari", nns, ns, soft_seeds)
       seeds_log <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
-      seeds <- rbind(seeds,soft_seeds)
-      P <- graph_match_convex(A, B, seeds)$D[!seeds_log,!seeds_log]
+      P <- graph_match_convex(A, B, seeds = seeds, start = start)$D[!seeds_log,!seeds_log]
     }
   }
-  as.matrix(P)
+  P
 }

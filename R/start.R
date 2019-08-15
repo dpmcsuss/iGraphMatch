@@ -31,7 +31,7 @@
 #' @export
 #'
 bari_start <- function(nns, ns = 0, soft_seeds = NULL){
-  if(is.null(soft_seeds)){
+  if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- matrix(1/nns,nns,nns)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
@@ -58,11 +58,14 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
 #' rds_sinkhorn_start(5)
 #'
 #' ## Case with soft seeds and the input is a data frame
-#' rds_sinkhorn_start(nns=5, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)), distribution = "rnorm")
+#' rds_sinkhorn_start(nns=5,
+#'    soft_seeds = as.data.frame(matrix(c(2,4,2,3),nrow=2)),
+#'    distribution = "rnorm")
+#' 
 #' @export
 #'
 rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif"){
-  if(is.null(soft_seeds)){
+  if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_sinkhorn(nns,distribution = distribution)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
@@ -95,43 +98,90 @@ sinkhorn <- function(m,niter=20){
 rds_sinkhorn <- function(n,distribution="runif"){
   sinkhorn(matrix(abs(do.call(distribution,list(n^2))),n))
 }
+
+ 
 #' @rdname start
+#' 
 #' @return \code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 #' with 1's corresponding to adaptive seeds.
+#' 
 #' @examples
 #' ## Case without soft seeds
 #' rds_perm_bari_start(nns=5)
 #'
 #' ## Case with soft seeds and the input is a data frame
 #' rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)))
+#' 
 #' @export
 #' 
-rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1){
-  if(is.null(soft_seeds)){
-    start <- rds_perm_bari(nns, g = g)
+rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
+  
+  if(is.null(soft_seeds) || length(soft_seeds) == 0){
+    start <- rds_perm_bari(nns, g, is_splr)
   } else{
     soft_seeds <- check_seeds(soft_seeds)
     seed_g1 <- soft_seeds$seed_A
     seed_g2 <- soft_seeds$seed_B
     nseeds <- length(seed_g1)
-    
-    start <- matrix(5,nrow = nns,ncol = nns)
+
+    not_seed_g1 <- not_seed_g2 <- rep(TRUE, nns)
+    not_seed_g1[seed_g1 - ns] <- FALSE
+    not_seed_g2[seed_g2 - ns] <- FALSE
+
+    rds <- rds_perm_bari(nns - nseeds, g, is_splr)
+
+    start <- Matrix(0,nrow = nns,ncol = nns)
     for (i in 1:nseeds) {
-      start[seed_g1[i]-ns,] <- 0
-      start[,seed_g2[i]-ns] <- 0
-      start[seed_g1[i]-ns,seed_g2[i]-ns] <- 1
+      start[seed_g1[i] - ns, seed_g2[i] - ns] <- 1
     }
 
-    rds <- rds_perm_bari(nns-nseeds, g = g)
-    start[start==5] <- rds
-  }
 
+    if( is_splr ){
+      a <- b <- Matrix(0, nns)
+      a[not_seed_g1] <- rds@a
+      b[not_seed_g2] <- rds@b
+      start[not_seed_g1, not_seed_g2] <- rds@x
+      start <- new("splrMatrix",
+        x = start, a = a, b =b,
+        Dim = c(as.integer(nns), as.integer(nns)),
+        Dimnames = list(NULL, NULL))
+    } else {
+      start[not_seed_g1, not_seed_g2] <- rds
+    }
+
+
+  }
   start
 }
 
 
-rds_perm_bari <- function(nns, g){
-    alpha <- runif(1, 0, g)
+rds_perm_bari <- function(nns, g, is_splr = TRUE){
+  alpha <- runif(1, 0, g)
+  if(is_splr){
+    new("splrMatrix",
+        x = alpha * rperm(nns), a = Matrix(1 - alpha, nns), b = Matrix(1 / nns, nns),
+        Dim = c(as.integer(nns), as.integer(nns)),
+        Dimnames = list(NULL, NULL))
+  } else {
     (1 - alpha) * bari_start(nns) +
         alpha * rperm(nns)
+  }
 }
+
+
+
+# #' @rdname featurestart
+# #' 
+# #' @param f1
+# #' @param f2
+# #' @param s
+# #' 
+# #' @return \code{feature_tart} returns a 
+# #' \code{nns-by-nns} matrix
+# #' with entries corresponding to similiarity scores
+# #' for feature vectors.
+# #' 
+# #' @examples
+# feature_start <- function(f1, f2, s){
+
+# }
