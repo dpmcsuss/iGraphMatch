@@ -34,7 +34,7 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- matrix(1/nns,nns,nns)
   } else{
-    soft_seeds <- check_seeds(soft_seeds)$seeds
+    soft_seeds <- check_seeds(soft_seeds, nv = nns + ns)$seeds
     seed_g1 <- soft_seeds$A
     seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
@@ -68,20 +68,24 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_sinkhorn(nns,distribution = distribution)
   } else{
-    soft_seeds <- check_seeds(soft_seeds)$seeds
+    soft_seeds <- check_seeds(soft_seeds, nv = nns + ns)$seeds
     seed_g1 <- soft_seeds$A
     seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
     
-    start <- matrix(5,nrow = nns,ncol = nns)
+    start <- matrix(5, nrow = nns, ncol = nns)
     for (i in 1:nseeds) {
       start[seed_g1[i]-ns,] <- 0
       start[,seed_g2[i]-ns] <- 0
       start[seed_g1[i]-ns,seed_g2[i]-ns] <- 1
     }
 
-    rds <- rds_sinkhorn(nns-nseeds,distribution = distribution)
-    start[start==5] <- rds
+    if(nns - nseeds == 1){
+      rds <- 1
+    } else{
+      rds <- rds_sinkhorn(nns-nseeds,distribution = distribution)
+    }
+    start[start == 5] <- rds
   }
 
   start
@@ -119,7 +123,7 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_perm_bari(nns, g, is_splr)
   } else{
-    soft_seeds <- check_seeds(soft_seeds)$seeds
+    soft_seeds <- check_seeds(soft_seeds, nv = nns + ns)$seeds
     seed_g1 <- soft_seeds$A
     seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
@@ -158,8 +162,14 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
 rds_perm_bari <- function(nns, g, is_splr = TRUE){
   alpha <- runif(1, 0, g)
   if(is_splr){
+    if(is.numeric(alpha * rperm(nns))){
+      x <- sparseMatrix(x = alpha * rperm(nns), i=1, j=1)
+    } else{
+      x <- alpha * rperm(nns)
+    }
     new("splrMatrix",
-        x = alpha * rperm(nns), a = Matrix(1 - alpha, nns), b = Matrix(1 / nns, nns),
+        x = x, 
+        a = Matrix(1 - alpha, nns), b = Matrix(1 / nns, nns),
         Dim = c(as.integer(nns), as.integer(nns)),
         Dimnames = list(NULL, NULL))
   } else {
