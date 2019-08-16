@@ -5,7 +5,7 @@
 \title{Multiple Graph Match Methods}
 \usage{
 graph_match_FW_multi(A, B, seeds = NULL, start = "bari",
-  max_iter = 20, similarity = NULL, usejv = TRUE)
+  max_iter = 20, similarity = NULL, usejv = FALSE)
 }
 \arguments{
 \item{A}{A list of graphs (or igraph objects)}

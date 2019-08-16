@@ -39,8 +39,16 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   # }
 
   # this will make the graphs be matrices if they are igraph objects
-  A <- lapply(A, function(Al) Al[])
-  B <- lapply(B, function(Bl) Bl[])
+  if(is.list(A) && !is.igraph(A)){
+    A <- lapply(A, function(Al) Al[])
+  } else {
+    A <- list(A[])
+  }
+  if( is.list(B) && !is.igraph(B)){
+    B <- lapply(B, function(Bl) Bl[])
+  } else {
+    B <- list(B[])
+  }
 
   # Assume each list has all the same number of nodes within
   totv1 <- ncol(A[[1]])
