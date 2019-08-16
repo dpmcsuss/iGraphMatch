@@ -655,6 +655,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   delta <- outer(diag(D_A), diag(D_B), delta_cal)
   iter <- 0
   
+  lap_method <- set_lap_method(FALSE, totv1, totv2)
+
   while (lambda < 1) {
     iter <- iter + 1
     # dlambda-adaptation
@@ -717,8 +719,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     if(!is.null(similarity)){
       Grad <- alpha * Grad + (1 - alpha) * similarity
     }
-    Grad <- Grad - min(Grad)
-    ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+    ind <- do_lap(Grad, lap_method)
     ind2 <- cbind(1:n, ind)
     Pdir <- Matrix::Diagonal(n)[ind, ]
     
@@ -751,7 +752,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   }
   
   D <- P
-  corr <- as.vector(clue::solve_LSAP(as.matrix(round(P*n^2)), maximum = TRUE))
+  corr <- do_lap(P, lap_method)
   P <- Matrix::Diagonal(n)[corr,]
   
   if(!is.null(seeds)){
@@ -1294,7 +1295,8 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     z
   } else if(method == "LAP"){
     # Hungarian alg.
-    corr <- as.vector(clue::solve_LSAP(as.matrix(R), maximum = TRUE))
+    lap_method <- set_lap_method(FALSE, totv1, totv2)
+    corr <- do_lap(R, lap_method)
     corr <- data.frame(corr_A = 1:nrow(A), corr_B = corr)
     
     cl <- match.call()
@@ -1350,7 +1352,8 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
     Grad <- AB
   }
   Grad <- Grad - min(Grad)
-  ind <- as.vector(clue::solve_LSAP(as.matrix(Grad), maximum = TRUE))
+  lap_method <- set_lap_method(FALSE, totv1, totv2)
+  ind <- do_lap(Grad, lap_method)
 
   corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
   cl <- match.call()
