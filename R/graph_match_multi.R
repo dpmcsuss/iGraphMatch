@@ -32,7 +32,7 @@
 #' @export
 #'
 graph_match_FW_multi <- function(A, B, seeds = NULL,
-  start = "bari", max_iter = 20, similarity = NULL, usejv = TRUE){
+  start = "bari", max_iter = 20, similarity = NULL, usejv = FALSE){
 
   # if(start == "convex"){
   #   stop("Convex start is not yet implemented for multiplex matching")

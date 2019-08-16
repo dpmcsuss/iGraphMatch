@@ -26,10 +26,10 @@ do_lap <- function(Grad, method){
 }
 
 set_lap_method <- function(usejv, totv1, totv2){
+
   lap_method <- ifelse(usejv, "lapjv", "clue")
   if("rlapjv" %in% rownames(installed.packages()) && usejv){
     library(rlapjv)
-    # usejv <- TRUE
     if( totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5){
       lap_method <- "lapmod"
     }
