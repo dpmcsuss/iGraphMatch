@@ -200,6 +200,12 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   list(corr = corr, P = P, D = D, iter = iter)
 }
 
+graph_match_convex_multi <- function(A, B, seeds = NULL,
+  start = "bari", max_iter = 20, similarity = NULL, usejv = FALSE){
+  stop("graph_match_convex_multi is not yet implemented.")
+}
+
+
 get_s_to_ns <- function(Alist, Blist, seeds,
     perm = seq(sum(seeds))){
 
@@ -315,6 +321,9 @@ graph_match_percolation_multi <- function (A, B, start = NULL, similarity = NULL
   colnames(corr) <- c("corr_A", "corr_B")
   corr
 }
+
+
+
 
 #' @export
 graph_match_ExpandWhenStuck_multi <- function(A, B, start = NULL, similarity = NULL, r = 2, alpha = 5){
