@@ -45,7 +45,7 @@
 #'
 #' # match G_1 & G_2 with some incorrect seeds
 #' hard_seeds <- matrix(c(4,6,5,4),2)
-#' seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+#' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 #' graph_match_FW(g1, g2, seeds, start = "convex")
 #'
 #' @export
@@ -188,7 +188,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
 #' graph_match_convex(g1, g2, seeds)
 #'
 #' hard_seeds <- matrix(c(4,6,5,4),2)
-#' seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+#' seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
 #' graph_match_convex(g1, g2, seeds)
 #'
 #' @export
@@ -567,7 +567,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   P <- Matrix::Diagonal(n)[corr,]
   
   if(!is.null(seeds)){
-    ns <- nrow(check_seeds(seeds))
+    ns <- nrow(check_seeds(seeds, n)$seeds)
   } else{
     ns <- 0
   }
@@ -701,7 +701,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-  seeds <- check_seeds(seeds)$seeds
+  seeds <- check_seeds(seeds, n)$seeds
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
   M <- Matrix::Matrix(0, totv1, totv2)
@@ -754,13 +754,13 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
       }
       M[max_ind[1],] <- -n
       M[,max_ind[2]] <- -n
-      max_ind <- data.frame(seed_A = max_ind[1], seed_B = max_ind[2])
+      max_ind <- data.frame(A = max_ind[1], B = max_ind[2])
       Z <- rbind(Z, max_ind)
     }
 
     seeds_old <- seeds
     seeds <- which(M > 0 & M < r, arr.ind = TRUE)
-    seeds <- data.frame(seed_A=seeds[,1], seed_B=seeds[,2])
+    seeds <- data.frame(A=seeds[,1], B=seeds[,2])
 
     if(nrow(seeds) == nrow(seeds_old)){
       if(sum(seeds == seeds_old)==2*nrow(seeds)){
@@ -812,7 +812,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-  seeds <- check_seeds(seeds)$seeds
+  seeds <- check_seeds(seeds, n)$seeds
   ns <- nrow(seeds)
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
@@ -839,7 +839,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   num <- 0 # # of removal seeds
   remove <- rbind(c(0,0),c(0,0)) # list of removed seeds
   remove_by <- rbind(c(0,0),c(0,0))
-  colnames(remove) <- paste0(c("seed_A","seed_B"))
+  colnames(remove) <- paste0(c("A","B"))
   cyc <- FALSE
 
   # percolate
