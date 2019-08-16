@@ -168,22 +168,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
 
   D_ns <- P
 
+  corr_ns <- do_lap(P, lap_method)
 
-  if ( usejv ){
-    P <- as.matrix(P)
-    corr_ns <- rlapjv::lapjv(round(P * nn ^ 2 * max(P)),
-      maximize = TRUE)
-  } else if ( usejvmod ) {
-    if( class(P) == "splrMatrix" ){
-      corr_ns <- rlapjv::lapmod(splr_to_sparse(P),
-        maximize = TRUE)
-    } else {
-      corr_ns <- rlapjv::lapmod(P, maximize = TRUE)
-    }
-  } else {
-    corr_ns <- as.vector(clue::solve_LSAP(
-      round(as.matrix(P * nn ^ 2)), maximum = TRUE))
-  }
     # undo rand perm here
   corr_ns <- rp[corr_ns]
   corr <- 1:nv
