@@ -7,13 +7,11 @@ iGraphMatch is a R package for graph matching. The package works for both igraph
 Installation
 ------------
 
-Currently only the development version of this package is available. This can be installed via devtools with
+Currently only the development version of this package is available. We recommend installing the `dev` branch at the moment. This can be installed via devtools with
 ``` r
 # install.packages("devtools")
-devtools::install_github("dpmcsuss/iGraphMatch")
+devtools::install_github("dpmcsuss/iGraphMatch", ref = "dev")
 ```
-
-You might want to try the `dev` branch since it might be more stable at the moment.
 
 Usage
 ------------
