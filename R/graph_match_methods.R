@@ -13,6 +13,7 @@
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #'   character value like "bari" or "convex" to initialize the starting matrix.
+#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
 #' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
@@ -43,7 +44,9 @@
 #'
 #' @export
 #'
-graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
+graph_match_FW <- function(A, B, seeds = NULL, 
+                           start = "convex", max_iter = 20,
+                           similarity = NULL){
 
   # this will make the graphs be matrices if they are igraph objects
   A <- A[]
@@ -108,8 +111,11 @@ graph_match_FW <- function(A, B, seeds = NULL, start = "convex", max_iter = 20){
   Bsn <- Bsn %*% Matrix::t(rpmat)
   # change P <- PQ^T
   P <- P %*% Matrix::t(rpmat)
-  similarity <- similarity %*% Matrix::t(rpmat)
-
+  if (is.null(similarity)){
+    similarity <- Matrix::Matrix(0, nn, nn)
+  } else {
+    similarity <- similarity %*% Matrix::t(rpmat)
+  }
   iter <- 0
   toggle <- TRUE
 
