@@ -19,3 +19,6 @@ Usage
 After installation, attach the package before using it
 ``` r
 library(iGraphMatch)
+``` 
+
+We recommend installing igraph package first before installing iGraphMatch package.
