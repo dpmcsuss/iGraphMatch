@@ -52,6 +52,7 @@
 #'
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL, g = 1){
+  # NEED TO CHANGE ???
   if(grepl("atrix",class(start))){
     P <- start
   } else if(start == "bari"){
@@ -64,14 +65,10 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL
     A <- A[]
     B <- B[]
 
-    if(is.null(soft_seeds)){
-      seeds <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
-      P <- graph_match_convex(A,B,seeds)$D[!seeds,!seeds]
-    } else{
-      start <- init_start(start = "bari", nns, ns, soft_seeds)
-      seeds_log <- check_seeds(seeds, nv = nrow(A), logical = TRUE)
-      P <- graph_match_convex(A, B, seeds = seeds, start = start)$D[!seeds_log,!seeds_log]
-    }
+    nonseeds <- check_seeds(seeds, nv = nrow(A))$nonseeds
+    start <- init_start(start = "bari", nns, ns, soft_seeds)
+    P <- graph_match_convex(A, B, seeds = seeds, start = start)$D 
+    P <- P[nonseeds$A,nonseeds$B]
   }
   P
 }

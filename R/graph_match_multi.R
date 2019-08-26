@@ -65,33 +65,13 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   }
   nv <- nrow(A[[1]])
 
-  if (is.null(seeds)){
-    seeds <- rep(FALSE,nv)
-    aseeds_err <- FALSE
-    # seeds <- Matrix(FALSE,nv, ng)
-    ns <- sum(seeds)
-  } else{
-    seeds_pair <- check_seeds(seeds)
-    ns <- nrow(seeds_pair)
 
-    seeds <- rep(FALSE,nv)
-    seeds[seeds_pair$seed_A] <- TRUE
+  seed_check <- check_seeds(seeds, nv)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
 
-    # detect incorrect seeds
-    seed_A <- seeds_pair$seed_A
-    seed_B <- seeds_pair$seed_B
-    aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
-    seed_A_err <- seed_A[aseeds_err]
-    seed_B_err <- seed_B[aseeds_err]
-
-    if(sum(aseeds_err)!=0){
-      B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-    }
-  }
-
-  nn <- nv-ns
-  nonseeds <- !seeds
-
+  ns <- nrow(seeds)
+  nn <- nv - ns
 
   P <- init_start(start = start, nns = nn,
     A = A[[1]], B = B[[1]], seeds = seeds)
@@ -116,8 +96,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   }
 
   # keep only nonseeds
-  A <- lapply(A, function(Al) Al[nonseeds, nonseeds])
-  B <- lapply(B, function(Bl) Bl[nonseeds, nonseeds][rp, rp])
+  A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
+  B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
   nc <- length(A)
 
   lap_method <- set_lap_method(usejv, totv1, totv2)
@@ -178,67 +158,18 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
 
   corr_ns <- do_lap(P, lap_method)
 
-    # undo rand perm here
+
+  # undo rand perm here
   corr_ns <- rp[corr_ns]
+
   corr <- 1:nv
-  corr[nonseeds] <- corr[nonseeds][corr_ns]
-  P <- Matrix::Diagonal(nv)[corr,]
+  corr[nonseeds$A] <- nonseeds$B[corr_ns]
+  corr[seeds$A] <- seeds$B
+  P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-
-  # and undo it right quick here too
-  D[nonseeds, nonseeds] <- D_ns %*% rpmat
-  # and we should be home clear
-
-
-  # fix match results if there are incorrect seeds
-  if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
-    P <- Matrix::Diagonal(nv)[corr,]
-    D <- fix_hard_D(seed_A_err,seed_B_err,D)
-  }
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   list(corr = corr, P = P, D = D, iter = iter)
-}
-
-graph_match_convex_multi <- function(A, B, seeds = NULL,
-  start = "bari", max_iter = 20, similarity = NULL, usejv = FALSE){
-  stop("graph_match_convex_multi is not yet implemented.")
-}
-
-
-get_s_to_ns <- function(Alist, Blist, seeds,
-    perm = seq(sum(seeds))){
-
-  nonseeds <- !seeds
-  nns <- sum(nonseeds)
-  ns <- sum(seeds)
-  # permute if needed
-  pmat <- Matrix::Diagonal(nns, )[perm, ]
-  s_to_ns <- function(A,B){
-    Asn <- A[seeds,nonseeds]
-    Ans <- A[nonseeds,seeds]
-
-    Bsn <- B[seeds,nonseeds] %*% t(pmat)
-    Bns <- pmat %*% B[nonseeds,seeds]
-
-    if (ns == 1){
-      outer(Ans, Bns) + outer(Asn, Bsn)
-    } else {
-      (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
-    }
-  }
-
-  if (!is(Alist, "list")){
-    return(s_to_ns(Alist, Blist))
-  }
-
-  nc <- length(Alist)
-  s2ns <- Matrix(0, nrow = nns, ncol = nns)
-  for (ch in 1:nc){
-    s2ns <- s2ns + s_to_ns(Alist[[ch]], Blist[[ch]])
-    gc()
-  }
-  s2ns
 }
 
 
