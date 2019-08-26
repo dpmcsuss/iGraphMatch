@@ -33,7 +33,7 @@ matrices of the generated graphs. It must be in open (0,1) interval.}
 
 \item{nc}{An integer. Number of core vertices.}
 
-\item{...}{passed to \code{sample_correlated_rdpg}}
+\item{directed}{Logical scalar, whether to generate directed graphs.}
 }
 \value{
 \code{sample_correlated_ieg_pair} returns two igraph objects named

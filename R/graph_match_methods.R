@@ -48,6 +48,12 @@
 #' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 #' graph_match_FW(g1, g2, seeds, start = "convex")
 #'
+#'  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
+#'  A <- lapply(gp_list, function(gp)gp[[1]])
+#'  B <- lapply(gp_list, function(gp)gp[[2]])
+#'  match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+#'  match$corr
+#'
 #' @export
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
@@ -55,31 +61,49 @@ graph_match_FW <- function(A, B, seeds = NULL,
   similarity = NULL, usejv = TRUE){
 
   # this will make the graphs be matrices if they are igraph objects
-  A <- A[]
-  B <- B[]
+  if(is.list(A) && !is.igraph(A)){
+    A <- lapply(A, function(Al) Al[])
+  } else {
+    A <- list(A[])
+  }
+  if( is.list(B) && !is.igraph(B)){
+    B <- lapply(B, function(Bl) Bl[])
+  } else {
+    B <- list(B[])
+  }
 
-  # Add support for graphs with different orders
-  totv1 <- ncol(A)
-  totv2 <- ncol(B)
+  totv1 <- ncol(A[[1]])
+  totv2 <- ncol(B[[1]])
 
+  if(any(sapply(A, function(Al) ncol(Al) != totv1))){
+    stop("A contains graphs of different orders. For multiple graph matching, all graphs must have the same number of vertices.")
+  }
+  if(any(sapply(B, function(Bl) ncol(Bl) != totv2))){
+    stop("B contains graphs of different orders. For multiple graph matching, all graphs must have the same number of vertices.")
+  }
   # Check for square
-  if(nrow(A) != totv1){
-    stop("A is not square. iGraphMatch only supports ",
+  if(any(sapply(A, function(Al) nrow(Al) != totv1))){
+    stop("A is not square. graph_match_FW only supports ",
       "square matrices for matching.")
   }
-  if(nrow(B) != totv2){
-    stop("B is not square. iGraphMatch only supports ",
+  if(any(sapply(B, function(Bl) nrow(Bl) != totv2))){
+    stop("B is not square. graph_match_FW only supports ",
       "square matrices for matching.")
   }
+
 
   if(totv1 > totv2){
     diff <- totv1 - totv2
-    B <- pad(B[], diff)
+    B <- lapply(B, function(Bl)
+      pad(Bl[], diff))
   }else if(totv1 < totv2){
     diff <- totv2 - totv1
-    A <- pad(A[], diff)
+    A <- lapply(A, function(Al)
+      pad(Al[], diff))
   }
-  nv <- nrow(A)
+  nv <- nrow(A[[1]])
+
+
   seed_check <- check_seeds(seeds, nv)
   seeds <- seed_check$seeds
   nonseeds <- seed_check$nonseeds
@@ -87,56 +111,67 @@ graph_match_FW <- function(A, B, seeds = NULL,
   ns <- nrow(seeds)
   nn <- nv - ns
 
-  Ann <- A[nonseeds$A,nonseeds$A]
-  Bnn <- B[nonseeds$B,nonseeds$B]
-
   P <- init_start(start = start, nns = nn,
-                  A = A, B = B, seeds = seeds)
+    A = A[[1]], B = B[[1]], seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
 
-
-  # make a random permutation to permute B
+  # make a random permutation
   rp <- sample(nn)
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
-
-  # seed to non-seed portion of gradient
-  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
-  # Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
-
-  Bnn <- Bnn[rp, rp]
+  # seed to non-seed info
+  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
 
   P <- P[, rp]
 
-  lap_method <- set_lap_method(usejv, totv1, totv2)
-
+  zero_mat <- Matrix::Matrix(0, nn, nn)
   if (is.null(similarity)){
-    similarity <- Matrix::Matrix(0, nn, nn)
+    similarity <- zero_mat
   } else {
     similarity <- similarity %*% Matrix::t(rpmat)
   }
 
+  # keep only nonseeds
+  A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
+  B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
+  nc <- length(A)
+
+  lap_method <- set_lap_method(usejv, totv1, totv2)
+
+
   while(toggle && iter < max_iter){
+
     iter <- iter + 1
-
     # non-seed to non-seed info
-    tAnn_P_Bnn <- Matrix::t(Ann) %*% P %*% Bnn
+    tAnn_P_Bnn <- zero_mat
+    for( ch in 1:nc ){
+      tAnn_P_Bnn <- tAnn_P_Bnn +
+        Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
+    }
 
-    Grad <- s_to_ns + Ann %*% P %*% Matrix::t(Bnn) + tAnn_P_Bnn + similarity
+    Grad <- s_to_ns + tAnn_P_Bnn + similarity
+    for(ch in 1:nc){
+      Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
+    }
 
     ind <- do_lap(Grad, lap_method)
 
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    ns_Pdir_ns <- Matrix::t(Ann)[, order(ind)] %*% Bnn
-    c <- sum(tAnn_P_Bnn * P)
-    d <- sum(ns_Pdir_ns * P) + sum(tAnn_P_Bnn[ind2])
+    ns_Pdir_ns <- zero_mat
+    for(ch in 1:nc){
+      ns_Pdir_ns <- ns_Pdir_ns +
+        Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+    }
+
+    c <- innerproduct(tAnn_P_Bnn, P)
+    d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
-    u <- sum(P * (s_to_ns))
-    v <- sum((s_to_ns)[ind2])
+    u <- innerproduct(P, s_to_ns + similarity)
+    v <- sum((s_to_ns + similarity)[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
@@ -160,6 +195,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
   D_ns <- P
 
   corr_ns <- do_lap(P, lap_method)
+
+
+  # undo rand perm here
   corr_ns <- rp[corr_ns]
 
   corr <- 1:nv
@@ -169,11 +207,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
   D <- P
   D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
-  cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns,
-            P = P, D = D)
-  z
+  list(corr = corr, P = P, D = D, iter = iter)
 }
+
 
 
 #'

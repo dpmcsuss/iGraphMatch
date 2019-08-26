@@ -33,7 +33,7 @@
 #'
 graph_match_FW_multi <- function(A, B, seeds = NULL,
   start = "bari", max_iter = 20, similarity = NULL, usejv = FALSE){
-
+  warning("graph_match_FW_multi is deprecated. Please use graph_match_FW.")
   # if(start == "convex"){
   #   stop("Convex start is not yet implemented for multiplex matching")
   # }
@@ -169,7 +169,13 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   D <- P
   D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
-  list(corr = corr, P = P, D = D, iter = iter)
+  cl <- match.call()
+  z <- list(
+    call = cl, 
+    corr = data.frame(corr_A = 1:nrow(A), corr_B = corr),
+    ns = ns,
+    P = P,
+    D = D)
 }
 
 

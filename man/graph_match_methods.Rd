@@ -127,6 +127,12 @@ hard_seeds <- matrix(c(4,6,5,4),2)
 seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 graph_match_FW(g1, g2, seeds, start = "convex")
 
+ gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
+ A <- lapply(gp_list, function(gp)gp[[1]])
+ B <- lapply(gp_list, function(gp)gp[[2]])
+ match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+ match$corr
+
 seeds <- 1:10 <= 3
 graph_match_convex(g1, g2, seeds)
 
