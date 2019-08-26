@@ -124,14 +124,14 @@ graph_match_FW(g1, g2, seeds, start = "bari")
 
 # match G_1 & G_2 with some incorrect seeds
 hard_seeds <- matrix(c(4,6,5,4),2)
-seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 graph_match_FW(g1, g2, seeds, start = "convex")
 
 seeds <- 1:10 <= 3
 graph_match_convex(g1, g2, seeds)
 
 hard_seeds <- matrix(c(4,6,5,4),2)
-seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
 graph_match_convex(g1, g2, seeds)
 
 # match G_1 & G_2 using PATH algorithm

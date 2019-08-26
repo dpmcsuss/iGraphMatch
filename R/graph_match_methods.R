@@ -45,7 +45,7 @@
 #'
 #' # match G_1 & G_2 with some incorrect seeds
 #' hard_seeds <- matrix(c(4,6,5,4),2)
-#' seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+#' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 #' graph_match_FW(g1, g2, seeds, start = "convex")
 #'
 #' @export
@@ -80,41 +80,15 @@ graph_match_FW <- function(A, B, seeds = NULL,
     A <- pad(A[], diff)
   }
   nv <- nrow(A)
+  seed_check <- check_seeds(seeds, nv)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
 
-  if(is.null(seeds)){
-    seeds <- rep(FALSE,nv)
-    aseeds_err <- FALSE
-    ns <- sum(seeds)
-  } else{
-    seeds_pair <- check_seeds(seeds)
-    ns <- nrow(seeds_pair)
-
-
-    seeds <- rep(FALSE,nv)
-    seeds[seeds_pair$seed_A] <- TRUE
-
-    # detect incorrect seeds
-    seed_A <- seeds_pair$seed_A
-    seed_B <- seeds_pair$seed_B
-    aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
-    seed_A_err <- seed_A[aseeds_err]
-    seed_B_err <- seed_B[aseeds_err]
-
-    if(sum(aseeds_err)!=0){
-      B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-    }
-  }
-
+  ns <- nrow(seeds)
   nn <- nv - ns
-  nonseeds <- !seeds
 
-  # Asn <- A[seeds,nonseeds]
-  Ann <- A[nonseeds,nonseeds]
-  # Ans <- A[nonseeds,seeds]
-
-  # Bsn <- B[seeds,nonseeds]
-  Bnn <- B[nonseeds,nonseeds]
-  # Bns <- B[nonseeds,seeds]
+  Ann <- A[nonseeds$A,nonseeds$A]
+  Bnn <- B[nonseeds$B,nonseeds$B]
 
   P <- init_start(start = start, nns = nn,
                   A = A, B = B, seeds = seeds)
@@ -128,8 +102,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
 
-  # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
+  # seed to non-seed portion of gradient
+  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
   # Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
 
   Bnn <- Bnn[rp, rp]
@@ -189,156 +163,16 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr_ns <- rp[corr_ns]
 
   corr <- 1:nv
-  corr[nonseeds] <- corr[nonseeds][corr_ns]
+  corr[nonseeds$A] <- nonseeds$B[corr_ns]
+  corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds, nonseeds] <- D_ns %*% rpmat
-
-  # fix match results if there are incorrect seeds
-  if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(seed_A_err, seed_B_err,corr)
-    P <- Matrix::Diagonal(nv)[corr,]
-    D <- fix_hard_D(seed_A_err, seed_B_err,D)
-  }
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns,
             P = P, D = D)
   z
-}
-
-# correct the order of swapping graph2 according to new seeds
-swap_order <- function(aseeds_matrix){
-
-  # aseeds_matrix: first row:added seeds index in g1, second row added seeds match
-  naseeds_err <- dim(aseeds_matrix)[2]
-  ninter <- 0
-  ninter_new <- naseeds_err
-  aseeds_match_order <- matrix( , 2, )
-  aseeds_matrix_T <- aseeds_matrix
-
-  while(ninter_new != ninter & ninter_new > 1){
-    aseeds_matrix <- aseeds_matrix_T
-    naseeds_err <- ninter_new
-    inter_match <- rep("FALSE",times = naseeds_err)
-    ninter <- ninter_new
-    ninter_new <- 0
-    circle_index <- 0
-    k <- 1
-
-    for(i in 1:naseeds_err){
-      # eliminate circle of two vertices
-      if (aseeds_matrix[2, i] %in% aseeds_matrix[1, ]){
-        index <- which(aseeds_matrix[1, ] == aseeds_matrix[2, i])
-        if(aseeds_matrix[1, i] == aseeds_matrix[2, index]){
-          aseeds_matrix[1, i] <- 0
-          circle_index[k] <- i
-          k <- k + 1
-        } else{
-          inter_match[i] <- "TRUE"
-          ninter_new <- ninter_new+1
-        }
-      }
-    }
-
-    if (circle_index[1] != 0){
-      aseeds_matrix <- aseeds_matrix[, -circle_index]
-      inter_match <- inter_match[-circle_index]
-    }
-
-    if (length(which(inter_match == "TRUE")) >= 1){
-      aseeds_matrix <- as.matrix(aseeds_matrix)
-      aseeds_matrix_T <- aseeds_matrix[,which(inter_match=="TRUE")]
-    }
-    if (length(which(inter_match == "FALSE")) >= 1){
-      aseeds_matrix <- as.matrix(aseeds_matrix)
-      aseeds_matrix_F <- aseeds_matrix[,which(inter_match=="FALSE")]
-      aseeds_match_order <- cbind(aseeds_matrix_F, aseeds_match_order)
-    }
-
-  }
-
-  # end with circle: only consider one circle
-  # (circle with more than three vertices) case
-  if(length(which(inter_match=="TRUE"))>1){
-    aseeds_matrix_T <- aseeds_matrix_T[,-1]
-    aseeds_match_order <- cbind(aseeds_matrix_T,aseeds_match_order)
-  } else if(length(which(inter_match=="TRUE"))==1){
-    aseeds_match_order <- cbind(aseeds_matrix_T,aseeds_match_order)
-  }
-
-  aseeds_match_order[,-dim(aseeds_match_order)[2]]
-}
-
-
-# swap columns and rows of G_2 according to hard seeds
-g2_hard_seeding <- function(seed_g1_err, seed_g2_err, g2){
-  aseeds_matrix <- matrix(c(seed_g1_err, seed_g2_err),
-    nrow = 2, byrow = TRUE)
-  
-  if(length(seed_g1_err) > 1)
-  {
-    swap <- swap_order(aseeds_matrix)
-    swap <- as.matrix(swap)
-    seed_g1_err <- swap[1,]
-    seed_g2_err <- swap[2,]
-  }
-
-  # swap columns of g2
-  nv <- nrow(g2)
-  g2_new_real <- 1:nv
-  for (i in 1:length(seed_g1_err)) {
-    g2_new_real[c(seed_g1_err[i],seed_g2_err[i])] <-
-      g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
-  }
-
-  g2_new <- g2[g2_new_real,g2_new_real]
-  g2_new
-}
-
-# combine these next two functions into one?
-
-# returns the true correspondence between G_1 and G_2 for hard seeding
-fix_hard_corr <- function(seed_g1_err, seed_g2_err, corr_hard){
-  aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
-  if(length(seed_g1_err)>1)
-  {
-    swap <- swap_order(aseeds_matrix)
-    swap <- as.matrix(swap)
-    seed_g1_err <- swap[1,]
-    seed_g2_err <- swap[2,]
-  }
-
-  nv <- length(corr_hard)
-  g2_new_real <- 1:nv
-  for (i in 1:length(seed_g1_err)) {
-    g2_new_real[c(seed_g1_err[i],seed_g2_err[i])] <-
-      g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
-  }
-
-  corr_hard <- g2_new_real[corr_hard]
-  corr_hard
-}
-# returns the true doubly stochastic matrix D and true permutation matrix for hard seeding
-fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
-  aseeds_matrix <- matrix(c(seed_g1_err,seed_g2_err),nrow=2,byrow = TRUE)
-  if(length(seed_g1_err)>1)
-  {
-    swap <- swap_order(aseeds_matrix)
-    swap <- as.matrix(swap)
-    seed_g1_err <- swap[1,]
-    seed_g2_err <- swap[2,]
-  }
-
-  nv <- nrow(D)
-  g2_new_real <- 1:nv
-  for (i in 1:length(seed_g1_err)) {
-    g2_new_real[c(seed_g1_err[i],seed_g2_err[i])] <-
-      g2_new_real[c(seed_g2_err[i],seed_g1_err[i])]
-  }
-
-  D <- D[,g2_new_real]
-  D
 }
 
 
@@ -354,7 +188,7 @@ fix_hard_D <- function(seed_g1_err, seed_g2_err, D){
 #' graph_match_convex(g1, g2, seeds)
 #'
 #' hard_seeds <- matrix(c(4,6,5,4),2)
-#' seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+#' seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
 #' graph_match_convex(g1, g2, seeds)
 #'
 #' @export
@@ -378,42 +212,23 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
   }
   nv <- nrow(A)
-  
-  if(is.null(seeds)){
-    seeds <- rep(FALSE,nv)
-    aseeds_err <- FALSE
-    ns <- sum(seeds)
-  } else{
-    seeds_pair <- check_seeds(seeds)
-    ns <- nrow(seeds_pair)
 
-    seeds <- rep(FALSE,nv)
-    seeds[seeds_pair$seed_A] <- TRUE
 
-    # detect incorrect seeds
-    seed_A <- seeds_pair$seed_A
-    seed_B <- seeds_pair$seed_B
-    aseeds_err <- ifelse(seed_A!=seed_B,TRUE,FALSE)
-    seed_A_err <- seed_A[aseeds_err]
-    seed_B_err <- seed_B[aseeds_err]
+  seed_check <- check_seeds(seeds, nv)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
 
-    if(sum(aseeds_err)!=0){
-      B <- g2_hard_seeding(seed_A_err,seed_B_err,B)
-    }
-  }
+  ns <- nrow(seeds)
+  nn <- nv - ns
 
-  nn <- nv-ns
-  nonseeds <- !seeds
+  Asn <- A[seeds$A,nonseeds$A]
+  Ann <- A[nonseeds$A,nonseeds$A]
+  Ans <- A[nonseeds$A,seeds$A]
 
-  Asn <- A[seeds,nonseeds]
-  Ann <- A[nonseeds,nonseeds]
-  Ans <- A[nonseeds,seeds]
+  Bsn <- B[seeds$B,nonseeds$B]
+  Bnn <- B[nonseeds$B,nonseeds$B]
+  Bns <- B[nonseeds$B,seeds$B]
 
-  Bsn <- B[seeds,nonseeds]
-  Bnn <- B[nonseeds,nonseeds]
-  Bns <- B[nonseeds,seeds]
-
-  similarity <- similarity[nonseeds,nonseeds]
   tol0 <- 1
   P <- init_start(start = start, nns = nn)
   iter<-0
@@ -469,20 +284,20 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     toggle <- f_diff > tol && f > tol && P_diff > tol
   }
 
-  D_ns <- P
-  corr_ns <- as.vector(clue::solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
-  corr <- 1:nv
-  corr[nonseeds] <- corr[nonseeds][corr_ns]
-  P <- Matrix::Diagonal(nv)[corr,]
-  D <- P
-  D[nonseeds,nonseeds] <- D_ns
 
-  # fix match results if there are incorrect seeds
-  if(sum(aseeds_err)!=0){
-    corr <- fix_hard_corr(seed_A_err,seed_B_err,corr)
-    P <- Matrix::Diagonal(nv)[corr,]
-    D <- fix_hard_D(seed_A_err,seed_B_err,D)
-  }
+
+  D_ns <- P
+  corr_ns <- as.vector(clue::solve_LSAP(
+    as.matrix(round(P * nn ^ 2)),
+      maximum = TRUE))
+  # corr_ns <- rp[corr_ns]
+
+  corr <- 1:nv
+  corr[nonseeds$A] <- nonseeds$B[corr_ns]
+  corr[seeds$A] <- seeds$B
+  P <- Matrix::Diagonal(nv)[corr, ]
+  D <- P
+  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
@@ -735,7 +550,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     vec_delta_P <- Matrix::c.sparseVector(delta_P)
     vec_Pdir <- Matrix::c.sparseVector(Pdir)
     c <- sum(t(delta) * delta_P)
-    e <- Matrix::t(vec_delta_P) %*% L %*% vec_Pdir
+    e <- Matrix::t(f) %*% L %*% vec_Pdir
     u <- Matrix::t(vec_Pdir) %*% L %*% vec_delta_P
     v <- Matrix::t(vec_delta_P) %*% L %*% vec_delta_P
     a <- 2 * (lambda - 1) * bq + lambda * (c - e + u)
@@ -760,7 +575,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   P <- Matrix::Diagonal(n)[corr,]
   
   if(!is.null(seeds)){
-    ns <- nrow(check_seeds(seeds))
+    ns <- nrow(check_seeds(seeds, n)$seeds)
   } else{
     ns <- 0
   }
@@ -805,25 +620,25 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-  seeds <- check_seeds(seeds)
+  seeds <- check_seeds(seeds, n)$seeds
   P[as.matrix(seeds)] <- 1
   Z <- seeds
   
   if(weighted){
     M <- Matrix::Matrix(0, totv1, totv2)
     for(i in 1:nrow(seeds)){
-      A_adj <- which(A[seeds$seed_A[i],]>0)
-      B_adj <- which(B[seeds$seed_B[i],]>0)
+      A_adj <- which(A[seeds$A[i],]>0)
+      B_adj <- which(B[seeds$B[i],]>0)
       if(length(A_adj) != 0 && length(B_adj) != 0){
-        mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+        mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i],B_adj], cal_mark)
         M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
       }
     }
   } else{
     M <- (Matrix::t(A) %*% P %*% B + A %*% P %*% Matrix::t(B)) / 2
   }
-  M[seeds$seed_A,] <- -n
-  M[,seeds$seed_B] <- -n
+  M[seeds$A,] <- -n
+  M[,seeds$B] <- -n
   
   while (max(M) >= r) {
     max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
@@ -846,7 +661,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
     Z <- rbind(Z, max_ind)
   }
   
-  order <- order(Z$seed_A)
+  order <- order(Z$A)
   corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
   
@@ -894,12 +709,12 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-  seeds <- check_seeds(seeds)
+  seeds <- check_seeds(seeds, n)$seeds
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
   M <- Matrix::Matrix(0, totv1, totv2)
-  M[seeds_ori$seed_A,] <- -n
-  M[,seeds_ori$seed_B] <- -n
+  M[seeds_ori$A,] <- -n
+  M[,seeds_ori$B] <- -n
   Z <- seeds
 
   # deferred percolation graph matching
@@ -907,10 +722,10 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
     # mark neighbors
     if(weighted){
       for(i in 1:nrow(seeds)){
-        A_adj <- which(A[seeds$seed_A[i],]>0)
-        B_adj <- which(B[seeds$seed_B[i],]>0)
+        A_adj <- which(A[seeds$A[i],]>0)
+        B_adj <- which(B[seeds$B[i],]>0)
         if(length(A_adj) != 0 && length(B_adj) != 0){
-          mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+          mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i],B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
         }
       }
@@ -947,13 +762,13 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
       }
       M[max_ind[1],] <- -n
       M[,max_ind[2]] <- -n
-      max_ind <- data.frame(seed_A = max_ind[1], seed_B = max_ind[2])
+      max_ind <- data.frame(A = max_ind[1], B = max_ind[2])
       Z <- rbind(Z, max_ind)
     }
 
     seeds_old <- seeds
     seeds <- which(M > 0 & M < r, arr.ind = TRUE)
-    seeds <- data.frame(seed_A=seeds[,1], seed_B=seeds[,2])
+    seeds <- data.frame(A=seeds[,1], B=seeds[,2])
 
     if(nrow(seeds) == nrow(seeds_old)){
       if(sum(seeds == seeds_old)==2*nrow(seeds)){
@@ -963,8 +778,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   }
 
   # matching result
-  order <- order(Z$seed_A)
-  corr <- Z[order(Z$seed_A),]
+  order <- order(Z$A)
+  corr <- Z[order(Z$A),]
   names(corr) <- c("corr_A","corr_B")
   
   cl <- match.call()
@@ -1005,7 +820,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-  seeds <- check_seeds(seeds)
+  seeds <- check_seeds(seeds, n)$seeds
   ns <- nrow(seeds)
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
@@ -1014,25 +829,25 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   if(weighted){
     M <- Matrix::Matrix(0, totv1, totv2)
     for(i in 1:nrow(seeds)){
-      A_adj <- which(A[seeds$seed_A[i],]>0)
-      B_adj <- which(B[seeds$seed_B[i],]>0)
+      A_adj <- which(A[seeds$A[i],]>0)
+      B_adj <- which(B[seeds$B[i],]>0)
       if(length(A_adj) != 0 && length(B_adj) != 0){
-        mark <- outer(A[seeds$seed_A[i],A_adj], B[seeds$seed_B[i],B_adj], cal_mark)
+        mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i],B_adj], cal_mark)
         M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
       }
     }
   } else{
     M <- (Matrix::t(A) %*% P %*% B + A %*% P %*% Matrix::t(B)) / 2
   }
-  M[seeds$seed_A,] <- -n
-  M[,seeds$seed_B] <- -n
+  M[seeds$A,] <- -n
+  M[,seeds$B] <- -n
   MM <- M # score matrix w. socres to matched pairs be -infinity
 
   # initialization for checking replacing cycle
   num <- 0 # # of removal seeds
   remove <- rbind(c(0,0),c(0,0)) # list of removed seeds
   remove_by <- rbind(c(0,0),c(0,0))
-  colnames(remove) <- paste0(c("seed_A","seed_B"))
+  colnames(remove) <- paste0(c("A","B"))
   cyc <- FALSE
 
   # percolate
@@ -1057,8 +872,8 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
 
       # correct MM caused by ZZ
       if(!is.null(nrow(ZZ))){
-        MM[ZZ$seed_A,] <- M[ZZ$seed_A,]
-        MM[,ZZ$seed_B] <- M[,ZZ$seed_B]
+        MM[ZZ$A,] <- M[ZZ$A,]
+        MM[,ZZ$B] <- M[,ZZ$B]
         ZZ <- c(0,0)
       }
 
@@ -1089,7 +904,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
         score2 <- M[conf_ind[2,1], conf_ind[2,2]]
         score <- max(score1,score2)
       } else{
-        score <- M[conf_ind$seed_A,conf_ind$seed_B]
+        score <- M[conf_ind$A,conf_ind$B]
       }
 
       if(M[max_ind[1], max_ind[2]]>score){ #replace
@@ -1116,16 +931,16 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
 
         # correct MM caused by ZZ
         if(!is.null(nrow(ZZ))){
-          MM[ZZ$seed_A,] <- M[ZZ$seed_A,]
-          MM[,ZZ$seed_B] <- M[,ZZ$seed_B]
+          MM[ZZ$A,] <- M[ZZ$A,]
+          MM[,ZZ$B] <- M[,ZZ$B]
           ZZ <- c(0,0)
         }
 
         # update mark matrix: subtract removed seed's effect
         if(weighted){
           for (i in 1:length(conf_row_ind)) {
-            A_adj <- which(A[Z$seed_A[conf_row_ind[i]],]>0)
-            B_adj <- which(B[Z$seed_B[conf_row_ind[i]],]>0)
+            A_adj <- which(A[Z$A[conf_row_ind[i]],]>0)
+            B_adj <- which(B[Z$B[conf_row_ind[i]],]>0)
             if(length(A_adj) != 0 && length(B_adj) != 0){
               mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
               M[A_adj, B_adj] <- M[A_adj, B_adj] - mark
@@ -1170,7 +985,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   }# end while: percolate
 
   # matching result
-  order <- order(Z$seed_A)
+  order <- order(Z$A)
   corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
   
@@ -1181,13 +996,13 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
 conflict_check <- function(Matches, ind, logical = TRUE){
 
   if(logical == TRUE){
-    rconflict <- ind[,1] %in% Matches$seed_A
-    cconflict <- ind[,2] %in% Matches$seed_B
+    rconflict <- ind[,1] %in% Matches$A
+    cconflict <- ind[,2] %in% Matches$B
     conflict <- rconflict | cconflict
   } else{
-    rconflict <- ind[1] == Matches$seed_A
+    rconflict <- ind[1] == Matches$A
     rind <- which(rconflict==TRUE)
-    cconflict <- ind[2] == Matches$seed_B
+    cconflict <- ind[2] == Matches$B
     cind <- which(cconflict==TRUE)
     conflict <- c(rind,cind)
   }
