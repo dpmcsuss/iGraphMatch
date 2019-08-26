@@ -5,9 +5,12 @@
 \alias{sample_correlated_gnp_pair_w_junk}
 \title{Sample correlated G(n,p) random graphs}
 \usage{
-sample_correlated_gnp_pair(n, corr, p, directed = FALSE, permutation = NULL)
 
-sample_correlated_gnp_pair_w_junk(n, corr, p, ncore = n)
+
+sample_correlated_gnp_pair(n, corr, p, permutation = 1:n, ...)
+
+sample_correlated_gnp_pair_w_junk(n, corr, p, ncore = n,
+  permutation = 1:n, ...)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
@@ -18,11 +21,9 @@ of the generated graphs. It must be in open (0,1) interval.}
 \item{p}{A number. Edge probability between two vertices. It must be in open
 (0,1) interval.}
 
-\item{directed}{A logical. Whether to generate directed graphs.}
+\item{permutation}{A numeric vector,permute second graph.}
 
-\item{permutation}{A vector of number. A permutation vector that is applied on the
-vertices of the first graph, to get the second graph. If \code{NULL}, the vertices
-are not permuted.}
+\item{...}{Passed to \code{sample_correlated_gnp_pair}.}
 
 \item{ncore}{An integer. Number of core vertices.}
 }

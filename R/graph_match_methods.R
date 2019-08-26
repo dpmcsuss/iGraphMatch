@@ -201,9 +201,17 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   A <- A[]
   B <- B[]
 
-  # Add support for graphs with different orders ?
+  # Add support for graphs with different orders 
+  totv1<-ncol(A)
+  totv2<-ncol(B)
+  if(totv1>totv2){
+    diff<-totv1-totv2
+    B <- Matrix::bdiag(B[], Matrix(0,diff,diff))
+  }else if(totv1<totv2){
+    diff<-totv2-totv1
+    A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
+  }
   nv <- nrow(A)
-
 
 
   seed_check <- check_seeds(seeds, nv)
