@@ -36,15 +36,10 @@ g2 <- cgnp_pair$graph2
 seeds <- 1:50 <= 10
 nonseeds <- !seeds
 match <- graph_match_FW(g1, g2, seeds)
-corr <- match$corr
 
 # Application: select best matched seeds from non seeds as new seeds, and do the
 # graph matching iteratively to get higher matching accuracy
-<<<<<<< Updated upstream
-best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, corr$corr_B)
-=======
 best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr$corr_B)
->>>>>>> Stashed changes
 
 
 }
