@@ -710,6 +710,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
   seeds <- check_seeds(seeds, n)$seeds
+  ns <- nrow(seeds)
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
   M <- Matrix::Matrix(0, totv1, totv2)
@@ -783,7 +784,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   names(corr) <- c("corr_A","corr_B")
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
+  z <- list(call = cl, corr = corr, ns = ns, order = order)
   z
 }
 #'
