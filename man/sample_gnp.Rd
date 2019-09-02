@@ -5,6 +5,11 @@
 \alias{sample_correlated_gnp_pair_w_junk}
 \title{Sample correlated G(n,p) random graphs}
 \usage{
+<<<<<<< Updated upstream
+=======
+sample_correlated_gnp_pair(n, corr, p, directed = FALSE,
+  permutation = NULL)
+>>>>>>> Stashed changes
 
 
 sample_correlated_gnp_pair(n, corr, p, permutation = 1:n, ...)
