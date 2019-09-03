@@ -664,6 +664,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
   order <- order(Z$A)
   corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
+  rownames(corr) <- paste0(as.character(1:nrow(corr)))
   
   cl <- match.call()
   z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
@@ -708,14 +709,14 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   totv1 <- nrow(A)
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
-  P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+  P <- Matrix::Matrix(0, nrow = totv1, ncol = totv2)
   seeds <- check_seeds(seeds, n)$seeds
   ns <- nrow(seeds)
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
   M <- Matrix::Matrix(0, totv1, totv2)
-  M[seeds_ori$A,] <- -n
-  M[,seeds_ori$B] <- -n
+  M[seeds_ori$A,] <- -n * n
+  M[,seeds_ori$B] <- -n * n
   Z <- seeds
 
   # deferred percolation graph matching
@@ -761,8 +762,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
         delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
         M <- M + delta
       }
-      M[max_ind[1],] <- -n
-      M[,max_ind[2]] <- -n
+      M[max_ind[1],] <- -n * n
+      M[,max_ind[2]] <- -n * n
       max_ind <- data.frame(A = max_ind[1], B = max_ind[2])
       Z <- rbind(Z, max_ind)
     }
@@ -782,6 +783,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   order <- order(Z$A)
   corr <- Z[order(Z$A),]
   names(corr) <- c("corr_A","corr_B")
+  rownames(corr) <- paste0(as.character(1:nrow(corr)))
   
   cl <- match.call()
   z <- list(call = cl, corr = corr, ns = ns, order = order)
