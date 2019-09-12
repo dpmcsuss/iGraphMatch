@@ -17,3 +17,11 @@ test_that("no seeds", {
                list(seeds = data.frame(A = numeric(), B = numeric()), 
                     nonseeds = data.frame(A = 1:3, B = 1:3)))
 })
+
+test_that("example in documentation", {
+  expect_equal(check_seeds(1:10 <= 3, nv = 10)$seeds, data.frame(A = 1:3, B = 1:3))
+  expect_equal(check_seeds(c(1,4,2,7,3), nv = 10)$seeds, data.frame(A = c(1,4,2,7,3), B = c(1,4,2,7,3)))
+  expect_equal(check_seeds(matrix(1:4,2), nv = 10)$seeds, data.frame(A = c(1,2), B = c(3,4)))
+  expect_equal(check_seeds(matrix(1:4,2), nv = 10, logical = TRUE), 1:10 <= 2)
+  expect_equal(check_seeds(as.data.frame(matrix(1:4,2)), nv = 10)$seeds, data.frame(A = c(1,2), B = c(3,4)))
+})

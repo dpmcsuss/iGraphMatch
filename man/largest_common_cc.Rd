@@ -16,8 +16,8 @@ connected subgraph. The induced subgraph is an graph with a minimum degree of ve
 to min_degree.}
 }
 \value{
-\code{largest_common_cc} returns the common largest connected subgraph of
-two graphs in the igraph object form and a logical vector indicating which vertices in
+\code{largest_common_cc} returns the common largest connected subgraphs of
+two aligned graphs in the igraph object form and a logical vector indicating which vertices in
 the original graphs remain in the induced subgraph.
 }
 \description{
@@ -26,15 +26,17 @@ two graphs, which is an induced connected subgraph of both graphs that has as ma
 as possible.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.2)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.7, p =  0.2)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # put no constraint on the minimum degree of the common largest conncect subgraph
 lccs1 <- largest_common_cc(g1, g2, min_degree = 1)
 # induced subgraph
-lccs1$g
+lccs1$g1
+lccs1$g2
 # label of vertices of the induced subgraph in the original graph
-V(A)[lccs1_log]
+V(A)[lccs1$keep]
+
 # obtain a common largest connect subgraph with each vertex having a minimum degree of 3
 lccs3 <- largest_common_cc(g1, g2, min_degree = 3)
 }

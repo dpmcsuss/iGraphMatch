@@ -28,16 +28,15 @@ indices of \eqn{G_1} and the second column being the corresponding indices of \e
 }
 \examples{
 #input is a vector of logicals
-seeds <- 1:10 <= 3
-check_seeds(seeds)
+check_seeds(1:10 <= 3, nv = 10)
 
 #input is a vector of integers
-check_seeds(c(1,4,2,7,3))
+check_seeds(c(1,4,2,7,3), nv = 10)
 
 #input is a matrix
-check_seeds(matrix(1:4,2))
+check_seeds(matrix(1:4,2), nv = 10)
 
 #input is a data frame
-check_seeds(as.data.frame(matrix(1:4,2)))
+check_seeds(as.data.frame(matrix(1:4,2)), nv = 10)
 
 }

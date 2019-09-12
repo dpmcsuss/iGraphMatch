@@ -232,6 +232,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   Bnn <- B[nonseeds$B,nonseeds$B]
   Bns <- B[nonseeds$B,seeds$B]
 
+  similarity <- similarity[nonseeds$A, nonseeds$B]
   tol0 <- 1
   if(identical(start, "convex")){
     stop("Cannot start convex with convex. Try \"bari\" or another option.")
@@ -333,6 +334,13 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 #'
 #'
 graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
+  if(is.matrix(A)){
+    if(isSymmetric(A)){
+      A <- graph_from_adjacency_matrix(A, mode = "undirected")
+    } else{
+      A <- graph_from_adjacency_matrix(A, mode = "directed")
+    }
+  }
   totv1 <- vcount(A)
   totv2 <- vcount(B)
   
@@ -554,6 +562,7 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
   order <- order(Z$A)
   corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
+  rownames(corr) <- paste0(as.character(1:nrow(corr)))
   
   cl <- match.call()
   z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
@@ -598,13 +607,14 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   totv1 <- nrow(A)
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
-  P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
+  P <- Matrix::Matrix(0, nrow = totv1, ncol = totv2)
   seeds <- check_seeds(seeds, n)$seeds
+  ns <- nrow(seeds)
   seeds_ori <- seeds
   P[as.matrix(seeds)] <- 1
   M <- Matrix::Matrix(0, totv1, totv2)
-  M[seeds_ori$A,] <- -n
-  M[,seeds_ori$B] <- -n
+  M[seeds_ori$A,] <- -n * n
+  M[,seeds_ori$B] <- -n * n
   Z <- seeds
 
   # deferred percolation graph matching
@@ -650,8 +660,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
         delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
         M <- M + delta
       }
-      M[max_ind[1],] <- -n
-      M[,max_ind[2]] <- -n
+      M[max_ind[1],] <- -n * n
+      M[,max_ind[2]] <- -n * n
       max_ind <- data.frame(A = max_ind[1], B = max_ind[2])
       Z <- rbind(Z, max_ind)
     }
@@ -671,9 +681,10 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   order <- order(Z$A)
   corr <- Z[order(Z$A),]
   names(corr) <- c("corr_A","corr_B")
+  rownames(corr) <- paste0(as.character(1:nrow(corr)))
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
+  z <- list(call = cl, corr = corr, ns = ns, order = order)
   z
 }
 #'
@@ -962,10 +973,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
   colS_B <- Matrix::colSums(B)
   A <- A %*% Matrix::Diagonal(nrow(A), ifelse(colS_A == 0, 0, 1/colS_A))
   B <- B %*% Matrix::Diagonal(nrow(B), ifelse(colS_B == 0, 0, 1/colS_B))
-  mat_A <- Matrix::kronecker(A, B)
-  #start <- Matrix::c.sparseVector(similarity)
-  start <- Matrix::c.sparseVector(Matrix::t(similarity)) 
-  E <- start/sum(abs(start))
+  E <- similarity / sum(abs(similarity))
   
   # computing R by power method
   R_new <- E
@@ -976,17 +984,16 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     
     R <- R_new
     if(alpha>0){
-      AR <- mat_A %*% R
+      AR <- A %*% R %*% Matrix::t(B)
       AR <- alpha * AR + (1-alpha) * E
     } else{
-      AR <- mat_A %*% R
+      AR <- A %*% R %*% Matrix::t(B)
     }
     R_new <- AR / sum(abs(AR))
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
   }
-  R <- ramify::resize(R, nrow = totv1, ncol = totv1, byrow = FALSE)
-  
+
   # find GNA
   if(method == "greedy"){
     corr <- NULL
