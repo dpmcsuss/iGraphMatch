@@ -229,6 +229,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   Bnn <- B[nonseeds$B,nonseeds$B]
   Bns <- B[nonseeds$B,seeds$B]
 
+  similarity <- similarity[nonseeds$A, nonseeds$B]
   tol0 <- 1
   P <- init_start(start = start, nns = nn)
   iter<-0
@@ -444,6 +445,13 @@ graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100
 #'
 #'
 graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
+  if(is.matrix(A)){
+    if(isSymmetric(A)){
+      A <- graph_from_adjacency_matrix(A, mode = "undirected")
+    } else{
+      A <- graph_from_adjacency_matrix(A, mode = "directed")
+    }
+  }
   totv1 <- vcount(A)
   totv2 <- vcount(B)
   
@@ -1075,10 +1083,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
   colS_B <- Matrix::colSums(B)
   A <- A %*% Matrix::Diagonal(nrow(A), ifelse(colS_A == 0, 0, 1/colS_A))
   B <- B %*% Matrix::Diagonal(nrow(B), ifelse(colS_B == 0, 0, 1/colS_B))
-  mat_A <- Matrix::kronecker(A, B)
-  #start <- Matrix::c.sparseVector(similarity)
-  start <- Matrix::c.sparseVector(Matrix::t(similarity)) 
-  E <- start/sum(abs(start))
+  E <- similarity / sum(abs(similarity))
   
   # computing R by power method
   R_new <- E
@@ -1089,17 +1094,16 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     
     R <- R_new
     if(alpha>0){
-      AR <- mat_A %*% R
+      AR <- A %*% R %*% Matrix::t(B)
       AR <- alpha * AR + (1-alpha) * E
     } else{
-      AR <- mat_A %*% R
+      AR <- A %*% R %*% Matrix::t(B)
     }
     R_new <- AR / sum(abs(AR))
     diff <- sum(abs(R-R_new))
     iter <- iter + 1
   }
-  R <- ramify::resize(R, nrow = totv1, ncol = totv1, byrow = FALSE)
-  
+
   # find GNA
   if(method == "greedy"){
     corr <- NULL
