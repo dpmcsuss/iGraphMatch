@@ -1,3 +1,5 @@
+library(igraph)
+
 #' @title Graph Match Methods
 #'
 #' @description Match two given graphs, returns a list of graph matching
@@ -51,7 +53,7 @@
 #'  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
 #'  A <- lapply(gp_list, function(gp)gp[[1]])
 #'  B <- lapply(gp_list, function(gp)gp[[2]])
-#'  match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+#'  match <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
 #'  match$corr
 #'
 #' @export
@@ -60,49 +62,13 @@ graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
   similarity = NULL, usejv = TRUE){
 
-  # this will make the graphs be matrices if they are igraph objects
-  if(is.list(A) && !is.igraph(A)){
-    A <- lapply(A, function(Al) Al[])
-  } else {
-    A <- list(A[])
-  }
-  if( is.list(B) && !is.igraph(B)){
-    B <- lapply(B, function(Bl) Bl[])
-  } else {
-    B <- list(B[])
-  }
+  graph_pair <- check_graph(A, B)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
 
-  totv1 <- ncol(A[[1]])
-  totv2 <- ncol(B[[1]])
-
-  if(any(sapply(A, function(Al) ncol(Al) != totv1))){
-    stop("A contains graphs of different orders. For multiple graph matching, all graphs must have the same number of vertices.")
-  }
-  if(any(sapply(B, function(Bl) ncol(Bl) != totv2))){
-    stop("B contains graphs of different orders. For multiple graph matching, all graphs must have the same number of vertices.")
-  }
-  # Check for square
-  if(any(sapply(A, function(Al) nrow(Al) != totv1))){
-    stop("A is not square. graph_match_FW only supports ",
-      "square matrices for matching.")
-  }
-  if(any(sapply(B, function(Bl) nrow(Bl) != totv2))){
-    stop("B is not square. graph_match_FW only supports ",
-      "square matrices for matching.")
-  }
-
-
-  if(totv1 > totv2){
-    diff <- totv1 - totv2
-    B <- lapply(B, function(Bl)
-      pad(Bl[], diff))
-  }else if(totv1 < totv2){
-    diff <- totv2 - totv1
-    A <- lapply(A, function(Al)
-      pad(Al[], diff))
-  }
   nv <- nrow(A[[1]])
-
 
   seed_check <- check_seeds(seeds, nv)
   seeds <- seed_check$seeds
@@ -122,7 +88,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
+  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
 
   P <- P[, rp]
 
@@ -207,7 +173,13 @@ graph_match_FW <- function(A, B, seeds = NULL,
   D <- P
   D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
-  list(corr = corr, P = P, D = D, iter = iter)
+  cl <- match.call()
+  z <- list(
+    call = cl, 
+    corr = data.frame(corr_A = 1:totv1, corr_B = corr),
+    ns = ns,
+    P = P,
+    D = D)
 }
 
 
@@ -234,22 +206,13 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
                                max_iter = 100, similarity = NULL,
                                tol = 1e-5, usejv = TRUE){
 
-  A <- A[]
-  B <- B[]
+  graph_pair <- check_graph(A, B)
+  A <- matrix_list(graph_pair[[1]])
+  B <- matrix_list(graph_pair[[2]])
 
-
-  totv1 <- nrow(A)
-  totv2 <- norw(B)
-
-  if(totv1>totv2){
-    diff<-totv1-totv2
-    B <- Matrix::bdiag(B[], Matrix(0,diff,diff))
-  }else if(totv1<totv2){
-    diff<-totv2-totv1
-    A <- Matrix::bdiag(A[], Matrix(0,diff,diff))
-  }
-
-  nv <- nrow(A)
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
+  nv <- nrow(A[[1]])
 
 
   seed_check <- check_seeds(seeds, nv)
@@ -258,6 +221,8 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 
   ns <- nrow(seeds)
   nn <- nv - ns
+
+
 
   Asn <- A[seeds$A,nonseeds$A]
   Ann <- A[nonseeds$A,nonseeds$A]
@@ -268,20 +233,24 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   Bns <- B[nonseeds$B,seeds$B]
 
   tol0 <- 1
-  P <- init_start(start = start, nns = nn)
-  iter<-0
+  if(identical(start, "convex")){
+    stop("Cannot start convex with convex. Try \"bari\" or another option.")
+  }
+  P <- init_start(start = start, nn, ns)
+  iter <- 0
   toggle <- TRUE
 
-  AtA <- t(Asn)%*%Asn + t(Ann)%*%Ann
-  BBt <- Bns%*%t(Bns)+Bnn%*%t(Bnn)
+  AtA <- ml_sum(t(Asn) %*% Asn + t(Ann) %*% Ann)
+  BBt <- ml_sum(Bns %*% t(Bns) + Bnn %*% t(Bnn))    
 
-  ABns_sn <- Ans%*%t(Bns) + t(Asn)%*%Bsn
+  ABns_sn <- ml_sum(Ans %*% t(Bns) + t(Asn) %*% Bsn)
+
+
   f <- sum((Ann %*% P - P%*% Bnn)^2)
-
-
+    
 
   lap_method <- set_lap_method(usejv, totv1, totv2)
-
+  
   while(toggle && iter < max_iter){
     f_old <- f
     iter<-iter+1
@@ -289,7 +258,8 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     if(is.null(similarity)){
       similarity <- Matrix::Matrix(0, nn, nn)
     }
-    Grad <- AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity
+    
+    Grad <- ml_sum(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity)
    
 
     corr <- do_lap(Grad, lap_method)
@@ -297,7 +267,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 
 
     # C <- rbind(Ann,Asn) %*% (P-Pdir) + t((Pdir-P) %*% cbind(Bnn,Bns))
-    Cnn <- Ann %*% (P-Pdir) - (P-Pdir) %*% Bnn
+    Cnn <- Ann %*% (P - Pdir) - (P - Pdir) %*% Bnn
     Dnn <- Ann %*% Pdir - Pdir %*% Bnn
 
     if(ns > 0){
@@ -310,15 +280,15 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
       Dns <- Dsn <-Cns <- Csn <- 0
     }
 
-    aq <- sum(Cnn^2)+sum(Cns^2)+sum(Csn^2)
-    bq <- sum(Cnn*Dnn)+sum(Cns*Dns)+sum(Csn*Dsn)
+    aq <- sum(Cnn ^ 2)+sum(Cns ^ 2)+sum(Csn ^ 2)
+    bq <- sum(Cnn * Dnn) + sum(Cns * Dns) + sum(Csn * Dsn)
     aopt <- -bq/aq
 
-    P_new <- aopt*P+(1-aopt)*Pdir
-    f <- sum((Ann %*% P_new - P_new %*% Bnn)^2)
+    P_new <- aopt * P + (1 - aopt) * Pdir
+    f <- sum((Ann %*% P_new - P_new %*% Bnn) ^ 2)
 
-    f_diff <- abs(f-f_old)
-    P_diff <- sum(abs(P-P_new))
+    f_diff <- abs(f - f_old)
+    P_diff <- sum(abs(P - P_new))
     P <- P_new
 
     toggle <- f_diff > tol && f > tol && P_diff > tol
@@ -337,130 +307,12 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns, 
+  z <- list(call = cl, corr = data.frame(corr_A = 1:nv, corr_B = corr), ns = ns, 
             P = P, D = D)
   z
 }
 
 
-# #'
-# #' @return \code{graph_match_convex_directed} returns graph matching results based
-# #' on convex relaxation method for directed graphs.
-# #'
-# #' @examples
-# #' graph_match_convex_directed(g1, g2, seeds)
-# #'
-# #'
-# #'
-graph_match_convex_directed <- function(A,B,seeds=NULL,start="bari",max_iter=100, tol2=1e-5){
-
-  print("Warning, this doesn't work as expected. Need to think more.")
-  A <- A[]
-  B <- B[]
-
-  # Add support for graphs with different orders ?
-  nv <- nrow(A)
-  if(length(seeds)==1){
-    seeds <- 1:seeds
-  }
-  if(length(seeds)<nv){
-    temp <- seeds
-    seeds <- rep(FALSE,nv)
-    seeds[temp]<- TRUE
-  }else{
-    seeds <- (seeds>0)
-  }
-  nonseeds <- !seeds
-
-  ns <- sum(seeds)
-  nn <- nv-ns
-
-  Asn <- A[seeds,nonseeds]
-  Ann <- A[nonseeds,nonseeds]
-  Ans <- A[nonseeds,seeds]
-
-  Bsn <- B[seeds,nonseeds]
-  Bnn <- B[nonseeds,nonseeds]
-  Bns <- B[nonseeds,seeds]
-
-  tol<-1
-  if(start=="bari"){
-    P <- matrix(1/nn,nn,nn)
-  } else{ # Assuming start is an nn x nn doubly stochastic matrix
-    P <- start
-  }
-  iter<-0
-  toggle <- TRUE
-
-  AtA <- t(Asn)%*%Asn + t(Ann)%*%Ann
-  BtB <- t(Bsn)%*%Bsn + t(Bnn)%*%Bnn
-  AAt <- Ans%*%t(Ans) + Ann%*%t(Ann)
-  BBt <- Bns%*%t(Bns) + Bnn%*%t(Bnn)
-
-  ABns_sn <- Ans%*%t(Bns) + t(Asn)%*%Bsn
-  f <- sum((Ann%*%P - P%*%Bnn)^2)+sum((t(Ann)%*%P - P%*%t(Bnn))^2)
-
-
-
-  while(toggle && iter<max_iter){
-    f_old <- f
-    iter <- iter+1
-
-    tAnn_P_Bnn <- t(Ann)%*%P%*%Bnn + Ann%*%P%*%t(Bnn)
-    Grad<- AtA%*%P + P%*%BBt - ABns_sn - tAnn_P_Bnn +
-      BtB%*%P + P%*%AAt - t(ABns_sn) - t(tAnn_P_Bnn);
-
-    Grad <- round(as.matrix(nn^2*(Grad-min(Grad))))
-    corr <- as.vector(solve_LSAP(Grad))
-    Pdir <- Matrix::Diagonal(nn)[corr,]
-
-
-    # C <- rbind(Ann,Asn) %*% (P-Pdir) + t((Pdir-P) %*% cbind(Bnn,Bns))
-    Cnn <- Ann %*% (P-Pdir) - (P-Pdir) %*% Bnn
-    tCnn <- t(Ann) %*% t(P-Pdir) - t(P-Pdir) %*% t(Bnn)
-    Dnn <- Ann %*% Pdir - Pdir %*% Bnn
-    tDnn <- t(Ann) %*% t(Pdir) - t(Pdir) %*% t(Bnn)
-
-    if(ns > 0){
-      Cns <- -(P-Pdir) %*% Bns
-      tCns <- -t(P-Pdir) %*% t(Bsn)
-      Csn <- Asn %*% (P-Pdir)
-      tCsn <- t(Ans) %*% t(P-Pdir)
-
-      Dns <- Ans - Pdir %*% Bns
-      tDns <- t(Asn) - t(Pdir) %*% t(Bsn)
-      Dsn <- Asn %*% Pdir - Bsn
-      tDsn <- t(Ans) %*% t(Pdir) - t(Bns)
-    }else{
-      Dns <- Dsn <-Cns <- Csn <- 0
-    }
-
-    aq <- sum(Cnn^2+tCnn^2)+sum(Cns^2+tCns^2)+sum(Csn^2+tCsn^2)
-    bq <- sum(Cnn*Dnn+tCnn*tDnn)+sum(Cns*Dns+tCns*tDns)+sum(Csn*Dsn+tCsn*tDsn)
-    aopt <- -bq/aq
-
-    P_new <- aopt*P+(1-aopt)*Pdir;
-    f <- sum((Ann %*% P_new - P_new %*% Bnn)^2)+sum((t(Ann) %*% P_new - P_new %*% t(Bnn))^2)
-
-    f_diff <- abs(f-f_old)
-    P_diff <- sum(abs(P-P_new))
-    P <- P_new
-
-    toggle <- f_diff > tol && f > tol2 && P_diff > tol
-  }
-
-  D_ns <- P
-  corr_ns <- unclass(solve_LSAP(as.matrix(round(P*nn^2)), maximum = TRUE))
-  corr <- 1:nv
-  corr[nonseeds] <- corr[nonseeds][corr_ns]
-  P <- Matrix::Diagonal(nv)[corr,]
-  D <- P
-  D[nonseeds,nonseeds] <- D_ns
-  
-  cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nrow(A), corr_B = corr), ns = ns)
-  z
-}
 #'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_PATH} returns a list of graph matching results,

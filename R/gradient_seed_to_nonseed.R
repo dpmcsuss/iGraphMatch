@@ -4,7 +4,7 @@ get_s_to_ns <- function(Alist, Blist, seeds, nonseeds,
 
   # NEED TO CHANGE ???
   nns <- nrow(nonseeds)
-  ns <- nrow(nonseeds)
+  ns <- nrow(seeds)
 
   # permute if needed
   pmat <- Matrix::Diagonal(nns, )[perm, ]

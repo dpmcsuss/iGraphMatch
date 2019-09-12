@@ -104,8 +104,8 @@ splr_to_sparse <- function(data){
     data@x + Matrix(data@a,sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
 }
 
-as.matrix.splr=function(x,...)  {
-  
+as.matrix.splrMatrix=function(x,...)  {
+
   as.matrix(as.matrix(x@x,...)+x@a%*%t(x@b),...)
   
   
@@ -117,35 +117,36 @@ splr_sparse_plus_constant <- function(x, a){
   splr(x = x, a = rep(a, d[1]), b = rep(1, d[2]), Dim = dim(x),Dimnames = list(NULL,NULL))
 }
 
-setMethod("as.matrix","splrMatrix",as.matrix.splr)
-
-
 setAs('splrMatrix','dMatrix',function(from) {
   as(from@x + from@a %*% t(from@b),'Matrix')
 })
 
-as.character.splr <- function(x) {
-  as.character(as.matrix(x))
+as.character.splrMatrix <- function(from) {
+  paste0("Sparse\n", as.character(from@x), "\n",
+    "Left factor\n", as.character(from@a), "\n",
+    "Right factor\n", as.character(from@b))
 }
-setMethod("as.character","splrMatrix",as.character.splr)
 
-setAs("splrMatrix","character",function(from) {
-  as(as.matrix(from),'character')
-})
+# setMethod("as.character", "splrMatrix", as.character.splrMatrix)
+
+setAs("splrMatrix", "character", as.character.splrMatrix)
 
 setMethod("show", signature("splrMatrix"),
   function(object){
+    cat("Sparse part\n")
     show(object@x)
+    cat("plus left factor\n")
     show(object@a)
+    cat("times right factor transpose\n")
     show(object@b)
 })
 
-setMethod("print", signature("splrMatrix"),
-  function(x){
-    print(x@x)
-    print(x@a)
-    print(x@b)
-})
+# setMethod("print", signature("splrMatrix"),
+#   function(x){
+#     print(x@x)
+#     print(x@a)
+#     print(x@b)
+# })
 
 
 
@@ -459,6 +460,7 @@ setMethod("innerproduct", signature(x = "splrMatrix", y = "splrMatrix"),
       sum(diag( (t(x@b) %*% y@b) %*% (t(y@a) %*% x@a) )) +
       sum(x@x * y@x)
   })
+
 
 .innerproduct_Matrix <- function(x, y){
     sum(diag(t(x@b) %*% t(y) %*% x@a)) +

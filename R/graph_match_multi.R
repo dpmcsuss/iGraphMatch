@@ -84,7 +84,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A, B, seeds, rp)
+  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
 
   P <- P[, rp]
 
@@ -172,7 +172,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   cl <- match.call()
   z <- list(
     call = cl, 
-    corr = data.frame(corr_A = 1:nrow(A), corr_B = corr),
+    corr = data.frame(corr_A = 1:totv1, corr_B = corr),
     ns = ns,
     P = P,
     D = D)

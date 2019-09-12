@@ -14,8 +14,8 @@
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
   similarity = NULL, usejv = TRUE)
 
-graph_match_convex(A, B, seeds = NULL, start = "bari",
-  max_iter = 100, similarity = NULL, tol = 1e-05, usejv = TRUE)
+graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
+  similarity = NULL, tol = 1e-05, usejv = TRUE)
 
 graph_match_PATH(A, B, similarity = NULL, seeds = NULL, alpha = 0.5,
   epsilon = 1)
@@ -130,7 +130,7 @@ graph_match_FW(g1, g2, seeds, start = "convex")
  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
  A <- lapply(gp_list, function(gp)gp[[1]])
  B <- lapply(gp_list, function(gp)gp[[2]])
- match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+ match <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
  match$corr
 
 seeds <- 1:10 <= 3

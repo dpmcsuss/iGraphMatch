@@ -5,8 +5,8 @@
 \alias{sample_correlated_rdpg}
 \title{Sample graphs from edge probability matrix and correlation matrix}
 \usage{
-sample_correlated_ieg_pair(n, p_mat, c_mat, directed = FALSE,
-  loops = FALSE, permutation = 1:n)
+sample_correlated_ieg_pair(n, p_mat, c_mat, directed = FALSE, loops = FALSE,
+  permutation = 1:n)
 
 sample_correlated_rdpg(X, rho, nc = nrow(X), ...)
 }
