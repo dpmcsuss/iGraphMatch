@@ -1131,7 +1131,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
 }
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_IsoRank} returns a list of graph matching 
+#' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
 #'   and \code{corr_B} and the number of seeds. 
