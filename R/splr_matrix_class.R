@@ -105,7 +105,6 @@ splr_to_sparse <- function(data){
 }
 
 as.matrix.splrMatrix=function(x,...)  {
-
   as.matrix(as.matrix(x@x,...)+x@a%*%t(x@b),...)
   
   
@@ -130,6 +129,8 @@ as.character.splrMatrix <- function(from) {
 # setMethod("as.character", "splrMatrix", as.character.splrMatrix)
 
 setAs("splrMatrix", "character", as.character.splrMatrix)
+
+setAs("splrMatrix", "matrix", function(x) as.matrix.splrMatrix(x))
 
 setMethod("show", signature("splrMatrix"),
   function(object){

@@ -60,7 +60,7 @@ library(igraph)
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
-  similarity = NULL, usejv = TRUE){
+  similarity = NULL, lap_method = NULL){
 
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
@@ -104,7 +104,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
   nc <- length(A)
 
-  lap_method <- set_lap_method(usejv, totv1, totv2)
+  lap_method <- set_lap_method(lap_method, totv1, totv2)
 
 
   while(toggle && iter < max_iter){
@@ -204,7 +204,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
 #'
 graph_match_convex <- function(A, B, seeds = NULL, start = "bari", 
                                max_iter = 100, similarity = NULL,
-                               tol = 1e-5, usejv = TRUE){
+                               tol = 1e-5, lap_method = NULL){
 
   graph_pair <- check_graph(A, B)
   A <- matrix_list(graph_pair[[1]])
@@ -250,7 +250,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   f <- sum((Ann %*% P - P%*% Bnn)^2)
     
 
-  lap_method <- set_lap_method(usejv, totv1, totv2)
+  lap_method <- set_lap_method(lap_method, totv1, totv2)
   
   while(toggle && iter < max_iter){
     f_old <- f

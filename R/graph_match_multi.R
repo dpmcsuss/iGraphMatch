@@ -32,7 +32,7 @@
 #' @export
 #'
 graph_match_FW_multi <- function(A, B, seeds = NULL,
-  start = "bari", max_iter = 20, similarity = NULL, usejv = FALSE){
+  start = "bari", max_iter = 20, similarity = NULL, lap_method = NULL){
   warning("graph_match_FW_multi is deprecated. Please use graph_match_FW.")
   # if(start == "convex"){
   #   stop("Convex start is not yet implemented for multiplex matching")
@@ -100,7 +100,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
   nc <- length(A)
 
-  lap_method <- set_lap_method(usejv, totv1, totv2)
+  lap_method <- set_lap_method(lap_method, totv1, totv2)
 
 
   while(toggle && iter < max_iter){
