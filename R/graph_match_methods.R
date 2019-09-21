@@ -500,63 +500,68 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
 #' @export
 #'
 #'
-graph_match_percolation <- function (A, B, seeds, r = 2) 
+graph_match_percolation <- function (A, B, seeds, r = 2)
 {
-  if(is.igraph(A)){
-    weighted <- is.weighted(A)
-  } else{
-    if(min(A) < 0){
-      weighted <- TRUE
-    } else{
-      weighted <- max(A) > 1
-    }
-  }
   A <- A[]
   B <- B[] 
   
+  directed <- sum(abs(A - Matrix::t(A))) != 0
   totv1 <- nrow(A)
   totv2 <- nrow(B)
   n <- max(totv1, totv2)
-  P <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-  seeds <- check_seeds(seeds, n)$seeds
-  P[as.matrix(seeds)] <- 1
-  Z <- seeds
+  seeds <- check_seeds(seeds, n)$seeds #unused seeds
+  ns <- nrow(seeds)
+  Z <- seeds #matched nodes
+  M <- matrix(0, totv1, totv2) #marks matrix
   
-  if(weighted){
-    M <- Matrix::Matrix(0, totv1, totv2)
-    for(i in 1:nrow(seeds)){
+  # mark neighbors
+  for(i in 1:nrow(seeds)){
+    A_adj <- which(A[seeds$A[i],]>0)
+    B_adj <- which(B[seeds$B[i],]>0)
+    if(length(A_adj) != 0 && length(B_adj) != 0){
+      mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i], B_adj], cal_mark)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+    }
+    if(directed){
+      A <- Matrix::t(A)
+      B <- Matrix::t(B)
       A_adj <- which(A[seeds$A[i],]>0)
       B_adj <- which(B[seeds$B[i],]>0)
       if(length(A_adj) != 0 && length(B_adj) != 0){
-        mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i],B_adj], cal_mark)
+        mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i], B_adj], cal_mark)
         M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
       }
+      A <- Matrix::t(A)
+      B <- Matrix::t(B)
     }
-  } else{
-    M <- (Matrix::t(A) %*% P %*% B + A %*% P %*% Matrix::t(B)) / 2
   }
   M[seeds$A,] <- -n
   M[,seeds$B] <- -n
   
-  while (max(M) >= r) {
+  while(max(M) >= r){
     max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
-    max_ind <- max_ind[sample(nrow(max_ind), 1), ]
-    if(weighted){
+    max_ind <- max_ind[sample(nrow(max_ind),1),]
+    
+    Z <- rbind(Z,max_ind)
+    
+    # update mark matrix
+    A_adj <- which(A[max_ind[1],]>0)
+    B_adj <- which(B[max_ind[2],]>0)
+    mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+    if(directed){
+      A <- Matrix::t(A)
+      B <- Matrix::t(B)
       A_adj <- which(A[max_ind[1],]>0)
       B_adj <- which(B[max_ind[2],]>0)
-      if(length(A_adj) != 0 && length(B_adj) != 0){
-        mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-      }
-    } else{
-      Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-      Pi[max_ind[1], max_ind[2]] <- 1 
-      delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
-      M <- M + delta
+      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+      A <- Matrix::t(A)
+      B <- Matrix::t(B)
     }
-    M[max_ind[1], ] <- -n 
-    M[, max_ind[2]] <- -n
-    Z <- rbind(Z, max_ind)
+    
+    M[max_ind[1],] <- -n
+    M[,max_ind[2]] <- -n
   }
   
   order <- order(Z$A)
@@ -1022,7 +1027,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
 }
 #'
 #' @rdname graph_match_methods
-#' @return \code{graph_match_IsoRank} returns a list of graph matching 
+#' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
 #'   and \code{corr_B} and the number of seeds. 
