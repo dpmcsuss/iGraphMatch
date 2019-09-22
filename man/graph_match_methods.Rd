@@ -14,8 +14,9 @@
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
   similarity = NULL, lap_method = NULL)
 
-graph_match_convex(A, B, seeds = NULL, start = "bari", max_iter = 100,
-  similarity = NULL, tol = 1e-05, lap_method = NULL)
+graph_match_convex(A, B, seeds = NULL, start = "bari",
+  max_iter = 100, similarity = NULL, tol = 1e-05,
+  lap_method = NULL)
 
 graph_match_PATH(A, B, similarity = NULL, seeds = NULL, alpha = 0.5,
   epsilon = 1)
@@ -101,7 +102,7 @@ max_iter times number of total vertices of \eqn{G_1}.}
   and \code{corr_B} and the number of seeds. If choose the greedy method to
   extract mapping, the order of nodes getting matched will also be returned.
 
-\code{graph_match_IsoRank} returns a list of graph matching 
+\code{graph_match_Umeyama} returns a list of graph matching 
   results, including the graph matching formula, a data frame containing the 
   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
   and \code{corr_B} and the number of seeds.

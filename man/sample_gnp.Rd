@@ -7,8 +7,8 @@
 \usage{
 sample_correlated_gnp_pair(n, corr, p, permutation = 1:n, ...)
 
-sample_correlated_gnp_pair_w_junk(n, corr, p, ncore = n, permutation = 1:n,
-  ...)
+sample_correlated_gnp_pair_w_junk(n, corr, p, ncore = n,
+  permutation = 1:n, ...)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}

@@ -3,8 +3,8 @@ context("Umeyama")
 # sample pair of graphs w. 10 vertices
 set.seed(123)
 cgnp_pair <- sample_correlated_gnp_pair(10, .9, .5)
-A <- g$graph1
-B <- g$graph2
+A <- cgnp_pair$graph1
+B <- cgnp_pair$graph2
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
 

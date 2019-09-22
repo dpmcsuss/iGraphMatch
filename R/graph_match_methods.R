@@ -1073,7 +1073,7 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
     Grad <- AB
   }
   Grad <- Grad - min(Grad)
-  lap_method <- set_lap_method(FALSE, totv1, totv2)
+  lap_method <- set_lap_method(NULL, totv1, totv2)
   ind <- do_lap(Grad, lap_method)
 
   corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
