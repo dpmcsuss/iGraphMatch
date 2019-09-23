@@ -9,10 +9,10 @@ seeds <- 1:10 <= 3
 
 test_that("matching correspondence between graph1 and graph2", {
   expect_equal(graph_match_convex(A, B, seeds = seeds)$corr,
-               data.frame(corr_A = c(1:10), corr_B = c(1,2,3,10,7,9,4,6,5,8)))
+               data.frame(corr_A = c(1:10), corr_B = c(1,2,3,6,5,8,10,9,7,4)))
 })
 test_that("permutation matrix", {
-  expect_equal(graph_match_convex(A, B)$P,get_perm(10, 10, data.frame(corr_A = c(1:10), corr_B = c(1,2,3,10,7,9,4,6,5,8))))
+  expect_equal(graph_match_convex(A, B)$P,get_perm(10, 10, data.frame(corr_A = c(1:10), corr_B = c(1,2,3,6,5,8,10,9,7,4))))
 })
 test_that("number of seeds", {
   expect_equal(graph_match_convex(A, B)$ns,3)
