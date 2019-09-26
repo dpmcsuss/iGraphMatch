@@ -957,7 +957,8 @@ check_cycle <- function(rem, new){
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, alpha = .5, max_iter = 1000, method = "greedy"){
+graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, 
+                                alpha = .5, max_iter = 20, method = "greedy"){
   A <- A[]
   B <- B[]
   
@@ -982,7 +983,7 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, alpha = .5, max_
   
   # computing R by power method
   R_new <- E
-  tol <- 1e-5
+  tol <- 1e-2
   iter <- 1
   diff <- 1
   while(diff > tol & iter <= max_iter){
@@ -1004,6 +1005,7 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, alpha = .5, max_
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
   R <- R[!seeds_log, !seeds_log]
+  R <- as.matrix(R)
   # find GNA
   if(method == "greedy"){
     corr <- NULL
