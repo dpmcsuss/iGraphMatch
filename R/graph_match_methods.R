@@ -958,7 +958,7 @@ check_cycle <- function(rem, new){
 #' @export
 #'
 graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, 
-                                alpha = .5, max_iter = 20, method = "greedy"){
+                                alpha = .5, max_iter = 50, method = "greedy"){
   A <- A[]
   B <- B[]
   
