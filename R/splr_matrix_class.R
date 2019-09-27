@@ -104,8 +104,8 @@ splr_to_sparse <- function(data){
     data@x + Matrix(data@a,sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
 }
 
-as.matrix.splrMatrix=function(x,...)  {
-  as.matrix(as.matrix(x@x,...)+x@a%*%t(x@b),...)
+as.matrix.splrMatrix <- function(from,...)  {
+  as.matrix(as.matrix(from@x,...)+from@a%*%t(from@b),...)
   
   
 }
@@ -130,7 +130,7 @@ as.character.splrMatrix <- function(from) {
 
 setAs("splrMatrix", "character", as.character.splrMatrix)
 
-setAs("splrMatrix", "matrix", function(x) as.matrix.splrMatrix(x))
+setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 
 setMethod("show", signature("splrMatrix"),
   function(object){
@@ -327,8 +327,6 @@ setMethod("/",
   .multiply(e1,1/e2)
 })
 
-
-#doesn't create another SPLR...
 .addSplr <- function(e1, e2) {
   new("splrMatrix", x = as(e1@x + e2@x,"sparseMatrix"), a = cbind2(e1@a, e2@a), b = cbind2(e1@b, e2@b), Dim = dim(e1))
 }
