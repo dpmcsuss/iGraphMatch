@@ -957,7 +957,8 @@ check_cycle <- function(rem, new){
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, method = "greedy"){
+graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, 
+                                alpha = .5, max_iter = 50, method = "greedy"){
   A <- A[]
   B <- B[]
   
@@ -982,7 +983,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
   
   # computing R by power method
   R_new <- E
-  tol <- 1e-5
+  tol <- 1e-2
   iter <- 1
   diff <- 1
   while(diff > tol & iter <= max_iter){
@@ -999,6 +1000,12 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
     iter <- iter + 1
   }
 
+  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
+  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
+  nonseeds <- seeds$nonseeds
+  seeds <- seeds$seeds
+  R <- R[!seeds_log, !seeds_log]
+  R <- as.matrix(R)
   # find GNA
   if(method == "greedy"){
     corr <- NULL
@@ -1009,17 +1016,19 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
       R[max_ind[1],] <- -1
       R[,max_ind[2]] <- -1
     }
-    corr <- data.frame(corr_A = corr[,1], corr_B = corr[,2])
-    
+    corr <- data.frame(corr_A = c(seeds$A, nonseeds$A[corr[,1]]), 
+                       corr_B = c(seeds$B, nonseeds$B[corr[,2]]))
+    order <- order(corr$corr_A)
+    corr <- corr[order,]
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = 0, order = order(corr$corr_A))
+    z <- list(call = cl, corr = corr, ns = 0, order = order)
     z
   } else if(method == "LAP"){
     # Hungarian alg.
-    lap_method <- set_lap_method(FALSE, totv1, totv2)
-    corr <- do_lap(R, lap_method)
-    corr <- data.frame(corr_A = 1:nrow(A), corr_B = corr)
-    
+    lap_method <- set_lap_method(NULL, totv1, totv2)
+    corr <- do_lap(R - min(R), lap_method)
+    corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[corr]))
+    corr <- corr[order(corr$corr_A),]    
     cl <- match.call()
     z <- list(call = cl, corr = corr, ns = 0)
     z
@@ -1044,7 +1053,7 @@ graph_match_IsoRank <- function(A, B, similarity, alpha = .5, max_iter = 1000, m
 #'
 #' @export
 #'
-graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
+graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5){
   A <- A[]
   B <- B[]
   totv1 <- nrow(A)
@@ -1072,11 +1081,16 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, alpha = .5){
   } else{
     Grad <- AB
   }
+  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
+  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
+  nonseeds <- seeds$nonseeds
+  seeds <- seeds$seeds
   Grad <- Grad - min(Grad)
   lap_method <- set_lap_method(NULL, totv1, totv2)
-  ind <- do_lap(Grad, lap_method)
+  ind <- do_lap(Grad[!seeds_log, !seeds_log], lap_method)
 
-  corr <- data.frame(corr_A = 1:nrow(A), corr_B = ind)
+  corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
+  corr <- corr[order(corr$corr_A),]
   cl <- match.call()
   z <- list(call = cl, corr = corr, ns = 0)
   z
