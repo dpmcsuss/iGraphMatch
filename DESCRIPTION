@@ -26,6 +26,8 @@ Suggests:
     dplyr (>= 0.5.0),
     testthat (>= 2.0.0),
     rlapjv
+Remotes:
+    dpmcsuss/rlapjv
 License: GPL (>= 2)
 LazyData: TRUE
 RoxygenNote: 6.1.1
