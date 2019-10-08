@@ -1,5 +1,3 @@
-library(igraph)
-
 #' @title Graph Match Methods
 #'
 #' @description Match two given graphs, returns a list of graph matching
@@ -184,7 +182,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
 
 
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_convex} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
@@ -314,7 +311,6 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 }
 
 
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_PATH} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
@@ -482,7 +478,6 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
             P = P, D = D, iter = iter, lambda = lambda)
   z
 }
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_percolation} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
@@ -576,7 +571,6 @@ graph_match_percolation <- function (A, B, seeds, r = 2)
 cal_mark <- function(x,y){
   1 - abs(x - y) / max(x, y)
 }
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_ExpandWhenStuck} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
@@ -597,8 +591,8 @@ cal_mark <- function(x,y){
 #'
 graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   # this will make the graphs be matrices if they are igraph objects
-  if(is.igraph(A)){
-    weighted <- is.weighted(A)
+  if(igraph::is.igraph(A)){
+    weighted <- igraph::is.weighted(A)
   } else{
     if(min(A) < 0){
       weighted <- TRUE
@@ -692,7 +686,6 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   z <- list(call = cl, corr = corr, ns = ns, order = order)
   z
 }
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_soft_percolation} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
@@ -710,8 +703,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
 graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
 
   # this will make the graphs be matrices if they are igraph objects
-  if(is.igraph(A)){
-    weighted <- is.weighted(A)
+  if(igraph::is.igraph(A)){
+    weighted <- igraph::is.weighted(A)
   } else{
     if(min(A) < 0){
       weighted <- TRUE
@@ -937,7 +930,6 @@ check_cycle <- function(rem, new){
 
   result
 }
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_IsoRank} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
@@ -1034,7 +1026,6 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
     z
   }
 }
-#'
 #' @rdname graph_match_methods
 #' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 

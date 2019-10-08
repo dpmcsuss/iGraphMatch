@@ -37,9 +37,8 @@ set_lap_method <- function(lap_method, totv1, totv2){
       "Please use one of:", methods))
   }
   if (is.null(lap_method)){
-    if("rlapjv" %in% rownames(installed.packages()) &&
+    if("rlapjv" %in% rownames(utils::installed.packages()) &&
         totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5){
-        library(rlapjv)
         lap_method <- "lapmod"
     } else {
       lap_method <- "clue"

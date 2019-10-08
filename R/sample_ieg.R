@@ -29,9 +29,9 @@
 #'
 #' @export
 sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,permutation=1:n){
-  g1 <- matrix(rbinom(n^2,1,p_mat),n)
-  z0 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)),n)
-  z1 <- matrix(rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
+  g1 <- matrix(stats::rbinom(n^2,1,p_mat),n)
+  z0 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)),n)
+  z1 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
   g2 <- z1*g1+z0*(1-g1)
   
   if(directed){
@@ -43,7 +43,7 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,p
   }
   list(graph1 = graph_from_adjacency_matrix(g1, 
          mode = mode, diag = loops),
-       graph2 = permute(graph_from_adjacency_matrix(g2,
+       graph2 = igraph::permute(graph_from_adjacency_matrix(g2,
          mode = mode, diag = loops),permutation))
 }
 

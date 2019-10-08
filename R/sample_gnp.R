@@ -1,3 +1,5 @@
+#' @importFrom igraph sample_gnp sample_sbm graph_from_adjacency_matrix %u% %s%
+
 #' @title Sample correlated G(n,p) random graphs
 #'
 #' @description Sample a pair of correlated G(n,p) random graphs with correlation between
@@ -32,7 +34,7 @@ sample_correlated_gnp_pair <- function(n, corr, p, permutation=1:n, ...){
   
   graph2 <- Z1 %s% graph1 %u% (Z0-graph1)
   
-  list(graph1=graph1,graph2=permute(graph2,permutation))
+  list(graph1=graph1,graph2=igraph::permute(graph2,permutation))
 }
 
 #' @export
@@ -57,7 +59,7 @@ sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n,permutation=1:
     B <- sample_sbm(n,pref_junk,c(ncore,n-ncore),...)
     
     cgnp_pair <- with(cgnp_pair,{
-      list(graph1=A %u% graph1,graph2=permute(B%u%graph2,permutation))
+      list(graph1=A %u% graph1,graph2=igraph::permute(B%u%graph2,permutation))
     })
   }
   cgnp_pair

@@ -6,12 +6,12 @@ check_graph <- function(A, B, same_order = TRUE, square = TRUE, as_list = TRUE, 
   # Right now defaults are only option
 
   # this will make the graphs be matrices if they are igraph objects
-  if(is.list(A) && !is.igraph(A)){
+  if(is.list(A) && !igraph::is.igraph(A)){
     A <- lapply(A, function(Al) Al[])
   } else {
     A <- list(A[])
   }
-  if( is.list(B) && !is.igraph(B)){
+  if( is.list(B) && !igraph::is.igraph(B)){
     B <- lapply(B, function(Bl) Bl[])
   } else {
     B <- list(B[])

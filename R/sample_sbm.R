@@ -38,7 +38,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permuta
   
   graph2 <- Z1 %s% graph1 %u% (Z0-graph1)
   
-  list(graph1=graph1,graph2=permute(graph2,permutation))
+  list(graph1=graph1,graph2=igraph::permute(graph2,permutation))
 }
 
 #' @rdname sample_sbm
@@ -71,6 +71,6 @@ sample_correlated_sbm_pair_w_junk <- function(
   
   graph2 <- Z1 %s% graph1 %u% (Z0-graph1)
   
-  list(graph1=graph1,graph2=permute(graph2,permutation))
+  list(graph1=graph1,graph2=igraph::permute(graph2,permutation))
 }
 

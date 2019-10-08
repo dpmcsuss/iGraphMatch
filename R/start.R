@@ -160,7 +160,7 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
 
 
 rds_perm_bari <- function(nns, g, is_splr = TRUE){
-  alpha <- runif(1, 0, g)
+  alpha <- stats::runif(1, 0, g)
   if(is_splr){
     if(is.numeric(alpha * rperm(nns))){
       x <- sparseMatrix(x = alpha * rperm(nns), i=1, j=1)

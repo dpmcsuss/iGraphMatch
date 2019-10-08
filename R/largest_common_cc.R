@@ -33,10 +33,10 @@
 #' @export
 #'
 largest_common_cc <- function(A, B, min_degree = 1){
-  keep <- rep(TRUE, vcount(A))
-  while (!(is_connected(A) && is_connected(B))){
-    cc1 <- components(A)
-    cc2 <- components(B)
+  keep <- rep(TRUE, igraph::vcount(A))
+  while (!(igraph::is_connected(A) && igraph::is_connected(B))){
+    cc1 <- igraph::components(A)
+    cc2 <- igraph::components(B)
 
     lcc1 <- which.max(cc1$csize)
     lcc2 <- which.max(cc2$csize)
@@ -47,15 +47,16 @@ largest_common_cc <- function(A, B, min_degree = 1){
     vlcc <- vlcc1 & vlcc2
     keep[keep] <- vlcc
 
-    A <- induced_subgraph(A, V(A)[vlcc])
-    B <- induced_subgraph(B, V(B)[vlcc])
+    A <- igraph::induced_subgraph(A, igraph::V(A)[vlcc])
+    B <- igraph::induced_subgraph(B, igraph::V(B)[vlcc])
 
     if(min_degree > 1){
-      good_deg <- (degree(A) >= min_degree) & (degree(B) >= min_degree)
+      good_deg <- (igraph::degree(A) >= min_degree) &
+        (igraph::degree(B) >= min_degree)
       keep[keep] <- good_deg
 
-      A <- induced_subgraph(A, good_deg)
-      B <- induced_subgraph(B, good_deg)
+      A <- igraph::induced_subgraph(A, good_deg)
+      B <- igraph::induced_subgraph(B, good_deg)
     }
   }
 

@@ -25,8 +25,9 @@ row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
 
-  require(tidyverse)
-  1:nrow(g1) %>% map_dbl(~suppressWarnings(1-cor(g1[.x,],g2[.x,])))
+  
+  sapply(1:nrow(g1),
+    function(v) suppressWarnings(1-cor(g1[v,],g2[v,])))
 }
 
 #' @rdname measure_func
@@ -79,7 +80,7 @@ row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
     A[,mc] <- rowSums(abs(g1[,order(p)]-g2[p,]))
   }
   m <- rowMeans(A)
-  v <- apply(A,1,var)
+  v <- apply(A,1,stats::var)
   if(sym){
     mv <- row_diff_perm(g1,g2,nmc)
     m <- m+mv$mean

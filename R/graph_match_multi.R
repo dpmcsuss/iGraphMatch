@@ -38,6 +38,7 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   #   stop("Convex start is not yet implemented for multiplex matching")
   # }
 
+  # NEED TO 
   # this will make the graphs be matrices if they are igraph objects
   if(is.list(A) && !is.igraph(A)){
     A <- lapply(A, function(Al) Al[])
