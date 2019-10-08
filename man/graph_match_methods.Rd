@@ -3,23 +3,35 @@
 \name{graph_match_FW}
 \alias{graph_match_FW}
 \alias{graph_match_convex}
+\alias{graph_match_PATH}
 \alias{graph_match_percolation}
 \alias{graph_match_ExpandWhenStuck}
 \alias{graph_match_soft_percolation}
+\alias{graph_match_IsoRank}
+\alias{graph_match_Umeyama}
 \title{Graph Match Methods}
 \usage{
 graph_match_FW(A, B, seeds = NULL, start = "convex", max_iter = 20,
-  similarity = NULL)
+  similarity = NULL, lap_method = NULL)
 
 graph_match_convex(A, B, seeds = NULL, start = "bari",
-  max_iter = 100, tol = 1e-05)
+  max_iter = 100, similarity = NULL, tol = 1e-05,
+  lap_method = NULL)
 
-graph_match_percolation(A, B, seeds, r = 2, center = FALSE)
+graph_match_PATH(A, B, similarity = NULL, seeds = NULL, alpha = 0.5,
+  epsilon = 1)
+
+graph_match_percolation(A, B, seeds, r = 2)
 
 graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
 
-graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 50,
-  center = FALSE)
+graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 100)
+
+graph_match_IsoRank(A, B, similarity, seeds = NULL, alpha = 0.5,
+  max_iter = 50, method = "greedy")
+
+graph_match_Umeyama(A, B, similarity = NULL, seeds = NULL,
+  alpha = 0.5)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
@@ -41,32 +53,60 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 
+\item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
+on the information in network topology over other information such as
+similarity scores}
+
 \item{r}{A number. Threshold of neighboring pair scores.}
+
+\item{method}{A character. Choice of method to extract mapping from score matrix,
+including greedy method and the Hungarian algorithm.}
+
+\item{max_iter}{A number. Maximum number of replacing matches equals to
+max_iter times number of total vertices of \eqn{G_1}.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
-  including match correspondence vector of \eqn{G_2} with respect to
-  \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D},
-  permutation matrix named \code{P} based on Frank-Wolfe methodology and
-  iteration time of the algorithm named \code{iter}.
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B} and the number of seeds.
 
 \code{graph_match_convex} returns a list of graph matching results,
-  including matching correspondence vector of \eqn{G_2} with respect to
-  \eqn{G_1} named \code{corr}, doubly stochastic matrix named \code{D} and
-  permutation matrix named \code{P} based on convex relaxation method for
-  undirected graphs.
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B} and the number of seeds.
 
-\code{graph_match_percolation} returns matching correspondence of
-  matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_PATH} returns a list of graph matching results,
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B}, the number of seeds if any, the permutation matrix and the
+  doubly stochastic matrix before projection onto the permutation set.
 
-\code{graph_match_ExpandWhenStuck} returns matching correspondence of
-  matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_percolation} returns a list of graph matching results,
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
+  \code{corr_B}, the number of seeds and the order of nodes getting matched.
 
-\code{graph_match_soft_percolation} returns matching correspondence
-  of matched pairs with index of nodes in \eqn{G_1} named \code{corr_A} and
-  index of nodes in \eqn{G_2} named \code{corr_B}.
+\code{graph_match_ExpandWhenStuck} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B}, the number of seeds and the order of nodes getting matched.
+
+\code{graph_match_soft_percolation} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B}, the number of seeds and the order of nodes getting matched.
+
+\code{graph_match_IsoRank} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B} and the number of seeds. If choose the greedy method to
+  extract mapping, the order of nodes getting matched will also be returned.
+
+\code{graph_match_Umeyama} returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+  and \code{corr_B} and the number of seeds.
 }
 \description{
 Match two given graphs, returns a list of graph matching
@@ -86,15 +126,24 @@ graph_match_FW(g1, g2, seeds, start = "bari")
 
 # match G_1 & G_2 with some incorrect seeds
 hard_seeds <- matrix(c(4,6,5,4),2)
-seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 graph_match_FW(g1, g2, seeds, start = "convex")
+
+ gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
+ A <- lapply(gp_list, function(gp)gp[[1]])
+ B <- lapply(gp_list, function(gp)gp[[2]])
+ match <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+ match$corr
 
 seeds <- 1:10 <= 3
 graph_match_convex(g1, g2, seeds)
 
 hard_seeds <- matrix(c(4,6,5,4),2)
-seeds <- rbind(as.matrix(check_seeds(seeds)),hard_seeds)
+seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
 graph_match_convex(g1, g2, seeds)
+
+# match G_1 & G_2 using PATH algorithm
+graph_match_PATH(g1, g2)
 
 # match G_1 & G_2 using percolation graph matching method
 seeds <- 1:5
@@ -108,12 +157,34 @@ graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 seeds <- 1:5
 graph_match_soft_percolation(g1, g2, seeds, r = 2, max_iter = 2)
 
+# match G_1 & G_2 using IsoRank algorithm
+startm <- matrix(0, 10, 10)
+diag(startm)[1:4] <- 1
+GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
+
+# match G_1 & G_2 using Umeyama algorithm
+G <- sample_correlated_gnp_pair(10, .9, .5)
+G1 <- G$graph1
+G2 <- G$graph2
+GM_U <- graph_match_Umeyama(G1, G2, startm, alpha = .3)
+
 }
 \references{
+M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
+algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
+pages 2227-2242.
+
 L. Yartseva and M. Grossglauser (2013), \emph{On the performance
   of percolation graph matching}. COSN, Boston, MA, USA, pages 119–130.
 
 E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
 Endowment, 8(10):1010–1021.
+
+R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
+multiple protein interaction networks with application to functional
+orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
+
+S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
+  graph matching problems}. IEEE TPAMI. USA, pages 695-703.
 }

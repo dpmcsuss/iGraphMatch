@@ -2,12 +2,11 @@ Package: iGraphMatch
 Type: Package
 Title: Tools for approximately solving graph matching problems
 Version: 0.0.0.9000
-Encoding: UTF-8
 Authors@R: c(
     person("Daniel", "Sussman", email = "sussman@bu.edu", role = "aut"),
     person("Zihuan", "Qiao", email = "zhqiao@bu.edu", role = c("aut", "cre"))
     )
-Description: iGraphMatch is a R package for graph matching. The package
+Description: iGraphMatch is an R package for graph matching. The package
   works for both igraph objects and matrix objects. You provide the adjacency
   matrices of two graphs and some other information you might know, choose the
   graph matching method, and it returns the graph matching results. iGraphMatch
@@ -19,10 +18,18 @@ Imports:
     clue (>= 0.3-54),
     Matrix (>= 1.2-11),
     igraph (>= 1.1.2),
-    purrr (>= 0.2.2.2)
+    purrr (>= 0.2.2.2),
+    ramify (>= 0.3.3),
+    irlba,
+    methods
 Suggests:
     dplyr (>= 0.5.0),
-    testthat (>= 2.0.0)
-License: file LICENSE
+    testthat (>= 2.0.0),
+    rlapjv
+Remotes:
+    dpmcsuss/rlapjv
+License: GPL (>= 2)
 LazyData: TRUE
 RoxygenNote: 6.1.1
+Encoding: UTF-8
+

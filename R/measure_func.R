@@ -17,27 +17,25 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' match <- graph_match_FW(g1, g2)
-#' g2m <- g2[match$corr, match$corr]
+#' g2m <- g2[match$corr$corr_B, match$corr$corr_B]
 #' g1 <- g1[]
 #' row_cor(g1, g2m)
 #' @export
-#'
 row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
-  require(tidyverse)
-  1:nrow(g1) %>% map_dbl(~suppressWarnings(1-cor(g1[.x,],g2[.x,])))
+
+  
+  sapply(1:nrow(g1),
+    function(v) suppressWarnings(1-cor(g1[v,],g2[v,])))
 }
-#'
+
 #' @rdname measure_func
 #' @return \code{row_diff} returns a vector, each element is the row difference value for
 #' the corresponding vertex.
 #' @examples
 #' row_diff(g1, g2m)
 #' @export
-#'
 row_diff <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -45,19 +43,16 @@ row_diff <- function(g1,g2){
   g2 <- as.matrix(g2)
   rowSums(abs(g1-g2))
 }
-#'
+
 #' @rdname measure_func
 #' @return \code{row_perm_stat} returns a vector, each element is the row permutation statistics
 #' value for the corresponding vertex.
 #' @examples
 #' row_perm_stat(g1, g2m)
 #' @export
-#'
 row_perm_stat <- function(g1,g2,exact=TRUE,...){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   if(exact){
     m <- mean_row_diff(g1,g2)
@@ -72,21 +67,20 @@ row_perm_stat <- function(g1,g2,exact=TRUE,...){
 
   (d-m)/sqrt(v)
 }
+
 row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   n <- nrow(g2)
-  A <- matrix(0,n,nmc)
+  A <- Matrix(0,n,nmc)
 
   for(mc in 1:nmc){
     p <- sample(n)
     A[,mc] <- rowSums(abs(g1[,order(p)]-g2[p,]))
   }
   m <- rowMeans(A)
-  v <- apply(A,1,var)
+  v <- apply(A,1,stats::var)
   if(sym){
     mv <- row_diff_perm(g1,g2,nmc)
     m <- m+mv$mean
@@ -94,11 +88,10 @@ row_diff_perm <- function(g1, g2, nmc = 1000, sym=FALSE){
   }
   list(mean=m,var=v)
 }
-mean_row_diff <- function(g1,g2,sym=FALSE){
+
+mean_row_diff <- function(g1, g2, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   dg1 <- rowSums(g1)
   dg2 <- rowSums(g2)
@@ -106,18 +99,17 @@ mean_row_diff <- function(g1,g2,sym=FALSE){
   n <- nrow(g1)
 
   r1 <- mdg2
-  r2 <- dg1*(1-2*mdg2/(n-1))
-  ED <- r1+r2
-  if(sym){
-    ED <- (ED+mean_row_diff(g2,g1))/2
+  r2 <- dg1 * (1 - 2 * mdg2 / (n - 1))
+  ED <- r1 + r2
+  if (sym){
+    ED <- (ED + mean_row_diff(g2, g1)) / 2
   }
   ED
 }
-var_row_diff <- function(g1,g2,sym=FALSE){
+
+var_row_diff <- function(g1, g2, sym=FALSE){
   g1 <- g1[]
   g2 <- g2[]
-  g1 <- as.matrix(g1)
-  g2 <- as.matrix(g2)
 
   dg1 <- rowSums(g1)
   dg2 <- rowSums(g2)

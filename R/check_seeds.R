@@ -17,21 +17,24 @@
 #'
 #' @examples
 #' #input is a vector of logicals
-#' seeds <- 1:10 <= 3
-#' check_seeds(seeds)
+#' check_seeds(1:10 <= 3, nv = 10)
 #'
 #' #input is a vector of integers
-#' check_seeds(c(1,4,2,7,3))
+#' check_seeds(c(1,4,2,7,3), nv = 10)
 #'
 #' #input is a matrix
-#' check_seeds(matrix(1:4,2))
+#' check_seeds(matrix(1:4,2), nv = 10)
 #'
 #' #input is a data frame
-#' check_seeds(as.data.frame(matrix(1:4,2)))
+#' check_seeds(as.data.frame(matrix(1:4,2)), nv = 10)
 #'
 #' @export
-check_seeds <- function(seeds, nv = 0, logical = FALSE){
-  if(is.logical(seeds)){
+check_seeds <- function(seeds, nv, logical = FALSE){
+  if(is.null(seeds)){
+    seed_g1 <- numeric()
+    seed_g2 <- numeric()
+  }
+  else if(is.logical(seeds)){
     seeds <- which(seeds==TRUE)
     seed_g1 <- seeds
     seed_g2 <- seeds
@@ -52,6 +55,12 @@ check_seeds <- function(seeds, nv = 0, logical = FALSE){
     seeds[seed_g1] <- TRUE
     seeds
   } else{
-    data.frame(seed_A=seed_g1, seed_B=seed_g2)
+    seeds <- data.frame(A=seed_g1, B=seed_g2) # CORRECT this
+    nonseeds <- data.frame(
+        A = (1:nv)[!(1:nv %in% seeds$A)],
+        B = (1:nv)[!(1:nv %in% seeds$B)])
+
+    list(seeds = seeds, nonseeds = nonseeds)
   }
+
 }

@@ -1,13 +1,16 @@
 # iGraphMatch
 
-Overview
---------
 iGraphMatch is a R package for graph matching. The package works for both igraph objects and matrix objects. You provide the adjacency matrices of two graphs and some other information you might know, choose the graph matching method, and it returns the graph matching results. iGraphMatch also provides a bunch of useful functions you might need during the process of graph matching.
 
 Installation
 ------------
+``` r
+# install.packages("devtools")
+devtools::install_github("dpmcsuss/iGraphMatch"
+```
 
-Currently only the development version of this package is available. We recommend installing the `dev` branch at the moment. This can be installed via devtools with
+This package is still in development. The `dev` branch of the package might be more stable. This can be installed via devtools with
+
 ``` r
 # install.packages("devtools")
 devtools::install_github("dpmcsuss/iGraphMatch", ref = "dev")
@@ -19,3 +22,6 @@ Usage
 After installation, attach the package before using it
 ``` r
 library(iGraphMatch)
+``` 
+
+We recommend installing igraph package first before installing iGraphMatch package.
