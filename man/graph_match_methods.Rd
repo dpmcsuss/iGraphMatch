@@ -27,10 +27,11 @@ graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
 
 graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 100)
 
-graph_match_IsoRank(A, B, similarity, alpha = 0.5, max_iter = 1000,
-  method = "greedy")
+graph_match_IsoRank(A, B, similarity, seeds = NULL, alpha = 0.5,
+  max_iter = 50, method = "greedy")
 
-graph_match_Umeyama(A, B, similarity = NULL, alpha = 0.5)
+graph_match_Umeyama(A, B, similarity = NULL, seeds = NULL,
+  alpha = 0.5)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}

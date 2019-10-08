@@ -176,7 +176,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   cl <- match.call()
   z <- list(
     call = cl, 
-    corr = data.frame(corr_A = 1:totv1, corr_B = corr),
+    corr = data.frame(corr_A = 1:nv, corr_B = corr),
     ns = ns,
     P = P,
     D = D)
@@ -372,7 +372,7 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   delta <- outer(diag(D_A), diag(D_B), delta_cal)
   iter <- 0
   
-  lap_method <- set_lap_method(FALSE, totv1, totv2)
+  lap_method <- set_lap_method(NULL, totv1, totv2)
 
   while (lambda < 1) {
     iter <- iter + 1

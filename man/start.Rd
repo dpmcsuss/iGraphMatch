@@ -17,7 +17,7 @@ rds_perm_bari_start(nns, ns = 0, soft_seeds = NULL, g = 1,
 \arguments{
 \item{nns}{An integer. Number of non-seeds.}
 
-\item{ns}{An integer. Number of seeds.}
+\item{ns}{An integer. Number of hard seeds.}
 
 \item{soft_seeds}{A vector, a matrix or a data frame. If there is no error in soft
 seeds, input can be a vector of soft seed indices in \eqn{G_1}. Or if there is error in soft

@@ -3,7 +3,7 @@
 #' @description initialize the start matrix for graph matching iteration.
 #'
 #' @param nns An integer. Number of non-seeds.
-#' @param ns An integer. Number of seeds.
+#' @param ns An integer. Number of hard seeds.
 #' @param soft_seeds A vector, a matrix or a data frame. If there is no error in soft
 #' seeds, input can be a vector of soft seed indices in \eqn{G_1}. Or if there is error in soft
 #' seeds, input in the form of a matrix or a data frame, with the first column being the
