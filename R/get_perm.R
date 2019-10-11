@@ -1,6 +1,6 @@
 #' @title Get Permutation
 #'
-#' @description Get an $m$-by-$n$ permutation matrix according to the mapping
+#' @description Get an \code{m-by-n} permutation matrix according to the mapping
 #'   correspondence.
 #'
 #' @param m An integer. Order of \eqn{G_1}.
@@ -10,7 +10,7 @@
 #'
 #' @rdname get_perm
 #'
-#' @return \code{get_perm} returns an $m$-by-$n$ sparse permutation matrix or whose
+#' @return \code{get_perm} returns an \code{m-by-n} sparse permutation matrix or whose
 #'   submatrix is a permutation matrix if only parts of nodes from both graphs get
 #'   matched or in the case of matching graphs of different order.
 #'

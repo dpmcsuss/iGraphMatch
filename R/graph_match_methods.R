@@ -998,17 +998,21 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
                        corr_B = c(seeds$B, nonseeds$B[corr[,2]]))
     order <- order(corr$corr_A)
     corr <- corr[order,]
+    names(corr) <- c("corr_A","corr_B")
+    rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = 0, order = order)
+    z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
     z
   } else if(method == "LAP"){
     # Hungarian alg.
     lap_method <- set_lap_method(NULL, totv1, totv2)
     corr <- do_lap(R - min(R), lap_method)
     corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[corr]))
-    corr <- corr[order(corr$corr_A),]    
+    corr <- corr[order(corr$corr_A),] 
+    names(corr) <- c("corr_A","corr_B")
+    rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = 0)
+    z <- list(call = cl, corr = corr, ns = nrow(seeds))
     z
   }
 }

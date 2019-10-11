@@ -25,7 +25,7 @@ vector must match the number of vertices.}
 \item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated 
 graphs. It must be in open (0,1) interval.}
 
-\item{...}{Passed to \code{sample_correlated_sbm_pair}.}
+\item{...}{Passed to \code{sample_correlated_sbm_pair} and \code{sample_correlated_sbm_pair_w_junk}.}
 
 \item{permutation.}{A numeric vector, permute second graph.}
 

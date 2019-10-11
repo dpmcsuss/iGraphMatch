@@ -15,12 +15,12 @@ get_perm(m, n, corr)
 and second columns correspond to indices in \eqn{G_1} and \eqn{G_2} respectively.}
 }
 \value{
-\code{get_perm} returns an $m$-by-$n$ sparse permutation matrix or whose
+\code{get_perm} returns an \code{m-by-n} sparse permutation matrix or whose
   submatrix is a permutation matrix if only parts of nodes from both graphs get
   matched or in the case of matching graphs of different order.
 }
 \description{
-Get an $m$-by-$n$ permutation matrix according to the mapping
+Get an \code{m-by-n} permutation matrix according to the mapping
   correspondence.
 }
 \examples{
