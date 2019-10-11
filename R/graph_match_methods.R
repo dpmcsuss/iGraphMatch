@@ -330,23 +330,11 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 #'
 #'
 graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
-  if(is.matrix(A)){
-    if(isSymmetric(A)){
-      A <- graph_from_adjacency_matrix(A, mode = "undirected")
-    } else{
-      A <- graph_from_adjacency_matrix(A, mode = "directed")
-    }
-  }
-  totv1 <- vcount(A)
-  totv2 <- vcount(B)
-  
-  if(totv1 > totv2){
-    diff <- totv1 - totv2
-    B <- pad(B[], diff)
-  }else if(totv1 < totv2){
-    diff <- totv2 - totv1
-    A <- pad(A[], diff)
-  }
+  graph_pair <- check_graph(A, B, as_list = FALSE)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
   
   D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
   D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
@@ -497,14 +485,16 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
 #'
 graph_match_percolation <- function (A, B, seeds, r = 2)
 {
-  A <- A[]
-  B <- B[] 
+  graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
   
-  directed <- sum(abs(A - Matrix::t(A))) != 0
-  totv1 <- nrow(A)
-  totv2 <- nrow(B)
+  directed <- !(isSymmetric(A) && isSymmetric(B))
+
   n <- max(totv1, totv2)
-  seeds <- check_seeds(seeds, n)$seeds #unused seeds
+  seeds <- check_seeds(seeds, n)$seeds
   ns <- nrow(seeds)
   Z <- seeds #matched nodes
   M <- matrix(0, totv1, totv2) #marks matrix
@@ -591,20 +581,14 @@ cal_mark <- function(x,y){
 #'
 graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   # this will make the graphs be matrices if they are igraph objects
-  if(igraph::is.igraph(A)){
-    weighted <- igraph::is.weighted(A)
-  } else{
-    if(min(A) < 0){
-      weighted <- TRUE
-    } else{
-      weighted <- max(A) > 1
-    }
-  }
-  A <- A[]
-  B <- B[]
-  
-  totv1 <- nrow(A)
-  totv2 <- nrow(B)
+  graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
+
+  weighted <- any(A != 0 | A != 1 | B != 0 | B != 1)
+
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow = totv1, ncol = totv2)
   seeds <- check_seeds(seeds, n)$seeds
@@ -892,6 +876,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   z <- list(call = cl, corr = corr, ns = ns, order = order)
   z
 }
+
 conflict_check <- function(Matches, ind, logical = TRUE){
 
   if(logical == TRUE){
@@ -907,6 +892,7 @@ conflict_check <- function(Matches, ind, logical = TRUE){
   }
   conflict
 }
+
 check_cycle <- function(rem, new){
   row <- which(rem[,1]==unlist(new[1]))
   col <- which(rem[,2]==unlist(new[2]))
