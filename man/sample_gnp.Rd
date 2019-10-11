@@ -21,7 +21,7 @@ of the generated graphs. It must be in open (0,1) interval.}
 
 \item{permutation}{A numeric vector,permute second graph.}
 
-\item{...}{Passed to \code{sample_correlated_gnp_pair}.}
+\item{...}{Passed to \code{sample_correlated_gnp_pair} and \code{sample_correlated_gnp_pair_w_junk}.}
 
 \item{ncore}{An integer. Number of core vertices.}
 }
