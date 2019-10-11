@@ -17,6 +17,7 @@
 #' @param loops Logical scalar, whether self-loops are allowed in the graph.
 #' @param permutation A numeric vector,permute second graph.
 #' @param nc An integer. Number of core vertices.
+#' @param ... Passed to \code{sample_correlated_rdpg_pair}.
 #'
 #' @rdname sample_ieg
 #' @return \code{sample_correlated_ieg_pair} returns two igraph objects named
