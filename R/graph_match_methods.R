@@ -172,7 +172,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
-  z <- list(
+  list(
     call = cl, 
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
     ns = ns,
