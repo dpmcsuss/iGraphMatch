@@ -34,36 +34,13 @@
 graph_match_FW_multi <- function(A, B, seeds = NULL,
   start = "bari", max_iter = 20, similarity = NULL, lap_method = NULL){
   warning("graph_match_FW_multi is deprecated. Please use graph_match_FW.")
-  # if(start == "convex"){
-  #   stop("Convex start is not yet implemented for multiplex matching")
-  # }
 
-  # NEED TO 
-  # this will make the graphs be matrices if they are igraph objects
-  if(is.list(A) && !is.igraph(A)){
-    A <- lapply(A, function(Al) Al[])
-  } else {
-    A <- list(A[])
-  }
-  if( is.list(B) && !is.igraph(B)){
-    B <- lapply(B, function(Bl) Bl[])
-  } else {
-    B <- list(B[])
-  }
+  graph_pair <- check_graph(A, B)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
 
-  # Assume each list has all the same number of nodes within
-  totv1 <- ncol(A[[1]])
-  totv2 <- ncol(B[[1]])
-
-  if(totv1 > totv2){
-    diff <- totv1 - totv2
-    B <- lapply(B, function(Bl)
-      pad(Bl[], diff))
-  }else if(totv1 < totv2){
-    diff <- totv2 - totv1
-    A <- lapply(A, function(Al)
-      pad(Al[], diff))
-  }
   nv <- nrow(A[[1]])
 
 
@@ -85,7 +62,9 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   # seed to non-seed info
-  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
+  s_to_ns <- lapply(1:nc, function(ch){
+      get_s_to_ns(A[[ch]], B[[ch]], seeds, nonseeds, rp)
+    })
 
   P <- P[, rp]
 
@@ -108,22 +87,22 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
 
     iter <- iter + 1
     # non-seed to non-seed info
-    tAnn_P_Bnn <- zero_mat
+    tAnn_P_Bnn <- list()
+    ind <- list()
     for( ch in 1:nc ){
-      tAnn_P_Bnn <- tAnn_P_Bnn +
-        Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
+      tAnn_P_Bnn[[ch]] <- Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
     }
 
-    Grad <- s_to_ns + tAnn_P_Bnn + similarity
     for(ch in 1:nc){
-      Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
+      Grad <- s_to_ns[[ch]] + tAnn_P_Bnn[[ch]] + similarity[[ch]] +
+        A[[ch]] %*% P %*% Matrix::t(B[[ch]])
+        ind[[ch]] <- do_lap(Grad, lap_method)
     }
 
-    ind <- do_lap(Grad, lap_method)
 
-    ind2 <- cbind(1:nn, ind)
-    Pdir <- Matrix::Diagonal(nn)
-    Pdir <- Pdir[ind, ]
+    Pdir <- Reduce("+", lapply(ind,
+      function(i) Matrix::Diagonal(nn)[i, ])) / nc
+
     ns_Pdir_ns <- zero_mat
     for(ch in 1:nc){
       ns_Pdir_ns <- ns_Pdir_ns +
@@ -178,6 +157,115 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
     P = P,
     D = D)
 }
+
+
+
+### Python code to implement
+
+#    def fit(self,method='chebyshev',order=30,num_signals=None):
+#         '''
+#         Perform seeded graph matching
+#             -num_signal: None if exact signal feature, else, generate random noise signals 
+#         '''
+#         partitioned_matrices = {}
+#         partitioned_matrices[0] = self.matrix_partition(self.A,self.B,self.num_seeds)
+#         # heat diffusion similarities
+#         if self.num_tau>=1:
+#             similarities1 = self.similarity_generation(self.g1,method=method,order=order,num_signals=num_signals)
+#             similarities2 = self.similarity_generation(self.g2,method=method,order=order,num_signals=num_signals)
+#             for i in range(len(similarities1)):
+#                 partitioned_matrices[i+1] = self.matrix_partition(similarities1[i],similarities2[i],self.num_seeds)
+        
+#         # matching initialization
+#         #k = 20
+#         n_P = self.n_A-self.num_seeds
+#         m_P = self.n_B-self.num_seeds
+#         self.P = sparse.csr_matrix(np.ones([n_P,m_P])/float(m_P))
+#         self.eye = sparse.identity(n_P).tocsr()
+        
+#         Q = sparse.csr_matrix((n_P,m_P))
+#         for i in range(self.num_tau+1):
+#             Q += self.knn_assignment(partitioned_matrices[i],k=20)
+#         self.P = normalize(Q, norm='l1', axis=1)
+
+#         # update matches
+#         print('iterate:')
+#         for iteration in range(50):
+#             w_P = {}
+            
+# #            grad = sparse.csr_matrix((n_P,m_P))
+# #            for i in range(self.num_tau+1):
+# #                w_P[i] = partitioned_matrices[i]['A22'].dot(self.P).dot(partitioned_matrices[i]['B22'])
+# #                grad += partitioned_matrices[i]['A21B12'] + w_P[i]                
+# #            # Linear Assignment Problem
+# #            #Q = self.linear_assignment(grad,mode='max')
+# #            # Simplex Optimization
+# #            Q = self.simplex_optimization(grad,mode='max')
+
+            
+#             Q = sparse.csr_matrix((n_P,m_P))
+#             for i in range(self.num_tau+1):
+#                 w_P[i] = partitioned_matrices[i]['A22'].dot(self.P).dot(partitioned_matrices[i]['B22'])
+#                 grad = partitioned_matrices[i]['A21B12'] + w_P[i]  
+#                 # Linear Assignment Problem
+#                 #Q += self.linear_assignment(grad,mode='max')
+#                 # Simplex Optimization
+#                 Q += self.simplex_optimization(grad,mode='max')
+#                 # K-nearest neighbors
+#                 #Q += self.knn_assignment(partitioned_matrices[i],k=1)
+#             Q = normalize(Q, norm='l1', axis=1)
+            
+#             #Q = self.approximate_matches_kmeans(1,[self.A]+similarities1,[self.B]+similarities2)
+            
+#             # Computing alpha
+#             numerator = 0
+#             denom = 0
+#             f1 = 0
+#             for i in reversed(range(self.num_tau+1)):
+#                 w_Q = partitioned_matrices[i]['A22'].dot(Q).dot(partitioned_matrices[i]['B22'])
+#                 e = w_Q.multiply(Q).sum() 
+#                 c = w_P[i].multiply(self.P).sum()   
+#                 d = w_Q.multiply(self.P).sum() + w_P[i].multiply(Q).sum()
+#                 u = partitioned_matrices[i]['A21B12'].multiply(Q).sum()
+#                 v = partitioned_matrices[i]['A21B12'].multiply(self.P).sum()
+#                 # update
+#                 numerator += d - 2 * (c - u + v)
+#                 denom += c - d + e
+#                 f1 += 2 * (u - v) + e - c
+            
+#             if (denom == 0) and (numerator == 0):
+#                 alpha = 0
+#             else:
+#                 # !! Escape divide by zero error -- see note at top
+#                 if (denom == 0):
+#                     alpha = float('inf')
+#                 else:
+#                     alpha = -numerator / (2 * denom)
+            
+#             if alpha != float('inf'):
+#                 falpha = denom * pow(alpha, 2) + numerator * alpha
+            
+#             if alpha == 0:
+#                 print("a: breaking at iter=%d" % iteration, file=sys.stderr)
+#                 break
+#             elif (alpha < 1) and (alpha > 0) and (falpha > 0) and (falpha > f1):
+#                 self.P = (1-alpha) * self.P + alpha * Q
+#             elif f1 > 0:
+#                 self.P = Q
+#                 alpha = 1
+#             else:
+#                 print("b: breaking at iter=%d" % iteration, file=sys.stderr)
+#                 break
+            
+#             #print(alpha, falpha, f1)
+#             f_alpha = 2*(1-alpha)*v+2*alpha*u+pow(1-alpha,2)*c+alpha*(1-alpha)*d+pow(alpha,2)*e
+#             print(f_alpha)
+        
+#         P = self.P.todense()
+#         final_cost = P.max() - P
+#         _, corr, _ = lapjv(final_cost)
+        
+        
 
 
 get_graph_triple <- function(g, weight, first_graph){
