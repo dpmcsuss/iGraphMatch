@@ -129,8 +129,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     for(ch in 1:nc){
       ns_Pdir_ns <- ns_Pdir_ns +
         Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+      
     }
-
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])

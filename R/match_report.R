@@ -26,7 +26,7 @@
 #'
 #' @export
 #'
-match_report <- function(object, A = A, B = B, label = TRUE, ...){
+match_report <- function(object, A, B, label = TRUE, ...){
   A <- A[]
   B <- B[]
   

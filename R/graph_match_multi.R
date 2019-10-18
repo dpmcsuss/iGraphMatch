@@ -42,6 +42,8 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   totv2 <- graph_pair$totv2
 
   nv <- nrow(A[[1]])
+  nc <- length(A)
+
 
 
   seed_check <- check_seeds(seeds, nv)
@@ -78,7 +80,6 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
   B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
-  nc <- length(A)
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
 
@@ -94,43 +95,81 @@ graph_match_FW_multi <- function(A, B, seeds = NULL,
     }
 
     for(ch in 1:nc){
-      Grad <- s_to_ns[[ch]] + tAnn_P_Bnn[[ch]] + similarity[[ch]] +
+      Grad <- s_to_ns[[ch]] + tAnn_P_Bnn[[ch]] + similarity +
         A[[ch]] %*% P %*% Matrix::t(B[[ch]])
-        ind[[ch]] <- do_lap(Grad, lap_method)
+      ind[[ch]] <- do_lap(Grad, lap_method)
     }
 
 
     Pdir <- Reduce("+", lapply(ind,
-      function(i) Matrix::Diagonal(nn)[i, ])) / nc
+      function(i) Matrix::Diagonal(nn)[i, ])) / nc # change to get_perm
 
-    ns_Pdir_ns <- zero_mat
+    # NEED TO IMPLEMENT
+    #        lin_cost = []
+    #         for i in range(self.num_tau+1):
+    #             lin_cost.append(w_P[i].multiply(self.P).sum()+2*self.A21B12[i].multiply(self.P).sum()+A11B11_trace[i])
+    #         if sum([lin_cost[i] < old_cost[i] for i in range(self.num_tau+1)])>0:
+    #             break
+    #         old_cost = lin_cost
+    #         cost.append(lin_cost)
+
+    alpha_list <- rep(0, nc)
     for(ch in 1:nc){
-      ns_Pdir_ns <- ns_Pdir_ns +
-        Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
-    }
+      ns_Pdir_ns <- Matrix::t(A[[ch]]) %*% Pdir %*% B[[ch]]
+      c <- innerproduct(tAnn_P_Bnn[[ch]], P)
+      d <- innerproduct(ns_Pdir_ns, P) +
+        innerproduct(tAnn_P_Bnn[[ch]], Pdir)
+      e <- innerproduct(ns_Pdir_ns, Pdir)
+      u <- innerproduct(P, s_to_ns[[ch]] + similarity)
+      v <- innerproduct((s_to_ns[[ch]] + similarity), Pdir)
 
-    c <- innerproduct(tAnn_P_Bnn, P)
-    d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
-    e <- sum(ns_Pdir_ns[ind2])
-    u <- innerproduct(P, s_to_ns + similarity)
-    v <- sum((s_to_ns + similarity)[ind2])
-    if (c - d + e == 0 && d - 2 * e + u - v == 0) {
-      alpha <- 0
-    } else {
-      alpha <- -(d - 2 * e + u - v)/(2 * (c - d + e))
-    }
-    f0 <- 0
-    f1 <- c - e + u - v
-    falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
-      alpha
+      if (c - d + e == 0 && d - 2 * e + u - v == 0) {
+        alpha <- 0
+      } else {
+        alpha <- -(d - 2 * e + u - v)/(2 * (c - d + e))
+      }
+      f0 <- 0
+      f1 <- c - e + u - v
+      falpha <- (c - d + e) * alpha^2 + (d - 2 * e + u - v) *
+        alpha
 
-    if (alpha < 1 && alpha > 0 &&
-        falpha > f0 && falpha > f1) {
-      P <- alpha * P + (1 - alpha) * Pdir
-    } else if (f0 > f1) {
+      if (alpha < 1 && alpha > 0 && falpha > f0 && falpha > f1) {
+        alpha <- alpha
+      } else if (f0 > f1) {
+        alpha <- 0
+      }
+      alpha_list[[ch]] <- alpha
+      # numerator <- d - 2 * e + u - v # Lin has: d - 2 * (c - u + v) ???
+      # denom <- c - d + e
+      # f1 <- 2 * (u - v) + e - c
+      # # compute alpha
+      # if(denom == 0 && numerator == 0){
+      #   alpha <- 0
+      # } else if (denom == 0){
+      #   alpha <- Inf
+      # } else {
+      #   alpha <- -numerator / (2* denom)
+      # }
+
+      # if(is.finite(alpha)){
+      #   falpha <- denom * alpha ^ 2 + numerator * alpha
+      # }
+      # alpha_list[[ch]] <- alpha
+      # if(alpha < 0 || alpha > 1 || falpha < 0|| falpha < f1){
+      #   if(f1 > 0){
+      #     alpha_list[[ch]] <- 1
+      #   } else {
+      #     alpha_list[[ch]] <- 1
+      #   }
+      # }
+    }
+    # alpha <- min(alpha_list)
+    # P <- (1 - alpha) * P + alpha * Pdir
+    alpha <- max(alpha_list)
+    if(alpha == 0){
       P <- Pdir
     } else {
-      toggle <- F
+      P <- alpha * P + (1 - alpha) * Pdir
     }
   }
 
