@@ -7,9 +7,12 @@
 #' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
 #' @param measure A character. Measure for computing goodness of matching.
 #' @param num An integer. Number of pairs of best matched vertices needed.
-#' @param x A vector of logical. \code{TRUE} indicates the corresponding vertex is of interest
-#' in finding best matched vertices. Length of vector should be the number of vertice of graphs.
-#' @param match_corr A vector. Graph matching correspondence between \eqn{G_1} and \eqn{G_2}.
+#' @param x A vector of logical. \code{TRUE} indicates the corresponding vertex in \eqn{G_1} is of 
+#'   interest in finding best matched vertices. Length of vector should be the number of vertices 
+#'   of graphs.
+#' @param match_corr A matrix or data frame. Graph matching correspondence between \eqn{G_1} and 
+#'   \eqn{G_2} with the first column represents indices in \eqn{G_1} and the second column represents
+#'   indices in \eqn{G_2}.
 #'
 #' @return \code{best_matches} returns a data frame with the indices of best matched vertices
 #' in \eqn{G_1} named \code{A_best} and the indices of best matched vertices in \eqn{G_2} named
@@ -25,19 +28,19 @@
 #'
 #' # Application: select best matched seeds from non seeds as new seeds, and do the
 #' # graph matching iteratively to get higher matching accuracy
-#' best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr$corr_B)
+#' best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr)
 #'
 #'
 #' @export
 #'
 best_matches <- function(A, B, measure, num, x, match_corr){
-  A <- A[]
-  B <- B[]
-  Bm <- B[match_corr, match_corr]
+  A <- A[match_corr[,1], match_corr[,1]]
+  B <- B[match_corr[,2], match_corr[,2]]
   nv <- nrow(A)
+  x <- x[match_corr[,1]]
 
   # calculate measure stat
-  stat <- do.call(measure,list(A,Bm))
+  stat <- do.call(measure,list(A,B))
   stat_in <- stat[x]
 
   # find top ranking nodes pairs
@@ -48,8 +51,8 @@ best_matches <- function(A, B, measure, num, x, match_corr){
   topindex <- topindex[topindex!=0]
   topindex <- topindex[1:num]
 
-  match_nseeds <- match_corr[topindex]
+  top_matches <- match_corr[topindex, ]
 
-  best_matches <- data.frame(A_best=topindex, B_best=match_nseeds)
+  best_matches <- data.frame(A_best=top_matches$corr_A, B_best=top_matches$corr_B)
   best_matches
 }

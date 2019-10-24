@@ -15,10 +15,13 @@ best_matches(A, B, measure, num, x, match_corr)
 
 \item{num}{An integer. Number of pairs of best matched vertices needed.}
 
-\item{x}{A vector of logical. \code{TRUE} indicates the corresponding vertex is of interest
-in finding best matched vertices. Length of vector should be the number of vertice of graphs.}
+\item{x}{A vector of logical. \code{TRUE} indicates the corresponding vertex in \eqn{G_1} is of 
+interest in finding best matched vertices. Length of vector should be the number of vertices 
+of graphs.}
 
-\item{match_corr}{A vector. Graph matching correspondence between \eqn{G_1} and \eqn{G_2}.}
+\item{match_corr}{A matrix or data frame. Graph matching correspondence between \eqn{G_1} and 
+\eqn{G_2} with the first column represents indices in \eqn{G_1} and the second column represents
+indices in \eqn{G_2}.}
 }
 \value{
 \code{best_matches} returns a data frame with the indices of best matched vertices
@@ -39,7 +42,7 @@ match <- graph_match_FW(g1, g2, seeds)
 
 # Application: select best matched seeds from non seeds as new seeds, and do the
 # graph matching iteratively to get higher matching accuracy
-best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr$corr_B)
+best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr)
 
 
 }
