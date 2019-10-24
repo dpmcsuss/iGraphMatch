@@ -7,8 +7,9 @@
 #'   algorithm.
 #' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
 #' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
-#' @param label A logical. TRUE if the true correspondence between two graphs is known, such
-#'   as the simulated data.
+#' @param label A vector. NULL if the true correspondence between two graphs is unknown. 
+#'   A vector indicating the true correspondence in the second graph if the true correspondence 
+#'   is known, 
 #'
 #' @rdname match_report
 #'
@@ -26,7 +27,7 @@
 #'
 #' @export
 #'
-match_report <- function(object, A = A, B = B, label = TRUE, ...){
+match_report <- function(object, A = A, B = B, label = NULL, ...){
   A <- A[]
   B <- B[]
   
@@ -38,8 +39,8 @@ match_report <- function(object, A = A, B = B, label = TRUE, ...){
   corr <- z$corr
   z$n.match <- nrow(corr) - z$ns
   cat("\n# Matches:", z$n.match)
-  if(label == TRUE){
-    z$n.true.match <- sum(corr$corr_A==corr$corr_B) - z$ns
+  if(!is.null(label)){
+    z$n.true.match <- sum(label[corr$corr_A] == corr$corr_B) - z$ns
     cat("\n# True Matches: ", z$n.true.match)
   }
   
