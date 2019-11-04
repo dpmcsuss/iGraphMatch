@@ -7,8 +7,9 @@
 #'   algorithm.
 #' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
 #' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
-#' @param label A logical. TRUE if the true correspondence between two graphs is known, such
-#'   as the simulated data.
+#' @param label A vector. NULL if the true correspondence between two graphs is unknown. 
+#'   A vector indicating the true correspondence in the second graph if the true correspondence 
+#'   is known, 
 #'
 #' @rdname match_report
 #'
@@ -26,9 +27,12 @@
 #'
 #' @export
 #'
-match_report <- function(object, A, B, label = TRUE, ...){
+match_report <- function(object, A = A, B = B, label = NULL, ...){
   A <- A[]
   B <- B[]
+  if(max(A)>1 || max(B)>1){
+    warning("Common egdes have positive weights but not necessarily have same weights.")
+  }
   
   z <- object
   cat("Call: \n")
@@ -38,15 +42,15 @@ match_report <- function(object, A, B, label = TRUE, ...){
   corr <- z$corr
   z$n.match <- nrow(corr) - z$ns
   cat("\n# Matches:", z$n.match)
-  if(label == TRUE){
-    z$n.true.match <- sum(corr$corr_A==corr$corr_B) - z$ns
+  if(!is.null(label)){
+    z$n.true.match <- sum(label[corr$corr_A] == corr$corr_B) - z$ns
     cat("\n# True Matches: ", z$n.true.match)
   }
   
   A_m <- A[corr$corr_A, corr$corr_A]
   B_m <- B[corr$corr_B, corr$corr_B]
   # Matched edges
-  z$CE <- sum(A_m==B_m & A_m==1)
+  z$CE <- sum(A_m==B_m & A_m>0)
   z$CNE <- sum(A_m==B_m & A_m==0)
   z$EC <- z$CE/sum(A[]==1)
   cat("\n# Common Edges: ", z$CE,

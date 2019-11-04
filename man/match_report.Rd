@@ -4,7 +4,7 @@
 \alias{match_report}
 \title{Matching performance summary}
 \usage{
-match_report(object, A = A, B = B, label = TRUE, ...)
+match_report(object, A = A, B = B, label = NULL, ...)
 }
 \arguments{
 \item{object}{A list. calls the matching result of applying a specific graph matching
@@ -14,8 +14,9 @@ algorithm.}
 
 \item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
 
-\item{label}{A logical. TRUE if the true correspondence between two graphs is known, such
-as the simulated data.}
+\item{label}{A vector. NULL if the true correspondence between two graphs is unknown. 
+A vector indicating the true correspondence in the second graph if the true correspondence 
+is known,}
 }
 \value{
 \code{match_report} returns a list of matching performance evaluation metrics
