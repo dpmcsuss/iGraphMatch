@@ -30,6 +30,9 @@
 match_report <- function(object, A = A, B = B, label = NULL, ...){
   A <- A[]
   B <- B[]
+  if(max(A)>1 || max(B)>1){
+    warning("Common egdes have positive weights but not necessarily have same weights.")
+  }
   
   z <- object
   cat("Call: \n")
@@ -47,7 +50,7 @@ match_report <- function(object, A = A, B = B, label = NULL, ...){
   A_m <- A[corr$corr_A, corr$corr_A]
   B_m <- B[corr$corr_B, corr$corr_B]
   # Matched edges
-  z$CE <- sum(A_m==B_m & A_m==1)
+  z$CE <- sum(A_m==B_m & A_m>0)
   z$CNE <- sum(A_m==B_m & A_m==0)
   z$EC <- z$CE/sum(A[]==1)
   cat("\n# Common Edges: ", z$CE,
