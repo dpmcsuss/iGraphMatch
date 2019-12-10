@@ -3,10 +3,13 @@
 #' @description Convert the input seeds data into data frame type with the first column being the
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}
 #'
-#' @param seeds A vector of integers or logicals, a matrix or a data frame. If there is no error in seeds input can be
-#' a vector of seed indices in \eqn{G_1}. Or if there exists error in seeds, input in the form of a
-#' matrix or a data frame, with the first column being the indices of \eqn{G_1} and the second
+#' @param seeds A vector of integers or logicals, a matrix or a data frame. Input in the form of a 
+#' vector of integers denotes the indices of seeds which are identical in both graphs. Input in the 
+#' form of a vector of logicals indicate the location of seeds with TRUE and the indices of seeds 
+#' are identical in both graphs. Input in the form of a matrix or a data frame, with the first 
+#' column being the indices of \eqn{G_1} and the second
 #' column being the corresponding indices of \eqn{G_2}.
+#' 
 #' @param nv An integer. Number of total vertices.
 #' @param logical An logical. TRUE indicates returns seeds in a vector of logicals where TRUE
 #' indicates the corresponding vertex is a seed. FALSE indicates returns a data frame.
