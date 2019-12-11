@@ -21,8 +21,35 @@ test_that("doubly stochastic matrix start w/o soft seeds", {
 
 # initialize start matrix with soft seeds
 
+ss<-t(matrix(c(3,4)))
+set.seed(123)
+test_that("bari start w. soft seeds", {
+  expect_equivalent(init_start(start = "bari", nns = 3,ns=2,soft_seeds=ss),
+               matrix(c(0,0.5,0.5,1,0,0,0,0.5,0.5)))
+})
 
+set.seed(123)
+test_that("random doubly stochastic start w. soft seeds", {
+  expect_equivalent(round(init_start(start = "rds", nns = 3,ns=2,soft_seeds=ss),2),
+               matrix(c(0,0.47,0.53,1,0,0,0,0.53,0.47)))
+})
 
+set.seed(123)
+test_that("doubly stochastic matrix start w. soft seeds", {
+  expect_equivalent(round(as.matrix(init_start(start = "rds_perm_bari", nns = 3,ns=2,soft_seeds=ss)),2),
+                    matrix(c(0,0.36,0.64,1,0,0,0,0.64,0.36)))
+})
+
+cgnp_pair <- sample_correlated_gnp_pair(n = 5, corr =  0.5, p =  0.5)
+g1 <- cgnp_pair$graph1
+g2 <- cgnp_pair$graph2
+hs <- 1:5 <= 2
+ss<-t(matrix(c(3,4)))
+set.seed(123)
+test_that("doubly stochastic matrix start w. soft seeds", {
+  expect_equivalent(as.matrix(init_start(start = "convex", nns = 3, ns=2, soft_seeds = ss,A = g1, B = g2, seeds = hs)),
+                    matrix(c(0,1,0,1,0,0,0,0,1)))
+})
 
 
 
