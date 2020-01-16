@@ -129,8 +129,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     for(ch in 1:nc){
       ns_Pdir_ns <- ns_Pdir_ns +
         Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+      
     }
-
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
@@ -177,7 +177,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
     ns = ns,
     P = P,
-    D = D)
+    D = D,
+    num_iter = iter)
 }
 
 
@@ -220,23 +221,36 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   nn <- nv - ns
 
 
+  # make a random permutation
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   Asn <- A[seeds$A,nonseeds$A]
   Ann <- A[nonseeds$A,nonseeds$A]
   Ans <- A[nonseeds$A,seeds$A]
 
-  Bsn <- B[seeds$B,nonseeds$B]
-  Bnn <- B[nonseeds$B,nonseeds$B]
-  Bns <- B[nonseeds$B,seeds$B]
+  Bsn <- B[seeds$B,nonseeds$B][,rp]
+  Bnn <- B[nonseeds$B,nonseeds$B][rp,rp]
+  Bns <- B[nonseeds$B,seeds$B][rp,]
+  
 
-  similarity <- similarity[nonseeds$A, nonseeds$B]
+  zero_mat <- Matrix::Matrix(0, nn, nn)
+
+  if (is.null(similarity)){
+    similarity <- zero_mat
+  } else {
+    similarity <- similarity %*% Matrix::t(rpmat)
+  }
+
   tol0 <- 1
   if(identical(start, "convex")){
     stop("Cannot start convex with convex. Try \"bari\" or another option.")
   }
-  P <- init_start(start = start, nn, ns)
+  P <- init_start(start = start, nn, ns)[, rp]
   iter <- 0
   toggle <- TRUE
+
+
 
   AtA <- ml_sum(t(Asn) %*% Asn + t(Ann) %*% Ann)
   BBt <- ml_sum(Bns %*% t(Bns) + Bnn %*% t(Bnn))    
@@ -252,10 +266,6 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   while(toggle && iter < max_iter){
     f_old <- f
     iter<-iter+1
-
-    if(is.null(similarity)){
-      similarity <- Matrix::Matrix(0, nn, nn)
-    }
     
     Grad <- ml_sum(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity)
    
@@ -280,7 +290,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 
     aq <- sum(Cnn ^ 2)+sum(Cns ^ 2)+sum(Csn ^ 2)
     bq <- sum(Cnn * Dnn) + sum(Cns * Dns) + sum(Csn * Dsn)
-    aopt <- -bq/aq
+    aopt <- ifelse(aq == 0 && bq == 0, 0, -bq/aq)
 
     P_new <- aopt * P + (1 - aopt) * Pdir
     f <- sum((Ann %*% P_new - P_new %*% Bnn) ^ 2)
@@ -297,16 +307,24 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   D_ns <- P
 
   corr_ns <- do_lap(P, lap_method)
+  # undo rand perm here
+  corr_ns <- rp[corr_ns]
+
   corr <- 1:nv
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nv, corr_B = corr), ns = ns, 
-            P = P, D = D)
+  z <- list(
+    call = cl,
+    corr = data.frame(corr_A = 1:nv, corr_B = corr),
+    ns = ns, 
+    P = P,
+    D = D,
+    num_iter = iter)
   z
 }
 
