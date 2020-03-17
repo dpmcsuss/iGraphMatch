@@ -6,6 +6,7 @@ check_graph <- function(A, B, same_order = TRUE, square = TRUE, as_list = TRUE, 
   # Right now defaults are only option
 
   if(as_igraph){
+    stop("Not yet implemented")
     return(check_graph_igraph(A, B, same_order))
   }
 

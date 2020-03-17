@@ -91,11 +91,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
   P <- P[, rp]
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
-  if (is.null(similarity)){
-    similarity <- zero_mat
-  } else {
-    similarity <- similarity %*% Matrix::t(rpmat)
-  }
+
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- similarity %*% Matrix::t(rpmat)
 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
@@ -235,12 +233,8 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
-
-  if (is.null(similarity)){
-    similarity <- zero_mat
-  } else {
-    similarity <- similarity %*% Matrix::t(rpmat)
-  }
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- similarity %*% Matrix::t(rpmat)
 
   tol0 <- 1
   if(identical(start, "convex")){
@@ -361,6 +355,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   L_A <- D_A - A
   L_B <- D_B - B
   n <- nrow(A)
+
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   
   # alpha=0, convex relaxation
   convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, tol = 1e-10)
@@ -383,12 +379,9 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     L <- Matrix::kronecker(Matrix::t(L_B), Matrix::t(L_A))
     F_cc <- - sum(t(delta) %*% P) - 2 * t(Matrix::c.sparseVector(P)) %*% 
       L %*% Matrix::c.sparseVector(P)
-    if(!is.null(similarity)){
-      F_sim <- sum(similarity * P)
-      F <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
-    } else{
-      F <- (1 - lambda) * F_cv + lambda * F_cc
-    }
+  
+    F_sim <- sum(similarity * P)
+    F <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     
     lambda <- lambda + dlambda
     if(!is.null(similarity)){
@@ -405,12 +398,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
         lambda <- 1
         break
       }
-      if(!is.null(similarity)){
-        F_sim <- sum(similarity * P)
-        F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
-      } else{
-        F_new <- (1 - lambda) * F_cv + lambda * F_cc
-      }    
+      F_sim <- sum(similarity * P)
+      F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     }
     while (sum(abs(F - F_new)) > epsilon && dlambda != dlambda_min) {
       if(lambda > 1){
@@ -420,12 +409,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
         dlambda <- dlambda / 2
         lambda <- lambda - dlambda
       }
-      if(!is.null(similarity)){
-        F_sim <- sum(similarity * P)
-        F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
-      } else{
-        F_new <- (1 - lambda) * F_cv + lambda * F_cc
-      }
+      F_sim <- sum(similarity * P)
+      F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     }
     
     # Frank-Wolfe 
@@ -435,9 +420,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     Grad_cv <- 2 * (AtA %*% P + P %*% BBt - tA_P_B - A %*% P %*% t(B))
     Grad_cc <- - t(delta) - 2 * Matrix::t(L_A) %*% P %*% L_B
     Grad <- (1 - lambda) * Grad_cv + lambda * Grad_cc
-    if(!is.null(similarity)){
-      Grad <- alpha * Grad + (1 - alpha) * similarity
-    }
+    Grad <- alpha * Grad + (1 - alpha) * similarity
+
     ind <- do_lap(Grad, lap_method)
     ind2 <- cbind(1:n, ind)
     Pdir <- Matrix::Diagonal(n)[ind, ]
@@ -996,6 +980,9 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
     iter <- iter + 1
   }
 
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+
+
   seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
   seeds <- check_seeds(seeds, nv = max(totv1, totv2))
   nonseeds <- seeds$nonseeds
@@ -1066,6 +1053,9 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
     A <- pad(A[], diff)
   }
 
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- similarity %*% Matrix::t(rpmat)
+
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices
     A <- as.matrix((A + Matrix::t(A))/2) + as.matrix((A - Matrix::t(A))/2)*1i
@@ -1075,11 +1065,8 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
   U_A <- eigen(A)$vectors
   U_B <- eigen(B)$vectors
   AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
-  if(!is.null(similarity)){
-    Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
-  } else{
-    Grad <- AB
-  }
+  Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
+  
   seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
   seeds <- check_seeds(seeds, nv = max(totv1, totv2))
   nonseeds <- seeds$nonseeds
