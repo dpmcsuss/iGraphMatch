@@ -1,9 +1,13 @@
 
 
-check_graph <- function(A, B, same_order = TRUE, square = TRUE, as_list = TRUE, pad = TRUE){
+check_graph <- function(A, B, same_order = TRUE, square = TRUE, as_list = TRUE, as_igraph = FALSE){
 
   # **********NEED to implement PARAMETERS**********
   # Right now defaults are only option
+
+  if(as_igraph){
+    return(check_graph_igraph(A, B, same_order))
+  }
 
   # this will make the graphs be matrices if they are igraph objects
   if(is.list(A) && !igraph::is.igraph(A)){

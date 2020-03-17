@@ -27,9 +27,11 @@
 #'
 #' @export
 #'
-match_report <- function(object, A = A, B = B, label = NULL, ...){
-  A <- A[]
-  B <- B[]
+match_report <- function(object, A, B, label = NULL, ...){
+  graph_pair <- check_graph(A, B)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+
   if(max(A)>1 || max(B)>1){
     warning("Common egdes have positive weights but not necessarily have same weights.")
   }
@@ -62,4 +64,13 @@ match_report <- function(object, A = A, B = B, label = NULL, ...){
   z$Obj.Value <- Matrix::norm(A_m-B_m, type = "F")
   cat("\nObjective Value: ", z$Obj.Value)
   cat("\n")
+}
+
+matched_adjs <- function(match, A, B){
+  graph_pair <- check_graph(A, B)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+
+  list(A_m = A[corr$corr_A, corr$corr_A],
+    B_m = B[corr$corr_B, corr$corr_B])
 }
