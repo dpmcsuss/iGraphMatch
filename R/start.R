@@ -32,7 +32,7 @@
 #'
 bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
-    start <- matrix(1/nns,nns,nns)
+    start <- bari_splr(nns)
   } else{
     soft_seeds <- check_seeds(soft_seeds, nv = nns + ns)$seeds
     seed_g1 <- soft_seeds$A
@@ -48,6 +48,14 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   }
 
   start
+}
+
+bari_splr <- function(nns){
+  new("splrMatrix",
+        x = Matrix(0, nns, nns), 
+        a = Matrix(1, nns), b = Matrix(1 / nns, nns),
+        Dim = c(as.integer(nns), as.integer(nns)),
+        Dimnames = list(NULL, NULL))
 }
 
 #' @rdname start
