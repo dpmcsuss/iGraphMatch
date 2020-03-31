@@ -196,6 +196,17 @@ setMethod("%*%", signature(x = "splrMatrix", y = "splrMatrix"), function(x, y) {
     Dim = dim(x))
 })
 
+
+setMethod("%*%", signature(x = "splrMatrix", y = "matrix_list"), 
+  function(x, y){
+    matrix_list(lapply(seq_along(y), function(i) x %*% y[[i]]))
+  })
+
+setMethod("%*%", signature(x = "matrix_list", y = "splrMatrix"), 
+  function(x, y){
+    matrix_list(lapply(seq_along(x), function(i) x[[i]] %*% y))
+  })
+
 setMethod("%*%", signature(x = "Matrix", y = "splrMatrix"), .leftmult)
 
 setMethod("%*%", signature(x = "matrix", y = "splrMatrix"), .leftmult)
@@ -213,7 +224,7 @@ setMethod("%*%",signature(x="ANY",y="splrMatrix"),.leftmult)
   sx=x@x
   
   if(is.null(a)) {
-    sx%*%y
+    return(sx %*% y)
   }
   
   if (is(y,"sparseMatrix")) {
@@ -473,6 +484,13 @@ setMethod("innerproduct", signature(x = "Matrix", y = "splrMatrix"),
   function(x, y){ .innerproduct_Matrix(y, x)})
 
 
+
+setMethod("innerproduct", signature(x = "matrix_list", y = "matrix_list"),
+  function(x, y){
+  sapply(seq_along(x), function(i) innerproduct(x[[i]], y[[i]]))
+})
+
+
 #complete
 .rsum=function(x,...){
   #x is splrMatrix matrix
@@ -690,6 +708,20 @@ setMethod("[<-",signature(x="splrMatrix",i = 'missing',j = 'numeric',value= 'ANY
             b[j,] <- 0
             new("splrMatrix",x=y,a=a,b=b,Dim = dim(y))
  })
+
+
+# Implementing this would be nice
+# setMethod("[<-",signature(x="Matrix",i = 'ANY',j = 'ANY',value= 'splrMatrix'),
+#           function(x,j, ..., value) {
+#             i <- c(1:dim(x@x)[1])
+#             y <- x@x
+#             y[,j] <- value
+#             a <- x@a
+#             a[i,] <- 0
+#             b <- x@b
+#             b[j,] <- 0
+#             new("splrMatrix",x=y,a=a,b=b,Dim = dim(y))
+#  })
 
 
 setMethod("dim", signature(x = "splrMatrix"),

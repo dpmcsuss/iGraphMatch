@@ -51,11 +51,9 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
 }
 
 bari_splr <- function(nns){
-  new("splrMatrix",
-        x = Matrix(0, nns, nns), 
-        a = Matrix(1, nns), b = Matrix(1 / nns, nns),
-        Dim = c(as.integer(nns), as.integer(nns)),
-        Dimnames = list(NULL, NULL))
+  nns <- as.integer(nns)
+  splr(x = Matrix(0, nns, nns), 
+    a = Matrix(1, nns), b = Matrix(1 / nns, nns))
 }
 
 #' @rdname start

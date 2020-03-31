@@ -167,7 +167,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
 
   cl <- match.call()
   list(
@@ -252,7 +252,8 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   ABns_sn <- ml_sum(Ans %*% t(Bns) + t(Asn) %*% Bsn)
 
 
-  f <- sum((Ann %*% P - P%*% Bnn)^2)
+  f <- innerproduct(Ann %*% P - P%*% Bnn,
+    Ann %*% P - P%*% Bnn)
     
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
@@ -281,16 +282,20 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     }else{
       Dns <- Dsn <-Cns <- Csn <- 0
     }
-
-    aq <- sum(Cnn ^ 2)+sum(Cns ^ 2)+sum(Csn ^ 2)
-    bq <- sum(Cnn * Dnn) + sum(Cns * Dns) + sum(Csn * Dsn)
+    aq <- innerproduct(Cnn, Cnn) +
+      innerproduct(Cns, Cns) +
+      innerproduct(Csn, Csn)
+    bq <- innerproduct(Cnn, Dnn) +
+      innerproduct(Cns, Dns) +
+      innerproduct(Csn, Dsn)
     aopt <- ifelse(aq == 0 && bq == 0, 0, -bq/aq)
 
     P_new <- aopt * P + (1 - aopt) * Pdir
-    f <- sum((Ann %*% P_new - P_new %*% Bnn) ^ 2)
+    f <- innerproduct(Ann %*% P_new - P_new %*% Bnn,
+      Ann %*% P_new - P_new %*% Bnn)
 
     f_diff <- abs(f - f_old)
-    P_diff <- sum(abs(P - P_new))
+    P_diff <- norm(P - P_new, "f")
     P <- P_new
 
     toggle <- f_diff > tol && f > tol && P_diff > tol
@@ -309,7 +314,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
 
   cl <- match.call()
   z <- list(
@@ -429,8 +434,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     delta_P <- P - Pdir
     C <- A %*% delta_P - delta_P %*% B
     D <- A %*% Pdir - Pdir %*% B
-    aq <- sum(C^2)
-    bq <- sum(C*D)
+    aq <- innerproduct(C, C)
+    bq <- innerproduct(C, D)
     vec_delta_P <- Matrix::c.sparseVector(delta_P)
     vec_Pdir <- Matrix::c.sparseVector(Pdir)
     c <- sum(t(delta) * delta_P)

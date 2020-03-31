@@ -49,6 +49,7 @@ setMethod("%*%", signature(x = "ANY", y = "matrix_list"),
     matrix_list(lapply(seq_along(y), function(i) x %*% y[[i]]))
   })
 
+
 setMethod("sum", signature(x = "matrix_list", na.rm = "logical"),
   function(x, na.rm = FALSE){
     sum(sapply(x, sum, na.rm = na.rm), na.rm = na.rm)
@@ -134,8 +135,6 @@ setMethod("-", signature(e1 = "matrix_list", e2 = "missing"),
   function(e1,e2){
     matrix_list(lapply(e1, function(x) - x))
   })
-
-
 
 
 ml_sum <- function(x){
