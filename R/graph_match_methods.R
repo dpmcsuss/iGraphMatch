@@ -1050,7 +1050,11 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
     diff <- totv2 - totv1
     A <- pad(A[], diff)
   }
-
+  
+  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
+  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
+  nonseeds <- seeds$nonseeds
+  seeds <- seeds$seeds
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   #similarity <- similarity %*% Matrix::t(rpmat)
 
@@ -1064,10 +1068,6 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
   U_B <- eigen(B)$vectors
   AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
 
-  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
-  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
-  nonseeds <- seeds$nonseeds
-  seeds <- seeds$seeds
   Grad <- alpha * AB[nonseeds$A, nonseeds$B] + (1-alpha) * Matrix::t(similarity)
   Grad <- Grad - min(Grad)
   lap_method <- set_lap_method(NULL, totv1, totv2)
