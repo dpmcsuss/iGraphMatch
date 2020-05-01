@@ -290,7 +290,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     f <- sum((Ann %*% P_new - P_new %*% Bnn) ^ 2)
 
     f_diff <- abs(f - f_old)
-    P_diff <- sum(abs(P - P_new))
+    P_diff <- sum(abs(as.matrix(P - P_new)))
     P <- P_new
 
     toggle <- f_diff > tol && f > tol && P_diff > tol
