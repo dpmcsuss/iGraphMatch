@@ -1063,15 +1063,15 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
   U_A <- eigen(A)$vectors
   U_B <- eigen(B)$vectors
   AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
-  Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
-  
+
   seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
   seeds <- check_seeds(seeds, nv = max(totv1, totv2))
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
+  Grad <- alpha * AB[nonseeds$A, nonseeds$B] + (1-alpha) * Matrix::t(similarity)
   Grad <- Grad - min(Grad)
   lap_method <- set_lap_method(NULL, totv1, totv2)
-  ind <- do_lap(Grad[!seeds_log, !seeds_log], lap_method)
+  ind <- do_lap(Grad, lap_method)
 
   corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
   corr <- corr[order(corr$corr_A),]
