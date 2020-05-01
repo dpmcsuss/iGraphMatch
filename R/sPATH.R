@@ -1,6 +1,5 @@
-
 graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL, 
-                              alpha = 0.5, epsilon = 1, lap_method = NULL){
+                                    alpha = 0.5, epsilon = 1, lap_method = NULL){
   A <- A[]
   B <- B[]
   Sym <- Matrix::isSymmetric(A) & Matrix::isSymmetric(B)
@@ -8,6 +7,7 @@ graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL,
   totv1 <- dim(A)[1]
   totv2 <- dim(B)[1]
   nv <- max(totv1, totv2)
+  norm <- sqrt(Matrix::norm(A, "F")^2 + Matrix::norm(B, "F")^2)
   
   seed_check <- check_seeds(seeds, nv)
   seeds <- seed_check$seeds
@@ -65,6 +65,7 @@ graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL,
       LALB <- L_Ans %*% L_Bsn
       LAPLB <- L_Ann %*% P %*% L_Bnn
       F_cc <- sum(t(deltann) * P) + 4 * sum(P * LALB) + 2 * sum(P * LAPLB)
+      F_cc <- F_cc / norm
     } else{
       ABsn <- Matrix::t(Asn) %*% Bsn
       ABns <- Ans %*% Matrix::t(Bns)
@@ -75,6 +76,7 @@ graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL,
       LAtPLB <- Matrix::t(L_Ann) %*% P %*% L_Bnn
       F_cc <- sum(t(deltann) * P) + 2 * (sum(P * LALBns) + 
                                            sum(P * LALBsn) + sum(P * LAtPLB))
+      F_cc <- F_cc / norm
     }
     
     # calculate F_old(P_old)
@@ -115,9 +117,11 @@ graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL,
     if(Sym){
       Grad_cv <- 4 * (AB + APB)
       Grad_cc <- Matrix::t(deltann) + 4 * (LALB + LAPLB)
+      #Grad_cc <- Grad_cc / norm
     } else{
       Grad_cv <- 2 * (ABsn + ABns + APBt + Matrix::t(Ann) %*% P %*% Bnn)
       Grad_cc <- Matrix::t(deltann) + 2 * (LALBns + LALBsn + LAtPLB + L_Ann %*% P %*% Matrix::t(L_Bnn))
+      #Grad_cc <- Grad_cc / norm
     }
     Grad <- (1 - lambda) * Grad_cv / max(abs(Grad_cv)) + lambda * Grad_cc / max(abs(Grad_cc))
     if(!is.null(similarity)){
@@ -129,47 +133,46 @@ graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL,
     Pdir <- Matrix::Diagonal(nns)[ind, ]
     
     # step size
-    if(sum(P != Pdir) != 0){
-      delta_P <- P - Pdir
-      c1 <- sum(Bsn * (Asn %*% delta_P)) + sum(delta_P * (Ans %*% Matrix::t(Bns))) +
-        sum(Pdir * (Ann %*% delta_P %*% Matrix::t(Bnn))) + sum(delta_P * (Ann %*% Pdir %*% Matrix::t(Bnn)))
-      d1 <- sum(delta_P * (Ann %*% delta_P %*% Matrix::t(Bnn)))  
-      if(Sym){
-        c2 <- -sum(Matrix::t(deltann) * delta_P) - 2 * (2 * sum(delta_P * (L_Ans %*% Matrix::t(L_Bns))) + 
-                                                          sum(L_Ann * (delta_P %*% L_Bnn %*% Matrix::t(Pdir))) + 
-                                                          sum(L_Ann * (Pdir %*% L_Bnn %*% Matrix::t(delta_P))))
-      } else{
-        c2 <- -sum(Matrix::t(deltann) * delta_P) - 
-          2 * (sum(delta_P * (L_Ans %*% Matrix::t(L_Bns))) + sum(delta_P * (Matrix::t(L_Asn) %*% L_Bsn)) +
-                 sum(L_Ann * (delta_P %*% L_Bnn %*% Matrix::t(Pdir))) + sum(L_Ann * (Pdir %*% L_Bnn %*% Matrix::t(delta_P))))
+    if(iter <= 10){
+      beta <- .3 + .02 * (iter-1)
+    } else{
+      if(sum(P != Pdir) != 0){
+        delta_P <- P - Pdir
+        c1 <- sum(Bsn * (Asn %*% delta_P)) + sum(delta_P * (Ans %*% Matrix::t(Bns))) +
+          sum(Pdir * (Ann %*% delta_P %*% Matrix::t(Bnn))) + sum(delta_P * (Ann %*% Pdir %*% Matrix::t(Bnn)))
+        d1 <- sum(delta_P * (Ann %*% delta_P %*% Matrix::t(Bnn)))  
+        if(Sym){
+          c2 <- -sum(Matrix::t(deltann / norm) * delta_P) - 2 * (2 * sum(delta_P * (L_Ans %*% Matrix::t(L_Bns))) + 
+                                                                   sum(L_Ann * (delta_P %*% L_Bnn %*% Matrix::t(Pdir))) + 
+                                                                   sum(L_Ann * (Pdir %*% L_Bnn %*% Matrix::t(delta_P))))
+        } else{
+          c2 <- -sum(Matrix::t(deltann / norm) * delta_P) - 
+            2 * (sum(delta_P * (L_Ans %*% Matrix::t(L_Bns))) + sum(delta_P * (Matrix::t(L_Asn) %*% L_Bsn)) +
+                   sum(L_Ann * (delta_P %*% L_Bnn %*% Matrix::t(Pdir))) + sum(L_Ann * (Pdir %*% L_Bnn %*% Matrix::t(delta_P))))
+        }
+        d2 <- sum(L_Ann * (delta_P %*% L_Bnn %*% Matrix::t(delta_P)))
+        
+        if(is.null(similarity)){
+          a <- lambda * c2 - 2 * (1 - lambda) * c1
+          b <- 4 * lambda * d2 + 4 * (1 - lambda) * d1
+        } else{
+          a <- lambda * alpha * c2 - 2 * c1 * alpha * (1-lambda) + 
+            (1 - alpha) * sum(similarity[nonseeds$A, nonseeds$B] * delta_P)
+          b <- 4 * d1 * alpha * (1 - lambda) + 4 * d2 * lambda * alpha
+        }
+        if(a == 0 && b == 0){
+          beta <- 0
+        } else{
+          beta <- a/b
+        }
+        if(beta > 1){
+          beta <- 1
+        } else if(beta < 0){
+          beta <- 0
+        }  
       }
-      d2 <- sum(L_Ann * (delta_P %*% L_Bnn %*% Matrix::t(delta_P)))
-      scale <- max(c(c1, c2, d1, d2))
-      c1 <- c1/scale
-      d1 <- d1/scale
-      c2 <- c2/scale
-      d2 <- d2/scale
-      
-      if(is.null(similarity)){
-        a <- lambda * c2 - 2 * (1 - lambda) * c1
-        b <- 4 * lambda * d2 + 4 * (1 - lambda) * d1
-      } else{
-        a <- lambda * alpha * c2 - 2 * c1 * alpha * (1-lambda) + 
-          (1 - alpha) * sum(similarity[nonseeds$A, nonseeds$B] * delta_P)
-        b <- 4 * d1 * alpha * (1 - lambda) + 4 * d2 * lambda * alpha
-      }
-      if(a == 0 && b == 0){
-        beta <- 0
-      } else{
-        beta <- a/b
-      }
-      if(beta > 1){
-        beta <- 1
-      } else if(beta < 0){
-        beta <- 0
-      }  
-      P <- beta * P + (1 - beta) * Pdir
     } 
+    P <- beta * P + (1 - beta) * Pdir
   }
   
   corr_ns <- do_lap(P, lap_method)
@@ -182,6 +185,7 @@ graph_match_sPATH <- function(A, B, seeds = NULL, similarity = NULL,
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
   D[nonseeds$A, nonseeds$B] <- D_ns
+  corr <- data.frame(corr_A = 1:nv, corr_B = corr)
   
   cl <- match.call()
   z <- list(call = cl, corr = corr, ns = nrow(seeds), 
