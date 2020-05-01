@@ -980,15 +980,13 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
     iter <- iter + 1
   }
 
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
-
-
   seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
   seeds <- check_seeds(seeds, nv = max(totv1, totv2))
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
   R <- R[!seeds_log, !seeds_log]
   R <- as.matrix(R)
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   # find GNA
   if(method == "greedy"){
     corr <- NULL
@@ -1054,7 +1052,7 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
   }
 
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
-  similarity <- similarity %*% Matrix::t(rpmat)
+  #similarity <- similarity %*% Matrix::t(rpmat)
 
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices
