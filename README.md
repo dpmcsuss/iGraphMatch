@@ -16,9 +16,13 @@ You might want to try the `dev` branch since it might be more stable at the mome
 Usage
 ------------
 
-After installation, attach the package before using it
+After installation, we recommend loading `igraph` first.
 ``` r
+library(igraph)
 library(iGraphMatch)
 ``` 
 
-We recommend installing igraph package first before installing iGraphMatch package.
+Documentation
+------------
+
+Documentation can be found via the help in R and at https://dpmcsuss.github.io/iGraphMatch/.
