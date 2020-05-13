@@ -361,6 +361,11 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   L_B <- D_B - B
   n <- nrow(A)
 
+  seed_check <- check_seeds(seeds, n)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
+
+
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   
   # alpha=0, convex relaxation
