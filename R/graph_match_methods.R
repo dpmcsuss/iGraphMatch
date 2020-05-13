@@ -259,8 +259,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   
   while(toggle && iter < max_iter){
     f_old <- f
-    iter<-iter+1
-    
+    iter <- iter + 1
     Grad <- ml_sum(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity)
    
 
