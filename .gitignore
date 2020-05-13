@@ -4,7 +4,7 @@
 
 .Rapp.history
 
-.Rbuildignore
+# .Rbuildignore
 
 # Session Data files
 
