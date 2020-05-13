@@ -376,9 +376,17 @@ setMethod("+", signature(e1="splrMatrix",e2="numeric"), function(e1,e2) {
 setMethod("+", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
   .leftadd(e1 = e1, e2 = e2)
 })
-setMethod("-", signature(e1="splrMatrix",e2="Matrix"), function(e1,e2) {
-  .leftadd(e1 = e1, e2 = -e2)
-})
+
+setMethod("-", signature(e1 = "splrMatrix"),
+  function(e1){
+    splr(-e1@x, a = -e1@a, b = e1@a)
+  })
+
+
+setMethod("-", signature(e1="splrMatrix",e2="Matrix"), 
+  function(e1, e2) {
+    .leftadd(e1 = e1, e2 = -e2)
+  })
 
 setMethod("-", signature(e1="splrMatrix",e2="numeric"), function(e1,e2) {
   if(!is.atomic(e2)){

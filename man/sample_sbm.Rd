@@ -5,11 +5,24 @@
 \alias{sample_correlated_sbm_pair_w_junk}
 \title{Sample graphs pair from stochastic block model}
 \usage{
-sample_correlated_sbm_pair(n, pref.matrix, block.sizes, rho,
-  permutation = 1:n, ...)
+sample_correlated_sbm_pair(
+  n,
+  pref.matrix,
+  block.sizes,
+  rho,
+  permutation = 1:n,
+  ...
+)
 
-sample_correlated_sbm_pair_w_junk(n, pref.matrix, block.sizes, rho,
-  core.block.sizes, permutation = 1:n, ...)
+sample_correlated_sbm_pair_w_junk(
+  n,
+  pref.matrix,
+  block.sizes,
+  rho,
+  core.block.sizes,
+  permutation = 1:n,
+  ...
+)
 }
 \arguments{
 \item{n}{An integer. Number of vertices in the graph.}

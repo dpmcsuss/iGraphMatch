@@ -353,8 +353,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
   
-  D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
-  D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
+  D_A <- Matrix::Diagonal(length(rowSums(A)), rowSums(A))
+  D_B <- Matrix::Diagonal(length(rowSums(B)), rowSums(B))
   A <- A[]
   B <- B[]
   L_A <- D_A - A
