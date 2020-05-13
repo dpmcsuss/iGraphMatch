@@ -53,8 +53,8 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,p
 #' \code{graph1} and \code{graph2} that are sampled from random dot product
 #' graphs model.
 #' @examples
-#' ## sample a pair of igraph objects from random dot product graphs model
-#' with dimension 3 and scale 8
+#' ## sample a pair of igraph objects from random dot
+#' ## product graphs model with dimension 3 and scale 8
 #' n <- 50
 #' xdim <- 3
 #' scale <- 8

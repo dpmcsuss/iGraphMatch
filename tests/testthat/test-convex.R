@@ -7,15 +7,21 @@ A <- cgnp_pair$graph1
 B <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
 
-test_that("matching correspondence between graph1 and graph2", {
-  expect_equal(graph_match_convex(A, B)$corr,
-               data.frame(corr_A = c(1:10), corr_B = c(10,7,3,1,2,9,5,6,4,8)))
-})
+ex_df <- data.frame(corr_A = c(1:10),
+          corr_B = c(4, 2, 9, 8, 5, 7, 10, 6, 3, 1))
+
+actual <- graph_match_convex(A, B)
+
+test_that("matching correspondence between graph1 and graph2",
+  {
+    expect_equal(actual$corr, ex_df)
+  })
 test_that("permutation matrix", {
-  expect_equal(graph_match_convex(A, B)$P,get_perm(10, 10, data.frame(corr_A = c(1:10), corr_B = c(10,7,3,1,2,9,5,6,4,8))))
+  expect_equal(actual$P,
+    get_perm(10, 10, ex_df))
 })
 test_that("number of seeds", {
-  expect_equal(graph_match_convex(A, B)$ns,0)
+  expect_equal(actual$ns,0)
 })
 
 

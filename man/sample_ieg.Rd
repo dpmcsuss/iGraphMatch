@@ -59,8 +59,8 @@ p_mat <- matrix(runif(n^2),n)
 c_mat <- matrix(runif(n^2),n)
 sample_correlated_ieg_pair(n,p_mat,c_mat)
 
-## sample a pair of igraph objects from random dot product graphs model
-with dimension 3 and scale 8
+## sample a pair of igraph objects from random dot
+## product graphs model with dimension 3 and scale 8
 n <- 50
 xdim <- 3
 scale <- 8

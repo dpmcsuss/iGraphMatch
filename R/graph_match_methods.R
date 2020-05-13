@@ -208,8 +208,7 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
-  nv <- nrow(A[[1]])
-
+  nv <- totv1
 
   seed_check <- check_seeds(seeds, nv)
   seeds <- seed_check$seeds
@@ -328,7 +327,9 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 }
 
 
+#' 
 #' @rdname graph_match_methods
+#' 
 #' @return \code{graph_match_PATH} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
 #'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
@@ -444,7 +445,9 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     vec_delta_P <- Matrix::c.sparseVector(delta_P)
     vec_Pdir <- Matrix::c.sparseVector(Pdir)
     c <- sum(t(delta) * delta_P)
-    e <- Matrix::t(f) %*% L %*% vec_Pdir
+    # NOT SURE WHAT SHOULD GO HERE
+    # WAS F BEFORE
+    e <- Matrix::t(vec_Pdir) %*% L %*% vec_Pdir
     u <- Matrix::t(vec_Pdir) %*% L %*% vec_delta_P
     v <- Matrix::t(vec_delta_P) %*% L %*% vec_delta_P
     a <- 2 * (lambda - 1) * bq + lambda * (c - e + u)

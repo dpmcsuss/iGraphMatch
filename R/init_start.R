@@ -53,7 +53,7 @@
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL, g = 1){
   # NEED TO CHANGE ???
-  if(grepl("atrix",class(start))){
+  if(any(grepl("atrix",class(start)))){
     P <- start
   } else if(start == "bari"){
     P <- bari_start(nns,ns,soft_seeds)
