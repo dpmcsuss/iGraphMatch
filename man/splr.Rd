@@ -244,6 +244,12 @@ splr_to_sparse(data)
 \S4method{diag}{splrMatrix}(x)
 }
 \arguments{
+\item{x}{As in Matrix}
+
+\item{a}{As in Matrix}
+
+\item{b}{As in Matrix}
+
 \item{rank}{the estimated rank of the matrix to be factorized.  If \code{rank} is not provided, a guess is made}
 
 \item{factorize}{a safeguard to prevent unnecessary computation (e.g. if the matrix is very large).  If \code{a} 
@@ -252,6 +258,32 @@ is provided and \code{factorize = FALSE}, an error will result.}
 \item{tol}{the tolerance for the eigenvalues if \code{rank} is not provided}
 
 \item{dimnames}{optional - the list of names for the matrix}
+
+\item{...}{As in Matrix}
+
+\item{data}{As in Matrix}
+
+\item{object}{As in Matrix}
+
+\item{e1}{As in Matrix}
+
+\item{y}{As in Matrix}
+
+\item{e2}{As in Matrix}
+
+\item{type}{As in Matrix}
+
+\item{na.rm}{As in Matrix}
+
+\item{dims}{As in Matrix}
+
+\item{i}{As in Matrix}
+
+\item{j}{As in Matrix}
+
+\item{drop}{As in Matrix}
+
+\item{value}{As in Matrix}
 }
 \description{
 An S4 class for efficient computation with sparse plus

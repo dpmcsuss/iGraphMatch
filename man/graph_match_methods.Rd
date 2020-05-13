@@ -86,6 +86,8 @@ max_iter times number of total vertices of \eqn{G_1}.}
 on the information in network topology over other information such as
 similarity scores}
 
+\item{epsilon}{A small number}
+
 \item{r}{A number. Threshold of neighboring pair scores.}
 
 \item{method}{A character. Choice of method to extract mapping from score matrix,

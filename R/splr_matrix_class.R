@@ -11,6 +11,23 @@
 #' @slot b optional. a low-rank factor for \code{a \%*\% t(b)}. if \code{b} is not provided, a will be factorized using 
 #' \code{irlba} provided \code{factorize = TRUE}
 #' 
+#' @param x As in Matrix
+#' @param a As in Matrix
+#' @param b As in Matrix
+#' @param ... As in Matrix
+#' @param data As in Matrix
+#' @param object As in Matrix
+#' @param e1 As in Matrix
+#' @param y As in Matrix
+#' @param e2 As in Matrix
+#' @param type As in Matrix
+#' @param na.rm As in Matrix
+#' @param dims As in Matrix
+#' @param i As in Matrix
+#' @param j As in Matrix
+#' @param drop As in Matrix
+#' @param value As in Matrix
+#' 
 #' @rdname splr
 #' 
 #' @import Matrix

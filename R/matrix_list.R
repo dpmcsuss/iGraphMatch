@@ -4,8 +4,18 @@
 #' the same size. It doesn't do much checking though.
 #' It can do various things like arethmatic and
 #' indexing, all of which are done element-wise.
-#
+#'
+#' @param x As in Matrix
+#' @param y As in Matrix
+#' @param i As in Matrix
+#' @param j As in Matrix
+#' @param drop As in Matrix
+#' @param na.rm As in Matrix
+#' @param e1 As in Matrix
+#' @param e2 As in Matrix
+#' 
 #' @rdname matrix_list
+#' @importClassesFrom Matrix sparseMatrix
 matrix_list <- setClass("matrix_list", contains = "list")
 
 # ml <- matrix_list(list(matrix(1:9, 3), matrix(0:8, 3)))

@@ -75,6 +75,23 @@
 
 \S4method{-}{matrix_list,missing}(e1, e2)
 }
+\arguments{
+\item{x}{As in Matrix}
+
+\item{y}{As in Matrix}
+
+\item{i}{As in Matrix}
+
+\item{j}{As in Matrix}
+
+\item{drop}{As in Matrix}
+
+\item{na.rm}{As in Matrix}
+
+\item{e1}{As in Matrix}
+
+\item{e2}{As in Matrix}
+}
 \description{
 Basically a list that has matrices that are all 
 the same size. It doesn't do much checking though.
