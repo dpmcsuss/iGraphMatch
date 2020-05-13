@@ -197,10 +197,12 @@ setMethod("show", signature("splrMatrix"),
 
 
 
-#' @rdname splr
-setMethod('-',signature = signature(e1 = 'splrMatrix',e2 = 'missing'),function(e1) {
-  new("splrMatrix",x=-e1@x,a=-e1@a,b=e1@b,Dim = dim(e1@x))
-})
+# #' @rdname splr
+# setMethod('-',
+#   signature(e1 = 'splrMatrix', e2 = 'missing'),
+#   function(e1, e2 = NULL) {
+#     new("splrMatrix", x = -e1@x, a = -e1@a, b = e1@b, Dim = dim(e1@x))
+#   })
 
 .leftmult=function(x, y){
   #y is splr, x is a matrix
@@ -449,8 +451,8 @@ setMethod("+", signature(e1="splrMatrix",e2="ANY"), function(e1,e2) {
 })
 
 #' @rdname splr
-setMethod("-", signature(e1 = "splrMatrix"),
-  function(e1){
+setMethod("-", signature(e1 = "splrMatrix", e2 = "missing"),
+  function(e1, e2 = NULL){
     splr(-e1@x, a = -e1@a, b = e1@a)
   })
 
@@ -592,77 +594,88 @@ setMethod("innerproduct", signature(x = "matrix_list", y = "matrix_list"),
 
 
 #complete
-.rsum=function(x,...){
+.rsum <- function(x, ...){
   #x is splrMatrix matrix
   
-    rx=rowSums(x@x)
-    cb=colSums(x@b)
+    rx=rowSums(x@x, ...)
+    cb=colSums(x@b, ...)
     drop(rx+x@a%*%cb) 
   
  
 }
 #' @rdname splr
-setMethod("rowSums","splrMatrix",.rsum)
+setMethod("rowSums",
+  signature(x = "splrMatrix"),
+  .rsum)
 
 
 
-.csum=function(x,...){
+.csum=function(x, ...){
   #x is splrMatrix matrix
    
-    cx <- colSums(x@x)
-    ca <- colSums(x@a)
+    cx <- colSums(x@x, ...)
+    ca <- colSums(x@a, ...)
     drop( cx + x@b %*% ca)
   
 }
 
 #' @rdname splr
-setMethod("colSums","splrMatrix",.csum)
+setMethod("colSums",
+  signature(x = "splrMatrix"),
+  .csum)
 
 
 #toDo
-.rmean=function(x,...){
+.rmean=function(x, ...){
   #x is splrMatrix matrix
  
-    rx=rowMeans(x@x)
-    cb=colMeans(x@b)
+    rx=rowMeans(x@x, ...)
+    cb=colMeans(x@b, ...)
     drop(rx+x@a%*%cb)
   
 }
 
 #' @rdname splr
-setMethod("rowMeans","splrMatrix",.rmean)
+setMethod("rowMeans",
+  signature(x = "splrMatrix"),
+  .rmean)
 
 
 #toDo
-.cmean=function(x,...){
+.cmean=function(x, ...){
   #x is splrMatrix matrix
   
-    cx=colMeans(x@x)
-    ca=colMeans(x@a)
+    cx=colMeans(x@x, ...)
+    ca=colMeans(x@a, ...)
     drop(cx+x@b%*%ca)
   
 }
 
 #' @rdname splr
-setMethod("colMeans","splrMatrix",.cmean)
+setMethod("colMeans",
+  signature(x = "splrMatrix"),
+  .cmean)
 
 
-.sum <- function(x, ...){
-  sum(.csum(x)) 
+.sum <- function(x, ..., na.rm = FALSE){
+  sum(.csum(x), na.rm = na.rm) 
 }
 
 #' @rdname splr
-setMethod("sum", "splrMatrix", .sum)
+setMethod("sum", signature(x = "splrMatrix", na.rm = "ANY"), .sum)
 
 #' @rdname splr
-setMethod("mean", "splrMatrix", function(x){
-  sum(x) / x@Dim[1] / x@Dim[2]
+setMethod("mean", signature(x = "splrMatrix"), function(x, ...){
+  sum(x, ...) / x@Dim[1] / x@Dim[2]
 })
 
 #' @rdname splr
-setMethod("[",signature(x="splrMatrix",i = 'missing',j = 'missing',drop = 'missing') ,function(x) {
+setMethod("[",
+  signature(x = "splrMatrix", 
+    i = 'missing', j = 'missing', drop = 'missing') ,
+  function(x, i = NULL, j = NULL, drop = NULL) {
           x
-})
+  })
 
 #' @rdname splr
 setMethod("[",signature(x="splrMatrix",i = 'numeric',j = 'numeric',drop = 'logical') 
@@ -754,7 +767,7 @@ setMethod("[",signature(x="splrMatrix", i = 'logical', j = 'logical',drop = 'mis
 
 #' @rdname splr
 setMethod("[",signature(x="splrMatrix", i = 'missing', j = 'missing',drop = 'missing'),
-  function(x) {
+  function(x, i = NULL, j = NULL, drop = NULL) {
     x
   })
 

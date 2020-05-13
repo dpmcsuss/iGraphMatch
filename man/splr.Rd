@@ -7,7 +7,6 @@
 \alias{splr,Matrix,Matrix,Matrix-method}
 \alias{splr_to_sparse}
 \alias{show,splrMatrix-method}
-\alias{-,splrMatrix,missing-method}
 \alias{\%*\%,splrMatrix,splrMatrix-method}
 \alias{\%*\%,splrMatrix,matrix_list-method}
 \alias{\%*\%,matrix_list,splrMatrix-method}
@@ -41,9 +40,10 @@
 \alias{+,splrMatrix,Matrix-method}
 \alias{+,splrMatrix,numeric-method}
 \alias{+,splrMatrix,ANY-method}
-\alias{-,splrMatrix,ANY-method}
+\alias{-,splrMatrix,missing-method}
 \alias{-,splrMatrix,Matrix-method}
 \alias{-,splrMatrix,numeric-method}
+\alias{-,splrMatrix,ANY-method}
 \alias{+,Matrix,splrMatrix-method}
 \alias{+,numeric,splrMatrix-method}
 \alias{+,ANY,splrMatrix-method}
@@ -100,8 +100,6 @@ splr(
 splr_to_sparse(data)
 
 \S4method{show}{splrMatrix}(object)
-
-\S4method{-}{splrMatrix,missing}(e1)
 
 \S4method{\%*\%}{splrMatrix,splrMatrix}(x, y)
 
@@ -169,7 +167,7 @@ splr_to_sparse(data)
 
 \S4method{+}{splrMatrix,ANY}(e1, e2)
 
-\S4method{-}{splrMatrix,ANY}(e1, e2)
+\S4method{-}{splrMatrix,missing}(e1, e2 = NULL)
 
 \S4method{-}{splrMatrix,Matrix}(e1, e2)
 
@@ -201,9 +199,9 @@ splr_to_sparse(data)
 
 \S4method{sum}{splrMatrix,ANY}(x, ..., na.rm = FALSE)
 
-\S4method{mean}{splrMatrix}(x)
+\S4method{mean}{splrMatrix}(x, ...)
 
-\S4method{[}{splrMatrix,missing,missing,missing}(x)
+\S4method{[}{splrMatrix,missing,missing,missing}(x, i = NULL, j = NULL, drop = NULL)
 
 \S4method{[}{splrMatrix,numeric,numeric,logical}(x, i, j, ..., drop = TRUE)
 
@@ -219,7 +217,7 @@ splr_to_sparse(data)
 
 \S4method{[}{splrMatrix,logical,logical,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{splrMatrix,missing,missing,missing}(x)
+\S4method{[}{splrMatrix,missing,missing,missing}(x, i = NULL, j = NULL, drop = NULL)
 
 \S4method{[}{splrMatrix,missing,numeric,missing}(x, i, j, ..., drop = TRUE)
 
@@ -263,9 +261,9 @@ is provided and \code{factorize = FALSE}, an error will result.}
 
 \item{object}{As in Matrix}
 
-\item{e1}{As in Matrix}
-
 \item{y}{As in Matrix}
+
+\item{e1}{As in Matrix}
 
 \item{e2}{As in Matrix}
 
