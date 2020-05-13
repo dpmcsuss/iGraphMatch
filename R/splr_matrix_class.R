@@ -718,7 +718,7 @@ setMethod("[",signature(x="splrMatrix",i = 'numeric',j = 'numeric',drop='missing
           })
 
 #' @rdname splr
-setMethod("[",signature(x="splrMatrix",i = 'numeric',j = 'numeric') 
+setMethod("[",signature(x="splrMatrix",i = 'numeric',j = 'numeric',drop='missing') 
           ,function(x,i,j, ..., drop = TRUE) {
             
             
@@ -753,11 +753,10 @@ setMethod("[",signature(x="splrMatrix", i = 'logical', j = 'logical',drop = 'mis
 
 
 #' @rdname splr
-setMethod("[",signature(x="splrMatrix") 
-          ,function(x) {
-              x
- 
-})
+setMethod("[",signature(x="splrMatrix", i = 'missing', j = 'missing',drop = 'missing'),
+  function(x) {
+    x
+  })
 
 #' @rdname splr
 setMethod("[",signature(x="splrMatrix",i = 'missing',j = 'numeric',drop = 'missing') 
