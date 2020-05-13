@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,7 +42,6 @@
 <meta property="og:title" content="Sample graphs pair from stochastic block model — sample_correlated_sbm_pair" />
 <meta property="og:description" content="Sample a pair of random graphs from stochastic block model with correlation between
 two graphs being rho and edge probability being p." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -56,7 +59,7 @@ two graphs being rho and edge probability being p." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -81,6 +84,9 @@ two graphs being rho and edge probability being p." />
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/iGraphMatch.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -111,11 +117,24 @@ two graphs being rho and edge probability being p." />
 two graphs being <code>rho</code> and edge probability being <code>p</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sample_correlated_sbm_pair</span>(<span class='no'>n</span>, <span class='no'>pref.matrix</span>, <span class='no'>block.sizes</span>, <span class='no'>rho</span>,
-  <span class='kw'>permutation</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>n</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>sample_correlated_sbm_pair</span>(
+  <span class='no'>n</span>,
+  <span class='no'>pref.matrix</span>,
+  <span class='no'>block.sizes</span>,
+  <span class='no'>rho</span>,
+  <span class='kw'>permutation</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>n</span>,
+  <span class='no'>...</span>
+)
 
-<span class='fu'>sample_correlated_sbm_pair_w_junk</span>(<span class='no'>n</span>, <span class='no'>pref.matrix</span>, <span class='no'>block.sizes</span>, <span class='no'>rho</span>,
-  <span class='no'>core.block.sizes</span>, <span class='kw'>permutation</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>n</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>sample_correlated_sbm_pair_w_junk</span>(
+  <span class='no'>n</span>,
+  <span class='no'>pref.matrix</span>,
+  <span class='no'>block.sizes</span>,
+  <span class='no'>rho</span>,
+  <span class='no'>core.block.sizes</span>,
+  <span class='kw'>permutation</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>n</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,15 +161,15 @@ vector must match the number of vertices.</p></td>
 graphs. It must be in open (0,1) interval.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Passed to <code>sample_correlated_sbm_pair</code>.</p></td>
-    </tr>
-    <tr>
-      <th>permutation.</th>
+      <th>permutation</th>
       <td><p>A numeric vector, permute second graph.</p></td>
     </tr>
     <tr>
-      <th>core.block.size</th>
+      <th>...</th>
+      <td><p>Passed to <code>sample_correlated_sbm_pair</code> and <code>sample_correlated_sbm_pair_w_junk</code>.</p></td>
+    </tr>
+    <tr>
+      <th>core.block.sizes</th>
       <td><p>A numeric vector. Give the number of core vertices in each group. Entries
 should be smaller than <code>block.sizes</code> and the vector length should be the same as <code>block.sizes</code>.</p></td>
     </tr>
@@ -163,70 +182,66 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>pm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>( <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.1</span>, <span class='fl'>.001</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.001</span>, <span class='fl'>.05</span>) )
 <span class='fu'>sample_correlated_sbm_pair</span>(<span class='fl'>1000</span>, <span class='kw'>pref.matrix</span><span class='kw'>=</span><span class='no'>pm</span>, <span class='kw'>block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), <span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 499cb1f U--- 1000 16905 -- Stochastic block-model
+#&gt; IGRAPH 46d52c3 U--- 1000 16870 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 499cb1f:
-#&gt;  [1]  2-- 3  4-- 7  1-- 8  4-- 9  7-- 9  5--10  3--12 10--13  9--14 11--14
-#&gt; [11] 13--14  9--15  5--16  7--16  2--17  7--17 14--17  4--18  5--18  7--18
-#&gt; [21] 16--18 13--19 15--19 16--19  1--20  2--20  3--21  5--21 14--21 17--22
-#&gt; [31]  5--23  9--23 13--23 16--23  4--24 15--25 21--25 22--25  4--26 17--26
-#&gt; [41] 18--26  9--27 16--27 19--27 20--27 14--28 19--28  4--29 26--29  3--30
-#&gt; [51]  7--30 27--30  7--31 11--31 21--31 24--31 12--32  3--33  9--33 14--33
-#&gt; [61] 17--33 22--33 32--33  2--34  9--34 18--34  3--35  4--35 22--35 30--35
-#&gt; [71]  3--36 10--36 32--36 19--37 25--37 34--37  8--38 12--38 24--38  8--39
+#&gt; + edges from 46d52c3:
+#&gt;  [1]  1-- 2  2-- 3  5-- 8  2-- 9  1--12  6--12  8--13  8--14  4--15  4--16
+#&gt; [11]  2--17  5--17  9--17 11--17  5--18 10--18  8--20  9--21 10--21  2--22
+#&gt; [21]  3--22  5--22  7--22 19--22 17--23 12--24 20--25  5--26 18--26 11--27
+#&gt; [31] 16--27 21--27  9--28  6--29 14--29 25--29 18--30 23--30 26--30  7--31
+#&gt; [41]  9--31 11--31 17--31 21--31  3--32 17--32 10--33 15--33 17--33 31--33
+#&gt; [51] 32--33 30--34 32--34 27--35 33--35  1--36  3--36  5--36 10--36  3--37
+#&gt; [61] 17--37 26--37  1--38  5--38 20--38 33--38  3--39 10--39 19--39 22--39
+#&gt; [71] 30--39  4--40 12--40 17--40 22--40 14--41 19--41 25--41 30--41 36--41
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 38301eb U--- 1000 17020 -- Stochastic block-model
+#&gt; IGRAPH 2eca25a U--- 1000 16735 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from 38301eb:
-#&gt;  [1] 993--1000 993-- 996 992-- 997 989--1000 987--1000 987-- 999 984-- 989
-#&gt;  [8] 981-- 991 981-- 982 980-- 991 980-- 983 978-- 994 976-- 985 975-- 981
-#&gt; [15] 974-- 983 973-- 996 973-- 993 973-- 985 973-- 978 972-- 994 971-- 975
-#&gt; [22] 970-- 995 970-- 981 969-- 975 969-- 973 968-- 996 968-- 990 968-- 980
-#&gt; [29] 968-- 978 967-- 997 967-- 992 967-- 984 967-- 982 967-- 971 966-- 999
-#&gt; [36] 966-- 990 966-- 967 965--1000 965-- 990 964-- 989 962-- 976 961-- 999
-#&gt; [43] 961-- 992 961-- 989 961-- 985 961-- 970 959-- 984 959-- 974 958-- 996
+#&gt; + edges from 2eca25a:
+#&gt;  [1] 996-- 997 993-- 999 990--1000 988-- 993 987-- 995 984-- 985 983-- 991
+#&gt;  [8] 982-- 983 981-- 982 978-- 985 976-- 993 975-- 987 975-- 981 974-- 997
+#&gt; [15] 973-- 980 971-- 989 971-- 985 970-- 988 969-- 987 969-- 984 969-- 980
+#&gt; [22] 969-- 970 968--1000 967-- 975 967-- 971 966-- 996 965-- 973 965-- 970
+#&gt; [29] 965-- 966 964-- 979 963-- 999 963-- 978 963-- 972 962-- 988 960-- 984
+#&gt; [36] 960-- 983 960-- 979 960-- 978 959-- 997 959-- 993 959-- 969 958-- 991
+#&gt; [43] 958-- 979 957-- 979 956-- 981 955-- 991 955-- 977 954-- 966 954-- 964
 #&gt; + ... omitted several edges
 #&gt; </div><div class='input'><span class='fu'>sample_correlated_sbm_pair_w_junk</span>(<span class='fl'>1000</span>, <span class='kw'>pref.matrix</span><span class='kw'>=</span><span class='no'>pm</span>, <span class='kw'>block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), <span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>,
 <span class='kw'>core.block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>200</span>,<span class='fl'>500</span>))</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH fff0fa0 U--- 1000 16667 -- Stochastic block-model
+#&gt; IGRAPH 35bda8e U--- 1000 17081 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from fff0fa0:
-#&gt;  [1]  1-- 9  1--11  2--11  9--13  7--14 12--15  4--17 10--17 12--17 11--18
-#&gt; [11]  8--20 11--21 13--21 14--21 19--21 20--22 12--24 15--24 18--24  7--25
-#&gt; [21] 10--25 11--25 12--25 22--25  8--26 16--26 19--26 22--26 24--26 25--26
-#&gt; [31]  7--27 12--27 20--28 21--28 11--29  2--30 25--30 13--31 14--31  6--32
-#&gt; [41] 10--32 13--32  7--33 10--33 16--34 18--34 21--34  1--35  8--35 12--35
-#&gt; [51] 34--35  5--36  6--36  9--36 15--36 25--36  2--37  3--37  8--37 24--37
-#&gt; [61]  6--38 11--38 17--38 33--38 34--38 20--39 37--39  5--40 30--40  1--41
-#&gt; [71]  9--41 25--41 31--41 32--41 40--41  8--42 17--42 22--42 25--42 31--42
+#&gt; + edges from 35bda8e:
+#&gt;  [1]  4-- 6 10--11  2--12  4--13  4--14  5--14 11--15  4--17  1--18  6--18
+#&gt; [11] 17--18 13--19  5--20 10--20  8--21 12--21 10--22  2--23  4--23  8--23
+#&gt; [21]  9--23 10--23 19--23  3--24  2--25  5--25  7--25 13--25 17--25 22--25
+#&gt; [31] 11--26 17--26 22--27  2--28 10--28 12--28 16--28 27--28  7--29 27--29
+#&gt; [41]  1--30 10--30 17--30 19--30 20--30 24--30 28--30  4--31  5--31  8--31
+#&gt; [51] 10--31 18--31 19--31  1--32  2--32  7--32  8--32 10--32 24--33  4--34
+#&gt; [61]  8--34 26--34 29--34 32--34  1--35  3--35  9--35 13--35 30--36 31--36
+#&gt; [71]  4--37  6--37 13--37 14--37  4--38  8--38 29--38 30--38  3--39 13--39
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 9e508a4 U--- 1000 16763 -- Stochastic block-model
+#&gt; IGRAPH 594bbe8 U--- 1000 16782 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from 9e508a4:
-#&gt;  [1] 994--995 990--995 990--993 990--992 989--993 988--991 987--989 986--998
-#&gt;  [9] 986--988 985--991 984--998 983--988 982--983 981--989 981--985 980--986
-#&gt; [17] 980--981 978--994 978--985 977--992 975--997 975--991 975--983 974--995
-#&gt; [25] 974--993 974--976 973--997 973--978 972--992 971--980 970--987 970--977
-#&gt; [33] 969--983 969--978 969--972 965--992 965--989 965--983 965--970 964--991
-#&gt; [41] 964--974 963--999 963--990 962--995 962--991 961--998 961--968 961--965
-#&gt; [49] 960--985 960--967 959--962 958--999 958--961 957--996 957--988 957--987
+#&gt; + edges from 594bbe8:
+#&gt;  [1] 997-- 999 990-- 998 989-- 997 988-- 999 986-- 993 986-- 987 984-- 991
+#&gt;  [8] 983-- 986 982-- 990 980-- 987 980-- 982 980-- 981 979-- 987 978-- 981
+#&gt; [15] 977-- 998 976-- 995 975-- 999 975-- 996 975-- 984 975-- 977 973-- 983
+#&gt; [22] 972-- 997 971-- 980 971-- 979 969-- 990 969-- 984 969-- 977 968-- 970
+#&gt; [29] 967-- 992 966-- 975 965-- 993 965-- 972 965-- 970 964-- 983 964-- 970
+#&gt; [36] 963-- 997 963-- 965 962-- 976 962-- 964 961--1000 961-- 982 961-- 980
+#&gt; [43] 960-- 982 960-- 972 960-- 969 960-- 968 960-- 964 959-- 999 959-- 990
 #&gt; + ... omitted several edges
 #&gt; </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -237,7 +252,7 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

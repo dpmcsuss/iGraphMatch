@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Multiple Graph Match Methods — graph_match_FW_multi • iGraphMatch</title>
+<title>Lists of Matrices — matrix_list-class • iGraphMatch</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,11 @@
 
 
 
-<meta property="og:title" content="Multiple Graph Match Methods — graph_match_FW_multi" />
-<meta property="og:description" content="Match two lists of graphs, returns a list of graph matching results,
-including matching correspondence vector of \(G_2\) with respect to \(G_1\),
-doubly stochastic matrix and permutation matrix." />
+<meta property="og:title" content="Lists of Matrices — matrix_list-class" />
+<meta property="og:description" content="Basically a list that has matrices that are all 
+the same size. It doesn't do much checking though.
+It can do various things like arethmatic and
+indexing, all of which are done element-wise." />
 
 
 
@@ -108,80 +109,125 @@ doubly stochastic matrix and permutation matrix." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Multiple Graph Match Methods</h1>
+    <h1>Lists of Matrices</h1>
     
-    <div class="hidden name"><code>graph_match_FW_multi.Rd</code></div>
+    <div class="hidden name"><code>matrix_list.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Match two lists of graphs, returns a list of graph matching results,
-including matching correspondence vector of \(G_2\) with respect to \(G_1\),
-doubly stochastic matrix and permutation matrix.</p>
+    <p>Basically a list that has matrices that are all 
+the same size. It doesn't do much checking though.
+It can do various things like arethmatic and
+indexing, all of which are done element-wise.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>graph_match_FW_multi</span>(
-  <span class='no'>A</span>,
-  <span class='no'>B</span>,
-  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"bari"</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lap_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"># S4 method for matrix_list,matrix_list
+%*%(x, y)
+
+# S4 method for matrix_list
+t(x)
+
+# S4 method for matrix_list,ANY,ANY,ANY
+[(x, i = 1:nrow(x[[1]]), j = 1:ncol(x[[1]]), drop = FALSE)
+
+# S4 method for matrix_list,ANY,missing,ANY
+[(x, i, drop = FALSE)
+
+# S4 method for matrix_list,missing,ANY,ANY
+[(x, j, drop = FALSE)
+
+# S4 method for matrix_list,missing,missing,ANY
+[(x, drop = FALSE)
+
+# S4 method for matrix_list,ANY
+%*%(x, y)
+
+# S4 method for ANY,matrix_list
+%*%(x, y)
+
+# S4 method for matrix_list,logical
+sum(x, na.rm = FALSE)
+
+# S4 method for matrix_list,ANY
+^(e1, e2)
+
+# S4 method for matrix_list,matrix_list
+-(e1, e2)
+
+# S4 method for matrix_list,matrix_list
++(e1, e2)
+
+# S4 method for matrix_list,matrix_list
+*(e1, e2)
+
+# S4 method for matrix_list,matrix_list
+/(e1, e2)
+
+# S4 method for matrix_list,ANY
+-(e1, e2)
+
+# S4 method for matrix_list,ANY
++(e1, e2)
+
+# S4 method for matrix_list,ANY
+*(e1, e2)
+
+# S4 method for matrix_list,ANY
+/(e1, e2)
+
+# S4 method for ANY,matrix_list
+-(e1, e2)
+
+# S4 method for ANY,matrix_list
++(e1, e2)
+
+# S4 method for ANY,matrix_list
+*(e1, e2)
+
+# S4 method for ANY,matrix_list
+/(e1, e2)
+
+# S4 method for matrix_list,missing
+-(e1, e2)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>A</th>
-      <td><p>A list of graphs (or igraph objects)</p></td>
+      <th>x</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     <tr>
-      <th>B</th>
-      <td><p>A list of graphs (or igraph objects)</p></td>
+      <th>y</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     <tr>
-      <th>seeds</th>
-      <td><p>A vector of integers or logicals, a matrix or a data frame. If there is no error in seeds input can be
-a vector of seed indices in \(G_1\). Or if there exists error in seeds, input in the form of a
-matrix or a data frame, with the first column being the indices of \(G_1\) and the second
-column being the corresponding indices of \(G_2\).</p></td>
+      <th>i</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     <tr>
-      <th>start</th>
-      <td><p>A matrix or a character. Any <code>nns-by-nns</code> matrix or
-character value like "bari" or "convex" to initialize the starting matrix.</p></td>
+      <th>j</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     <tr>
-      <th>max_iter</th>
-      <td><p>An integer. Maximum iteration time.</p></td>
+      <th>drop</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     <tr>
-      <th>similarity</th>
-      <td><p>matrix of similarity scores</p></td>
+      <th>na.rm</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     <tr>
-      <th>lap_method</th>
-      <td><p>Which lap function to use</p></td>
+      <th>e1</th>
+      <td><p>As in Matrix</p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>As in Matrix</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>graph_match_FW_multi</code> returns a list of graph matching results,
-including match correspondence vector of \(G_2\) with respect to \(G_1\)
-named <code>corr</code>, doubly stochastic matrix named <code>D</code>, permutation
-matrix named <code>P</code> based on Frank-Wolfe methodology and iteration time of
-the algorithm named <code>iter</code>.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
- <span class='no'>gp_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>, <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.3</span>, <span class='fl'>.5</span>), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
- <span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>1</span>]])
- <span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>2</span>]])
- <span class='no'>match</span> <span class='kw'>&lt;-</span> <span class='fu'>graph_match_FW_multi</span>(<span class='no'>A</span>, <span class='no'>B</span>, <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"bari"</span>, <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>20</span>)
- <span class='no'>match</span>$<span class='no'>corr</span>
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

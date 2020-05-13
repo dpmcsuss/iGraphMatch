@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +41,6 @@
 
 <meta property="og:title" content="Measure functions — row_cor" />
 <meta property="og:description" content="Measures for computing the goodness of matching for each vertex." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -55,7 +58,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -80,6 +83,9 @@
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/iGraphMatch.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -113,7 +119,7 @@
 
 <span class='fu'>row_diff</span>(<span class='no'>g1</span>, <span class='no'>g2</span>)
 
-<span class='fu'>row_perm_stat</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='kw'>exact</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>row_perm_stat</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='kw'>exact</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,32 +156,28 @@ value for the corresponding vertex.</p>
 <span class='no'>match</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='graph_match_methods.html'>graph_match_FW</a></span>(<span class='no'>g1</span>, <span class='no'>g2</span>)
 <span class='no'>g2m</span> <span class='kw'>&lt;-</span> <span class='no'>g2</span>[<span class='no'>match</span>$<span class='no'>corr</span>$<span class='no'>corr_B</span>, <span class='no'>match</span>$<span class='no'>corr</span>$<span class='no'>corr_B</span>]
 <span class='no'>g1</span> <span class='kw'>&lt;-</span> <span class='no'>g1</span>[]
-<span class='fu'>row_cor</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] 0.6755011 0.6016053 0.5651372 0.7163457 0.5516036 0.5951795 0.6421865
-#&gt;  [8] 0.5970885 0.4783280 0.7612489 0.5996796 0.5723314 0.7284424 0.6887336
-#&gt; [15] 0.4395515 0.4908249 0.4345365 0.6016053 0.6734014 0.7922705 0.6353016
-#&gt; [22] 0.5970885 0.6797437 0.5101021 0.6690753 0.4540792 0.8097470 0.7684729
-#&gt; [29] 0.7225749 0.6568144 0.6404538 0.6478107 0.6863354 0.6776708 0.4933290
-#&gt; [36] 0.4926108 0.5398155 0.6493506 0.4806344 0.8856683 0.4395515 0.6419280
-#&gt; [43] 0.4025765 0.6559688 0.4900874 0.5636071 0.8097470 0.4102322 0.5833333
-#&gt; [50] 0.8254050</div><div class='input'><span class='fu'>row_diff</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] 17 15 14 18 14 15 17 15 12 18 15 14 18 17 11 11 11 15 17 20 16 15 17 13 17
-#&gt; [26] 11 20 20 18 16 16 16 17 17 13 12 14 16 12 22 11 16 10 17 12 14 20 11 15 20</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] -2.1117383 -2.7234444 -2.9179212 -1.9057376 -2.9828890 -2.6837404
-#&gt;  [7] -2.2325882 -2.6706478 -3.5947816 -1.9057376 -2.7234444 -2.9307628
-#&gt; [13] -1.7994600 -2.1117383 -3.8540496 -3.7637336 -3.8807673 -2.6837404
-#&gt; [19] -2.1381816 -1.3068962 -2.4241596 -2.7101376 -2.1249320 -3.2168560
-#&gt; [25] -2.0855148 -3.8018438 -1.2273503 -1.3336895 -1.8389463 -2.3715697
-#&gt; [31] -2.4109176 -2.3977393 -2.1117383 -2.1782773 -3.1536878 -3.5157890
-#&gt; [37] -2.9697414 -2.3846237 -3.6082825 -0.6817331 -3.8540496 -2.4374664
-#&gt; [43] -4.1667530 -2.2053076 -3.6082825 -2.9697414 -1.3068962 -3.7890426
-#&gt; [49] -2.6189605 -1.3202742</div></pre>
+<span class='fu'>row_cor</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] 0.6703657 0.4387257 0.4806344 0.5576923 0.5735853 0.5612812 0.5612812
+#&gt;  [8] 0.4395515 0.5367944 0.6068215 0.5860920 0.5212838 0.8361441 0.7225749
+#&gt; [15] 0.4540792 0.5600000 0.6322504 0.6669334 0.5550750 0.5052506 0.4057056
+#&gt; [22] 0.8312933 0.4216483 0.6419280 0.4900874 0.7225749 0.4244092 0.6409719
+#&gt; [29] 0.5212838 0.6114222 0.7190997 0.7190997 0.7624732 0.5860920 0.6068215
+#&gt; [36] 0.8442707 0.7980769 0.7022250 0.6388424 0.5052506 0.4702093 0.5658330
+#&gt; [43] 0.5398155 0.5297882 0.7993569 0.7922705 0.5304982 0.6819268 0.4089699
+#&gt; [50] 0.4032236</div><div class='input'><span class='fu'>row_diff</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] 19 11 12 14 14 14 14 11 13 15 15 13 21 18 11 14 16 17 15 13 10 21 10 16 12
+#&gt; [26] 18 11 16 13 15 18 18 19 15 15 21 20 17 16 13 12 14 14 13 20 20 13 17 11 10</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] -1.6913163 -3.8660861 -3.5105020 -2.9708336 -3.1575776 -3.0528563
+#&gt;  [7] -2.9708336 -3.8462660 -3.2099452 -2.6220684 -2.7668335 -3.2396468
+#&gt; [13] -0.9514638 -1.9087649 -3.9629531 -2.9893380 -2.3648836 -2.1947877
+#&gt; [19] -2.7668335 -3.3160895 -4.3109231 -1.0719715 -4.0436160 -2.4808106
+#&gt; [25] -3.6760372 -1.8277567 -3.8876280 -2.2759713 -3.2396468 -2.7903990
+#&gt; [31] -1.8467673 -1.8872434 -1.5809447 -2.7668335 -2.6676010 -0.9704490
+#&gt; [37] -1.2953021 -2.0622815 -2.4180527 -3.3388792 -3.6018588 -3.0768036
+#&gt; [43] -3.0303203 -3.3632082 -1.3157049 -1.3157049 -3.2240974 -2.1135259
+#&gt; [49] -3.9109249 -4.0977154</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -186,7 +188,7 @@ value for the corresponding vertex.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

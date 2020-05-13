@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -37,7 +41,6 @@
 
 <meta property="og:title" content="Start matrix initialization — bari_start" />
 <meta property="og:description" content="initialize the start matrix for graph matching iteration." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -55,7 +58,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -80,6 +83,9 @@
     <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/iGraphMatch.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -111,11 +117,9 @@
 
     <pre class="usage"><span class='fu'>bari_start</span>(<span class='no'>nns</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>rds_sinkhorn_start</span>(<span class='no'>nns</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"runif"</span>)
+<span class='fu'>rds_sinkhorn_start</span>(<span class='no'>nns</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"runif"</span>)
 
-<span class='fu'>rds_perm_bari_start</span>(<span class='no'>nns</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>g</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>is_splr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>rds_perm_bari_start</span>(<span class='no'>nns</span>, <span class='kw'>ns</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>g</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>is_splr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,6 +151,10 @@ distribution.</p></td>
       <td><p>A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
 barycenter matrix.</p></td>
     </tr>
+    <tr>
+      <th>is_splr</th>
+      <td><p>should we return a splr matrix? (default = TRUE)</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -160,10 +168,24 @@ with 1's corresponding to adaptive seeds.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Case without soft seeds</span>
-<span class='fu'>bari_start</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt;           [,1]      [,2]      [,3]
-#&gt; [1,] 0.3333333 0.3333333 0.3333333
-#&gt; [2,] 0.3333333 0.3333333 0.3333333
-#&gt; [3,] 0.3333333 0.3333333 0.3333333</div><div class='input'>
+<span class='fu'>bari_start</span>(<span class='fl'>3</span>)</div><div class='output co'>#&gt; Sparse part
+#&gt; 3 x 3 sparse Matrix of class "dsCMatrix"
+#&gt;           
+#&gt; [1,] . . .
+#&gt; [2,] . . .
+#&gt; [3,] . . .
+#&gt; plus left factor
+#&gt; 3 x 1 Matrix of class "dgeMatrix"
+#&gt;      [,1]
+#&gt; [1,]    1
+#&gt; [2,]    1
+#&gt; [3,]    1
+#&gt; times right factor transpose
+#&gt; 3 x 1 Matrix of class "dgeMatrix"
+#&gt;           [,1]
+#&gt; [1,] 0.3333333
+#&gt; [2,] 0.3333333
+#&gt; [3,] 0.3333333</div><div class='input'>
 <span class='co'>## Case with correct soft seeds and input is a vector</span>
 <span class='fu'>bari_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>,<span class='kw'>ns</span><span class='kw'>=</span><span class='fl'>3</span>,<span class='kw'>soft_seeds</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>,<span class='fl'>7</span>,<span class='fl'>8</span>))</div><div class='output co'>#&gt;      [,1] [,2] [,3] [,4] [,5]
 #&gt; [1,]  0.5    0  0.5    0    0
@@ -179,38 +201,38 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [4,] 0.0000000    0    1 0.0000000 0.0000000
 #&gt; [5,] 0.3333333    0    0 0.3333333 0.3333333</div><div class='input'>
 <span class='co'>## Case without soft seeds</span>
-<span class='fu'>rds_sinkhorn_start</span>(<span class='fl'>5</span>)</div><div class='output co'>#&gt;           [,1]      [,2]       [,3]       [,4]       [,5]
-#&gt; [1,] 0.2393219 0.2429547 0.04085456 0.27592327 0.20094551
-#&gt; [2,] 0.1752982 0.2559693 0.13680110 0.38290783 0.04902353
-#&gt; [3,] 0.1717259 0.1154425 0.35162025 0.11111395 0.25009742
-#&gt; [4,] 0.1969337 0.1556372 0.36810138 0.05789523 0.22143250
-#&gt; [5,] 0.2167202 0.2299963 0.10262272 0.17215972 0.27850103</div><div class='input'>
+<span class='fu'>rds_sinkhorn_start</span>(<span class='fl'>5</span>)</div><div class='output co'>#&gt;            [,1]      [,2]       [,3]       [,4]       [,5]
+#&gt; [1,] 0.22537121 0.2204867 0.21983022 0.14489501 0.18941687
+#&gt; [2,] 0.26133914 0.2286707 0.09645082 0.32547825 0.08806108
+#&gt; [3,] 0.04253366 0.1792346 0.05998407 0.44242695 0.27582075
+#&gt; [4,] 0.40949858 0.1537486 0.26811849 0.04474622 0.12388814
+#&gt; [5,] 0.06125740 0.2178595 0.35561641 0.04245357 0.32281316</div><div class='input'>
 <span class='co'>## Case with soft seeds and the input is a data frame</span>
 <span class='fu'>rds_sinkhorn_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>,
    <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)),
-   <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"rnorm"</span>)</div><div class='output co'>#&gt;            [,1] [,2] [,3]      [,4]      [,5]
-#&gt; [1,] 0.63165505    0    0 0.1286506 0.2396951
-#&gt; [2,] 0.00000000    1    0 0.0000000 0.0000000
-#&gt; [3,] 0.04572743    0    0 0.5064747 0.4477971
-#&gt; [4,] 0.00000000    0    1 0.0000000 0.0000000
-#&gt; [5,] 0.32261752    0    0 0.3648746 0.3125078</div><div class='input'>
+   <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"rnorm"</span>)</div><div class='output co'>#&gt;           [,1] [,2] [,3]      [,4]      [,5]
+#&gt; [1,] 0.3209237    0    0 0.3941700 0.2849063
+#&gt; [2,] 0.0000000    1    0 0.0000000 0.0000000
+#&gt; [3,] 0.4218930    0    0 0.1606772 0.4174298
+#&gt; [4,] 0.0000000    0    1 0.0000000 0.0000000
+#&gt; [5,] 0.2571833    0    0 0.4451528 0.2976638</div><div class='input'>
 <span class='co'>## Case without soft seeds</span>
 <span class='fu'>rds_perm_bari_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                                       
-#&gt; [1,] .         .         0.1376882 .         .        
-#&gt; [2,] .         0.1376882 .         .         .        
-#&gt; [3,] .         .         .         0.1376882 .        
-#&gt; [4,] 0.1376882 .         .         .         .        
-#&gt; [5,] .         .         .         .         0.1376882
+#&gt; [1,] .         0.2933836 .         .         .        
+#&gt; [2,] 0.2933836 .         .         .         .        
+#&gt; [3,] .         .         .         .         0.2933836
+#&gt; [4,] .         .         0.2933836 .         .        
+#&gt; [5,] .         .         .         0.2933836 .        
 #&gt; plus left factor
 #&gt; 5 x 1 Matrix of class "dgeMatrix"
 #&gt;           [,1]
-#&gt; [1,] 0.8623118
-#&gt; [2,] 0.8623118
-#&gt; [3,] 0.8623118
-#&gt; [4,] 0.8623118
-#&gt; [5,] 0.8623118
+#&gt; [1,] 0.7066164
+#&gt; [2,] 0.7066164
+#&gt; [3,] 0.7066164
+#&gt; [4,] 0.7066164
+#&gt; [5,] 0.7066164
 #&gt; times right factor transpose
 #&gt; 5 x 1 Matrix of class "dgeMatrix"
 #&gt;      [,1]
@@ -222,20 +244,20 @@ with 1's corresponding to adaptive seeds.</p>
 <span class='co'>## Case with soft seeds and the input is a data frame</span>
 <span class='fu'>rds_perm_bari_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>, <span class='kw'>ns</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='kw'>soft_seeds</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>3</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)))</div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
-#&gt;                                          
-#&gt; [1,] 0.07536896 . . .          .         
-#&gt; [2,] .          1 . .          .         
-#&gt; [3,] .          . . .          0.07536896
-#&gt; [4,] .          . 1 .          .         
-#&gt; [5,] .          . . 0.07536896 .         
+#&gt;                                    
+#&gt; [1,] .        . . 0.718923 .       
+#&gt; [2,] .        1 . .        .       
+#&gt; [3,] 0.718923 . . .        .       
+#&gt; [4,] .        . 1 .        .       
+#&gt; [5,] .        . . .        0.718923
 #&gt; plus left factor
 #&gt; 5 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;              
-#&gt; [1,] 0.924631
+#&gt; [1,] 0.281077
 #&gt; [2,] .       
-#&gt; [3,] 0.924631
+#&gt; [3,] 0.281077
 #&gt; [4,] .       
-#&gt; [5,] 0.924631
+#&gt; [5,] 0.281077
 #&gt; times right factor transpose
 #&gt; 5 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;               
@@ -246,14 +268,10 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [5,] 0.3333333</div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -264,7 +282,7 @@ with 1's corresponding to adaptive seeds.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
