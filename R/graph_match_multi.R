@@ -13,8 +13,8 @@
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #' character value like "bari" or "convex" to initialize the starting matrix.
 #' @param max_iter An integer. Maximum iteration time.
-#' @param tol A number. Tolerance of edge disagreements.
-#' @param r A number. Threshold of neighboring pair scores.
+#' @param similarity matrix of similarity scores
+#' @param lap_method Which lap function to use
 #'
 #' @return \code{graph_match_FW_multi} returns a list of graph matching results,
 #' including match correspondence vector of \eqn{G_2} with respect to \eqn{G_1}
@@ -214,7 +214,7 @@ graph_match_FW_multi_reward <- function(A, B, weight, ...){
 }
 
               
-#' @export
+
 graph_match_percolation_multi <- function (A, B, start = NULL, similarity = NULL, r = 2, alpha = 10) 
 {
   A <- lapply(A, function(Al) Al[])
@@ -265,7 +265,7 @@ graph_match_percolation_multi <- function (A, B, start = NULL, similarity = NULL
 
 
 
-#' @export
+
 graph_match_ExpandWhenStuck_multi <- function(A, B, start = NULL, similarity = NULL, r = 2, alpha = 5){
   # this will make the graphs be matrices if they are igraph objects
   A <- lapply(A, function(Al) Al[])
@@ -360,6 +360,7 @@ graph_match_mutual_multi <- function(A, B, start = NULL, similarity = NULL, alph
   n_A <- ncol(A[[1]])
   n_B <- ncol(B[[1]])
   nc <- length(A)
+  n <- min(n_A, n_B)
   
   if(alpha==0){
     while(iter < max_iter & nrow(match) < n){

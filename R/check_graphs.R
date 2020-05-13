@@ -7,7 +7,7 @@ check_graph <- function(A, B, same_order = TRUE, square = TRUE, as_list = TRUE, 
 
   if(as_igraph){
     stop("Not yet implemented")
-    return(check_graph_igraph(A, B, same_order))
+    # return(check_graph_igraph(A, B, same_order))
   }
 
   # this will make the graphs be matrices if they are igraph objects

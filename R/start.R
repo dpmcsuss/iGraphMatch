@@ -112,6 +112,8 @@ rds_sinkhorn <- function(n,distribution="runif"){
  
 #' @rdname start
 #' 
+#' @param is_splr should we return a splr matrix? (default = TRUE)
+#' 
 #' @return \code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 #' with 1's corresponding to adaptive seeds.
 #' 

@@ -4,7 +4,7 @@
 \alias{match_report}
 \title{Matching performance summary}
 \usage{
-match_report(object, A, B, label = NULL, ...)
+match_report(object, A, B, label = NULL)
 }
 \arguments{
 \item{object}{A list. calls the matching result of applying a specific graph matching

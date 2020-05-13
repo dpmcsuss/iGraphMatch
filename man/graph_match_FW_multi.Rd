@@ -29,9 +29,9 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{An integer. Maximum iteration time.}
 
-\item{tol}{A number. Tolerance of edge disagreements.}
+\item{similarity}{matrix of similarity scores}
 
-\item{r}{A number. Threshold of neighboring pair scores.}
+\item{lap_method}{Which lap function to use}
 }
 \value{
 \code{graph_match_FW_multi} returns a list of graph matching results,

@@ -64,7 +64,17 @@ low_rank_approx <- function(A,ndim){
 
 
 
-
+#' Pad a matrix object with extra rows/columns of 0s.
+#' 
+#' Attempts are made to make this padding efficient 
+#' by employing sparse graphs
+#' 
+#' @param m matrix
+#' @param nr number of rows to add
+#' @param nc number of columns to add. (default = nr)
+#' 
+#' @returns m padded with nr rows and nc columns of zeros.
+#' 
 #' @export
 pad <- function(m, nr, nc = nr){
   if(is(m, "splrMatrix")){

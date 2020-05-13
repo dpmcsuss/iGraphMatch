@@ -38,11 +38,11 @@ vector must match the number of vertices.}
 \item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated 
 graphs. It must be in open (0,1) interval.}
 
+\item{permutation}{A numeric vector, permute second graph.}
+
 \item{...}{Passed to \code{sample_correlated_sbm_pair} and \code{sample_correlated_sbm_pair_w_junk}.}
 
-\item{permutation.}{A numeric vector, permute second graph.}
-
-\item{core.block.size}{A numeric vector. Give the number of core vertices in each group. Entries
+\item{core.block.sizes}{A numeric vector. Give the number of core vertices in each group. Entries
 should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.}
 }
 \value{

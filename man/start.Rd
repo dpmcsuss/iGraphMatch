@@ -29,6 +29,8 @@ distribution.}
 
 \item{g}{A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
 barycenter matrix.}
+
+\item{is_splr}{should we return a splr matrix? (default = TRUE)}
 }
 \value{
 \code{bari_start} returns a \code{nns-by-nns} matrix with 1's corresponding to the

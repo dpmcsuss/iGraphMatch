@@ -27,7 +27,7 @@
 #'
 #' @export
 #'
-match_report <- function(object, A, B, label = NULL, ...){
+match_report <- function(object, A, B, label = NULL){
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]][[1]]
   B <- graph_pair[[2]][[1]]
@@ -71,6 +71,6 @@ matched_adjs <- function(match, A, B){
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
 
-  list(A_m = A[corr$corr_A, corr$corr_A],
-    B_m = B[corr$corr_B, corr$corr_B])
+  list(A_m = A[match$corr_A, match$corr_A],
+    B_m = B[match$corr_B, match$corr_B])
 }

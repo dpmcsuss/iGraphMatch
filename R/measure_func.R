@@ -1,3 +1,5 @@
+#' @importFrom stats cor
+
 #' @title Measure functions
 #'
 #' @description Measures for computing the goodness of matching for each vertex.
@@ -50,7 +52,7 @@ row_diff <- function(g1,g2){
 #' @examples
 #' row_perm_stat(g1, g2m)
 #' @export
-row_perm_stat <- function(g1,g2,exact=TRUE,...){
+row_perm_stat <- function(g1,g2,exact=TRUE){
   g1 <- g1[]
   g2 <- g2[]
 
