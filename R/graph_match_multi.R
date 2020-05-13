@@ -23,11 +23,13 @@
 #' the algorithm named \code{iter}.
 #'
 #' @examples
+#' \dontrun{
 #'  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
 #'  A <- lapply(gp_list, function(gp)gp[[1]])
 #'  B <- lapply(gp_list, function(gp)gp[[2]])
 #'  match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
 #'  match$corr
+#' }
 #'
 #' @export
 #'

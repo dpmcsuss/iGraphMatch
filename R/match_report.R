@@ -29,8 +29,8 @@
 #'
 match_report <- function(object, A, B, label = NULL, ...){
   graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
+  A <- graph_pair[[1]][[1]]
+  B <- graph_pair[[2]][[1]]
 
   if(max(A)>1 || max(B)>1){
     warning("Common egdes have positive weights but not necessarily have same weights.")
@@ -52,7 +52,7 @@ match_report <- function(object, A, B, label = NULL, ...){
   A_m <- A[corr$corr_A, corr$corr_A]
   B_m <- B[corr$corr_B, corr$corr_B]
   # Matched edges
-  z$CE <- sum(A_m==B_m & A_m>0)
+  z$CE <- sum(A_m[A_m>0]==B_m[A_m>0])
   z$CNE <- sum(A_m==B_m & A_m==0)
   z$EC <- z$CE/sum(A[]==1)
   cat("\n# Common Edges: ", z$CE,

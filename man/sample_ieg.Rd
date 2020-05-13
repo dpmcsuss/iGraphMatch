@@ -5,8 +5,14 @@
 \alias{sample_correlated_rdpg}
 \title{Sample graphs from edge probability matrix and correlation matrix}
 \usage{
-sample_correlated_ieg_pair(n, p_mat, c_mat, directed = FALSE,
-  loops = FALSE, permutation = 1:n)
+sample_correlated_ieg_pair(
+  n,
+  p_mat,
+  c_mat,
+  directed = FALSE,
+  loops = FALSE,
+  permutation = 1:n
+)
 
 sample_correlated_rdpg(X, rho, nc = nrow(X), ...)
 }
@@ -19,7 +25,7 @@ should be in the open (0,1) interval.}
 \item{c_mat}{An \code{n-by-n} matrix. The target Pearson correlation matrix,
 each entry should be in the open (0,1) interval.}
 
-\item{directed}{A logical. \code{TRUE} if the sampled graphs are directed.}
+\item{directed}{Logical scalar, whether to generate directed graphs.}
 
 \item{loops}{Logical scalar, whether self-loops are allowed in the graph.}
 
@@ -34,8 +40,6 @@ matrices of the generated graphs. It must be in open (0,1) interval.}
 \item{nc}{An integer. Number of core vertices.}
 
 \item{...}{Passed to \code{sample_correlated_rdpg_pair}.}
-
-\item{directed}{Logical scalar, whether to generate directed graphs.}
 }
 \value{
 \code{sample_correlated_ieg_pair} returns two igraph objects named
