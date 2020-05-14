@@ -15,20 +15,8 @@
 #' @param a As in Matrix
 #' @param b As in Matrix
 #' @param ... As in Matrix
-#' @param data As in Matrix
-#' @param object As in Matrix
-#' @param e1 As in Matrix
-#' @param y As in Matrix
-#' @param e2 As in Matrix
-#' @param type As in Matrix
-#' @param na.rm As in Matrix
-#' @param dims As in Matrix
-#' @param i As in Matrix
-#' @param j As in Matrix
-#' @param drop As in Matrix
-#' @param value As in Matrix
 #' 
-#' @rdname splr
+#' @rdname splr_constructor
 #' 
 #' @import Matrix
 #' @import methods
@@ -37,7 +25,7 @@ setClass("splrMatrix",
   slots = c(x = "sparseMatrix", a = "Matrix", b = "Matrix"),
   contains = 'sparseMatrix')
 
-#' @rdname splr
+#' @rdname splr_constructor
 #' 
 #' @param rank the estimated rank of the matrix to be factorized.  If \code{rank} is not provided, a guess is made
 #' @param tol the tolerance for the eigenvalues if \code{rank} is not provided
@@ -116,7 +104,11 @@ setGeneric(
 })
 
 
-#' @rdname splr
+#' @rdname splr_constructor
+#' 
+#' 
+#' 
+#' 
 #' @export
 setMethod(
   f = "splr",
@@ -126,7 +118,14 @@ setMethod(
   }
 )
 
-#' @rdname splr
+#' Convert splr Matrix to Sparse
+#' 
+#' @param data splr Matrix
+#' 
+#' @return sparse Matrix equal to x + a %*% t(b)
+#' 
+#' See \code{\link{Matrix::Matrix}}.
+#' 
 #' @export
 splr_to_sparse <- function(data){
     data@x + Matrix(data@a,sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
@@ -167,7 +166,33 @@ setAs("splrMatrix", "character", as.character.splrMatrix)
 
 setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 
-
+#' SPLR Methods
+#' 
+#' Methods for the splr Matrix class. Most behave like
+#' Matrix methods though things like output show the 
+#' decomposition. Use as.matrix to see the computed
+#' dense matrix.
+#' 
+#' @param x As in Matrix
+#' @param a As in Matrix
+#' @param b As in Matrix
+#' @param ... As in Matrix
+#' @param data As in Matrix
+#' @param object As in Matrix
+#' @param e1 As in Matrix
+#' @param y As in Matrix
+#' @param e2 As in Matrix
+#' @param type As in Matrix
+#' @param na.rm As in Matrix
+#' @param dims As in Matrix
+#' @param i As in Matrix
+#' @param j As in Matrix
+#' @param drop As in Matrix
+#' @param value As in Matrix
+#' 
+#' 
+#' 
+#' 
 #' @rdname splr
 setMethod("show", signature("splrMatrix"),
   function(object){

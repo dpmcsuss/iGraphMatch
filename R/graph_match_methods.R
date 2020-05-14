@@ -1056,6 +1056,8 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
 #' @export
 #'
 graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5){
+
+  # USE CHECK GRAPH
   A <- A[]
   B <- B[]
   totv1 <- nrow(A)
