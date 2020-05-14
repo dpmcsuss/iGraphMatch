@@ -62,6 +62,9 @@ computation.
 \item{\code{a}}{a low-rank factor or a matrix}
 
 \item{\code{b}}{optional. a low-rank factor for \code{a \%*\% t(b)}. if \code{b} is not provided, a will be factorized using 
-\code{irlba} provided \code{factorize = TRUE}}
+\code{\link[irlba]{irlba}} provided \code{factorize = TRUE}}
 }}
 
+\seealso{
+Methods are documented in \code{\link{splr}}.
+}

@@ -9,12 +9,14 @@
 #' @slot x a sparse matrix
 #' @slot a a low-rank factor or a matrix
 #' @slot b optional. a low-rank factor for \code{a \%*\% t(b)}. if \code{b} is not provided, a will be factorized using 
-#' \code{irlba} provided \code{factorize = TRUE}
+#' \code{\link[irlba]{irlba}} provided \code{factorize = TRUE}
 #' 
 #' @param x As in Matrix
 #' @param a As in Matrix
 #' @param b As in Matrix
 #' @param ... As in Matrix
+#' 
+#' @seealso Methods are documented in \code{\link{splr}}.
 #' 
 #' @rdname splr_constructor
 #' 
@@ -64,10 +66,10 @@ setGeneric(
       #if we know rank, we factorize on that
       if (!is.null(rank) ) {
         
-        temp <- irlba(a,rank)
+        temp <- irlba::irlba(a,rank)
       } else {
         warning(paste0('rank is not provided, using tolerance = ',tol,' to calculate the rank of the factorization'))
-        temp <- irlba(a)
+        temp <- irlba::irlba(a)
         rank <- max(which(abs((temp$d)) > tol))
         if (rank == 5) {
           warning("Rank is estimated to be 5 -- providing a rank estimate may help in the factorization")
@@ -124,7 +126,7 @@ setMethod(
 #' 
 #' @return sparse Matrix equal to x + a %*% t(b)
 #' 
-#' See \code{\link{Matrix::Matrix}}.
+#' See \code{\link[Matrix]{Matrix}}.
 #' 
 #' @export
 splr_to_sparse <- function(data){
@@ -174,10 +176,7 @@ setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 #' dense matrix.
 #' 
 #' @param x As in Matrix
-#' @param a As in Matrix
-#' @param b As in Matrix
 #' @param ... As in Matrix
-#' @param data As in Matrix
 #' @param object As in Matrix
 #' @param e1 As in Matrix
 #' @param y As in Matrix

@@ -4,36 +4,42 @@
 \alias{center_graph}
 \title{Center adjacency matrix}
 \usage{
-center_graph(A, scheme, use_splr = TRUE)
+center_graph(A, scheme = c(-1, 1), use_splr = TRUE)
 }
 \arguments{
 \item{A}{A matrix or an igraph object. Adjacency matrix.}
 
-\item{scheme}{A number or a character. Type of matrix to return. If approximatedly center
-the adjacency matrix using Universal Singular Value Thresholding, specify \code{scheme} with
-the number of singular values used to estimate the expectation of adjacency matrix. Suitable
-choice of scheme can be obtained with rank of order logn, where n is the dimension of A, expecially
-in the setting of latent space graph models.}
+\item{scheme}{A character vector, number or pair of numbers. Default c(-1, 1). See Details.}
 
 \item{use_splr}{A boolean indicating whether to use the splrMatrix object when storing the 
 centered graph.  Defaults to TRUE.}
 }
 \value{
-\code{center_graph} returns a centered adjacency matrix. 'Naive' scheme returns the
-original adjacency matrix. 'Center' scheme returns a centered adjacency matrix with entries
-equal to -1 or 1 where 1 corresponds to an edge. Scheme specified by a number returns a centered
-adjacency matrix, which is calcalated by: A - Q, where Q is an approximate
-estimation of the expectation of A by using Singular Value Thresholding.
+centered adjacency matrix as a splrMatrix if
+ useSplr = TRUE, otherwise as a Matrix object.
 }
 \description{
 Center the adjacency matrix, including center the adjacency matrix to entries
 equal to -1 or 1, center the adjacency matrix by using Universal Singular Value Thresholding.
+}
+\details{
+The options for scheme are
+\itemize{
+ \item "naive" Returns original A
+ \item Integer: Returns \eqn{A - A_{scheme}} where
+   \eqn{A_{scheme}} is the best rank-scheme approximation
+   of A.
+ \item A pair of scalars: Returns s * A + a such that the
+   minimum of the returned matrix is min(scheme) and the
+   maximum is max(scheme).
+ \item "center": Same as scheme=c(-1,1)
+}
 }
 \examples{
 A <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)$graph1
 center_graph(A, scheme = "naive")
 center_graph(A, scheme = "center")
 center_graph(A, scheme = 2)
-center_graph(A, scheme = 1)
+center_graph(A, scheme = c(-4, 2))
 
 }
