@@ -2,32 +2,53 @@
 % Please edit documentation in R/match_report.R
 \name{match_report}
 \alias{match_report}
+\alias{edge_match_info}
 \title{Matching performance summary}
 \usage{
-match_report(object, A, B, label = NULL)
+match_report(match, A, B, true_label = NULL, directed = NULL)
+
+edge_match_info(corr, A, B, directed = NULL)
 }
 \arguments{
-\item{object}{A list. calls the matching result of applying a specific graph matching
-algorithm.}
+\item{match}{Graph matching result see \link[=graph_match_FW]{graph match methods}.}
 
 \item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
 
 \item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
 
-\item{label}{A vector. NULL if the true correspondence between two graphs is unknown. 
-A vector indicating the true correspondence in the second graph if the true correspondence 
-is known,}
+\item{true_label}{A vector. NULL if the true correspondence
+between two graphs is unknown. A vector indicating the
+true correspondence in the second graph if the true
+correspondence is known.#'}
+
+\item{directed}{Whether the graphs should be treated as directed 
+or undirected. NULL defaults to !isSymmetric(A).}
+
+\item{corr}{Correspondence data.frame as given by match$corr}
 }
 \value{
-\code{match_report} returns a list of matching performance evaluation metrics
-including number of matches, true matches, common edges, common non-edges, edge correctness
-which is the fraction of common edges over number of edges in the first graph, and the
-objective value ||A-PBP^T||_F.
+\code{match_report} returns the match object
+ evaluation metrics including number of matches, true matches,
+ and a data frame with edge correctness information.
+ \code{edge_match_info} returns this data frame with columns
+ for number of common edges, missing edges, extra edges, and
+ common non-edges, and Frobenius norm.
 }
 \description{
 Get a summary of the matching result and measures of the matching performance
 based on several evaluation metrics associated with nodes and edges of two graphs.
 }
+\details{
+For multilayered graphs information is given per layer.
+ For weighted graphs the counts are based on non-zero entries.
+ Equality of weights is not tested.
+ If you want to ignore seeds in the edge match info you must
+ remove them from corr/match$corr.
+}
+\section{TODO}{
+ support weighted? loops? ...?
+}
+
 \examples{
 graphs <- sample_correlated_gnp_pair(10, .5, .3)
 A <- graphs$graph1
@@ -35,4 +56,11 @@ B <- graphs$graph2
 res <- graph_match_percolation(A, B, 1:4)
 match_report(res, A, B)
 
+gp_list <- replicate(3,
+   sample_correlated_gnp_pair(100, .8, .3),
+   simplify = FALSE)
+A <- lapply(gp_list, function(gp)gp[[1]])
+B <- lapply(gp_list, function(gp)gp[[2]])
+corr <- data.frame(corr_A = 1:100, corr_B = 1:100)
+edge_match_info(corr, A, B)
 }
