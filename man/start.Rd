@@ -4,6 +4,7 @@
 \alias{bari_start}
 \alias{rds_sinkhorn_start}
 \alias{rds_perm_bari_start}
+\alias{rds_from_sim_start}
 \title{Start matrix initialization}
 \usage{
 bari_start(nns, ns = 0, soft_seeds = NULL)
@@ -11,6 +12,8 @@ bari_start(nns, ns = 0, soft_seeds = NULL)
 rds_sinkhorn_start(nns, ns = 0, soft_seeds = NULL, distribution = "runif")
 
 rds_perm_bari_start(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE)
+
+rds_from_sim_start(nns, ns = 0, soft_seeds = NULL, sim)
 }
 \arguments{
 \item{nns}{An integer. Number of non-seeds.}
@@ -31,6 +34,8 @@ distribution.}
 barycenter matrix.}
 
 \item{is_splr}{should we return a splr matrix? (default = TRUE)}
+
+\item{sim}{nns x nns non-negative matrix.}
 }
 \value{
 \code{bari_start} returns a \code{nns-by-nns} matrix with 1's corresponding to the
@@ -41,6 +46,11 @@ with 1's corresponding to adaptive seeds.
 
 \code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 with 1's corresponding to adaptive seeds.
+
+\code{rds_from_sim_start} returns a doubly
+ stochastic Matrix given by sinkhorn algorithm applied to 
+ a matrix of iid t_1 entries scaled by sim. Note,
+ this ignores soft seeds.
 }
 \description{
 initialize the start matrix for graph matching iteration.
