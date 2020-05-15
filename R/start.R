@@ -12,7 +12,7 @@
 #' @param distribution A charactor. Specify the distribution from which the random doubly stochastic
 #' matrix is sampled. Should input the name of the function for generating random deviates from that
 #' distribution.
-#' @param g A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+#' @param g A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
 #' barycenter matrix.
 #'
 #' @rdname start
@@ -23,10 +23,10 @@
 #' bari_start(3)
 #'
 #' ## Case with correct soft seeds and input is a vector
-#' bari_start(nns=5,ns=3,soft_seeds=c(5,7,8))
+#' bari_start(nns=5, ns=3, soft_seeds=c(5, 7, 8))
 #'
 #' ## Case with erroneous soft seeds and the input is a matrix
-#' bari_start(nns=5,soft_seeds=matrix(c(2,4,2,3),nrow=2))
+#' bari_start(nns=5, soft_seeds=matrix(c(2, 4, 2, 3), nrow=2))
 #'
 #' @export
 #'
@@ -39,11 +39,11 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
     seed_g2 <- soft_seeds$B
     nseeds <- length(seed_g1)
 
-    start <- matrix(1/(nns-nseeds),nns,nns)
+    start <- matrix(1 / (nns-nseeds), nns, nns)
     for (i in 1:nseeds) {
-      start[seed_g1[i]-ns,] <- 0
-      start[,seed_g2[i]-ns] <- 0
-      start[seed_g1[i]-ns,seed_g2[i]-ns] <- 1
+      start[seed_g1[i]-ns, ] <- 0
+      start[, seed_g2[i]-ns] <- 0
+      start[seed_g1[i]-ns, seed_g2[i]-ns] <- 1
     }
   }
 
@@ -65,14 +65,14 @@ bari_splr <- function(nns){
 #'
 #' ## Case with soft seeds and the input is a data frame
 #' rds_sinkhorn_start(nns=5,
-#'    soft_seeds = as.data.frame(matrix(c(2,4,2,3),nrow=2)),
+#'    soft_seeds = as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)),
 #'    distribution = "rnorm")
 #' 
 #' @export
 #'
 rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif"){
   if(is.null(soft_seeds) || length(soft_seeds) == 0){
-    start <- rds_sinkhorn(nns,distribution = distribution)
+    start <- rds_sinkhorn(nns, distribution = distribution)
   } else{
     soft_seeds <- check_seeds(soft_seeds, nv = nns + ns)$seeds
     seed_g1 <- soft_seeds$A
@@ -81,15 +81,16 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
     
     start <- matrix(5, nrow = nns, ncol = nns)
     for (i in 1:nseeds) {
-      start[seed_g1[i]-ns,] <- 0
-      start[,seed_g2[i]-ns] <- 0
-      start[seed_g1[i]-ns,seed_g2[i]-ns] <- 1
+      start[seed_g1[i]-ns, ] <- 0
+      start[, seed_g2[i]-ns] <- 0
+      start[seed_g1[i]-ns, seed_g2[i]-ns] <- 1
     }
 
     if(nns - nseeds == 1){
       rds <- 1
     } else{
-      rds <- rds_sinkhorn(nns-nseeds,distribution = distribution)
+      rds <- rds_sinkhorn(nns-nseeds,
+        distribution = distribution)
     }
     start[start == 5] <- rds
   }
@@ -97,16 +98,18 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
   start
 }
 
-sinkhorn <- function(m,niter=20){
-  # m <- matrix(abs(runif(n^2)),n)
+sinkhorn <- function(m, niter=20){
+  # m <- matrix(abs(runif(n^2)), n)
   for(i in 1:niter){
-    r <- rowSums(m)
-    m <- t(diag(1/r) %*% m)
+    r <- Matrix::rowSums(m)
+    r[r == 0] <- 1
+    m <- t(Matrix::Diagonal(x = 1 / r) %*% m)
   }
   m
 }
-rds_sinkhorn <- function(n,distribution="runif"){
-  sinkhorn(matrix(abs(do.call(distribution,list(n^2))),n))
+
+rds_sinkhorn <- function(n, distribution="runif"){
+  sinkhorn(matrix(abs(do.call(distribution, list(n^2))), n))
 }
 
  
@@ -122,13 +125,13 @@ rds_sinkhorn <- function(n,distribution="runif"){
 #' rds_perm_bari_start(nns=5)
 #'
 #' ## Case with soft seeds and the input is a data frame
-#' rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)))
+#' rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
 #' 
 #' @export
 #' 
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
-  
-  if(is.null(soft_seeds) || length(soft_seeds) == 0){
+
+  if (is.null(soft_seeds) || length(soft_seeds) == 0){
     start <- rds_perm_bari(nns, g, is_splr)
   } else{
     soft_seeds <- check_seeds(soft_seeds, nv = nns + ns)$seeds
@@ -142,7 +145,7 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
 
     rds <- rds_perm_bari(nns - nseeds, g, is_splr)
 
-    start <- Matrix(0,nrow = nns,ncol = nns)
+    start <- Matrix(0, nrow = nns, ncol = nns)
     for (i in 1:nseeds) {
       start[seed_g1[i] - ns, seed_g2[i] - ns] <- 1
     }
@@ -167,6 +170,7 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
 }
 
 
+
 rds_perm_bari <- function(nns, g, is_splr = TRUE){
   alpha <- stats::runif(1, 0, g)
   if(is_splr){
@@ -183,6 +187,17 @@ rds_perm_bari <- function(nns, g, is_splr = TRUE){
   } else {
     (1 - alpha) * bari_start(nns) +
         alpha * rperm(nns)
+  }
+}
+
+
+rds_from_sim <- function(nns, sim) {
+  if (inherits(sim, "sparseMatrix") &&
+      "x" %in% slotNames(sim)) {
+    sim@x <- sim@x %*% rt(Matrix::nnzero(nnz), 1)
+    sinkhourn(sim)
+  } else {
+    sinkhorn(Matrix(rt(nns ^ 2, 1), nns) * sim)
   }
 }
 

@@ -35,14 +35,19 @@ setMethod("t", signature(x = "matrix_list"),
     matrix_list(lapply(x, t))
   })
 
-
+#' @rdname matrix_list
+setMethod("dim", signature(x = "matrix_list"),
+  function(x) {
+    dim(x[[1]])
+  }
+)
 
 
 #' @rdname matrix_list
 setMethod("[",
   signature(x="matrix_list",i = 'ANY', j = 'ANY', drop = 'ANY'),
   function(x, i = 1:nrow(x[[1]]), j = 1:ncol(x[[1]]), drop = FALSE) {
-    matrix_list(lapply(x, function(xl) xl[i, j, drop]))
+    matrix_list(lapply(x, function(xl) xl[i, j, drop = drop]))
   })
 
 

@@ -38,7 +38,7 @@ convex.}
 \item{seeds}{A logical vector. \code{TRUE} indicates the corresponding vertex is a seed. Needed
 only when start is convex.}
 
-\item{g}{A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+\item{g}{A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
 barycenter matrix.}
 }
 \value{
@@ -51,14 +51,14 @@ at the other places are derived by different start method.
 Initialize the start matrix for graph matching iteration.
 }
 \examples{
-ss <- matrix(c(5,4,4,3), nrow = 2)
+ss <- matrix(c(5, 4, 4, 3), nrow = 2)
 # initialize start matrix without soft seeds
 init_start(start = "bari", nns = 5)
 init_start(start = "rds", nns = 3)
 init_start(start = "rds_perm_bari", nns = 5)
 
 # initialize start matrix with soft seeds
-init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5,7,8))
+init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))
 init_start(start = "rds", nns = 5, soft_seeds = ss)
 init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 

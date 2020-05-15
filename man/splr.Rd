@@ -62,6 +62,7 @@
 \alias{[,splrMatrix,missing,numeric,missing-method}
 \alias{[,splrMatrix,numeric,missing,missing-method}
 \alias{[,splrMatrix,matrix,missing,missing-method}
+\alias{[<-,sparseMatrix,ANY,ANY,splrMatrix-method}
 \alias{[<-,splrMatrix,numeric,numeric,ANY-method}
 \alias{[<-,splrMatrix,numeric,missing,ANY-method}
 \alias{[<-,splrMatrix,missing,numeric,ANY-method}
@@ -195,6 +196,8 @@
 \S4method{[}{splrMatrix,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{splrMatrix,matrix,missing,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{sparseMatrix,ANY,ANY,splrMatrix}(x, i, j, ...) <- value
 
 \S4method{[}{splrMatrix,numeric,numeric,ANY}(x, i, j, ...) <- value
 

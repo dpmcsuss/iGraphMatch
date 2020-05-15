@@ -27,7 +27,7 @@ that if there are seeds in graphs, seeds should be put before non-seeds.}
 matrix is sampled. Should input the name of the function for generating random deviates from that
 distribution.}
 
-\item{g}{A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+\item{g}{A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
 barycenter matrix.}
 
 \item{is_splr}{should we return a splr matrix? (default = TRUE)}
@@ -50,23 +50,23 @@ initialize the start matrix for graph matching iteration.
 bari_start(3)
 
 ## Case with correct soft seeds and input is a vector
-bari_start(nns=5,ns=3,soft_seeds=c(5,7,8))
+bari_start(nns=5, ns=3, soft_seeds=c(5, 7, 8))
 
 ## Case with erroneous soft seeds and the input is a matrix
-bari_start(nns=5,soft_seeds=matrix(c(2,4,2,3),nrow=2))
+bari_start(nns=5, soft_seeds=matrix(c(2, 4, 2, 3), nrow=2))
 
 ## Case without soft seeds
 rds_sinkhorn_start(5)
 
 ## Case with soft seeds and the input is a data frame
 rds_sinkhorn_start(nns=5,
-   soft_seeds = as.data.frame(matrix(c(2,4,2,3),nrow=2)),
+   soft_seeds = as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)),
    distribution = "rnorm")
 
 ## Case without soft seeds
 rds_perm_bari_start(nns=5)
 
 ## Case with soft seeds and the input is a data frame
-rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)))
+rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
 
 }

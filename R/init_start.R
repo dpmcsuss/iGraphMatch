@@ -17,7 +17,7 @@
 #' convex.
 #' @param seeds A logical vector. \code{TRUE} indicates the corresponding vertex is a seed. Needed
 #' only when start is convex.
-#' @param g A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+#' @param g A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
 #' barycenter matrix.
 #'
 #' @rdname init_start
@@ -27,14 +27,14 @@
 #' at the other places are derived by different start method.
 #'
 #' @examples
-#' ss <- matrix(c(5,4,4,3), nrow = 2)
+#' ss <- matrix(c(5, 4, 4, 3), nrow = 2)
 #' # initialize start matrix without soft seeds
 #' init_start(start = "bari", nns = 5)
 #' init_start(start = "rds", nns = 3)
 #' init_start(start = "rds_perm_bari", nns = 5)
 #'
 #' # initialize start matrix with soft seeds
-#' init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5,7,8))
+#' init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))
 #' init_start(start = "rds", nns = 5, soft_seeds = ss)
 #' init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 #'
@@ -52,23 +52,50 @@
 #'
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL, g = 1){
-  # NEED TO CHANGE ???
-  if(any(grepl("atrix",class(start)))){
-    P <- start
-  } else if(start == "bari"){
-    P <- bari_start(nns,ns,soft_seeds)
+  nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
+  if (inherits(start, c("matrix", "Matrix"))){
+    if (nss > 0 && any(dim(start) != c(nns - nss, nns - nss))) {
+      stop("You are trying to use soft seeds but you've already
+        specified the values for those rows and columns.")
+    }
+  } else if (start == "bari"){
+    start <- bari_start(nns - nss, ns)
   } else if(start =="rds"){
-    P <- rds_sinkhorn_start(nns,ns,soft_seeds)
+    start <- rds_sinkhorn_start(nns - nss, ns)
   } else if(start =="rds_perm_bari"){
-    P <- rds_perm_bari_start(nns,ns,soft_seeds,g)
+    start <- rds_perm_bari_start(nns - nss, ns, g = g)
   } else if(start == "convex"){
     A <- A[]
     B <- B[]
 
     nonseeds <- check_seeds(seeds, nv = nrow(A))$nonseeds
-    start <- init_start(start = "bari", nns, ns, soft_seeds)
-    P <- graph_match_convex(A, B, seeds = seeds, start = start)$D 
-    P <- P[nonseeds$A,nonseeds$B]
+    start <- graph_match_convex(A, B, seeds = seeds, 
+      start = "bari")$D 
+    # don't add back in soft seeds b/c we've used them for convex
+    # maybe message/warning about this being silly
+    return(start[nonseeds$A, nonseeds$B])
+  } else {
+    stop('Start must be either a matrix or one of "bari", "rds",
+      "rds_perm_bari", "convex"')
   }
-  P
+  add_soft_seeds(start, nns, ns, soft_seeds)
 }
+
+
+add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
+  if (is.null(soft_seeds))
+    return(start)
+
+  cs <- check_seeds(soft_seeds, nv = nns + ns)
+  seed_g1 <- cs$seeds$A - ns
+  seed_g2 <- cs$seeds$B - ns
+  cs <- check_seeds(cs$seeds - ns, nv = nns)
+  nonseed_g1 <- cs$nonseeds$A
+  nonseed_g2 <- cs$nonseeds$B
+
+  new_start <- Matrix::Matrix(0, nns, nns)
+  new_start[cbind(seed_g1, seed_g2)] <- 1
+  new_start[nonseed_g1, nonseed_g2] <- start
+  new_start
+}
+
