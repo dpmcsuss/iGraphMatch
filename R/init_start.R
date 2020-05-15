@@ -51,31 +51,50 @@
 #' # 
 #'
 #' @export
-init_start <- function(start, nns, ns = 0, soft_seeds = NULL, A = NULL, B = NULL, seeds = NULL, g = 1){
+init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   if (inherits(start, c("matrix", "Matrix"))){
     if (nss > 0 && any(dim(start) != c(nns - nss, nns - nss))) {
       stop("You are trying to use soft seeds but you've already
         specified the values for those rows and columns.")
     }
+  } else if (is.function(start)) {
+    sf <- start
+    tryCatch(
+      start <- sf(nns, ns, soft_seeds, ...),
+      error = function(e){
+        print(e)
+        stop("Functions passed to init_start must have",
+          "at least the arguments nns, ns, and softs_seeds")
+      })
+
+    # if we get back a full size matrix then just return
+    if (all(dim(start) == nns)) {
+      return(start)
+    }
+    # otherwise add in seeds below
   } else if (start == "bari"){
     start <- bari_start(nns - nss, ns)
-  } else if(start =="rds"){
+  } else if (start == "rds") {
     start <- rds_sinkhorn_start(nns - nss, ns)
-  } else if(start =="rds_perm_bari"){
-    start <- rds_perm_bari_start(nns - nss, ns, g = g)
-  } else if(start == "convex"){
-    A <- A[]
-    B <- B[]
+  } else if (start == "rds_perm_bari") {
+    start <- rds_perm_bari_start(nns - nss, ns, ...)
+  } else if (start == "convex") {
+    # start at bari with soft seeds
+    start <- init_start("bari", nns, ns, soft_seeds)
+    # match and pull out doubly stochastic
+    start <- graph_match_convex(..., start = start)$D 
 
-    nonseeds <- check_seeds(seeds, nv = nrow(A))$nonseeds
-    start <- graph_match_convex(A, B, seeds = seeds, 
-      start = "bari")$D 
     # don't add back in soft seeds b/c we've used them for convex
-    # maybe message/warning about this being silly
-    return(start[nonseeds$A, nonseeds$B])
+    # maybe message/warning about this being a silly thing
+    # to do
+    if (exists("seeds")) {
+      nonseeds <- check_seeds(seeds, nv = nns + ns)$nonseeds
+      start <- start[nonseeds$A, nonseeds$B]
+    }
+    return(start)
   } else {
-    stop('Start must be either a matrix or one of "bari", "rds",
+    stop('Start must be either a matrix, function, or one of "bari", "rds",
       "rds_perm_bari", "convex"')
   }
   add_soft_seeds(start, nns, ns, soft_seeds)

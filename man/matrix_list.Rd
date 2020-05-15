@@ -6,6 +6,7 @@
 \alias{matrix_list}
 \alias{\%*\%,matrix_list,matrix_list-method}
 \alias{t,matrix_list-method}
+\alias{dim,matrix_list-method}
 \alias{[,matrix_list,ANY,ANY,ANY-method}
 \alias{[,matrix_list,ANY,missing,ANY-method}
 \alias{[,matrix_list,missing,ANY,ANY-method}
@@ -32,6 +33,8 @@
 \S4method{\%*\%}{matrix_list,matrix_list}(x, y)
 
 \S4method{t}{matrix_list}(x)
+
+\S4method{dim}{matrix_list}(x)
 
 \S4method{[}{matrix_list,ANY,ANY,ANY}(x, i = 1:nrow(x[[1]]), j = 1:ncol(x[[1]]), drop = FALSE)
 
