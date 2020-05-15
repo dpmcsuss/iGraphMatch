@@ -13,10 +13,16 @@
 #' @param na.rm As in Matrix
 #' @param e1 As in Matrix
 #' @param e2 As in Matrix
+#' @param ml A list of matrices
 #' 
 #' @rdname matrix_list
 #' @importClassesFrom Matrix sparseMatrix
-matrix_list <- setClass("matrix_list", contains = "list")
+#' 
+setClass("matrix_list", contains = "list")
+
+#' @rdname matrix_list
+matrix_list <- matrix_list <- function(ml)
+  new("matrix_list", ml)
 
 # ml <- matrix_list(list(matrix(1:9, 3), matrix(0:8, 3)))
 # ml %*% ml

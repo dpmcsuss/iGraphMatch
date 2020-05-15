@@ -30,6 +30,8 @@
 \alias{-,matrix_list,missing-method}
 \title{Lists of Matrices}
 \usage{
+matrix_list(ml)
+
 \S4method{\%*\%}{matrix_list,matrix_list}(x, y)
 
 \S4method{t}{matrix_list}(x)
@@ -79,6 +81,8 @@
 \S4method{-}{matrix_list,missing}(e1, e2)
 }
 \arguments{
+\item{ml}{A list of matrices}
+
 \item{x}{As in Matrix}
 
 \item{y}{As in Matrix}

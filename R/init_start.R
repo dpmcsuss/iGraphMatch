@@ -11,15 +11,8 @@
 #' input should be in the form of a matrix or a data frame, with the first column being the
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 #' Note that if there are seeds in graphs, seeds should be put before non-seeds.
-#' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}. Needed only when start is
-#' convex.
-#' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}. Needed only when start is
-#' convex.
-#' @param seeds A logical vector. \code{TRUE} indicates the corresponding vertex is a seed. Needed
-#' only when start is convex.
-#' @param g A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
-#' barycenter matrix.
-#'
+#' @param ... Arguments passed to other start functions
+#' 
 #' @rdname init_start
 #' @return \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
 #' matrix in the graph matching iteration. If conduct a soft seeding graph matching, returns a
@@ -89,6 +82,8 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     # maybe message/warning about this being a silly thing
     # to do
     if (exists("seeds")) {
+      # needed to avoid check problems
+      seeds <- eval(parse(text = "seeds"))
       nonseeds <- check_seeds(seeds, nv = nns + ns)$nonseeds
       start <- start[nonseeds$A, nonseeds$B]
     }

@@ -20,17 +20,7 @@ input should be in the form of a matrix or a data frame, with the first column b
 indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 Note that if there are seeds in graphs, seeds should be put before non-seeds.}
 
-\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}. Needed only when start is
-convex.}
-
-\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}. Needed only when start is
-convex.}
-
-\item{seeds}{A logical vector. \code{TRUE} indicates the corresponding vertex is a seed. Needed
-only when start is convex.}
-
-\item{g}{A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
-barycenter matrix.}
+\item{...}{Arguments passed to other start functions}
 }
 \value{
 \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
