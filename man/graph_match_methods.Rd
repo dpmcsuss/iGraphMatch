@@ -2,6 +2,7 @@
 % Please edit documentation in R/graph_match_methods.R
 \name{graph_match_FW}
 \alias{graph_match_FW}
+\alias{gm_indefinite}
 \alias{graph_match_convex}
 \alias{graph_match_PATH}
 \alias{graph_match_percolation}
@@ -12,6 +13,16 @@
 \title{Graph Match Methods}
 \usage{
 graph_match_FW(
+  A,
+  B,
+  seeds = NULL,
+  start = "convex",
+  max_iter = 20,
+  similarity = NULL,
+  lap_method = NULL
+)
+
+gm_indefinite(
   A,
   B,
   seeds = NULL,

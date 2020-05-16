@@ -144,10 +144,10 @@ rds_from_sim_start <- function(nns, ns = 0,
 rds_from_sim <- function(nns, sim) {
   if (inherits(sim, "sparseMatrix") &&
       "x" %in% slotNames(sim)) {
-    sim@x <- sim@x %*% stats::rt(Matrix::nnzero(sim), 1)
-    sinkhorn(sim)
+    sim@x <- sim@x %*% abs(stats::rnorm(Matrix::nnzero(sim), 1))
+    sinkhorn(sim, 40)
   } else {
-    sinkhorn(Matrix(stats::rt(nns ^ 2, 1), nns) * sim)
+    sinkhorn(Matrix(abs(stats::rnorm(nns ^ 2, 1)), nns) * sim, 40)
   }
 }
 

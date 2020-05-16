@@ -96,6 +96,8 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
 }
 
 
+# Func that takes a nns - nss dim matrix and returns
+# a nns dim matrix that incorporates soft seeds
 add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
   if (is.null(soft_seeds))
     return(start)

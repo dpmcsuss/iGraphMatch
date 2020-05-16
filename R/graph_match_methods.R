@@ -180,7 +180,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     num_iter = iter)
 }
 
-
+#' @rdname graph_match_methods
+gm_indefinite <- graph_match_FW
 
 #' @rdname graph_match_methods
 #' @return \code{graph_match_convex} returns a list of graph matching results,
@@ -202,10 +203,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
 #' @export
 #'
 #'
-graph_match_convex <- function(A, B, seeds = NULL, start = "bari", 
-                               max_iter = 100, similarity = NULL,
-                               tol = 1e-5, lap_method = NULL){
-
+graph_match_convex <- function(A, B, seeds = NULL, 
+  start = "bari", max_iter = 100, similarity = NULL,
+  tol = 1e-5, lap_method = NULL) {
   graph_pair <- check_graph(A, B)
   A <- matrix_list(graph_pair[[1]])
   B <- matrix_list(graph_pair[[2]])
