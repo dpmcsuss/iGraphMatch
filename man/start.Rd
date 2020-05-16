@@ -4,6 +4,7 @@
 \alias{bari_start}
 \alias{rds_sinkhorn_start}
 \alias{rds_perm_bari_start}
+\alias{rds_from_sim_start}
 \title{Start matrix initialization}
 \usage{
 bari_start(nns, ns = 0, soft_seeds = NULL)
@@ -11,6 +12,8 @@ bari_start(nns, ns = 0, soft_seeds = NULL)
 rds_sinkhorn_start(nns, ns = 0, soft_seeds = NULL, distribution = "runif")
 
 rds_perm_bari_start(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE)
+
+rds_from_sim_start(nns, ns = 0, soft_seeds = NULL, sim)
 }
 \arguments{
 \item{nns}{An integer. Number of non-seeds.}
@@ -27,10 +30,12 @@ that if there are seeds in graphs, seeds should be put before non-seeds.}
 matrix is sampled. Should input the name of the function for generating random deviates from that
 distribution.}
 
-\item{g}{A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
+\item{g}{A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
 barycenter matrix.}
 
 \item{is_splr}{should we return a splr matrix? (default = TRUE)}
+
+\item{sim}{nns x nns non-negative matrix.}
 }
 \value{
 \code{bari_start} returns a \code{nns-by-nns} matrix with 1's corresponding to the
@@ -41,6 +46,11 @@ with 1's corresponding to adaptive seeds.
 
 \code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 with 1's corresponding to adaptive seeds.
+
+\code{rds_from_sim_start} returns a doubly
+ stochastic Matrix given by sinkhorn algorithm applied to 
+ a matrix of iid t_1 entries scaled by sim. Note,
+ this ignores soft seeds.
 }
 \description{
 initialize the start matrix for graph matching iteration.
@@ -50,23 +60,23 @@ initialize the start matrix for graph matching iteration.
 bari_start(3)
 
 ## Case with correct soft seeds and input is a vector
-bari_start(nns=5,ns=3,soft_seeds=c(5,7,8))
+bari_start(nns=5, ns=3, soft_seeds=c(5, 7, 8))
 
 ## Case with erroneous soft seeds and the input is a matrix
-bari_start(nns=5,soft_seeds=matrix(c(2,4,2,3),nrow=2))
+bari_start(nns=5, soft_seeds=matrix(c(2, 4, 2, 3), nrow=2))
 
 ## Case without soft seeds
 rds_sinkhorn_start(5)
 
 ## Case with soft seeds and the input is a data frame
 rds_sinkhorn_start(nns=5,
-   soft_seeds = as.data.frame(matrix(c(2,4,2,3),nrow=2)),
+   soft_seeds = as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)),
    distribution = "rnorm")
 
 ## Case without soft seeds
 rds_perm_bari_start(nns=5)
 
 ## Case with soft seeds and the input is a data frame
-rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2,4,2,3),nrow=2)))
+rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
 
 }

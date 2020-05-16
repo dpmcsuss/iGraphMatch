@@ -76,7 +76,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   ns <- nrow(seeds)
   nn <- nv - ns
 
-  P <- init_start(start = start, nns = nn,
+  P <- init_start(start = start, nns = nn, ns = ns,
     A = A[[1]], B = B[[1]], seeds = seeds)
 
   iter <- 0

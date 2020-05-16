@@ -13,10 +13,16 @@
 #' @param na.rm As in Matrix
 #' @param e1 As in Matrix
 #' @param e2 As in Matrix
+#' @param ml A list of matrices
 #' 
 #' @rdname matrix_list
 #' @importClassesFrom Matrix sparseMatrix
-matrix_list <- setClass("matrix_list", contains = "list")
+#' 
+setClass("matrix_list", contains = "list")
+
+#' @rdname matrix_list
+matrix_list <- matrix_list <- function(ml)
+  new("matrix_list", ml)
 
 # ml <- matrix_list(list(matrix(1:9, 3), matrix(0:8, 3)))
 # ml %*% ml
@@ -35,14 +41,19 @@ setMethod("t", signature(x = "matrix_list"),
     matrix_list(lapply(x, t))
   })
 
-
+#' @rdname matrix_list
+setMethod("dim", signature(x = "matrix_list"),
+  function(x) {
+    dim(x[[1]])
+  }
+)
 
 
 #' @rdname matrix_list
 setMethod("[",
   signature(x="matrix_list",i = 'ANY', j = 'ANY', drop = 'ANY'),
   function(x, i = 1:nrow(x[[1]]), j = 1:ncol(x[[1]]), drop = FALSE) {
-    matrix_list(lapply(x, function(xl) xl[i, j, drop]))
+    matrix_list(lapply(x, function(xl) xl[i, j, drop = drop]))
   })
 
 
