@@ -66,9 +66,9 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
 sinkhorn <- function(m, niter=20){
   # m <- matrix(abs(runif(n^2)), n)
   for(i in 1:niter){
-    r <- Matrix::rowSums(m)
+    r <- Matrix::colSums(m)
     r[r == 0] <- 1
-    m <- t(Matrix::Diagonal(x = 1 / r) %*% m)
+    m <- t(m %*% Matrix::Diagonal(x = 1 / r))
   }
   m
 }
@@ -131,6 +131,12 @@ rds_perm_bari <- function(nns, g, is_splr = TRUE){
 #'  a matrix of iid t_1 entries scaled by sim. Note,
 #'  this ignores soft seeds.
 #' 
+#' @examples
+#' sim <- Matrix::rsparsematrix(10, 10, .4,
+#'  rand.x = function(n) rep(1,n))
+#' start_sparse <- rds_from_sim_start(10, sim)
+#' start_dense <- rds_from_sim_start(10, as.matrix(sim))
+#' 
 #' @export
 rds_from_sim_start <- function(nns, ns = 0,
     soft_seeds = NULL, sim) {
@@ -144,7 +150,7 @@ rds_from_sim_start <- function(nns, ns = 0,
 rds_from_sim <- function(nns, sim) {
   if (inherits(sim, "sparseMatrix") &&
       "x" %in% slotNames(sim)) {
-    sim@x <- sim@x %*% abs(stats::rnorm(Matrix::nnzero(sim), 1))
+    sim@x <- sim@x * abs(stats::rnorm(Matrix::nnzero(sim), 1))
     sinkhorn(sim, 40)
   } else {
     sinkhorn(Matrix(abs(stats::rnorm(nns ^ 2, 1)), nns) * sim, 40)

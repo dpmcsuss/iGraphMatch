@@ -79,4 +79,9 @@ rds_perm_bari_start(nns=5)
 ## Case with soft seeds and the input is a data frame
 rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
 
+sim <- Matrix::rsparsematrix(10, 10, .4,
+ rand.x = function(n) rep(1,n))
+start_sparse <- rds_from_sim_start(10, sim)
+start_dense <- rds_from_sim_start(10, as.matrix(sim))
+
 }

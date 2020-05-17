@@ -46,3 +46,8 @@ set_lap_method <- function(lap_method, totv1, totv2){
   }
   lap_method
 }
+
+
+project_to_ds <- function(m, max_iter, tol) {
+  # G_t <- [G_t + 1/n * (I - G_t + 11^T G_t/n)11^T - 11^T G_t/n)^+
+}
