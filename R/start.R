@@ -134,8 +134,8 @@ rds_perm_bari <- function(nns, g, is_splr = TRUE){
 #' @examples
 #' sim <- Matrix::rsparsematrix(10, 10, .4,
 #'  rand.x = function(n) rep(1,n))
-#' start_sparse <- rds_from_sim_start(10, sim)
-#' start_dense <- rds_from_sim_start(10, as.matrix(sim))
+#' start_sparse <- rds_from_sim_start(10, sim = sim)
+#' start_dense <- rds_from_sim_start(10, sim = as.matrix(sim))
 #' 
 #' @export
 rds_from_sim_start <- function(nns, ns = 0,
