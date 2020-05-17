@@ -1,4 +1,4 @@
-![http://travis-ci.com/github/dpmcsuss/iGraphMatch/](https://travis-ci.org/dpmcsuss/iGraphMatch.svg?branch=dev)
+[![](https://travis-ci.org/dpmcsuss/iGraphMatch.svg?branch=dev)](http://travis-ci.com/github/dpmcsuss/iGraphMatch/)
 
 # iGraphMatch
 
