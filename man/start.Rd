@@ -49,7 +49,7 @@ with 1's corresponding to adaptive seeds.
 
 \code{rds_from_sim_start} returns a doubly
  stochastic Matrix given by sinkhorn algorithm applied to 
- a matrix of iid t_1 entries scaled by sim. Note,
+ a matrix of iid log-normal with mu=sim. Note,
  this ignores soft seeds.
 }
 \description{
