@@ -128,7 +128,7 @@ rds_perm_bari <- function(nns, g, is_splr = TRUE){
 #'
 #' @return \code{rds_from_sim_start} returns a doubly
 #'  stochastic Matrix given by sinkhorn algorithm applied to 
-#'  a matrix of iid t_1 entries scaled by sim. Note,
+#'  a matrix of iid log-normal with mu=sim. Note,
 #'  this ignores soft seeds.
 #' 
 #' @examples
@@ -150,10 +150,10 @@ rds_from_sim_start <- function(nns, ns = 0,
 rds_from_sim <- function(nns, sim) {
   if (inherits(sim, "sparseMatrix") &&
       "x" %in% slotNames(sim)) {
-    sim@x <- sim@x * abs(stats::rnorm(Matrix::nnzero(sim), 1))
+    sim@x <- exp(sim@x + stats::rnorm(Matrix::nnzero(sim)) * 2)
     sinkhorn(sim, 40)
   } else {
-    sinkhorn(Matrix(abs(stats::rnorm(nns ^ 2, 1)), nns) * sim, 40)
+    sinkhorn(Matrix(exp(stats::rnorm(nns ^ 2, 1)), nns) + sim, 40)
   }
 }
 
