@@ -129,6 +129,16 @@
   <span class='kw'>lap_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )
 
+<span class='fu'>gm_indefinite</span>(
+  <span class='no'>A</span>,
+  <span class='no'>B</span>,
+  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"convex"</span>,
+  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>lap_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
+
 <span class='fu'>graph_match_convex</span>(
   <span class='no'>A</span>,
   <span class='no'>B</span>,
@@ -291,16 +301,16 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 
 #&gt; $corr
 #&gt;    corr_A corr_B
-#&gt; 1       1     10
+#&gt; 1       1      5
 #&gt; 2       2      6
-#&gt; 3       3      4
-#&gt; 4       4      3
-#&gt; 5       5      1
-#&gt; 6       6      9
+#&gt; 3       3      9
+#&gt; 4       4      4
+#&gt; 5       5      8
+#&gt; 6       6      3
 #&gt; 7       7      2
-#&gt; 8       8      8
-#&gt; 9       9      7
-#&gt; 10     10      5
+#&gt; 8       8      7
+#&gt; 9       9      1
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 0
@@ -308,33 +318,33 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; $P
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . . . . . . . 1
+#&gt;  [1,] . . . . 1 . . . . .
 #&gt;  [2,] . . . . . 1 . . . .
-#&gt;  [3,] . . . 1 . . . . . .
-#&gt;  [4,] . . 1 . . . . . . .
-#&gt;  [5,] 1 . . . . . . . . .
-#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [3,] . . . . . . . . 1 .
+#&gt;  [4,] . . . 1 . . . . . .
+#&gt;  [5,] . . . . . . . 1 . .
+#&gt;  [6,] . . 1 . . . . . . .
 #&gt;  [7,] . 1 . . . . . . . .
-#&gt;  [8,] . . . . . . . 1 . .
-#&gt;  [9,] . . . . . . 1 . . .
-#&gt; [10,] . . . . 1 . . . . .
+#&gt;  [8,] . . . . . . 1 . . .
+#&gt;  [9,] 1 . . . . . . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . . . . . . . 1
+#&gt;  [1,] . . . . 1 . . . . .
 #&gt;  [2,] . . . . . 1 . . . .
-#&gt;  [3,] . . . 1 . . . . . .
-#&gt;  [4,] . . 1 . . . . . . .
-#&gt;  [5,] 1 . . . . . . . . .
-#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [3,] . . . . . . . . 1 .
+#&gt;  [4,] . . . 1 . . . . . .
+#&gt;  [5,] . . . . . . . 1 . .
+#&gt;  [6,] . . 1 . . . . . . .
 #&gt;  [7,] . 1 . . . . . . . .
-#&gt;  [8,] . . . . . . . 1 . .
-#&gt;  [9,] . . . . . . 1 . . .
-#&gt; [10,] . . . . 1 . . . . .
+#&gt;  [8,] . . . . . . 1 . . .
+#&gt;  [9,] 1 . . . . . . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 6
+#&gt; [1] 8
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some known node pairs as seeds</span>
 <span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>10</span> <span class='kw'>&lt;=</span> <span class='fl'>3</span>
@@ -346,13 +356,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      5
-#&gt; 5       5      8
-#&gt; 6       6      4
-#&gt; 7       7      9
-#&gt; 8       8      7
-#&gt; 9       9      6
-#&gt; 10     10     10
+#&gt; 4       4      6
+#&gt; 5       5      5
+#&gt; 6       6      7
+#&gt; 7       7     10
+#&gt; 8       8      9
+#&gt; 9       9      8
+#&gt; 10     10      4
 #&gt; 
 #&gt; $ns
 #&gt; [1] 3
@@ -363,13 +373,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . . . 1 . .
-#&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . 1 . . . .
-#&gt; [10,] . . . . . . . . . 1
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] . . . . 1 . . . . .
+#&gt;  [6,] . . . . . . 1 . . .
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . . . . 1 .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . 1 . . . . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -377,70 +387,21 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . . . 1 . .
-#&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . 1 . . . .
-#&gt; [10,] . . . . . . . . . 1
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] . . . . 1 . . . . .
+#&gt;  [6,] . . . . . . 1 . . .
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . . . . 1 .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . 1 . . . . . .
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 3
+#&gt; [1] 4
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some incorrect seeds</span>
 <span class='no'>hard_seeds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
 <span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='no'>seeds</span>, <span class='kw'>nv</span> <span class='kw'>=</span> <span class='fl'>10</span>)$<span class='no'>seeds</span>),<span class='no'>hard_seeds</span>)
-<span class='fu'>graph_match_FW</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"convex"</span>)</div><div class='output co'>#&gt; $call
-#&gt; graph_match_FW(A = g1, B = g2, seeds = seeds, start = "convex")
-#&gt; 
-#&gt; $corr
-#&gt;    corr_A corr_B
-#&gt; 1       1      1
-#&gt; 2       2      2
-#&gt; 3       3      3
-#&gt; 4       4      5
-#&gt; 5       5      8
-#&gt; 6       6      4
-#&gt; 7       7      9
-#&gt; 8       8      7
-#&gt; 9       9      6
-#&gt; 10     10     10
-#&gt; 
-#&gt; $ns
-#&gt; [1] 5
-#&gt; 
-#&gt; $P
-#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                          
-#&gt;  [1,] 1 . . . . . . . . .
-#&gt;  [2,] . 1 . . . . . . . .
-#&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . . . 1 . .
-#&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . 1 . . . .
-#&gt; [10,] . . . . . . . . . 1
-#&gt; 
-#&gt; $D
-#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                          
-#&gt;  [1,] 1 . . . . . . . . .
-#&gt;  [2,] . 1 . . . . . . . .
-#&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . . . 1 . .
-#&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . 1 . . . .
-#&gt; [10,] . . . . . . . . . 1
-#&gt; 
-#&gt; $num_iter
-#&gt; [1] 3
-#&gt; </div><div class='input'>
+<span class='fu'>graph_match_FW</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"convex"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in Matrix::t(A[[ch]]) %*% P: Cholmod error 'A and B inner dimensions must match' at file ../MatrixOps/cholmod_ssmult.c, line 82</span></div><div class='input'>
  <span class='no'>gp_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>, <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.3</span>, <span class='fl'>.5</span>), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
  <span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>1</span>]])
  <span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>2</span>]])
@@ -456,96 +417,96 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 8        8      8
 #&gt; 9        9      9
 #&gt; 10      10     10
-#&gt; 11      11     85
-#&gt; 12      12     92
-#&gt; 13      13     45
-#&gt; 14      14     58
-#&gt; 15      15     76
+#&gt; 11      11     11
+#&gt; 12      12     12
+#&gt; 13      13     13
+#&gt; 14      14     14
+#&gt; 15      15     15
 #&gt; 16      16     16
 #&gt; 17      17     17
-#&gt; 18      18     65
-#&gt; 19      19     90
-#&gt; 20      20     97
-#&gt; 21      21     84
-#&gt; 22      22     61
+#&gt; 18      18     18
+#&gt; 19      19     19
+#&gt; 20      20     20
+#&gt; 21      21     21
+#&gt; 22      22     22
 #&gt; 23      23     23
 #&gt; 24      24     24
-#&gt; 25      25     87
-#&gt; 26      26     46
+#&gt; 25      25     25
+#&gt; 26      26     26
 #&gt; 27      27     27
-#&gt; 28      28     64
-#&gt; 29      29     86
-#&gt; 30      30     25
-#&gt; 31      31     51
+#&gt; 28      28     28
+#&gt; 29      29     29
+#&gt; 30      30     30
+#&gt; 31      31     31
 #&gt; 32      32     32
 #&gt; 33      33     33
 #&gt; 34      34     34
 #&gt; 35      35     35
 #&gt; 36      36     36
-#&gt; 37      37     81
-#&gt; 38      38     70
-#&gt; 39      39     38
-#&gt; 40      40     99
-#&gt; 41      41     26
-#&gt; 42      42     68
+#&gt; 37      37     37
+#&gt; 38      38     38
+#&gt; 39      39     39
+#&gt; 40      40     40
+#&gt; 41      41     41
+#&gt; 42      42     42
 #&gt; 43      43     43
-#&gt; 44      44     72
-#&gt; 45      45     83
-#&gt; 46      46     21
-#&gt; 47      47     15
+#&gt; 44      44     44
+#&gt; 45      45     45
+#&gt; 46      46     46
+#&gt; 47      47     47
 #&gt; 48      48     48
 #&gt; 49      49     49
-#&gt; 50      50     98
-#&gt; 51      51     80
+#&gt; 50      50     50
+#&gt; 51      51     51
 #&gt; 52      52     52
-#&gt; 53      53     54
-#&gt; 54      54     60
+#&gt; 53      53     53
+#&gt; 54      54     54
 #&gt; 55      55     55
 #&gt; 56      56     56
-#&gt; 57      57     94
-#&gt; 58      58     14
-#&gt; 59      59     66
-#&gt; 60      60     30
-#&gt; 61      61     77
-#&gt; 62      62    100
-#&gt; 63      63     53
-#&gt; 64      64     73
-#&gt; 65      65     62
-#&gt; 66      66     50
-#&gt; 67      67     22
-#&gt; 68      68     63
+#&gt; 57      57     57
+#&gt; 58      58     58
+#&gt; 59      59     59
+#&gt; 60      60     60
+#&gt; 61      61     61
+#&gt; 62      62     62
+#&gt; 63      63     63
+#&gt; 64      64     64
+#&gt; 65      65     65
+#&gt; 66      66     66
+#&gt; 67      67     67
+#&gt; 68      68     68
 #&gt; 69      69     69
-#&gt; 70      70     57
-#&gt; 71      71     82
-#&gt; 72      72     74
-#&gt; 73      73     71
-#&gt; 74      74     29
+#&gt; 70      70     70
+#&gt; 71      71     71
+#&gt; 72      72     72
+#&gt; 73      73     73
+#&gt; 74      74     74
 #&gt; 75      75     75
-#&gt; 76      76     19
-#&gt; 77      77     13
-#&gt; 78      78     44
-#&gt; 79      79     42
-#&gt; 80      80     93
-#&gt; 81      81     96
-#&gt; 82      82     12
-#&gt; 83      83     89
-#&gt; 84      84     47
-#&gt; 85      85     37
-#&gt; 86      86     67
-#&gt; 87      87     59
+#&gt; 76      76     76
+#&gt; 77      77     77
+#&gt; 78      78     78
+#&gt; 79      79     79
+#&gt; 80      80     80
+#&gt; 81      81     81
+#&gt; 82      82     82
+#&gt; 83      83     83
+#&gt; 84      84     84
+#&gt; 85      85     85
+#&gt; 86      86     86
+#&gt; 87      87     87
 #&gt; 88      88     88
-#&gt; 89      89     28
-#&gt; 90      90     79
+#&gt; 89      89     89
+#&gt; 90      90     90
 #&gt; 91      91     91
-#&gt; 92      92     31
-#&gt; 93      93     95
-#&gt; 94      94     39
-#&gt; 95      95     40
-#&gt; 96      96     11
-#&gt; 97      97     78
-#&gt; 98      98     41
-#&gt; 99      99     20
-#&gt; 100    100     18</div><div class='input'>
+#&gt; 92      92     92
+#&gt; 93      93     93
+#&gt; 94      94     94
+#&gt; 95      95     95
+#&gt; 96      96     96
+#&gt; 97      97     97
+#&gt; 98      98     98
+#&gt; 99      99     99
+#&gt; 100    100    100</div><div class='input'>
 <span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>10</span> <span class='kw'>&lt;=</span> <span class='fl'>3</span>
 <span class='fu'>graph_match_convex</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_convex(A = g1, B = g2, seeds = seeds)
@@ -555,13 +516,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      7
-#&gt; 5       5      9
-#&gt; 6       6     10
-#&gt; 7       7      4
-#&gt; 8       8      6
-#&gt; 9       9      5
-#&gt; 10     10      8
+#&gt; 4       4      8
+#&gt; 5       5     10
+#&gt; 6       6      5
+#&gt; 7       7      9
+#&gt; 8       8      4
+#&gt; 9       9      6
+#&gt; 10     10      7
 #&gt; 
 #&gt; $ns
 #&gt; [1] 3
@@ -572,13 +533,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . . . 1 . . .
-#&gt;  [5,] . . . . . . . . 1 .
-#&gt;  [6,] . . . . . . . . . 1
-#&gt;  [7,] . . . 1 . . . . . .
-#&gt;  [8,] . . . . . 1 . . . .
-#&gt;  [9,] . . . . 1 . . . . .
-#&gt; [10,] . . . . . . . 1 . .
+#&gt;  [4,] . . . . . . . 1 . .
+#&gt;  [5,] . . . . . . . . . 1
+#&gt;  [6,] . . . . 1 . . . . .
+#&gt;  [7,] . . . . . . . . 1 .
+#&gt;  [8,] . . . 1 . . . . . .
+#&gt;  [9,] . . . . . 1 . . . .
+#&gt; [10,] . . . . . . 1 . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -586,24 +547,24 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . .         .         .         .         .         .        
 #&gt;  [2,] . 1 . .         .         .         .         .         .        
 #&gt;  [3,] . . 1 .         .         .         .         .         .        
-#&gt;  [4,] . . . 0.1351342 0.1351342 0.1351342 0.1891950 0.1351342 0.1351342
-#&gt;  [5,] . . . 0.1351342 0.1351342 0.1351342 0.1351342 0.1351342 0.1891950
-#&gt;  [6,] . . . 0.1351342 0.1351342 0.1351342 0.1351342 0.1351342 0.1351342
-#&gt;  [7,] . . . 0.1891950 0.1351342 0.1351342 0.1351342 0.1351342 0.1351342
-#&gt;  [8,] . . . 0.1351342 0.1351342 0.1891950 0.1351342 0.1351342 0.1351342
-#&gt;  [9,] . . . 0.1351342 0.1891950 0.1351342 0.1351342 0.1351342 0.1351342
-#&gt; [10,] . . . 0.1351342 0.1351342 0.1351342 0.1351342 0.1891950 0.1351342
+#&gt;  [4,] . . . 0.1434458 0.1434458 0.1434458 0.1252380 0.1575330 0.1434458
+#&gt;  [5,] . . . 0.1434458 0.1434458 0.1252380 0.1434458 0.1434458 0.1434458
+#&gt;  [6,] . . . 0.1434458 0.1393252 0.1434458 0.1434458 0.1434458 0.1434458
+#&gt;  [7,] . . . 0.1434458 0.1434458 0.1434458 0.1434458 0.1252380 0.1575330
+#&gt;  [8,] . . . 0.1575330 0.1434458 0.1434458 0.1434458 0.1434458 0.1434458
+#&gt;  [9,] . . . 0.1252380 0.1434458 0.1575330 0.1434458 0.1434458 0.1434458
+#&gt; [10,] . . . 0.1434458 0.1434458 0.1434458 0.1575330 0.1434458 0.1252380
 #&gt;                
 #&gt;  [1,] .        
 #&gt;  [2,] .        
 #&gt;  [3,] .        
-#&gt;  [4,] 0.1351342
-#&gt;  [5,] 0.1351342
-#&gt;  [6,] 0.1891950
-#&gt;  [7,] 0.1351342
-#&gt;  [8,] 0.1351342
-#&gt;  [9,] 0.1351342
-#&gt; [10,] 0.1351342
+#&gt;  [4,] 0.1434458
+#&gt;  [5,] 0.1575330
+#&gt;  [6,] 0.1434458
+#&gt;  [7,] 0.1434458
+#&gt;  [8,] 0.1252380
+#&gt;  [9,] 0.1434458
+#&gt; [10,] 0.1434458
 #&gt; 
 #&gt; $num_iter
 #&gt; [1] 100
@@ -651,28 +612,28 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                              
-#&gt;  [1,] 0.7549729 .         . .         .         .         .         .        
-#&gt;  [2,] 0.2450271 0.7549729 . .         .         .         .         .        
-#&gt;  [3,] .         .         1 .         .         .         .         .        
-#&gt;  [4,] .         0.2450271 . 0.7549729 .         .         .         .        
-#&gt;  [5,] .         .         . 0.2450271 0.7549729 .         .         .        
-#&gt;  [6,] .         .         . .         .         0.7549729 .         .        
-#&gt;  [7,] .         .         . .         0.2450271 .         0.7549729 .        
-#&gt;  [8,] .         .         . .         .         0.2450271 .         0.7549729
-#&gt;  [9,] .         .         . .         .         .         0.2450271 .        
-#&gt; [10,] .         .         . .         .         .         .         0.2450271
-#&gt;                          
-#&gt;  [1,] 0.2450271 .        
-#&gt;  [2,] .         .        
-#&gt;  [3,] .         .        
-#&gt;  [4,] .         .        
-#&gt;  [5,] .         .        
-#&gt;  [6,] .         0.2450271
-#&gt;  [7,] .         .        
-#&gt;  [8,] .         .        
-#&gt;  [9,] 0.7549729 .        
-#&gt; [10,] .         0.7549729
+#&gt;                                                                                
+#&gt;  [1,] 0.7564103 .         .         .         0.2435897 . . .         .        
+#&gt;  [2,] .         0.7564103 .         .         .         . . .         .        
+#&gt;  [3,] .         0.2435897 0.7564103 .         .         . . .         .        
+#&gt;  [4,] .         .         .         0.7564103 .         . . 0.2435897 .        
+#&gt;  [5,] .         .         .         0.2435897 0.7564103 . . .         .        
+#&gt;  [6,] .         .         .         .         .         1 . .         .        
+#&gt;  [7,] .         .         .         .         .         . 1 .         .        
+#&gt;  [8,] .         .         0.2435897 .         .         . . 0.7564103 .        
+#&gt;  [9,] 0.2435897 .         .         .         .         . . .         0.7564103
+#&gt; [10,] .         .         .         .         .         . . .         0.2435897
+#&gt;                
+#&gt;  [1,] .        
+#&gt;  [2,] 0.2435897
+#&gt;  [3,] .        
+#&gt;  [4,] .        
+#&gt;  [5,] .        
+#&gt;  [6,] .        
+#&gt;  [7,] .        
+#&gt;  [8,] .        
+#&gt;  [9,] .        
+#&gt; [10,] 0.7564103
 #&gt; 
 #&gt; $iter
 #&gt; [1] 2
@@ -686,23 +647,22 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; graph_match_percolation(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
-#&gt;    corr_A corr_B
-#&gt; 1       1      1
-#&gt; 2       2      2
-#&gt; 3       3      3
-#&gt; 4       4      4
-#&gt; 5       5      5
-#&gt; 6       6      7
-#&gt; 7       7      6
-#&gt; 8       8      9
-#&gt; 9       9      8
-#&gt; 10     10     10
+#&gt;   corr_A corr_B
+#&gt; 1      1      1
+#&gt; 2      2      2
+#&gt; 3      3      3
+#&gt; 4      4      4
+#&gt; 5      5      5
+#&gt; 6      6      8
+#&gt; 7      8      7
+#&gt; 8      9      9
+#&gt; 9     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt;  [1]  1  2  3  4  5  9  6  7 10  8
+#&gt; [1] 1 2 3 4 5 8 7 9 6
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using Expand When Stuck graph matching method</span>
 <span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span>
@@ -710,23 +670,22 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; graph_match_ExpandWhenStuck(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
-#&gt;    corr_A corr_B
-#&gt; 1       1      1
-#&gt; 2       2      2
-#&gt; 3       3      3
-#&gt; 4       4      4
-#&gt; 5       5      5
-#&gt; 6       6      7
-#&gt; 7       7      6
-#&gt; 8       8      9
-#&gt; 9       9      8
-#&gt; 10     10     10
+#&gt;   corr_A corr_B
+#&gt; 1      1      1
+#&gt; 2      2      2
+#&gt; 3      3      3
+#&gt; 4      4      4
+#&gt; 5      5      5
+#&gt; 6      6      8
+#&gt; 7      8      7
+#&gt; 8      9      9
+#&gt; 9     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt;  [1]  1  2  3  4  5  9  6  7 10  8
+#&gt; [1] 1 2 3 4 5 8 6 9 7
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using soft percolation graph matching method</span>
 <span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span>
@@ -735,23 +694,22 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;     max_iter = 2)
 #&gt; 
 #&gt; $corr
-#&gt;    corr_A corr_B
-#&gt; 1       1      1
-#&gt; 2       2      2
-#&gt; 3       3      3
-#&gt; 4       4      4
-#&gt; 5       5      5
-#&gt; 9       6      8
-#&gt; 6       7     10
-#&gt; 7       8      9
-#&gt; 10      9      7
-#&gt; 8      10      6
+#&gt;   corr_A corr_B
+#&gt; 1      1      1
+#&gt; 2      2      2
+#&gt; 3      3      3
+#&gt; 4      4      4
+#&gt; 5      5      5
+#&gt; 9      6      8
+#&gt; 6      8      7
+#&gt; 8      9      9
+#&gt; 7     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt;  [1]  1  2  3  4  5  9  6  7 10  8
+#&gt; [1] 1 2 3 4 5 9 6 8 7
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using IsoRank algorithm</span>
 <span class='no'>startm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span>)

@@ -121,11 +121,16 @@ It can do various things like arethmatic and
 indexing, all of which are done element-wise.</p>
     </div>
 
-    <pre class="usage"># S4 method for matrix_list,matrix_list
+    <pre class="usage">matrix_list(ml)
+
+# S4 method for matrix_list,matrix_list
 %*%(x, y)
 
 # S4 method for matrix_list
 t(x)
+
+# S4 method for matrix_list
+dim(x)
 
 # S4 method for matrix_list,ANY,ANY,ANY
 [(x, i = 1:nrow(x[[1]]), j = 1:ncol(x[[1]]), drop = FALSE)
@@ -193,6 +198,10 @@ sum(x, na.rm = FALSE)
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>ml</th>
+      <td><p>A list of matrices</p></td>
+    </tr>
     <tr>
       <th>x</th>
       <td><p>As in Matrix</p></td>

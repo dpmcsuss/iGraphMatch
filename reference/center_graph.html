@@ -117,7 +117,7 @@ equal to -1 or 1, center the adjacency matrix by using Universal Singular Value 
 equal to -1 or 1, center the adjacency matrix by using Universal Singular Value Thresholding.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>center_graph</span>(<span class='no'>A</span>, <span class='no'>scheme</span>, <span class='kw'>use_splr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>center_graph</span>(<span class='no'>A</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>1</span>, <span class='fl'>1</span>), <span class='kw'>use_splr</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,11 +128,7 @@ equal to -1 or 1, center the adjacency matrix by using Universal Singular Value 
     </tr>
     <tr>
       <th>scheme</th>
-      <td><p>A number or a character. Type of matrix to return. If approximatedly center
-the adjacency matrix using Universal Singular Value Thresholding, specify <code>scheme</code> with
-the number of singular values used to estimate the expectation of adjacency matrix. Suitable
-choice of scheme can be obtained with rank of order logn, where n is the dimension of A, expecially
-in the setting of latent space graph models.</p></td>
+      <td><p>A character vector, number or pair of numbers. Default c(-1, 1). See Details.</p></td>
     </tr>
     <tr>
       <th>use_splr</th>
@@ -143,11 +139,21 @@ centered graph.  Defaults to TRUE.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>center_graph</code> returns a centered adjacency matrix. 'Naive' scheme returns the
-original adjacency matrix. 'Center' scheme returns a centered adjacency matrix with entries
-equal to -1 or 1 where 1 corresponds to an edge. Scheme specified by a number returns a centered
-adjacency matrix, which is calcalated by: A - Q, where Q is an approximate
-estimation of the expectation of A by using Singular Value Thresholding.</p>
+    <p>centered adjacency matrix as a splrMatrix if
+ useSplr = TRUE, otherwise as a Matrix object.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The options for scheme are</p><ul>
+<li><p>"naive" Returns original A</p></li>
+<li><p>Integer: Returns \(A - A_{scheme}\) where
+   \(A_{scheme}\) is the best rank-scheme approximation
+   of A.</p></li>
+<li><p>A pair of scalars: Returns s * A + a such that the
+   minimum of the returned matrix is min(scheme) and the
+   maximum is max(scheme).</p></li>
+<li><p>"center": Same as scheme=c(-1,1)</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>corr</span> <span class='kw'>=</span> <span class='fl'>.5</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>.5</span>)$<span class='no'>graph1</span>
@@ -238,45 +244,45 @@ estimation of the expectation of A by using Singular Value Thresholding.</p>
 #&gt;  [7,] 0.1679351 -0.24252161
 #&gt;  [8,] 0.4308447  0.41116125
 #&gt;  [9,] 0.2686101  0.37173532
-#&gt; [10,] 0.3144246 -0.43533479</div><div class='input'><span class='fu'>center_graph</span>(<span class='no'>A</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Sparse part
+#&gt; [10,] 0.3144246 -0.43533479</div><div class='input'><span class='fu'>center_graph</span>(<span class='no'>A</span>, <span class='kw'>scheme</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>4</span>, <span class='fl'>2</span>))</div><div class='output co'>#&gt; Sparse part
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . 1 . 1 . 1 1 .
-#&gt;  [2,] . . . . . 1 . . . 1
-#&gt;  [3,] . . . 1 1 1 . 1 1 .
-#&gt;  [4,] 1 . 1 . 1 . 1 1 1 1
-#&gt;  [5,] . . 1 1 . 1 . 1 . 1
-#&gt;  [6,] 1 1 1 . 1 . . 1 . .
-#&gt;  [7,] . . . 1 . . . 1 . .
-#&gt;  [8,] 1 . 1 1 1 1 1 . . 1
-#&gt;  [9,] 1 . 1 1 . . . . . 1
-#&gt; [10,] . 1 . 1 1 . . 1 1 .
+#&gt;  [1,] . . . 6 . 6 . 6 6 .
+#&gt;  [2,] . . . . . 6 . . . 6
+#&gt;  [3,] . . . 6 6 6 . 6 6 .
+#&gt;  [4,] 6 . 6 . 6 . 6 6 6 6
+#&gt;  [5,] . . 6 6 . 6 . 6 . 6
+#&gt;  [6,] 6 6 6 . 6 . . 6 . .
+#&gt;  [7,] . . . 6 . . . 6 . .
+#&gt;  [8,] 6 . 6 6 6 6 6 . . 6
+#&gt;  [9,] 6 . 6 6 . . . . . 6
+#&gt; [10,] . 6 . 6 6 . . 6 6 .
 #&gt; plus left factor
 #&gt; 10 x 1 Matrix of class "dgeMatrix"
-#&gt;             [,1]
-#&gt;  [1,] -0.2798129
-#&gt;  [2,] -0.1208634
-#&gt;  [3,] -0.3499150
-#&gt;  [4,] -0.4253997
-#&gt;  [5,] -0.3574273
-#&gt;  [6,] -0.3018170
-#&gt;  [7,] -0.1679351
-#&gt;  [8,] -0.4308447
-#&gt;  [9,] -0.2686101
-#&gt; [10,] -0.3144246
+#&gt;       [,1]
+#&gt;  [1,]   -4
+#&gt;  [2,]   -4
+#&gt;  [3,]   -4
+#&gt;  [4,]   -4
+#&gt;  [5,]   -4
+#&gt;  [6,]   -4
+#&gt;  [7,]   -4
+#&gt;  [8,]   -4
+#&gt;  [9,]   -4
+#&gt; [10,]   -4
 #&gt; times right factor transpose
 #&gt; 10 x 1 Matrix of class "dgeMatrix"
-#&gt;            [,1]
-#&gt;  [1,] 0.2798129
-#&gt;  [2,] 0.1208634
-#&gt;  [3,] 0.3499150
-#&gt;  [4,] 0.4253997
-#&gt;  [5,] 0.3574273
-#&gt;  [6,] 0.3018170
-#&gt;  [7,] 0.1679351
-#&gt;  [8,] 0.4308447
-#&gt;  [9,] 0.2686101
-#&gt; [10,] 0.3144246</div><div class='input'>
+#&gt;       [,1]
+#&gt;  [1,]    1
+#&gt;  [2,]    1
+#&gt;  [3,]    1
+#&gt;  [4,]    1
+#&gt;  [5,]    1
+#&gt;  [6,]    1
+#&gt;  [7,]    1
+#&gt;  [8,]    1
+#&gt;  [9,]    1
+#&gt; [10,]    1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

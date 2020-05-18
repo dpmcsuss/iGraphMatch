@@ -117,15 +117,16 @@ based on several evaluation metrics associated with nodes and edges of two graph
 based on several evaluation metrics associated with nodes and edges of two graphs.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>match_report</span>(<span class='no'>object</span>, <span class='no'>A</span>, <span class='no'>B</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>match_report</span>(<span class='no'>match</span>, <span class='no'>A</span>, <span class='no'>B</span>, <span class='kw'>true_label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>directed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>edge_match_info</span>(<span class='no'>corr</span>, <span class='no'>A</span>, <span class='no'>B</span>, <span class='kw'>directed</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>object</th>
-      <td><p>A list. calls the matching result of applying a specific graph matching
-algorithm.</p></td>
+      <th>match</th>
+      <td><p>Graph matching result see <a href='graph_match_methods.html'>graph match methods</a>.</p></td>
     </tr>
     <tr>
       <th>A</th>
@@ -136,19 +137,41 @@ algorithm.</p></td>
       <td><p>A matrix or an igraph object. Adjacency matrix of \(G_2\).</p></td>
     </tr>
     <tr>
-      <th>label</th>
-      <td><p>A vector. NULL if the true correspondence between two graphs is unknown. 
-A vector indicating the true correspondence in the second graph if the true correspondence 
-is known,</p></td>
+      <th>true_label</th>
+      <td><p>A vector. NULL if the true correspondence
+between two graphs is unknown. A vector indicating the
+true correspondence in the second graph if the true
+correspondence is known.#'</p></td>
+    </tr>
+    <tr>
+      <th>directed</th>
+      <td><p>Whether the graphs should be treated as directed 
+or undirected. NULL defaults to !isSymmetric(A).</p></td>
+    </tr>
+    <tr>
+      <th>corr</th>
+      <td><p>Correspondence data.frame as given by match$corr</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>match_report</code> returns a list of matching performance evaluation metrics
-including number of matches, true matches, common edges, common non-edges, edge correctness
-which is the fraction of common edges over number of edges in the first graph, and the
-objective value ||A-PBP^T||_F.</p>
+    <p><code>match_report</code> returns the match object
+ evaluation metrics including number of matches, true matches,
+ and a data frame with edge correctness information.
+ <code>edge_match_info</code> returns this data frame with columns
+ for number of common edges, missing edges, extra edges, and
+ common non-edges, and Frobenius norm.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For multilayered graphs information is given per layer.
+ For weighted graphs the counts are based on non-zero entries.
+ Equality of weights is not tested.
+ If you want to ignore seeds in the edge match info you must
+ remove them from corr/match$corr.</p>
+    <h2 class="hasAnchor" id="todo"><a class="anchor" href="#todo"></a>TODO</h2>
+
+    <p>support weighted? loops? ...?</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>graphs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>10</span>, <span class='fl'>.5</span>, <span class='fl'>.3</span>)
@@ -158,12 +181,24 @@ objective value ||A-PBP^T||_F.</p>
 <span class='fu'>match_report</span>(<span class='no'>res</span>, <span class='no'>A</span>, <span class='no'>B</span>)</div><div class='output co'>#&gt; Call: 
 #&gt; graph_match_percolation(A = A, B = B, seeds = 1:4)
 #&gt; 
-#&gt; # Matches: 0</div><div class='output co'>#&gt; <span class='message'>&lt;sparse&gt;[ &lt;logic&gt; ] : .M.sub.i.logical() maybe inefficient</span></div><div class='output co'>#&gt; <span class='message'>&lt;sparse&gt;[ &lt;logic&gt; ] : .M.sub.i.logical() maybe inefficient</span></div><div class='output co'>#&gt; 
-#&gt; # Common Edges:  0 
-#&gt; # Common Non-edges:  14
-#&gt; Edge Correctness:  0
-#&gt; Objective Value:  1.414214</div><div class='input'>
-</div></pre>
+#&gt; # Matches: 0
+#&gt;                    
+#&gt; common_edges      0
+#&gt; missing_edges     1
+#&gt; extra_edges       1
+#&gt; common_non_edges 43
+#&gt; fnorm             2
+#&gt; </div><div class='input'>
+<span class='no'>gp_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>,
+   <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.8</span>, <span class='fl'>.3</span>),
+   <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+<span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='no'>corr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>corr_A</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>, <span class='kw'>corr_B</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>)
+<span class='fu'>edge_match_info</span>(<span class='no'>corr</span>, <span class='no'>A</span>, <span class='no'>B</span>)</div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
+#&gt; 1     1         1330           204         197             3219 28.31960
+#&gt; 2     2         1293           219         186             3252 28.46050
+#&gt; 3     3         1240           230         200             3280 29.32576</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
