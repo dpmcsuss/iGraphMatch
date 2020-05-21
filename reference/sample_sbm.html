@@ -182,9 +182,9 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>pm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>( <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.1</span>, <span class='fl'>.001</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.001</span>, <span class='fl'>.05</span>) )
 <span class='fu'>sample_correlated_sbm_pair</span>(<span class='fl'>1000</span>, <span class='kw'>pref.matrix</span><span class='kw'>=</span><span class='no'>pm</span>, <span class='kw'>block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), <span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 4acf1cc U--- 1000 16870 -- Stochastic block-model
+#&gt; IGRAPH ef48da1 U--- 1000 16870 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 4acf1cc:
+#&gt; + edges from ef48da1:
 #&gt;  [1]  2-- 3  1-- 6  3-- 9  3--10  9--10  5--11  1--12  3--12  5--12  8--12
 #&gt; [11]  6--13  9--14 13--14  9--16 15--16  4--17  5--17  2--18  7--18 11--18
 #&gt; [21]  3--19  7--19 17--19 16--20 12--21  2--22  9--22 10--22  2--23 18--24
@@ -196,10 +196,10 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 6305832 U--- 1000 17017 -- Stochastic block-model
+#&gt; IGRAPH 45a9278 U--- 1000 17017 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from 6305832:
+#&gt; + edges from 45a9278:
 #&gt;  [1] 997-- 998 994-- 995 992-- 997 991--1000 988--1000 988-- 996 987-- 995
 #&gt;  [8] 987-- 992 986-- 997 986-- 993 986-- 990 985-- 989 982-- 993 982-- 990
 #&gt; [15] 982-- 988 980-- 999 980-- 990 980-- 988 979-- 994 976-- 995 975-- 980
@@ -210,9 +210,9 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; + ... omitted several edges
 #&gt; </div><div class='input'><span class='fu'>sample_correlated_sbm_pair_w_junk</span>(<span class='fl'>1000</span>, <span class='kw'>pref.matrix</span><span class='kw'>=</span><span class='no'>pm</span>, <span class='kw'>block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), <span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>,
 <span class='kw'>core.block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>200</span>,<span class='fl'>500</span>))</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 4bfce8f U--- 1000 16725 -- Stochastic block-model
+#&gt; IGRAPH 31f2c2b U--- 1000 16725 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 4bfce8f:
+#&gt; + edges from 31f2c2b:
 #&gt;  [1]  4-- 6  3-- 9  6-- 9  4--10  7--10 10--11  7--13 11--15  8--16 12--16
 #&gt; [11]  7--18  9--18 11--18  9--20 12--20  3--21  8--21 16--21 20--21  2--22
 #&gt; [21]  3--22  9--22  3--23  4--23 21--23 22--23  1--24 14--24  9--25 13--26
@@ -224,10 +224,10 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 0fd358f U--- 1000 16879 -- Stochastic block-model
+#&gt; IGRAPH e6d43be U--- 1000 16879 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from 0fd358f:
+#&gt; + edges from e6d43be:
 #&gt;  [1] 997-- 998 995--1000 994-- 998 993-- 996 990-- 996 989-- 999 988-- 998
 #&gt;  [8] 986-- 993 984-- 998 982-- 991 982-- 988 981-- 984 980-- 995 980-- 985
 #&gt; [15] 979-- 995 979-- 990 977-- 990 976-- 993 976-- 983 976-- 982 972-- 994
