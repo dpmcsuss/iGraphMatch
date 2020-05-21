@@ -1,3 +1,5 @@
+
+
 #' @title Matching performance summary
 #'
 #' @description Get a summary of the matching result and measures of the matching performance
@@ -106,7 +108,8 @@ edge_match_info <- function(corr, A, B,
   graph_pair <- check_graph(A, B)
   A <- graph_pair$g1
   B <- graph_pair$g2
-  nv <- min(graph_pair$totv1, graph_pair$totv2)
+  nv <- min(graph_pair$totv1, graph_pair$totv2,
+    nrow(corr))
 
 
   if (is.null(directed)) {
@@ -161,20 +164,110 @@ edge_match_info <- function(corr, A, B,
 
 
 
+#' Plotting methods for visualizing matches
+#' 
+#' Two functions are provided, \code{match_plot_igraph}
+#' which makes a ball and stick plot from igraph objects
+#' and \code{match_plot_matrix} which shows an adjacency
+#' matrix plot.
 #' 
 #' 
+#' @param A First graph. For \code{match_plot_igraph}
+#'  must be an igraph object.
+#' @param B First graph. For \code{match_plot_igraph}
+#'  must be an igraph object.
+#' @param match result from a match call
+#' @param color Whether to color edges according to which
+#'  graph(s) they are in.
+#' @param linetype Whether to set edge linetypes according
+#'  to which graph(s) they are in.
+#' 
+#' @returns Both functions return values invisibly.
+#' \code{match_plot_igraph} returns the union of the
+#'  matched graphs as an igraph object with additional
+#'  edge attributes \code{edge_match, color, lty}.
+#'  \code{match_plot_matrix} returns the difference between
+#'  the matched graphs. 
+#' 
+#' @details
+#' The plots can be recreated from the output with the code \cr
+#' \code{plot(g)} \cr
+#' for \code{g <- match_plot_igraph(...)} and  \cr
+#' \code{col <- colorRampPalette(c("#AA4444", "#888888", "#44AA44"))} \cr
+#' \code{image(m, col.regions = col(256))} \cr
+#' for \code{m <- match_plot_match(...)}.
+#' 
+#' This only plots and returns the matched vertices.
+#' 
+#' @rdname plot_methods
+#' 
+#' @examples
+#' graphs <- sample_correlated_gnp_pair(10, .8, .3)
+#' A <- graphs$graph1
+#' B <- graphs$graph2
+#' res <- graph_match_percolation(A, B, 1:4)
+#' 
+#' match_plot_igraph(A, B, res)
+#' match_plot_matrix(A, B, res)
 #' @export
-match_plot_igraph <- function(A, B, match) {
+match_plot_igraph <- function(A, B, match,
+  color = TRUE, linetype = TRUE) {
+
   ch <- check_graph(A, B, same_order = FALSE, as_igraph = TRUE)
   
+  nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
   
-  if (ch$totv1 > ch$totv2){
-    A <- 
+
+  corr_A <- match$corr$corr_A[seq(nv)]
+  corr_B <- match$corr$corr_B[seq(nv)]
+  
+  A <- igraph::induced_subgraph(A, corr_A)
+  B <- igraph::induced_subgraph(B, corr_B)
+
+
+
+  igraph::E(A)$in_A <- "A"
+  igraph::E(B)$in_B <- "B"
+
+  g <- igraph::union(A, B, byname = FALSE)
+  igraph::E(g)$edge_match <- 
+    ifelse(is.na(igraph::E(g)$in_B), "Only A",
+      ifelse(is.na(igraph::E(g)$in_A), "Only B", "Both"))
+  g <- igraph::delete_edge_attr(g, "in_A")
+  g <- igraph::delete_edge_attr(g, "in_B")
+
+  pal <- c("#888888", "#44AA44", "#AA4444")
+  igraph::E(g)$color <- pal[1]
+  igraph::E(g)$lty <- 1
+  if (color) {
+    igraph::E(g)$color <- 
+      pal[as.numeric(as.factor(igraph::E(g)$edge_match))]
+  }
+  if (linetype) {
+    igraph::E(g)$lty <- 
+      as.numeric(as.factor(igraph::E(g)$edge_match))
   }
 
-  if (ch$totv2 > ch$totv1){
-  }
+  plot(g)
+  invisible(g)
+}
 
-  V(A)$g1 <- 
+#' @rdname plot_methods
+#' 
+#' @export
+match_plot_matrix <- function(A, B, match) {
+  ch <- check_graph(A, B, same_order = FALSE, as_igraph = TRUE)
+  nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
+
+  corr_A <- match$corr$corr_A[seq(nv)]
+  corr_B <- match$corr$corr_B[seq(nv)]
   
+  A <- ch$g1[corr_A, corr_A]
+  B <- ch$g2[corr_B, corr_B]
+
+  m <- A - B
+  col <- grDevices::colorRampPalette(
+    c("#AA4444", "#888888", "#44AA44"))
+  image(m, col.regions = col(256))
+  invisible(m) 
 }
