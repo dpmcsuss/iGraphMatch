@@ -155,3 +155,23 @@ edge_match_info <- function(corr, A, B,
 
 }
 
+
+
+
+#' 
+#' 
+#' @export
+match_plot_igraph <- function(A, B, match) {
+  ch <- check_graph(A, B, same_order = FALSE, as_igraph = TRUE)
+  
+  
+  if (ch$totv1 > ch$totv2){
+    A <- 
+  }
+
+  if (ch$totv2 > ch$totv1){
+  }
+
+  V(A)$g1 <- 
+  
+}
