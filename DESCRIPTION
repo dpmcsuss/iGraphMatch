@@ -19,7 +19,8 @@ Imports:
     Matrix (>= 1.2-11),
     igraph (>= 1.1.2),
     irlba,
-    methods
+    methods,
+    grDevices
 Suggests:
     dplyr (>= 0.5.0),
     testthat (>= 2.0.0),
