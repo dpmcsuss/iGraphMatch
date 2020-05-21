@@ -190,7 +190,7 @@ setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 #' @param value As in Matrix
 #' 
 #' 
-#' 
+#' @keywords internal
 #' 
 #' @rdname splr
 setMethod("show", signature("splrMatrix"),

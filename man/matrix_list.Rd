@@ -105,3 +105,4 @@ the same size. It doesn't do much checking though.
 It can do various things like arethmatic and
 indexing, all of which are done element-wise.
 }
+\keyword{internal}

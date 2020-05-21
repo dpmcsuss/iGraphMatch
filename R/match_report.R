@@ -106,6 +106,7 @@ edge_match_info <- function(corr, A, B,
   graph_pair <- check_graph(A, B)
   A <- graph_pair$g1
   B <- graph_pair$g2
+  nv <- min(graph_pair$totv1, graph_pair$totv2)
 
 
   if (is.null(directed)) {
@@ -123,11 +124,13 @@ edge_match_info <- function(corr, A, B,
     layers <- seq_along(A)
   }
   l <- length(A)
+  corr_A <- corr$corr_A[seq(nv)]
+  corr_B <- corr$corr_B[seq(nv)]
 
 
   Reduce(rbind, lapply(layers, function(i) {
-    A_m <- A[[i]][corr$corr_A, corr$corr_A]
-    B_m <- B[[i]][corr$corr_B, corr$corr_B]
+    A_m <- A[[i]][corr_A, corr_A]
+    B_m <- B[[i]][corr_B, corr_B]
     # computations below are fast for sparse matrices
 
     res <- list()

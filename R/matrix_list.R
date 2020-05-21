@@ -15,6 +15,8 @@
 #' @param e2 As in Matrix
 #' @param ml A list of matrices
 #' 
+#' @keywords internal
+#' 
 #' @rdname matrix_list
 #' @importClassesFrom Matrix sparseMatrix
 #' 
