@@ -246,3 +246,4 @@ Matrix methods though things like output show the
 decomposition. Use as.matrix to see the computed
 dense matrix.
 }
+\keyword{internal}
