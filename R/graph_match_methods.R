@@ -14,7 +14,6 @@
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #'   character value like "bari" or "convex" to initialize the starting matrix.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
-#' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
 #' @param max_iter A number. Maximum number of replacing matches equals to

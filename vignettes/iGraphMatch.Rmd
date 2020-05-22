@@ -145,7 +145,6 @@ Soft seeding algorithm can be easily implemented in R using the existing functio
 ```{r, warning=FALSE, message=FALSE}
 library(iGraphMatch)
 library(dplyr)
-library(purrr)
 
 set.seed(8)
 cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)

@@ -16,7 +16,8 @@ must be an igraph object.}
 \item{B}{First graph. For \code{match_plot_igraph}
 must be an igraph object.}
 
-\item{match}{result from a match call}
+\item{match}{result from a match call. Requires element
+\code{corr} as a data.frame with names corr_A, corr_B.}
 
 \item{color}{Whether to color edges according to which
 graph(s) they are in.}
@@ -39,6 +40,11 @@ and \code{match_plot_matrix} which shows an adjacency
 matrix plot.
 }
 \details{
+Grey edges/pixels indicate common edges, red 
+indicates edges only in graph A and green
+represents edges only graph B. The corresponding
+linetypes are solid, short dash, and long dash.
+
 The plots can be recreated from the output with the code \cr
 \code{plot(g)} \cr
 for \code{g <- match_plot_igraph(...)} and  \cr
@@ -49,7 +55,8 @@ for \code{m <- match_plot_match(...)}.
 This only plots and returns the matched vertices.
 }
 \examples{
-graphs <- sample_correlated_gnp_pair(10, .8, .3)
+set.seed(123)
+graphs <- sample_correlated_gnp_pair(20, .5, .3)
 A <- graphs$graph1
 B <- graphs$graph2
 res <- graph_match_percolation(A, B, 1:4)
