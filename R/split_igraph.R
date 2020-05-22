@@ -1,0 +1,37 @@
+
+
+#' Split an igraph object into aligned graphs by attribute
+#' 
+#' Given an igraph object and an edge attribute, this function
+#' finds all unique values of the edge attribute in the graph
+#' and returns a list of igraph objects on the same vertex set
+#' where each element of the list has a graph containing only
+#' those edges with specified attributed.
+#' 
+#' @param g An igraph object
+#' @param e_attr the name of an edge attribute in g
+#' @param warn Whether to warn about lots of attributes.
+#' 
+#' @returns A named list of igraph objects
+#' 
+#' @examples
+#' g <- igraph::sample_gnm(20, 60)
+#' igraph::E(g)$color <- 
+#'   sample(c("red", "green"), 60, replace = TRUE)
+#' split_igraph(g, "color")
+#' 
+#' @export
+split_igraph <- function(g, e_attr, warn = TRUE) {
+  if (!igraph::is.igraph(g)) {
+    stop("g must be an igraph object")
+  }
+  ne <- igraph::ecount(g)
+  all_attr <- igraph::get.edge.attribute(g, e_attr)
+  u_attr <- unique(all_attr)
+
+  sapply(u_attr, function(u) {
+    igraph::subgraph.edges(
+      g, igraph::E(g)[all_attr == u], delete.vertices = FALSE
+    )
+  }, USE.NAMES = TRUE, simplify = FALSE)
+}
