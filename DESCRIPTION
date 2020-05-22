@@ -15,14 +15,13 @@ Description: iGraphMatch is an R package for graph matching. The package
 Depends:
     R (>= 3.3.1)
 Imports:
-    clue (>= 0.3-54),
-    Matrix (>= 1.2-11),
-    igraph (>= 1.1.2),
     irlba,
     methods,
-    grDevices
+    grDevices,
+    Matrix,
+    clue,
+    igraph
 Suggests:
-    dplyr (>= 0.5.0),
     testthat (>= 2.0.0),
     rlapjv,
     knitr,

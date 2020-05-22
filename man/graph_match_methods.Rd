@@ -91,8 +91,6 @@ max_iter times number of total vertices of \eqn{G_1}.}
 
 \item{lap_method}{Choice for lap method.}
 
-\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
-
 \item{tol}{A number. Tolerance of edge disagreements.}
 
 \item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
@@ -105,8 +103,6 @@ similarity scores}
 
 \item{method}{A character. Choice of method to extract mapping from score matrix,
 including greedy method and the Hungarian algorithm.}
-\item{max_iter}{A number. Maximum number of replacing matches equals to
-max_iter times number of total vertices of \eqn{G_1}.}
 }
 \value{
 \code{graph_match_FW} returns a list of graph matching results,
