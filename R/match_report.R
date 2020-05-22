@@ -176,7 +176,8 @@ edge_match_info <- function(corr, A, B,
 #'  must be an igraph object.
 #' @param B First graph. For \code{match_plot_igraph}
 #'  must be an igraph object.
-#' @param match result from a match call
+#' @param match result from a match call. Requires element
+#'  \code{corr} as a data.frame with names corr_A, corr_B.
 #' @param color Whether to color edges according to which
 #'  graph(s) they are in.
 #' @param linetype Whether to set edge linetypes according
@@ -190,6 +191,11 @@ edge_match_info <- function(corr, A, B,
 #'  the matched graphs. 
 #' 
 #' @details
+#' Grey edges/pixels indicate common edges, red 
+#' indicates edges only in graph A and green
+#' represents edges only graph B. The corresponding
+#' linetypes are solid, short dash, and long dash.
+#' 
 #' The plots can be recreated from the output with the code \cr
 #' \code{plot(g)} \cr
 #' for \code{g <- match_plot_igraph(...)} and  \cr
@@ -202,7 +208,8 @@ edge_match_info <- function(corr, A, B,
 #' @rdname plot_methods
 #' 
 #' @examples
-#' graphs <- sample_correlated_gnp_pair(10, .8, .3)
+#' set.seed(123)
+#' graphs <- sample_correlated_gnp_pair(20, .5, .3)
 #' A <- graphs$graph1
 #' B <- graphs$graph2
 #' res <- graph_match_percolation(A, B, 1:4)
@@ -268,6 +275,6 @@ match_plot_matrix <- function(A, B, match) {
   m <- A - B
   col <- grDevices::colorRampPalette(
     c("#AA4444", "#888888", "#44AA44"))
-  image(m, col.regions = col(256))
+  print(image(m, col.regions = col(256)))
   invisible(m) 
 }
