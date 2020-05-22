@@ -190,8 +190,8 @@ graphs model.</p>
 <span class='no'>p_mat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='no'>n</span>^<span class='fl'>2</span>),<span class='no'>n</span>)
 <span class='no'>c_mat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='no'>n</span>^<span class='fl'>2</span>),<span class='no'>n</span>)
 <span class='fu'>sample_correlated_ieg_pair</span>(<span class='no'>n</span>,<span class='no'>p_mat</span>,<span class='no'>c_mat</span>)</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 070156f U--- 50 607 -- 
-#&gt; + edges from 070156f:
+#&gt; IGRAPH 39eeaf3 U--- 50 607 -- 
+#&gt; + edges from 39eeaf3:
 #&gt;   [1] 1-- 5 1-- 7 1-- 8 1--10 1--11 1--13 1--15 1--17 1--20 1--22 1--24 1--26
 #&gt;  [13] 1--28 1--31 1--32 1--34 1--38 1--41 1--42 1--46 1--47 1--48 1--49 2-- 4
 #&gt;  [25] 2-- 5 2-- 6 2-- 7 2--11 2--12 2--13 2--14 2--16 2--17 2--18 2--19 2--20
@@ -204,8 +204,8 @@ graphs model.</p>
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH b2a8e9d U--- 50 621 -- 
-#&gt; + edges from b2a8e9d:
+#&gt; IGRAPH 850ef46 U--- 50 621 -- 
+#&gt; + edges from 850ef46:
 #&gt;   [1] 1-- 2 1-- 5 1-- 6 1-- 7 1--10 1--11 1--13 1--14 1--15 1--17 1--20 1--22
 #&gt;  [13] 1--24 1--26 1--28 1--29 1--33 1--35 1--38 1--41 1--42 1--46 1--48 1--49
 #&gt;  [25] 2-- 3 2-- 4 2-- 5 2-- 6 2-- 7 2-- 8 2--11 2--12 2--13 2--14 2--16 2--18
@@ -226,8 +226,8 @@ graphs model.</p>
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>/<span class='fu'><a href='https://rdrr.io/r/base/colSums.html'>rowSums</a></span>(<span class='no'>X</span>)
 <span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='no'>X</span>[,<span class='fl'>1</span>:<span class='no'>xdim</span>]
 <span class='fu'>sample_correlated_rdpg</span>(<span class='no'>X</span>,<span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH f00f60d U--- 50 241 -- 
-#&gt; + edges from f00f60d:
+#&gt; IGRAPH 48d37b1 U--- 50 241 -- 
+#&gt; + edges from 48d37b1:
 #&gt;  [1]  1-- 4  1-- 5  1-- 8  1--13  1--16  1--25  1--34  1--40  1--43  2-- 5
 #&gt; [11]  2-- 6  2--12  2--18  2--21  2--50  3--10  3--13  3--15  3--16  3--22
 #&gt; [21]  3--24  3--29  3--33  3--34  3--42  4--11  4--12  4--13  4--15  4--17
@@ -240,8 +240,8 @@ graphs model.</p>
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 3b2f6a0 U--- 50 257 -- 
-#&gt; + edges from 3b2f6a0:
+#&gt; IGRAPH af6b191 U--- 50 257 -- 
+#&gt; + edges from af6b191:
 #&gt;  [1]  1-- 4  1-- 8  1--13  1--16  1--22  1--25  1--34  1--40  1--41  1--43
 #&gt; [11]  1--44  2-- 5  2-- 6  2-- 9  2--21  2--24  2--29  2--30  3--10  3--13
 #&gt; [21]  3--15  3--16  3--22  3--29  3--32  3--33  3--35  3--39  4-- 8  4--11
