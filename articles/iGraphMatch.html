@@ -83,7 +83,7 @@
 <div id="what-is-the-graph-matching-problem" class="section level4">
 <h4 class="hasAnchor">
 <a href="#what-is-the-graph-matching-problem" class="anchor"></a>What Is the Graph Matching Problem</h4>
-<p>The graph matching problem seeks to find an alignment between the vertices of two graphs with shuffled labels. To formulate the problem, given two adjacency matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> corresponding to graphs <span class="math inline">\(G1\)</span> and <span class="math inline">\(G2\)</span> with <span class="math inline">\(n\)</span> nodes, the target is to find the true permutation matrix <span class="math inline">\(P=\)</span>argmin<span class="math inline">\(_{P\in \Pi} \Vert A-PBP^T \Vert_F\)</span>, where <span class="math inline">\(\Pi\)</span> denotes the set of all the <span class="math inline">\(n \times n\)</span> permutation matrices, <span class="math inline">\(\Vert \bullet \Vert\)</span> denotes the Froebenius norm. In a mathematical sense, the graph matching problem is a quadratic assignment problem. The goal of research in graph matching has been focused on developing more accurate or faster algorithms to approximately match two graphs since the problem is NP-hard.</p>
+<p>The graph matching problem seeks to find an alignment between the vertices of two graphs with shuffled labels. To formulate the problem, given two adjacency matrices <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> corresponding to graphs <span class="math inline">\(G1\)</span> and <span class="math inline">\(G2\)</span> with <span class="math inline">\(n\)</span> nodes, the target is to find the true permutation matrix <span class="math inline">\(P=\)</span>argmin_{P} A-PBP^T _F$, where <span class="math inline">\(\Pi\)</span> denotes the set of all the <span class="math inline">\(n \times n\)</span> permutation matrices, <span class="math inline">\(\Vert \bullet \Vert\)</span> denotes the Froebenius norm. In a mathematical sense, the graph matching problem is a quadratic assignment problem. The goal of research in graph matching has been focused on developing more accurate or faster algorithms to approximately match two graphs since the problem is NP-hard.</p>
 <p>Seeded graph matching has been extensively studied in the literature . Suppose that we know the correspondence between a subset of vertices in both graphs. With some available seeds, the problem is to minimize <span class="math inline">\(\Vert A-(I\oplus P)B(I\oplus P)^T\Vert_F\)</span> over all <span class="math inline">\(m\)</span>-by-<span class="math inline">\(m\)</span> permutation matrices <span class="math inline">\(P\)</span>, where <span class="math inline">\(m:=n-s\)</span>, and <span class="math inline">\(\oplus\)</span> is the direct sum, and <span class="math inline">\(I\)</span> is the identity matrix.</p>
 </div>
 <div id="what-can-igraphmatch-package-do" class="section level4">
@@ -182,9 +182,8 @@
 <h3 class="hasAnchor">
 <a href="#simulations" class="anchor"></a>Simulations</h3>
 <p>Soft seeding algorithm can be easily implemented in R using the existing functions in <code>iGraphMatch</code> package. Basically, the main function used is <code>graph_match_FW</code> with specification of the start method and seeds which correspond to the hard seeds. For example, now we try to compare random doubly stochastic start, bari start and convex start which are discussed above and do simulations on the correlated Erdős-Rényi graphs model. To make the result easy to be shown, we sample a graph pair with a small cardinality 10 from the correlated Erdős-Rényi graphs model with the edge probability equal to 0.5 and the correlation between two graphs to be 0.5. Set the first three pairs of vertices to be hard seeds.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">iGraphMatch</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">purrr</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">igraph</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">iGraphMatch</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">8</span>)
 <span class="no">cgnp_pair</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_gnp.html">sample_correlated_gnp_pair</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">corr</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">p</span> <span class="kw">=</span> <span class="fl">.5</span>)
@@ -244,14 +243,14 @@
 (<span class="no">start_convex</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(<span class="kw">start</span> <span class="kw">=</span> <span class="st">"convex"</span>, <span class="kw">nns</span> <span class="kw">=</span> <span class="no">nns</span>, <span class="kw">ns</span> <span class="kw">=</span> <span class="no">ns</span>, <span class="kw">soft_seeds</span> <span class="kw">=</span> <span class="no">bad_soft_seeds</span>,
                            <span class="kw">A</span> <span class="kw">=</span> <span class="no">g1</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="no">g2</span>, <span class="kw">seeds</span> <span class="kw">=</span> <span class="no">seeds</span>))
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;                                       </span>
-<span class="co">#&gt; [1,] 1 .     . .     .     .     .    </span>
-<span class="co">#&gt; [2,] . 0.197 . 0.197 0.197 0.212 0.197</span>
-<span class="co">#&gt; [3,] . 0.197 . 0.197 0.212 0.197 0.197</span>
-<span class="co">#&gt; [4,] . 0.197 . 0.197 0.197 0.197 0.212</span>
-<span class="co">#&gt; [5,] . .     1 .     .     .     .    </span>
-<span class="co">#&gt; [6,] . 0.212 . 0.197 0.197 0.197 0.197</span>
-<span class="co">#&gt; [7,] . 0.197 . 0.212 0.197 0.197 0.197</span></pre></body></html></div>
+<span class="co">#&gt;                                           </span>
+<span class="co">#&gt; [1,] 1 .     .     .     .     .     .    </span>
+<span class="co">#&gt; [2,] . 0.180 .     0.180 0.316 0.180 0.145</span>
+<span class="co">#&gt; [3,] . 0.180 0.136 0.180 0.145 0.180 0.180</span>
+<span class="co">#&gt; [4,] . 0.180 .     0.180 0.180 0.145 0.316</span>
+<span class="co">#&gt; [5,] . 0.136 0.864 .     .     .     .    </span>
+<span class="co">#&gt; [6,] . 0.145 .     0.180 0.180 0.316 0.180</span>
+<span class="co">#&gt; [7,] . 0.180 .     0.281 0.180 0.180 0.180</span></pre></body></html></div>
 <p>Then implement seeded graph matching using the FAQ algorithm in R by using <code>graph_match_FW</code> function. To incorporate soft seeds, we specify the <code>start</code> argument in <code>graph_match_FW</code> function accordingly. Note that in this example, we assume the true permutation to be the identity matrix.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
 <span class="no">match_bari</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="no">start_bari</span>)
@@ -278,21 +277,21 @@
 <tbody>
 <tr class="odd">
 <td>good soft seeds</td>
-<td align="right">0.286</td>
-<td align="right">0.286</td>
-<td align="right">0.000</td>
+<td align="right">0.714</td>
+<td align="right">0.571</td>
+<td align="right">0.714</td>
 </tr>
 <tr class="even">
 <td>bad soft seeds</td>
-<td align="right">0.857</td>
-<td align="right">0.571</td>
-<td align="right">0.857</td>
+<td align="right">0.714</td>
+<td align="right">0.714</td>
+<td align="right">0.714</td>
 </tr>
 <tr class="odd">
 <td>non soft seeds</td>
 <td align="right">0.857</td>
 <td align="right">0.857</td>
-<td align="right">0.571</td>
+<td align="right">0.429</td>
 </tr>
 </tbody>
 </table>
