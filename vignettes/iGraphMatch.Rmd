@@ -24,8 +24,8 @@ Graph matching is an increasingly important problem which can be applied to a wi
 
 While packages such as `iGraph` and `GraphM` also have graph matching functionality our goal is to provide a single centralized repository for graph matching which attempts to confront many of the additional pathologies of graph matching. While the `iGraph` package provides versatile options on descriptive network analysis and graph visualization based on igraph objects in R, Python and C/C++, it doesn't focus on implementation of the most commonly used and cutting edge algorithms of graph matching. In contrast to `iGraph`, the `iGraphMatch` package is also more flexible in dealing with different type of graph objects, ranging from igraph objects to matrix objects. The `GraphM` \cite{GraphM} provides tools for approximately soloving large scale graph matching problems. It implements a variety of graph methods that were proposed between 1999 and 2009, including Umeyama algorithm, Linear programming approach, Rank algorithm, QCV (Quadratic convex relaxation) algorithm and PATH (A path following) algorithm in C/C++. Its corresponding R package version `RGraphM` hasn't been published yet.
 
-#### What Is the Graph Matching Problem
-The graph matching problem seeks to find an alignment between the vertices of two graphs with shuffled labels. To formulate the problem, given two adjacency matrices $A$ and $B$ corresponding to graphs $G1$ and $G2$ with $n$ nodes, the target is to find the true permutation matrix $P=$argmin$_{P\in \Pi} \Vert A-PBP^T \Vert_F$, where $\Pi$ denotes the set of all the $n \times n$ permutation matrices, $\Vert \bullet \Vert$ denotes the Froebenius norm. In a mathematical sense, the graph matching problem is a quadratic assignment problem. The goal of research in graph matching has been focused on developing more accurate or faster algorithms to approximately match two graphs since the problem is NP-hard.
+#### What Is the Graph Matching Problem 
+The graph matching problem seeks to find an alignment between the vertices of two graphs with shuffled labels. To formulate the problem, given two adjacency matrices $A$ and $B$ corresponding to graphs $G1$ and $G2$ with $n$ nodes, the target is to find the true permutation matrix $P=$argmin_{P\in \Pi} \Vert A-PBP^T \Vert_F$, where $\Pi$ denotes the set of all the $n \times n$ permutation matrices, $\Vert \bullet \Vert$ denotes the Froebenius norm. In a mathematical sense, the graph matching problem is a quadratic assignment problem. The goal of research in graph matching has been focused on developing more accurate or faster algorithms to approximately match two graphs since the problem is NP-hard.
 
 Seeded graph matching has been extensively studied in the literature \cite{SGM}. Suppose that we know the correspondence between a subset of vertices in both graphs. With some available seeds, the problem is to minimize $\Vert A-(I\oplus P)B(I\oplus P)^T\Vert_F$ over all $m$-by-$m$ permutation matrices $P$, where $m:=n-s$, and $\oplus$ is the direct sum, and $I$ is the identity matrix.
 
@@ -143,8 +143,8 @@ Here we illustrate the convex initialization method in the general setting where
 Soft seeding algorithm can be easily implemented in R using the existing functions in `iGraphMatch` package. Basically, the main function used is `graph_match_FW` with specification of the start method and seeds which correspond to the hard seeds. For example, now we try to compare random doubly stochastic start, bari start and convex start which are discussed above and do simulations on the correlated Erdős-Rényi graphs model. To make the result easy to be shown, we sample a graph pair with a small cardinality 10 from the correlated Erdős-Rényi graphs model with the edge probability equal to 0.5 and the correlation between two graphs to be 0.5. Set the first three pairs of vertices to be hard seeds.
 
 ```{r, warning=FALSE, message=FALSE}
+library(igraph)
 library(iGraphMatch)
-library(dplyr)
 
 set.seed(8)
 cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)
@@ -220,9 +220,9 @@ err_bari_good <- mean(match_bari$corr$corr_A[!seeds] != match_bari$corr$corr_B[!
 err_rds_good <- mean(match_rds$corr$corr_A[!seeds] != match_rds$corr$corr_B[!seeds])
 err_convex_good <- mean(match_convex$corr$corr_A[!seeds] != match_convex$corr$corr_B[!seeds])
 
-bad_soft_seeds <- tibble(bari=err_bari_bad,rds=err_rds_bad,convex=err_convex_bad)
-good_soft_seeds <- tibble(bari=err_bari_good,rds=err_rds_good,convex=err_convex_good)
-non_soft_seeds <- tibble(bari=err_nss_bari,rds=err_nss_rds,convex=err_nss_convex)
+bad_soft_seeds <- data.frame(bari=err_bari_bad,rds=err_rds_bad,convex=err_convex_bad)
+good_soft_seeds <- data.frame(bari=err_bari_good,rds=err_rds_good,convex=err_convex_good)
+non_soft_seeds <- data.frame(bari=err_nss_bari,rds=err_nss_rds,convex=err_nss_convex)
 result <- rbind(good_soft_seeds,bad_soft_seeds,non_soft_seeds)
 row.names(result) <- c("good soft seeds","bad soft seeds","non soft seeds")
 
@@ -313,15 +313,15 @@ junk <- junk[non_seeds]
 core <- core[non_seeds]
 nc <- sum(core)
 nj <- sum(junk)
-core_precision <- 1:nc %>% map_dbl(~mean(core[r<=.x]))
-junk_precision <- 1:nj %>% map_dbl(~mean(junk[r>nc+nj-.x]))
+core_precision <- sapply(seq(nc), function(n) mean(core[r <= n ]))
+junk_precision <- sapply(seq(nj), function(n) mean(junk[r > nc + nj- n ]))
 
-core <- tibble(k1=max(core_precision),k5=quantile(core_precision,6/7),k10=quantile(core_precision,5/7),k25=quantile(core_precision,2/7),k35=min(core_precision))
+core <- data.frame(k1=max(core_precision),k5=quantile(core_precision,6/7),k10=quantile(core_precision,5/7),k25=quantile(core_precision,2/7),k35=min(core_precision))
 result <- rbind(core)
 row.names(result) <- c("core identification precision")
 knitr::kable(result, caption = "Summarization Table for Core Identification Precisions")
 
-junk <- tibble(k1=max(junk_precision),k2=quantile(junk_precision,2/5),k3=quantile(junk_precision,3/5),k4=quantile(junk_precision,4/5),k5=min(junk_precision))
+junk <- data.frame(k1=max(junk_precision),k2=quantile(junk_precision,2/5),k3=quantile(junk_precision,3/5),k4=quantile(junk_precision,4/5),k5=min(junk_precision))
 result <- rbind(junk)
 row.names(result) <- c("junk identification precision")
 knitr::kable(result, caption = "Summarization Table for Junk Identification Precisions")
@@ -398,7 +398,7 @@ err_adp <- mean(match_adp$corr$corr_A[!seeds] != match_adp$corr$corr_B[!seeds])
 ```
 
 ```{r output="asis", echo=FALSE}
-knitr::kable(tibble(err_orig=err, err_adp=err_adp), caption = "Matching Errors for Adaptive Seeding")
+knitr::kable(data.frame(err_orig=err, err_adp=err_adp), caption = "Matching Errors for Adaptive Seeding")
 ```
 
 
