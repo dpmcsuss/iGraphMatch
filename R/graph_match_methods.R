@@ -60,6 +60,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
   similarity = NULL, lap_method = NULL){
 
+
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
@@ -101,6 +102,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   nc <- length(A)
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
+
 
 
   while(toggle && iter < max_iter){
