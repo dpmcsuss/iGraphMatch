@@ -1,6 +1,6 @@
 test_that("Correct number of layers", {
   g <- igraph::sample_gnm(20, 60)
-  E(g)$color <- sample(c("red", "green"), 60, replace = TRUE)
+  igraph::E(g)$color <- sample(c("red", "green"), 60, replace = TRUE)
   l <- split_igraph(g, "color")
   expect_length(l, 2)
 })
