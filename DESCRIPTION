@@ -22,7 +22,7 @@ Imports:
     clue,
     igraph
 Suggests:
-    testthat (>= 2.0.0),
+    testthat,
     rlapjv,
     knitr,
     rmarkdown,
