@@ -11,12 +11,10 @@ lcc3 <- largest_common_cc(g1, g2, min_degree = 3)
 
 test_that("largest cc w. min_degree", {
   expect_length(lcc1, 3)
-  expect_vector(lcc1$keep)
   expect_equal(sum(lcc1$keep), 4)
   expect_length(lcc1$keep, n)
   
   expect_length(lcc3, 3)
-  expect_vector(lcc3$keep)
   expect_equal(sum(lcc3$keep), 0)
   expect_length(lcc3$keep, n)
 })
