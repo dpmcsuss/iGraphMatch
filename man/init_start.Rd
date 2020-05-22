@@ -4,8 +4,7 @@
 \alias{init_start}
 \title{Initialization of the start matrix}
 \usage{
-init_start(start, nns, ns = 0, soft_seeds = NULL, A = NULL,
-  B = NULL, seeds = NULL, g = 1)
+init_start(start, nns, ns = 0, soft_seeds = NULL, ...)
 }
 \arguments{
 \item{start}{A matrix or a character. Any \code{nns-by-nns} doubly stochastic matrix or start
@@ -21,17 +20,7 @@ input should be in the form of a matrix or a data frame, with the first column b
 indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 Note that if there are seeds in graphs, seeds should be put before non-seeds.}
 
-\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}. Needed only when start is
-convex.}
-
-\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}. Needed only when start is
-convex.}
-
-\item{seeds}{A logical vector. \code{TRUE} indicates the corresponding vertex is a seed. Needed
-only when start is convex.}
-
-\item{g}{A number. Specified in the range of [0,1] to set weights to random permutaion matrix and
-barycenter matrix.}
+\item{...}{Arguments passed to other start functions}
 }
 \value{
 \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
@@ -43,14 +32,14 @@ at the other places are derived by different start method.
 Initialize the start matrix for graph matching iteration.
 }
 \examples{
-ss <- matrix(c(5,4,4,3), nrow = 2)
+ss <- matrix(c(5, 4, 4, 3), nrow = 2)
 # initialize start matrix without soft seeds
 init_start(start = "bari", nns = 5)
 init_start(start = "rds", nns = 3)
 init_start(start = "rds_perm_bari", nns = 5)
 
 # initialize start matrix with soft seeds
-init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5,7,8))
+init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))
 init_start(start = "rds", nns = 5, soft_seeds = ss)
 init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 

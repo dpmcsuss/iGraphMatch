@@ -1,4 +1,4 @@
-#' @importFrom igraph sample_gnp sample_sbm graph_from_adjacency_matrix %u% %s%
+#' @importFrom igraph sample_gnp sample_sbm graph_from_adjacency_matrix %u% %s% is.igraph V
 
 #' @title Sample correlated G(n,p) random graphs
 #'
@@ -12,7 +12,7 @@
 #' (0,1) interval.
 #' @param ncore An integer. Number of core vertices.
 #' @param permutation A numeric vector,permute second graph. 
-#' @param ... Passed to \code{sample_correlated_gnp_pair}.
+#' @param ... Passed to \code{sample_correlated_gnp_pair} and \code{sample_correlated_gnp_pair_w_junk}.
 #'
 #' @rdname sample_gnp
 #' @return \code{sample_correlated_gnp_pair} returns a list of two igraph object, named

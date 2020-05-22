@@ -10,7 +10,7 @@ row_cor(g1, g2)
 
 row_diff(g1, g2)
 
-row_perm_stat(g1, g2, exact = TRUE, ...)
+row_perm_stat(g1, g2, exact = TRUE)
 }
 \arguments{
 \item{g1}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}

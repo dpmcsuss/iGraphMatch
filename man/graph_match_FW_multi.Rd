@@ -4,8 +4,15 @@
 \alias{graph_match_FW_multi}
 \title{Multiple Graph Match Methods}
 \usage{
-graph_match_FW_multi(A, B, seeds = NULL, start = "bari",
-  max_iter = 20, similarity = NULL, lap_method = NULL)
+graph_match_FW_multi(
+  A,
+  B,
+  seeds = NULL,
+  start = "bari",
+  max_iter = 20,
+  similarity = NULL,
+  lap_method = NULL
+)
 }
 \arguments{
 \item{A}{A list of graphs (or igraph objects)}
@@ -22,9 +29,9 @@ character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{An integer. Maximum iteration time.}
 
-\item{tol}{A number. Tolerance of edge disagreements.}
+\item{similarity}{matrix of similarity scores}
 
-\item{r}{A number. Threshold of neighboring pair scores.}
+\item{lap_method}{Which lap function to use}
 }
 \value{
 \code{graph_match_FW_multi} returns a list of graph matching results,
@@ -39,10 +46,12 @@ including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
 doubly stochastic matrix and permutation matrix.
 }
 \examples{
+\dontrun{
  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
  A <- lapply(gp_list, function(gp)gp[[1]])
  B <- lapply(gp_list, function(gp)gp[[2]])
  match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
  match$corr
+}
 
 }

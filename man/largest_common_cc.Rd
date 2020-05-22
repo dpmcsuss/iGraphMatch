@@ -35,7 +35,7 @@ lccs1 <- largest_common_cc(g1, g2, min_degree = 1)
 lccs1$g1
 lccs1$g2
 # label of vertices of the induced subgraph in the original graph
-V(A)[lccs1$keep]
+igraph::V(g1)[lccs1$keep]
 
 # obtain a common largest connect subgraph with each vertex having a minimum degree of 3
 lccs3 <- largest_common_cc(g1, g2, min_degree = 3)

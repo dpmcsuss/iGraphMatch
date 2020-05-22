@@ -1,21 +1,31 @@
 ---
-title: "Vignette of iGraphMatch R Package"
-subtitle: "—— Expected to be released in May 2018"
-author: "Zihuan Qiao"
-date: "11/29/2017"
-header-includes:
-   - \usepackage[linesnumbered,ruled]{algorithm2e}
-   - \usepackage{dsfont}
-   - \usepackage{mathtools}
-output: pdf_document
+title: "iGraphMatch"
+
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{iGraphMatch}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(iGraphMatch)
+```
+
 #### General Description of Graph Matching
 Graph matching is an increasingly important problem which can be applied to a wide variety of fields including biology, neuroscience, pattern recognition and machine learning, to name a few. For example, as a fundamental tool in solving pattern recognition problem, graph matching is widely used in computer vision. In this problem, one seeks to find a correspondence between local features of the image, which are labeled as nodes of the graphs. Relational aspects between features are modeled by edges of the graphs in this context. 
 
 While packages such as `iGraph` and `GraphM` also have graph matching functionality our goal is to provide a single centralized repository for graph matching which attempts to confront many of the additional pathologies of graph matching. While the `iGraph` package provides versatile options on descriptive network analysis and graph visualization based on igraph objects in R, Python and C/C++, it doesn't focus on implementation of the most commonly used and cutting edge algorithms of graph matching. In contrast to `iGraph`, the `iGraphMatch` package is also more flexible in dealing with different type of graph objects, ranging from igraph objects to matrix objects. The `GraphM` \cite{GraphM} provides tools for approximately soloving large scale graph matching problems. It implements a variety of graph methods that were proposed between 1999 and 2009, including Umeyama algorithm, Linear programming approach, Rank algorithm, QCV (Quadratic convex relaxation) algorithm and PATH (A path following) algorithm in C/C++. Its corresponding R package version `RGraphM` hasn't been published yet.
 
-#### What Is the Graph Matching Problem
-The graph matching problem seeks to find an alignment between the vertices of two graphs with shuffled labels. To formulate the problem, given two adjacency matrices $A$ and $B$ corresponding to graphs $G1$ and $G2$ with $n$ nodes, the target is to find the true permutation matrix $P=$argmin$_{P\in \Pi} \Vert A-PBP^T \Vert_F$, where $\Pi$ denotes the set of all the $n \times n$ permutation matrices, $\Vert \bullet \Vert$ denotes the Froebenius norm. In a mathematical sense, the graph matching problem is a quadratic assignment problem. The goal of research in graph matching has been focused on developing more accurate or faster algorithms to approximately match two graphs since the problem is NP-hard.
+#### What Is the Graph Matching Problem 
+The graph matching problem seeks to find an alignment between the vertices of two graphs with shuffled labels. To formulate the problem, given two adjacency matrices $A$ and $B$ corresponding to graphs $G1$ and $G2$ with $n$ nodes, the target is to find the true permutation matrix $P=$argmin_{P\in \Pi} \Vert A-PBP^T \Vert_F$, where $\Pi$ denotes the set of all the $n \times n$ permutation matrices, $\Vert \bullet \Vert$ denotes the Froebenius norm. In a mathematical sense, the graph matching problem is a quadratic assignment problem. The goal of research in graph matching has been focused on developing more accurate or faster algorithms to approximately match two graphs since the problem is NP-hard.
 
 Seeded graph matching has been extensively studied in the literature \cite{SGM}. Suppose that we know the correspondence between a subset of vertices in both graphs. With some available seeds, the problem is to minimize $\Vert A-(I\oplus P)B(I\oplus P)^T\Vert_F$ over all $m$-by-$m$ permutation matrices $P$, where $m:=n-s$, and $\oplus$ is the direct sum, and $I$ is the identity matrix.
 
@@ -132,26 +142,21 @@ Here we illustrate the convex initialization method in the general setting where
 ### Simulations
 Soft seeding algorithm can be easily implemented in R using the existing functions in `iGraphMatch` package. Basically, the main function used is `graph_match_FW` with specification of the start method and seeds which correspond to the hard seeds. For example, now we try to compare random doubly stochastic start, bari start and convex start which are discussed above and do simulations on the correlated Erdős-Rényi graphs model. To make the result easy to be shown, we sample a graph pair with a small cardinality 10 from the correlated Erdős-Rényi graphs model with the edge probability equal to 0.5 and the correlation between two graphs to be 0.5. Set the first three pairs of vertices to be hard seeds.
 
-```{r echo=FALSE, warning=FALSE, message=FALSE}
-devtools::document()
-```
-
 ```{r, warning=FALSE, message=FALSE}
+library(igraph)
 library(iGraphMatch)
-library(dplyr)
-library(purrr)
 
 set.seed(8)
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, p = 0.5, rho = 0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 
 (seeds <- 1:10 <= 3)
 ```
 
-Then just randomly pick two pairs of vertices as soft seeds. Note that soft seeds may not be correct, but soft seeds may improve during the matching procedure. Let's first pick two bad soft seeds {4,5} and {6,8}. Both soft seeds are incorrect.
+Then just randomly pick two pairs of vertices as soft seeds. Note that soft seeds may not be correct, but soft seeds may improve during the matching procedure. Let's first pick two bad soft seeds {4,4} and {8,6} which is a combination of good soft seed and bad soft seed:
 ```{r}
-bad_soft_seeds <- rbind(c(4,5),c(6,8))
+bad_soft_seeds <- rbind(c(4,4),c(8,6))
 ```
 
 Initialization of different start matrix is very convenient in R with `iGraphPackage`. Function `init_start` returns a $n_{ns}$-by-$n_{ns}$ matrix where $n_{ns}$ denotes the number of nonseeds vertices.
@@ -160,6 +165,7 @@ nns <- 7
 ns <- 3
 options(digits = 3)
 (start_bari <- init_start(start = "bari", nns = nns, ns = ns, soft_seeds = bad_soft_seeds))
+set.seed(123)
 (start_rds <- init_start(start = "rds", nns = nns, ns = ns, soft_seeds = bad_soft_seeds))
 (start_convex <- init_start(start = "convex", nns = nns, ns = ns, soft_seeds = bad_soft_seeds, 
                            A = g1, B = g2, seeds = seeds))
@@ -167,33 +173,35 @@ options(digits = 3)
 
 Then implement seeded graph matching using the FAQ algorithm in R by using `graph_match_FW` function. To incorporate soft seeds, we specify the `start` argument in `graph_match_FW` function accordingly. Note that in this example, we assume the true permutation to be the identity matrix. 
 ```{r}
+set.seed(123)
 match_bari <- graph_match_FW(g1, g2, seeds, start = start_bari)
 match_rds <- graph_match_FW(g1, g2, seeds, start = start_rds)
 match_convex <- graph_match_FW(g1, g2, seeds, start = start_convex)
-err_bari_bad <- mean(match_bari$corr[!seeds] != which(!seeds))
-err_rds_bad <- mean(match_rds$corr[!seeds] != which(!seeds))
-err_convex_bad <- mean(match_convex$corr[!seeds] != which(!seeds))
+err_bari_bad <- mean(match_bari$corr$corr_A[!seeds] != match_bari$corr$corr_B[!seeds])
+err_rds_bad <- mean(match_rds$corr$corr_A[!seeds] != match_rds$corr$corr_B[!seeds])
+err_convex_bad <- mean(match_convex$corr$corr_A[!seeds] != match_convex$corr$corr_B[!seeds])
 ```
 
 Since in this example both of the soft seeds are incorrect, intuitively not incorporating such incorrect information might yield better matching results. This motivates us to perform a comparative experiment on whether or not to incorporate such incorrect soft seeds. The R code for performing graph matching with only the hard seeds is similar to soft seeding except for different specification of the `start` argument.
 
 ```{r }
+set.seed(123)
 match_nss_bari <- graph_match_FW(g1, g2, seeds, start = "bari")
 match_nss_rds <- graph_match_FW(g1, g2, seeds, start = "rds")
 match_nss_convex <- graph_match_FW(g1, g2, seeds, start = "convex")
 ```
 
 ```{r echo=FALSE}
-err_nss_bari <- mean(match_nss_bari$corr[!seeds]!=which(!seeds))
-err_nss_rds <- mean(match_nss_rds$corr[!seeds]!=which(!seeds))
-err_nss_convex <- mean(match_nss_convex$corr[!seeds]!=which(!seeds))
+err_nss_bari <- mean(match_nss_bari$corr$corr_A[!seeds] != match_nss_bari$corr$corr_B[!seeds])
+err_nss_rds <- mean(match_nss_rds$corr$corr_A[!seeds] != match_nss_rds$corr$corr_B[!seeds])
+err_nss_convex <- mean(match_nss_convex$corr$corr_A[!seeds] != match_nss_convex$corr$corr_B[!seeds])
 ```
 
 
-For completeness, we also include an example of good soft seeds, say {4,4} and {6,6}. Then we follow the same procedure as in the bad soft seeds case, and yield the matching results for good soft seeds when matching the same graphs. Since the codes corresponding soft seeding implementation are the same, we'll skip the codes and only show the results comparing the three cases.
+For completeness, we also include an example of good soft seeds, say {4,4} and {8,8}. Then we follow the same procedure as in the bad soft seeds case, and yield the matching results for good soft seeds when matching the same graphs. Since the codes corresponding soft seeding implementation are the same, we'll skip the codes and only show the results comparing the three cases.
 
 ```{r}
-good_soft_seeds <- rbind(c(4,4),c(6,6))
+good_soft_seeds <- rbind(c(4,4),c(8,8))
 ```
 
 ```{r output="asis", echo=FALSE,warning=FALSE}
@@ -204,16 +212,17 @@ start_rds <- init_start(start = "rds", nns = nns, ns = ns, soft_seeds = good_sof
 start_convex <- init_start(start = "convex", nns = nns, ns = ns, soft_seeds = good_soft_seeds, 
                            A = g1, B = g2, seeds = seeds)
 
-match_bari <- graph_match_FW(g1,g2,seeds,start=start_bari)
-match_rds <- graph_match_FW(g1,g2,seeds,start=start_rds)
-match_convex <- graph_match_FW(g1,g2,seeds,start=start_convex)
-err_bari_good <- mean(match_bari$corr[!seeds]!=which(!seeds))
-err_rds_good <- mean(match_rds$corr[!seeds]!=which(!seeds))
-err_convex_good <- mean(match_convex$corr[!seeds]!=which(!seeds))
+set.seed(123)
+match_bari <- graph_match_FW(g1, g2, seeds, start = start_bari)
+match_rds <- graph_match_FW(g1, g2, seeds, start = start_rds)
+match_convex <- graph_match_FW(g1, g2, seeds, start = start_convex)
+err_bari_good <- mean(match_bari$corr$corr_A[!seeds] != match_bari$corr$corr_B[!seeds])
+err_rds_good <- mean(match_rds$corr$corr_A[!seeds] != match_rds$corr$corr_B[!seeds])
+err_convex_good <- mean(match_convex$corr$corr_A[!seeds] != match_convex$corr$corr_B[!seeds])
 
-bad_soft_seeds <- tibble(bari=err_bari_bad,rds=err_rds_bad,convex=err_convex_bad)
-good_soft_seeds <- tibble(bari=err_bari_good,rds=err_rds_good,convex=err_convex_good)
-non_soft_seeds <- tibble(bari=err_nss_bari,rds=err_nss_rds,convex=err_nss_convex)
+bad_soft_seeds <- data.frame(bari=err_bari_bad,rds=err_rds_bad,convex=err_convex_bad)
+good_soft_seeds <- data.frame(bari=err_bari_good,rds=err_rds_good,convex=err_convex_good)
+non_soft_seeds <- data.frame(bari=err_nss_bari,rds=err_nss_rds,convex=err_nss_convex)
 result <- rbind(good_soft_seeds,bad_soft_seeds,non_soft_seeds)
 row.names(result) <- c("good soft seeds","bad soft seeds","non soft seeds")
 
@@ -221,7 +230,7 @@ knitr::kable(result, caption = "Matching Errors With Various Initialization Meth
 
 ```
 
-Table 2 presents the matching error of nonseeded vertex sets with various initialization methods. From the first two rows, we can see that the convex initialization method yields the lowest matching error in both cases among the three initialization methods. As expected, good soft seeds achieve higher matching accuracies in terms of three initialization methods. If we don't utilize the information in soft seeds when performing graph matching, the matching error when we initialize at a random doubly stochastic matrix is greatly reduced compared with the bad soft seeding case. However, it's surprising that the graph matching errors are even bigger under the other two start methods. One explanation of this result is the self-correction capability of soft seeding method. 
+Table 2 presents the matching error of nonseeded vertex sets with various initialization methods. Compared with using a mixture of good soft seeds and bad soft seeds and matching without soft seeds, incporating good soft seeds decrease or maintain the same matching error for all the initialization methods. Note that for the convex initialization method, we can successfully uncover the true correspondence of two graphs by using good soft seeds. Using partial good soft seeds can also improve the matching performances except for the convex case. In general, random doubly stochastic initialization yields the most stable matching result while the convex intialization method using good soft seeds achieves the highest matching accuracy among all the methods.
 
 We also illuminate the difference between various initialization methods by presenting the experiment results on larger scale graphs under more parameter settings and with more monte carlo replicates. The experiment is relatively time consuming in case of larger scale graphs, we recommend to run larger simulations on server, or consider using statistical computing methods, e.g. divide and conquer algorithm \cite{D&C} to enhance the speed of experiments. Here we just show the result figure and skip the R code.
 
@@ -278,7 +287,7 @@ We next develop an approach to identify core vertices correctly. The main tool t
 Now implement algorithm of finding core vertices in R with `iGraphMatch` package. First we sample a pair of graphs with 50 vertices from the correlated Erdős-Rényi graph model and let 5 out of the total vertices to be junk vertices using function `sample_correlated_gnp_pair_w_junk`. We also assume the first 10 vertices to be seeds. Then apply the FAQ algorithm to match two graphs.
 ```{r}
 set.seed(5)
-cgnp_pair <- sample_correlated_gnp_pair_w_junk(n = 50, p = 0.5, rho = 0.5, ncore = 45)
+cgnp_pair <- sample_correlated_gnp_pair_w_junk(n = 50, corr = .5, p = .5, ncore = 45)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 
@@ -287,7 +296,7 @@ core <- 1 : 50 <= 45
 junk <- !core
 non_seeds <- !seeds
 
-match <- graph_match_FW(g1, g2, seeds, start = "convex")
+match <- graph_match_FW(g1, g2, seeds, start = "rds")
 ```
 
 Then implement the algorithm for finding core vertices, we use row permutation statistic as our measure in this example. The main steps of the algorithm involves calculating values of the row permutation statistic for each nonseed vertex and rank them in the order of increasing value of the statistic. These steps can be implemented by using the `best_matches` function. The `best_matches` function has the functionality of finding best matched vertices and identifying core vertices. Since we want to rank all the non-seed vertices in terms of their row permutation statistics, set argument `x` to be `non_seeds`, which denotes the vertices we are interested in. Also set argument `num` to be the number of non-seeds, which denotes the number of top ranked vertices we want to get. By returning the result in `A_best`, we get the indices corresponding to vertices in $G1$ in the order of decreasing likelihood of being core vertices. 
@@ -304,21 +313,21 @@ junk <- junk[non_seeds]
 core <- core[non_seeds]
 nc <- sum(core)
 nj <- sum(junk)
-core_precision <- 1:nc %>% map_dbl(~mean(core[r<=.x]))
-junk_precision <- 1:nj %>% map_dbl(~mean(junk[r>nc+nj-.x]))
+core_precision <- sapply(seq(nc), function(n) mean(core[r <= n ]))
+junk_precision <- sapply(seq(nj), function(n) mean(junk[r > nc + nj- n ]))
 
-core <- tibble(k1=max(core_precision),k5=quantile(core_precision,6/7),k10=quantile(core_precision,5/7),k25=quantile(core_precision,2/7),k35=min(core_precision))
+core <- data.frame(k1=max(core_precision),k5=quantile(core_precision,6/7),k10=quantile(core_precision,5/7),k25=quantile(core_precision,2/7),k35=min(core_precision))
 result <- rbind(core)
 row.names(result) <- c("core identification precision")
 knitr::kable(result, caption = "Summarization Table for Core Identification Precisions")
 
-junk <- tibble(k1=max(junk_precision),k2=quantile(junk_precision,2/5),k3=quantile(junk_precision,3/5),k4=quantile(junk_precision,4/5),k5=min(junk_precision))
+junk <- data.frame(k1=max(junk_precision),k2=quantile(junk_precision,2/5),k3=quantile(junk_precision,3/5),k4=quantile(junk_precision,4/5),k5=min(junk_precision))
 result <- rbind(junk)
 row.names(result) <- c("junk identification precision")
 knitr::kable(result, caption = "Summarization Table for Junk Identification Precisions")
 ```
 
-Since there are 5 junk vertices, the last 5 vertices in the output are identified as junk vertices. Note that seeded vertices are not ranked. In order to evaluate the performance of core identification algorithm in this example, we calculate the precision of classification for each vertex and summarize the precisions in table 3 and table 4. Table 3 shows the identification precision for $k=1,5,10,25,35$, where $k$ denotes the rank of identified core vertices. Higher rank indicates the vertex has higher probability to be a core vertex. From table 3, the core identification algorithm achieves pretty high precision for identifying the core vertices. In contrast, the identification precision for junk vertices is much lower which is shown in table 4.  
+Since there are 5 junk vertices, the last 5 vertices in the output are identified as junk vertices. Note that seeded vertices are not ranked. In order to evaluate the performance of core identification algorithm in this example, we calculate the precision of classification for each vertex and summarize the precisions in table 3 and table 4. Table 3 shows the identification precision for $k=1,5,10,25,35$, where $k$ denotes the rank of identified core vertices. Higher rank indicates the vertex has higher probability to be a core vertex. From table 3, the core identification algorithm achieves pretty high precision for identifying the core vertices. In contrast, the identification precision for junk vertices drops quickly as we averaging over more high rank junk vertices.  
 
 Figure \ref{fig:core} shows the simulation results for two random graphs sampled from CorrER$(0.2,0.5J_{n_c}\oplus\mathrm{0}_{n_j})$ with $n_j \in\{20,50\}$ and $n_s\in\{5,10,20\}$ \cite{core-iden}. The figure averages the results of 1000 monte carlo replicates by plotting the mean precision at each rank with lower ranks indicating core vertices and higher ranks near $n$ indicating junk vertices. When there are a small number of seeded vertices, the core identification algorithm doesn't outperform the random algorithm much, which is indicated by the horizontal lines. But when we have 20 seeds, the core identification algorithm achieves substantially higher precision than the random algorithm, especially for junk vertices. As expected, when there are smaller number of junk vertices, the algorithm is able to have better performance.
 
@@ -370,7 +379,7 @@ seeds[16:20] <- TRUE
 Perform FW graph matching with the first 10 nodes to be seeds by using `graph_match_FW` function.
 ```{r, warning=FALSE, message=FALSE}
 match <- graph_match_FW(g1, g2, seeds = seeds, start = "convex")
-err <- mean(match$corr[!seeds]!=which(!seeds))
+err <- mean(match$corr$corr_A[!seeds] != match$corr$corr_B[!seeds])
 ```
 
 Analyze goodness of matching by using the row permutation statistics measure and select top 3 best matched pairs of vertices as adaptive seeds. Step 3 and 4 can be implemented by using the `best_matches` function as the following:
@@ -382,18 +391,18 @@ seeds_adp
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
 ```{r}
-seeds <- rbind(as.matrix(check_seeds(seeds)), as.matrix(seeds_adp))
+seeds <- rbind(as.matrix(check_seeds(seeds, nv = 50)$seeds), as.matrix(seeds_adp))
 match_adp <- graph_match_FW(g1, g2, seeds=seeds, start = "convex")
 seeds <- 1 : 50 <= 10
-err_adp <- mean(match_adp$corr[!seeds]!=which(!seeds))
+err_adp <- mean(match_adp$corr$corr_A[!seeds] != match_adp$corr$corr_B[!seeds])
 ```
 
 ```{r output="asis", echo=FALSE}
-knitr::kable(tibble(err_orig=err, err_adp=err_adp), caption = "Matching Errors for Adaptive Seeding")
+knitr::kable(data.frame(err_orig=err, err_adp=err_adp), caption = "Matching Errors for Adaptive Seeding")
 ```
 
 
-Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.725 to 0.575 in one iteration although two out of three adaptive seeds are wrong. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
+Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from `r err` to `r err_adp` in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{summary_er.pdf}

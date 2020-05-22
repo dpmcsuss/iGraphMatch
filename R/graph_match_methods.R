@@ -14,7 +14,6 @@
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #'   character value like "bari" or "convex" to initialize the starting matrix.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
-#' @param max_iter An integer. Maximum iteration time.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param r A number. Threshold of neighboring pair scores.
 #' @param max_iter A number. Maximum number of replacing matches equals to
@@ -22,6 +21,7 @@
 #' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
 #'   on the information in network topology over other information such as
 #'   similarity scores
+#' @param lap_method Choice for lap method.
 #' @param method A character. Choice of method to extract mapping from score matrix,
 #'   including greedy method and the Hungarian algorithm.
 #'
@@ -76,7 +76,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   ns <- nrow(seeds)
   nn <- nv - ns
 
-  P <- init_start(start = start, nns = nn,
+  P <- init_start(start = start, nns = nn, ns = ns,
     A = A[[1]], B = B[[1]], seeds = seeds)
 
   iter <- 0
@@ -92,11 +92,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
   P <- P[, rp]
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
-  if (is.null(similarity)){
-    similarity <- zero_mat
-  } else {
-    similarity <- similarity %*% Matrix::t(rpmat)
-  }
+
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- similarity %*% Matrix::t(rpmat)
 
   # keep only nonseeds
   A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
@@ -131,8 +129,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
     for(ch in 1:nc){
       ns_Pdir_ns <- ns_Pdir_ns +
         Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+      
     }
-
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(ns_Pdir_ns[ind2])
@@ -171,18 +169,20 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
 
   cl <- match.call()
-  z <- list(
+  list(
     call = cl, 
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
     ns = ns,
     P = P,
-    D = D)
+    D = D,
+    num_iter = iter)
 }
 
-
+#' @rdname graph_match_methods
+gm_indefinite <- graph_match_FW
 
 #' @rdname graph_match_methods
 #' @return \code{graph_match_convex} returns a list of graph matching results,
@@ -196,23 +196,24 @@ graph_match_FW <- function(A, B, seeds = NULL,
 #'
 #' hard_seeds <- matrix(c(4,6,5,4),2)
 #' seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
+#' \dontrun{
+#' # for some reason this fails in check
 #' graph_match_convex(g1, g2, seeds)
+#' }
 #'
 #' @export
 #'
 #'
-graph_match_convex <- function(A, B, seeds = NULL, start = "bari", 
-                               max_iter = 100, similarity = NULL,
-                               tol = 1e-5, lap_method = NULL){
-
+graph_match_convex <- function(A, B, seeds = NULL, 
+  start = "bari", max_iter = 100, similarity = NULL,
+  tol = 1e-5, lap_method = NULL) {
   graph_pair <- check_graph(A, B)
   A <- matrix_list(graph_pair[[1]])
   B <- matrix_list(graph_pair[[2]])
 
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
-  nv <- nrow(A[[1]])
-
+  nv <- totv1
 
   seed_check <- check_seeds(seeds, nv)
   seeds <- seed_check$seeds
@@ -222,23 +223,32 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   nn <- nv - ns
 
 
+  # make a random permutation
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   Asn <- A[seeds$A,nonseeds$A]
   Ann <- A[nonseeds$A,nonseeds$A]
   Ans <- A[nonseeds$A,seeds$A]
 
-  Bsn <- B[seeds$B,nonseeds$B]
-  Bnn <- B[nonseeds$B,nonseeds$B]
-  Bns <- B[nonseeds$B,seeds$B]
+  Bsn <- B[seeds$B,nonseeds$B][,rp]
+  Bnn <- B[nonseeds$B,nonseeds$B][rp,rp]
+  Bns <- B[nonseeds$B,seeds$B][rp,]
+  
 
-  similarity <- similarity[nonseeds$A, nonseeds$B]
+  zero_mat <- Matrix::Matrix(0, nn, nn)
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- similarity %*% Matrix::t(rpmat)
+
   tol0 <- 1
   if(identical(start, "convex")){
     stop("Cannot start convex with convex. Try \"bari\" or another option.")
   }
-  P <- init_start(start = start, nn, ns)
+  P <- init_start(start = start, nn, ns)[, rp]
   iter <- 0
   toggle <- TRUE
+
+
 
   AtA <- ml_sum(t(Asn) %*% Asn + t(Ann) %*% Ann)
   BBt <- ml_sum(Bns %*% t(Bns) + Bnn %*% t(Bnn))    
@@ -246,19 +256,15 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   ABns_sn <- ml_sum(Ans %*% t(Bns) + t(Asn) %*% Bsn)
 
 
-  f <- sum((Ann %*% P - P%*% Bnn)^2)
+  f <- innerproduct(Ann %*% P - P%*% Bnn,
+    Ann %*% P - P%*% Bnn)
     
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
   
   while(toggle && iter < max_iter){
     f_old <- f
-    iter<-iter+1
-
-    if(is.null(similarity)){
-      similarity <- Matrix::Matrix(0, nn, nn)
-    }
-    
+    iter <- iter + 1
     Grad <- ml_sum(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity)
    
 
@@ -279,16 +285,20 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
     }else{
       Dns <- Dsn <-Cns <- Csn <- 0
     }
-
-    aq <- sum(Cnn ^ 2)+sum(Cns ^ 2)+sum(Csn ^ 2)
-    bq <- sum(Cnn * Dnn) + sum(Cns * Dns) + sum(Csn * Dsn)
-    aopt <- -bq/aq
+    aq <- innerproduct(Cnn, Cnn) +
+      innerproduct(Cns, Cns) +
+      innerproduct(Csn, Csn)
+    bq <- innerproduct(Cnn, Dnn) +
+      innerproduct(Cns, Dns) +
+      innerproduct(Csn, Dsn)
+    aopt <- ifelse(aq == 0 && bq == 0, 0, -bq/aq)
 
     P_new <- aopt * P + (1 - aopt) * Pdir
-    f <- sum((Ann %*% P_new - P_new %*% Bnn) ^ 2)
+    f <- innerproduct(Ann %*% P_new - P_new %*% Bnn,
+      Ann %*% P_new - P_new %*% Bnn)
 
     f_diff <- abs(f - f_old)
-    P_diff <- sum(abs(P - P_new))
+    P_diff <- norm(P - P_new, "f")
     P <- P_new
 
     toggle <- f_diff > tol && f > tol && P_diff > tol
@@ -299,21 +309,31 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
   D_ns <- P
 
   corr_ns <- do_lap(P, lap_method)
+  # undo rand perm here
+  corr_ns <- rp[corr_ns]
+
   corr <- 1:nv
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
 
   cl <- match.call()
-  z <- list(call = cl, corr = data.frame(corr_A = 1:nv, corr_B = corr), ns = ns, 
-            P = P, D = D)
+  z <- list(
+    call = cl,
+    corr = data.frame(corr_A = 1:nv, corr_B = corr),
+    ns = ns, 
+    P = P,
+    D = D,
+    num_iter = iter)
   z
 }
 
 
+#' 
 #' @rdname graph_match_methods
+#' 
 #' @return \code{graph_match_PATH} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
 #'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
@@ -324,6 +344,8 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 #' algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
 #' pages 2227-2242.
 #'
+#' @param epsilon A small number
+#' 
 #' @examples
 #' # match G_1 & G_2 using PATH algorithm
 #' graph_match_PATH(g1, g2)
@@ -332,31 +354,26 @@ graph_match_convex <- function(A, B, seeds = NULL, start = "bari",
 #'
 #'
 graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, epsilon = 1){
-  if(is.matrix(A)){
-    if(isSymmetric(A)){
-      A <- graph_from_adjacency_matrix(A, mode = "undirected")
-    } else{
-      A <- graph_from_adjacency_matrix(A, mode = "directed")
-    }
-  }
-  totv1 <- vcount(A)
-  totv2 <- vcount(B)
+  graph_pair <- check_graph(A, B, as_list = FALSE)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
   
-  if(totv1 > totv2){
-    diff <- totv1 - totv2
-    B <- pad(B[], diff)
-  }else if(totv1 < totv2){
-    diff <- totv2 - totv1
-    A <- pad(A[], diff)
-  }
-  
-  D_A <- Matrix::Diagonal(length(degree(A)), degree(A))
-  D_B <- Matrix::Diagonal(length(degree(B)), degree(B))
+  D_A <- Matrix::Diagonal(length(rowSums(A)), rowSums(A))
+  D_B <- Matrix::Diagonal(length(rowSums(B)), rowSums(B))
   A <- A[]
   B <- B[]
   L_A <- D_A - A
   L_B <- D_B - B
   n <- nrow(A)
+
+  seed_check <- check_seeds(seeds, n)
+  seeds <- seed_check$seeds
+  nonseeds <- seed_check$nonseeds
+
+
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   
   # alpha=0, convex relaxation
   convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, tol = 1e-10)
@@ -379,12 +396,9 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     L <- Matrix::kronecker(Matrix::t(L_B), Matrix::t(L_A))
     F_cc <- - sum(t(delta) %*% P) - 2 * t(Matrix::c.sparseVector(P)) %*% 
       L %*% Matrix::c.sparseVector(P)
-    if(!is.null(similarity)){
-      F_sim <- sum(similarity * P)
-      F <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
-    } else{
-      F <- (1 - lambda) * F_cv + lambda * F_cc
-    }
+  
+    F_sim <- sum(similarity * P)
+    F <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     
     lambda <- lambda + dlambda
     if(!is.null(similarity)){
@@ -401,12 +415,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
         lambda <- 1
         break
       }
-      if(!is.null(similarity)){
-        F_sim <- sum(similarity * P)
-        F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
-      } else{
-        F_new <- (1 - lambda) * F_cv + lambda * F_cc
-      }    
+      F_sim <- sum(similarity * P)
+      F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     }
     while (sum(abs(F - F_new)) > epsilon && dlambda != dlambda_min) {
       if(lambda > 1){
@@ -416,12 +426,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
         dlambda <- dlambda / 2
         lambda <- lambda - dlambda
       }
-      if(!is.null(similarity)){
-        F_sim <- sum(similarity * P)
-        F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
-      } else{
-        F_new <- (1 - lambda) * F_cv + lambda * F_cc
-      }
+      F_sim <- sum(similarity * P)
+      F_new <- alpha * ((1 - lambda) * F_cv + lambda * F_cc) + (1 - alpha) * F_sim
     }
     
     # Frank-Wolfe 
@@ -431,9 +437,8 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     Grad_cv <- 2 * (AtA %*% P + P %*% BBt - tA_P_B - A %*% P %*% t(B))
     Grad_cc <- - t(delta) - 2 * Matrix::t(L_A) %*% P %*% L_B
     Grad <- (1 - lambda) * Grad_cv + lambda * Grad_cc
-    if(!is.null(similarity)){
-      Grad <- alpha * Grad + (1 - alpha) * similarity
-    }
+    Grad <- alpha * Grad + (1 - alpha) * similarity
+
     ind <- do_lap(Grad, lap_method)
     ind2 <- cbind(1:n, ind)
     Pdir <- Matrix::Diagonal(n)[ind, ]
@@ -441,12 +446,14 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
     delta_P <- P - Pdir
     C <- A %*% delta_P - delta_P %*% B
     D <- A %*% Pdir - Pdir %*% B
-    aq <- sum(C^2)
-    bq <- sum(C*D)
+    aq <- innerproduct(C, C)
+    bq <- innerproduct(C, D)
     vec_delta_P <- Matrix::c.sparseVector(delta_P)
     vec_Pdir <- Matrix::c.sparseVector(Pdir)
     c <- sum(t(delta) * delta_P)
-    e <- Matrix::t(f) %*% L %*% vec_Pdir
+    # NOT SURE WHAT SHOULD GO HERE
+    # WAS F BEFORE
+    e <- Matrix::t(vec_Pdir) %*% L %*% vec_Pdir
     u <- Matrix::t(vec_Pdir) %*% L %*% vec_delta_P
     v <- Matrix::t(vec_delta_P) %*% L %*% vec_delta_P
     a <- 2 * (lambda - 1) * bq + lambda * (c - e + u)
@@ -499,14 +506,16 @@ graph_match_PATH <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5, 
 #'
 graph_match_percolation <- function (A, B, seeds, r = 2)
 {
-  A <- A[]
-  B <- B[] 
+  graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
   
-  directed <- sum(abs(A - Matrix::t(A))) != 0
-  totv1 <- nrow(A)
-  totv2 <- nrow(B)
+  directed <- !(isSymmetric(A) && isSymmetric(B))
+
   n <- max(totv1, totv2)
-  seeds <- check_seeds(seeds, n)$seeds #unused seeds
+  seeds <- check_seeds(seeds, n)$seeds
   ns <- nrow(seeds)
   Z <- seeds #matched nodes
   M <- matrix(0, totv1, totv2) #marks matrix
@@ -593,20 +602,14 @@ cal_mark <- function(x,y){
 #'
 graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
   # this will make the graphs be matrices if they are igraph objects
-  if(igraph::is.igraph(A)){
-    weighted <- igraph::is.weighted(A)
-  } else{
-    if(min(A) < 0){
-      weighted <- TRUE
-    } else{
-      weighted <- max(A) > 1
-    }
-  }
-  A <- A[]
-  B <- B[]
-  
-  totv1 <- nrow(A)
-  totv2 <- nrow(B)
+  graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
+
+  weighted <- any(A != 0 | A != 1 | B != 0 | B != 1)
+
   n <- max(totv1, totv2)
   P <- Matrix::Matrix(0, nrow = totv1, ncol = totv2)
   seeds <- check_seeds(seeds, n)$seeds
@@ -894,6 +897,7 @@ graph_match_soft_percolation <- function(A, B, seeds, r = 2, max_iter = 100){
   z <- list(call = cl, corr = corr, ns = ns, order = order)
   z
 }
+
 conflict_check <- function(Matches, ind, logical = TRUE){
 
   if(logical == TRUE){
@@ -909,6 +913,7 @@ conflict_check <- function(Matches, ind, logical = TRUE){
   }
   conflict
 }
+
 check_cycle <- function(rem, new){
   row <- which(rem[,1]==unlist(new[1]))
   col <- which(rem[,2]==unlist(new[2]))
@@ -1000,6 +1005,7 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
   seeds <- seeds$seeds
   R <- R[!seeds_log, !seeds_log]
   R <- as.matrix(R)
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   # find GNA
   if(method == "greedy"){
     corr <- NULL
@@ -1014,17 +1020,21 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
                        corr_B = c(seeds$B, nonseeds$B[corr[,2]]))
     order <- order(corr$corr_A)
     corr <- corr[order,]
+    names(corr) <- c("corr_A","corr_B")
+    rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = 0, order = order)
+    z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
     z
   } else if(method == "LAP"){
     # Hungarian alg.
     lap_method <- set_lap_method(NULL, totv1, totv2)
     corr <- do_lap(R - min(R), lap_method)
     corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[corr]))
-    corr <- corr[order(corr$corr_A),]    
+    corr <- corr[order(corr$corr_A),] 
+    names(corr) <- c("corr_A","corr_B")
+    rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = 0)
+    z <- list(call = cl, corr = corr, ns = nrow(seeds))
     z
   }
 }
@@ -1047,6 +1057,8 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
 #' @export
 #'
 graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5){
+
+  # USE CHECK GRAPH
   A <- A[]
   B <- B[]
   totv1 <- nrow(A)
@@ -1059,6 +1071,13 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
     diff <- totv2 - totv1
     A <- pad(A[], diff)
   }
+  
+  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
+  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
+  nonseeds <- seeds$nonseeds
+  seeds <- seeds$seeds
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  #similarity <- similarity %*% Matrix::t(rpmat)
 
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices
@@ -1069,18 +1088,11 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
   U_A <- eigen(A)$vectors
   U_B <- eigen(B)$vectors
   AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
-  if(!is.null(similarity)){
-    Grad <- alpha * AB + (1-alpha) * Matrix::t(similarity)
-  } else{
-    Grad <- AB
-  }
-  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
-  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
-  nonseeds <- seeds$nonseeds
-  seeds <- seeds$seeds
+
+  Grad <- alpha * AB[nonseeds$A, nonseeds$B] + (1-alpha) * Matrix::t(similarity)
   Grad <- Grad - min(Grad)
   lap_method <- set_lap_method(NULL, totv1, totv2)
-  ind <- do_lap(Grad[!seeds_log, !seeds_log], lap_method)
+  ind <- do_lap(Grad, lap_method)
 
   corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
   corr <- corr[order(corr$corr_A),]

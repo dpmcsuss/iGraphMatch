@@ -1,35 +1,43 @@
-Package: iGraphMatch
 Type: Package
+Package: iGraphMatch
 Title: Tools for approximately solving graph matching problems
 Version: 0.0.0.9000
-Authors@R: c(
-    person("Daniel", "Sussman", email = "sussman@bu.edu", role = "aut"),
-    person("Zihuan", "Qiao", email = "zhqiao@bu.edu", role = c("aut", "cre"))
-    )
-Description: iGraphMatch is an R package for graph matching. The package
-  works for both igraph objects and matrix objects. You provide the adjacency
-  matrices of two graphs and some other information you might know, choose the
-  graph matching method, and it returns the graph matching results. iGraphMatch
-  also provides a bunch of useful functions you might need related to graph
-  matching.
+Authors@R: 
+    c(person(given = "Daniel",
+             family = "Sussman",
+             role = "aut",
+             email = "sussman@bu.edu"),
+      person(given = "Zihuan",
+             family = "Qiao",
+             role = c("aut", "cre"),
+             email = "zhqiao@bu.edu"))
+Description: iGraphMatch is an R package for graph
+    matching. The package works for both igraph objects and matrix
+    objects. You provide the adjacency matrices of two graphs and some
+    other information you might know, choose the graph matching method,
+    and it returns the graph matching results. iGraphMatch also provides a
+    bunch of useful functions you might need related to graph
+    matching.
+License: GPL (>= 2)
 Depends:
     R (>= 3.3.1)
 Imports:
-    clue (>= 0.3-54),
-    Matrix (>= 1.2-11),
-    igraph (>= 1.1.2),
-    purrr (>= 0.2.2.2),
-    ramify (>= 0.3.3),
+    clue,
+    grDevices,
+    igraph,
     irlba,
+    Matrix,
     methods
 Suggests:
-    dplyr (>= 0.5.0),
-    testthat (>= 2.0.0),
-    rlapjv
+    covr,
+    knitr,
+    rlapjv,
+    rmarkdown,
+    testthat
+VignetteBuilder: 
+    knitr
 Remotes:
     dpmcsuss/rlapjv
-License: GPL (>= 2)
-LazyData: TRUE
-RoxygenNote: 6.1.1
 Encoding: UTF-8
-
+LazyData: TRUE
+RoxygenNote: 7.1.0
