@@ -11,7 +11,7 @@ check_graph <- function(A, B,
         totv2 <- igraph::gorder(B)
         if (totv1 > totv2 && same_order) {
           B <- igraph::add_vertices(B, totv1 - totv2)
-        } 
+        }
         if (totv2 > totv1 && same_order) {
           A <- igraph::add_vertices(A, totv2 - totv1)
         }
