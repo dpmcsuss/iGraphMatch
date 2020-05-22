@@ -7,5 +7,4 @@ deploy:
     
 branches:
   except:
-  - legacy
-  - experimental
+  - gh-pages
