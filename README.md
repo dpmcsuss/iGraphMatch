@@ -1,4 +1,8 @@
-[![Build Status](https://travis-ci.com/dpmcsuss/iGraphMatch.svg?branch=dev)](https://travis-ci.com/dpmcsuss/iGraphMatch)
+<!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/dpmcsuss/iGraphMatch/branch/master/graph/badge.svg)](https://codecov.io/gh/dpmcsuss/iGraphMatch?branch=master)
+<!-- badges: end -->
+
+<!-- [![Build Status](https://travis-ci.com/dpmcsuss/iGraphMatch.svg?branch=dev)](https://travis-ci.com/dpmcsuss/iGraphMatch) -->
 
 # iGraphMatch
 
