@@ -1,5 +1,5 @@
 
-#' @title Multiple Graph Match Methods
+#' @title Multiple Graph Match Methods (DEPRECATED)
 #'
 #' @description Match two lists of graphs, returns a list of graph matching results,
 #' including matching correspondence vector of \eqn{G_2} with respect to \eqn{G_1},
@@ -22,13 +22,6 @@
 #' named \code{corr}, doubly stochastic matrix named \code{D}, permutation
 #' matrix named \code{P} based on Frank-Wolfe methodology and iteration time of
 #' the algorithm named \code{iter}.
-#'
-#' @examples
-#'  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
-#'  A <- lapply(gp_list, function(gp)gp[[1]])
-#'  B <- lapply(gp_list, function(gp)gp[[2]])
-#'  match <- graph_match_FW_multi(A, B, seeds = 1:10, start = "bari", max_iter = 20)
-#'  match$corr
 #'
 #' @export
 #'
@@ -159,21 +152,6 @@ graph_match_FW_multi <- function(A, B, seeds = NULL, start = "bari", max_iter = 
   list(corr = corr, P = P, D = D, iter = iter)
 }
 
-get_s_to_ns <- function(Alist, Blist, seeds){
-  nonseeds <- !seeds
-  s_to_ns <- function(A,B){
-    Asn <- A[seeds,nonseeds]
-    Ann <- A[nonseeds,nonseeds]
-    Ans <- A[nonseeds,seeds]
-
-    Bsn <- B[seeds,nonseeds]
-    Bnn <- B[nonseeds,nonseeds]
-    Bns <- B[nonseeds,seeds]
-    Ans %*% Matrix::t(Bns) + Matrix::t(Asn) %*% Bsn
-  }
-  Reduce("+", mapply(s_to_ns, Alist, Blist, SIMPLIFY = FALSE))
-}
-
 get_graph_triple <- function(g, weight, first_graph){
   if(first_graph){
     w <- sign(weight) * w
@@ -202,7 +180,7 @@ graph_match_FW_multi_reward <- function(A, B, weight, ...){
   B <- unlist(lapply(B, get_graph_triple,
     weight = weight, first_graph = FALSE), recursive = FALSE)
 
-  graph_match_FW_multi(A, B, ...)
+  graph_match_FW(A, B, ...)
 }
 
               

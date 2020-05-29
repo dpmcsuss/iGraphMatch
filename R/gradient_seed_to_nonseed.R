@@ -1,6 +1,6 @@
 # Function to compute the seed to non-seed portion of the gradient
 get_s_to_ns <- function(Alist, Blist, seeds, nonseeds,
-    perm = seq(sum(seeds))){
+    perm = seq(sum(seeds))) {
 
   # NEED TO CHANGE ???
   nns <- nrow(nonseeds)
