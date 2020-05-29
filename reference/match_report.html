@@ -181,12 +181,12 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='fu'>match_report</span>(<span class='no'>res</span>, <span class='no'>A</span>, <span class='no'>B</span>)</div><div class='output co'>#&gt; Call: 
 #&gt; graph_match_percolation(A = A, B = B, seeds = 1:4)
 #&gt; 
-#&gt; # Matches: 0
+#&gt; # Matches: 4
 #&gt;                    
-#&gt; common_edges      0
-#&gt; missing_edges     1
-#&gt; extra_edges       1
-#&gt; common_non_edges 43
+#&gt; common_edges      8
+#&gt; missing_edges     0
+#&gt; extra_edges       2
+#&gt; common_non_edges 35
 #&gt; fnorm             2
 #&gt; </div><div class='input'>
 <span class='no'>gp_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>,
@@ -196,9 +196,9 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>2</span>]])
 <span class='no'>corr</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>corr_A</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>, <span class='kw'>corr_B</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>100</span>)
 <span class='fu'>edge_match_info</span>(<span class='no'>corr</span>, <span class='no'>A</span>, <span class='no'>B</span>)</div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
-#&gt; 1     1         1330           204         197             3219 28.31960
-#&gt; 2     2         1293           219         186             3252 28.46050
-#&gt; 3     3         1240           230         200             3280 29.32576</div></pre>
+#&gt; 1     1         1327           212         187             3224 28.24889
+#&gt; 2     2         1303           211         203             3233 28.77499
+#&gt; 3     3         1242           228         199             3281 29.22328</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

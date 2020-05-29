@@ -248,39 +248,39 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [5,] 0.3333333</div><div class='input'>
 <span class='co'>## Case without soft seeds</span>
 <span class='fu'>rds_sinkhorn_start</span>(<span class='fl'>5</span>)</div><div class='output co'>#&gt; 5 x 5 Matrix of class "dgeMatrix"
-#&gt;            [,1]      [,2]      [,3]       [,4]      [,5]
-#&gt; [1,] 0.15638898 0.1694356 0.2902987 0.23123836 0.1526384
-#&gt; [2,] 0.18075388 0.1625104 0.1133153 0.24011320 0.3033072
-#&gt; [3,] 0.04853643 0.2866705 0.1751643 0.37514700 0.1144817
-#&gt; [4,] 0.32236829 0.2535642 0.1395237 0.04607794 0.2384659
-#&gt; [5,] 0.29195242 0.1278193 0.2816980 0.10742349 0.1911068</div><div class='input'>
+#&gt;            [,1]      [,2]      [,3]      [,4]       [,5]
+#&gt; [1,] 0.06238845 0.1571510 0.2366251 0.3139550 0.22988043
+#&gt; [2,] 0.36502546 0.1702439 0.2442945 0.1259326 0.09450345
+#&gt; [3,] 0.21054353 0.2675782 0.1368123 0.1688471 0.21621887
+#&gt; [4,] 0.30657465 0.1389871 0.2761306 0.1418061 0.13650155
+#&gt; [5,] 0.05546791 0.2660397 0.1061375 0.2494591 0.32289570</div><div class='input'>
 <span class='co'>## Case with soft seeds and the input is a data frame</span>
 <span class='fu'>rds_sinkhorn_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>,
    <span class='kw'>soft_seeds</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)),
    <span class='kw'>distribution</span> <span class='kw'>=</span> <span class='st'>"rnorm"</span>)</div><div class='output co'>#&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
-#&gt;                                       
-#&gt; [1,] 0.3104828 . . 0.4162702 0.2732471
-#&gt; [2,] .         1 . .         .        
-#&gt; [3,] 0.3387009 . . 0.2032859 0.4580133
-#&gt; [4,] .         . 1 .         .        
-#&gt; [5,] 0.3508163 . . 0.3804440 0.2687397</div><div class='input'>
+#&gt;                                        
+#&gt; [1,] 0.29472779 . . 0.4436935 0.2615787
+#&gt; [2,] .          1 . .         .        
+#&gt; [3,] 0.64796229 . . 0.1640507 0.1879870
+#&gt; [4,] .          . 1 .         .        
+#&gt; [5,] 0.05730841 . . 0.3922564 0.5504352</div><div class='input'>
 <span class='co'>## Case without soft seeds</span>
 <span class='fu'>rds_perm_bari_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                                       
-#&gt; [1,] .         .         .         .         0.5582725
-#&gt; [2,] .         .         0.5582725 .         .        
-#&gt; [3,] 0.5582725 .         .         .         .        
-#&gt; [4,] .         .         .         0.5582725 .        
-#&gt; [5,] .         0.5582725 .         .         .        
+#&gt; [1,] .         0.4324816 .         .         .        
+#&gt; [2,] 0.4324816 .         .         .         .        
+#&gt; [3,] .         .         .         .         0.4324816
+#&gt; [4,] .         .         .         0.4324816 .        
+#&gt; [5,] .         .         0.4324816 .         .        
 #&gt; plus left factor
 #&gt; 5 x 1 Matrix of class "dgeMatrix"
 #&gt;           [,1]
-#&gt; [1,] 0.4417275
-#&gt; [2,] 0.4417275
-#&gt; [3,] 0.4417275
-#&gt; [4,] 0.4417275
-#&gt; [5,] 0.4417275
+#&gt; [1,] 0.5675184
+#&gt; [2,] 0.5675184
+#&gt; [3,] 0.5675184
+#&gt; [4,] 0.5675184
+#&gt; [5,] 0.5675184
 #&gt; times right factor transpose
 #&gt; 5 x 1 Matrix of class "dgeMatrix"
 #&gt;      [,1]
@@ -293,19 +293,19 @@ with 1's corresponding to adaptive seeds.</p>
 <span class='fu'>rds_perm_bari_start</span>(<span class='kw'>nns</span><span class='kw'>=</span><span class='fl'>5</span>, <span class='kw'>ns</span><span class='kw'>=</span><span class='fl'>0</span>, <span class='kw'>soft_seeds</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), <span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>2</span>)))</div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                    
-#&gt; [1,] 0.445569 . . .        .       
+#&gt; [1,] .        . . .        0.296656
 #&gt; [2,] .        1 . .        .       
-#&gt; [3,] .        . . .        0.445569
+#&gt; [3,] 0.296656 . . .        .       
 #&gt; [4,] .        . 1 .        .       
-#&gt; [5,] .        . . 0.445569 .       
+#&gt; [5,] .        . . 0.296656 .       
 #&gt; plus left factor
 #&gt; 5 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;              
-#&gt; [1,] 0.554431
+#&gt; [1,] 0.703344
 #&gt; [2,] .       
-#&gt; [3,] 0.554431
+#&gt; [3,] 0.703344
 #&gt; [4,] .       
-#&gt; [5,] 0.554431
+#&gt; [5,] 0.703344
 #&gt; times right factor transpose
 #&gt; 5 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;               
