@@ -922,5 +922,5 @@ setMethod("diag", signature = signature(x = "splrMatrix"), function(x) {
 
 setAs(
   "splrMatrix", "dgeMatrix",
-  function(from) x@x + Matrix::tcrossprod(x@a, x@b)
+  function(from) from@x + Matrix::tcrossprod(from@a, from@b)
 )
