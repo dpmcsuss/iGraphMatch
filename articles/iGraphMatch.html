@@ -243,14 +243,14 @@
 (<span class="no">start_convex</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(<span class="kw">start</span> <span class="kw">=</span> <span class="st">"convex"</span>, <span class="kw">nns</span> <span class="kw">=</span> <span class="no">nns</span>, <span class="kw">ns</span> <span class="kw">=</span> <span class="no">ns</span>, <span class="kw">soft_seeds</span> <span class="kw">=</span> <span class="no">bad_soft_seeds</span>,
                            <span class="kw">A</span> <span class="kw">=</span> <span class="no">g1</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="no">g2</span>, <span class="kw">seeds</span> <span class="kw">=</span> <span class="no">seeds</span>))
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;                                           </span>
-<span class="co">#&gt; [1,] 1 .     .     .     .     .     .    </span>
-<span class="co">#&gt; [2,] . 0.180 .     0.180 0.316 0.180 0.145</span>
-<span class="co">#&gt; [3,] . 0.180 0.136 0.180 0.145 0.180 0.180</span>
-<span class="co">#&gt; [4,] . 0.180 .     0.180 0.180 0.145 0.316</span>
-<span class="co">#&gt; [5,] . 0.136 0.864 .     .     .     .    </span>
-<span class="co">#&gt; [6,] . 0.145 .     0.180 0.180 0.316 0.180</span>
-<span class="co">#&gt; [7,] . 0.180 .     0.281 0.180 0.180 0.180</span></pre></body></html></div>
+<span class="co">#&gt;                                               </span>
+<span class="co">#&gt; [1,] 1  .     .  .      .       .       .     </span>
+<span class="co">#&gt; [2,] .  0.339 .  0.0182 0.2108  0.5428 -0.1103</span>
+<span class="co">#&gt; [3,] .  0.543 .  0.1167 0.0835  0.3379 -0.0809</span>
+<span class="co">#&gt; [4,] .  0.403 .  0.5190 0.0182 -0.1103  0.1704</span>
+<span class="co">#&gt; [5,] .  .     1  .      .       .       .     </span>
+<span class="co">#&gt; [6,] . -0.108 .  0.3779 0.2068  0.0182  0.5055</span>
+<span class="co">#&gt; [7,] . -0.176 . -0.0318 0.4806  0.2115  0.5153</span></pre></body></html></div>
 <p>Then implement seeded graph matching using the FAQ algorithm in R by using <code>graph_match_FW</code> function. To incorporate soft seeds, we specify the <code>start</code> argument in <code>graph_match_FW</code> function accordingly. Note that in this example, we assume the true permutation to be the identity matrix.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
 <span class="no">match_bari</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="no">start_bari</span>)
@@ -279,7 +279,7 @@
 <td>good soft seeds</td>
 <td align="right">0.714</td>
 <td align="right">0.571</td>
-<td align="right">0.714</td>
+<td align="right">0.429</td>
 </tr>
 <tr class="even">
 <td>bad soft seeds</td>
@@ -291,7 +291,7 @@
 <td>non soft seeds</td>
 <td align="right">0.857</td>
 <td align="right">0.857</td>
-<td align="right">0.429</td>
+<td align="right">0.857</td>
 </tr>
 </tbody>
 </table>
@@ -435,9 +435,9 @@ seeds_adp <- best_matches(A = g1, B = g2, measure = row_perm_stat, num = 3, x = 
                           match_corr = match$corr)
 seeds_adp
 #>   A_best B_best
-#> 1      8     45
-#> 2     38     38
-#> 3     23     34
+#> 1     38     21
+#> 2     25     47
+#> 3     40     40
 ```
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
@@ -454,10 +454,10 @@ Table: Matching Errors for Adaptive Seeding
 
  err_orig   err_adp
 ---------  --------
-      0.8     0.575
+    0.975       0.8
 
 
-Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.8 to 0.575 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
+Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.975 to 0.8 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{summary_er.pdf}
