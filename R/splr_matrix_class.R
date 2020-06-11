@@ -921,7 +921,7 @@ setMethod("t", signature = signature(x ="splrMatrix") , function(x) {
 
 #' @rdname splr
 setMethod("diag", signature = signature(x = "splrMatrix"), function(x) {
-  drop(diag(x@x) + x@a*x@b)
+  drop(diag(x@x) + rowSums(x@a * x@b))
 })
 
 
