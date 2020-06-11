@@ -712,36 +712,51 @@ setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop = '
             }
     })
 
-#' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = 'logical') 
-          , function(x, j, ..., drop) {
-            i <- c(1:dim(x@x)[1])
-            if (drop) {
-              return(x@x[i, j,...] + (x@a[i,, drop = FALSE]%*%t(x@b)[, j, drop = FALSE]) )
-            } else {
-              return(new("splrMatrix",
-                x = x@x[i, j,..., drop = FALSE],
-                a = x@a[i,, drop = FALSE],
-                b = x@b[j,, drop = FALSE]
-                         , Dim = dim(x@x[i, j,..., drop = FALSE])) )
-            }
-            
-            
-            
-          })
+
+col_index <- function(x, j, ..., drop) {
+  i <- c(1:dim(x@x)[1])
+  if (drop) {
+    return(x@x[i, j,...] + (x@a[i,, drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) )
+  } else {
+    return(new("splrMatrix",
+      x = x@x[i, j,..., drop = FALSE],
+      a = x@a[i,, drop = FALSE],
+      b = x@b[j,, drop = FALSE],
+      Dim = dim(x@x[i, j,..., drop = FALSE])) )
+  }
+  
+  
+  
+}
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = 'logical') 
-          , function(x, i, ..., drop) {
-            j <- c(1:dim(x@x)[2])
-            if (drop) {
-              return(drop(x@x[i, j,...] + (x@a[i,, drop = FALSE]%*%t(x@b)[, j, drop = FALSE]) ))
-            } else {
-              return( new("splrMatrix", x = x@x[i, j,...], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE],
-                          Dim = dim(x = x@x[i, j,...])))
-            }
-        
- })
+setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = 'logical'),
+            col_index)
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = 'missing'),
+            function(x, j, ...) col_index(x, j, drop = TRUE))
+
+row_index <- function(x, i, ..., drop) {
+  j <- c(1:dim(x@x)[2])
+  if (drop) {
+    return(drop(x@x[i, j,...] + (x@a[i,, drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) ))
+  } else {
+    return( new("splrMatrix", 
+      x = x@x[i, j,...],
+      a = x@a[i,, drop = FALSE], 
+      b = x@b[j,, drop = FALSE],
+      Dim = dim(x = x@x[i, j,...])))
+  }
+}
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = 'logical'),
+            row_index)
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = 'missing'),
+            function(x, i, ...) row_index(x, i, drop = TRUE))
 
 
 #' @rdname splr
@@ -795,25 +810,6 @@ setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'missing', drop = '
     x
   })
 
-#' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = 'missing') 
-          , function(x, j, ..., drop = TRUE) {
-            
-            
-            new('splrMatrix', x = x@x[, j], a = x@a, b = x@b[j,, drop = FALSE],
-                Dim = dim(x@x[, j]))
-           
-            
-          })
-#' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop ='missing') 
-          , function(x, i , ..., drop = TRUE) {
-            j = c(1:dim(x@x)[2])
-            
-            new('splrMatrix', x = x@x[i,], a = as(x@a[i,, drop = FALSE],'Matrix'), b = x@b
-                , Dim = dim(x@x[i,]))
-            
-          })
 
 #can fix this
 #' @rdname splr
@@ -924,8 +920,7 @@ setMethod("diag", signature = signature(x = "splrMatrix"), function(x) {
   drop(diag(x@x) + rowSums(x@a * x@b))
 })
 
-
-
-
-
-
+setAs(
+  "splrMatrix", "dgeMatrix",
+  function(from) x@x + Matrix::tcrossprod(x@a, x@b)
+)
