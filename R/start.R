@@ -153,7 +153,9 @@ rds_from_sim <- function(nns, sim) {
     sim@x <- exp(sim@x + stats::rnorm(Matrix::nnzero(sim)) * 2)
     sinkhorn(sim, 40)
   } else {
-    sinkhorn(Matrix(exp(stats::rnorm(nns ^ 2, 1)), nns) + sim, 40)
+    sinkhorn(
+      Matrix(exp(stats::rnorm(prod(dim(nns)), 1)), nns) + sim,
+      40)
   }
 }
 
