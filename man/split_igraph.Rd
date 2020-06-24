@@ -4,14 +4,15 @@
 \alias{split_igraph}
 \title{Split an igraph object into aligned graphs by attribute}
 \usage{
-split_igraph(g, e_attr, warn = TRUE)
+split_igraph(g, e_attr, strip_vertex_attr = FALSE)
 }
 \arguments{
 \item{g}{An igraph object}
 
 \item{e_attr}{the name of an edge attribute in g}
 
-\item{warn}{Whether to warn about lots of attributes.}
+\item{strip_vertex_attr}{Whether to remove all vertex 
+attribute from the new graphs}
 }
 \value{
 A named list of igraph objects

@@ -714,14 +714,14 @@ setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop = '
 
 
 col_index <- function(x, j, ..., drop) {
-  i <- c(1:dim(x@x)[1])
+  i <- c(1:(dim(x@x)[1]))
   if (drop) {
-    return(x@x[i, j,...] + (x@a[i,, drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) )
+    return(x@x[i, j,...] + (x@a[i, , drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) )
   } else {
     return(new("splrMatrix",
       x = x@x[i, j,..., drop = FALSE],
-      a = x@a[i,, drop = FALSE],
-      b = x@b[j,, drop = FALSE],
+      a = x@a[i, , drop = FALSE],
+      b = x@b[j, , drop = FALSE],
       Dim = dim(x@x[i, j,..., drop = FALSE])) )
   }
   
@@ -735,10 +735,10 @@ setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = '
 
 #' @rdname splr
 setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = 'missing'),
-            function(x, j, ...) col_index(x, j, drop = TRUE))
+            function(x, j, ...) col_index(x, j, drop = FALSE))
 
 row_index <- function(x, i, ..., drop) {
-  j <- c(1:dim(x@x)[2])
+  j <- c(1:(dim(x@x)[2]))
   if (drop) {
     return(drop(x@x[i, j,...] + (x@a[i,, drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) ))
   } else {
@@ -756,7 +756,7 @@ setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = '
 
 #' @rdname splr
 setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = 'missing'),
-            function(x, i, ...) row_index(x, i, drop = TRUE))
+            function(x, i, ...) row_index(x, i, drop = FALSE))
 
 
 #' @rdname splr
@@ -882,17 +882,16 @@ setMethod("[<-",
 
 
 # Implementing this would be nice
-# setMethod("[<-", signature(x ="Matrix", i = 'ANY', j = 'ANY', value = 'splrMatrix'),
-#           function(x, j, ..., value) {
-#             i <- c(1:dim(x@x)[1])
-#             y <- x@x
-#             y[, j] <- value
-#             a <- x@a
-#             a[i,] <- 0
-#             b <- x@b
-#             b[j,] <- 0
-#             new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
-#  })
+setMethod("[<-", signature(x ="Matrix", i = 'ANY', j = 'ANY', value = 'splrMatrix'),
+          function(x, i, j, ..., value) {
+            y <- x
+            y[i, j] <- value@x
+            a <- Matrix(0, dim(x)[1], dim(value@a)[2])
+            b <- Matrix(0, dim(x)[2], dim(value@b)[2])
+            a[i,] <- value@a
+            b[j,] <- value@b
+            new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
+ })
 
 
 #' @rdname splr

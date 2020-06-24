@@ -58,7 +58,7 @@
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
-  similarity = NULL, lap_method = NULL){
+  similarity = NULL, lap_method = NULL) {
 
 
   graph_pair <- check_graph(A, B)
@@ -169,7 +169,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   list(
@@ -317,7 +317,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   z <- list(

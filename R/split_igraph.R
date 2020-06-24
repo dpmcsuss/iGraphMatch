@@ -10,7 +10,8 @@
 #' 
 #' @param g An igraph object
 #' @param e_attr the name of an edge attribute in g
-#' @param warn Whether to warn about lots of attributes.
+#' @param strip_vertex_attr Whether to remove all vertex 
+#'  attribute from the new graphs
 #' 
 #' @returns A named list of igraph objects
 #' 
@@ -21,13 +22,22 @@
 #' split_igraph(g, "color")
 #' 
 #' @export
-split_igraph <- function(g, e_attr, warn = TRUE) {
+split_igraph <- function(g, e_attr, strip_vertex_attr = FALSE) {
   if (!igraph::is.igraph(g)) {
     stop("g must be an igraph object")
   }
-  ne <- igraph::ecount(g)
+
   all_attr <- igraph::get.edge.attribute(g, e_attr)
   u_attr <- unique(all_attr)
+  try({
+    u_attr <- sort(u_attr)
+  }, silent = TRUE)
+
+  if (strip_vertex_attr) {
+    for (v_attr in vertex_attr_names(g)){
+      g <- igraph::delete_vertex_attr(g, v_attr)
+    }
+  }
 
   sapply(u_attr, function(u) {
     igraph::subgraph.edges(
