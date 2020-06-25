@@ -88,7 +88,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   # seed to non-seed info
   s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
-
   P <- P[, rp]
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
@@ -106,7 +105,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
 
   while(toggle && iter < max_iter){
-
     iter <- iter + 1
     # non-seed to non-seed info
     tAnn_P_Bnn <- zero_mat
