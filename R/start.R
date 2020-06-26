@@ -155,7 +155,7 @@ rds_from_sim <- function(nns, sim) {
 
   } else {
     sim <- sinkhorn(
-      Matrix(exp(stats::rnorm(prod(dim(nns)), 1)), nns) + sim,
+      Matrix(exp(stats::rnorm(prod(dim(sim)), 1)), nns) + sim,
       40
     )
   }
