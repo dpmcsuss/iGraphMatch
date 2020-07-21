@@ -120,62 +120,62 @@
     </div>
 
     <pre class="usage"><span class='fu'>graph_match_FW</span>(
-  <span class='no'>A</span>,
-  <span class='no'>B</span>,
-  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"convex"</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lap_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>A</span>,
+  <span class='kw'>B</span>,
+  seeds = <span class='kw'>NULL</span>,
+  start = <span class='st'>"convex"</span>,
+  max_iter = <span class='fl'>20</span>,
+  similarity = <span class='kw'>NULL</span>,
+  lap_method = <span class='kw'>NULL</span>
 )
 
 <span class='fu'>gm_indefinite</span>(
-  <span class='no'>A</span>,
-  <span class='no'>B</span>,
-  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"convex"</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>20</span>,
-  <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>lap_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>A</span>,
+  <span class='kw'>B</span>,
+  seeds = <span class='kw'>NULL</span>,
+  start = <span class='st'>"convex"</span>,
+  max_iter = <span class='fl'>20</span>,
+  similarity = <span class='kw'>NULL</span>,
+  lap_method = <span class='kw'>NULL</span>
 )
 
 <span class='fu'>graph_match_convex</span>(
-  <span class='no'>A</span>,
-  <span class='no'>B</span>,
-  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"bari"</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>tol</span> <span class='kw'>=</span> <span class='fl'>1e-05</span>,
-  <span class='kw'>lap_method</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>A</span>,
+  <span class='kw'>B</span>,
+  seeds = <span class='kw'>NULL</span>,
+  start = <span class='st'>"bari"</span>,
+  max_iter = <span class='fl'>100</span>,
+  similarity = <span class='kw'>NULL</span>,
+  tol = <span class='fl'>1e-05</span>,
+  lap_method = <span class='kw'>NULL</span>
 )
 
 <span class='fu'>graph_match_PATH</span>(
-  <span class='no'>A</span>,
-  <span class='no'>B</span>,
-  <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>1</span>
+  <span class='kw'>A</span>,
+  <span class='kw'>B</span>,
+  similarity = <span class='kw'>NULL</span>,
+  seeds = <span class='kw'>NULL</span>,
+  alpha = <span class='fl'>0.5</span>,
+  epsilon = <span class='fl'>1</span>
 )
 
-<span class='fu'>graph_match_percolation</span>(<span class='no'>A</span>, <span class='no'>B</span>, <span class='no'>seeds</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>graph_match_percolation</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
 
-<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='no'>A</span>, <span class='no'>B</span>, <span class='no'>seeds</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
 
-<span class='fu'>graph_match_soft_percolation</span>(<span class='no'>A</span>, <span class='no'>B</span>, <span class='no'>seeds</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='fu'>graph_match_soft_percolation</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>, max_iter = <span class='fl'>100</span>)
 
 <span class='fu'>graph_match_IsoRank</span>(
-  <span class='no'>A</span>,
-  <span class='no'>B</span>,
-  <span class='no'>similarity</span>,
-  <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"greedy"</span>
+  <span class='kw'>A</span>,
+  <span class='kw'>B</span>,
+  <span class='kw'>similarity</span>,
+  seeds = <span class='kw'>NULL</span>,
+  alpha = <span class='fl'>0.5</span>,
+  max_iter = <span class='fl'>50</span>,
+  method = <span class='st'>"greedy"</span>
 )
 
-<span class='fu'>graph_match_Umeyama</span>(<span class='no'>A</span>, <span class='no'>B</span>, <span class='kw'>similarity</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</pre>
+<span class='fu'>graph_match_Umeyama</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, similarity = <span class='kw'>NULL</span>, seeds = <span class='kw'>NULL</span>, alpha = <span class='fl'>0.5</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -292,25 +292,25 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
   graph matching problems</em>. IEEE TPAMI. USA, pages 695-703.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cgnp_pair</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>corr</span> <span class='kw'>=</span>  <span class='fl'>0.3</span>, <span class='kw'>p</span> <span class='kw'>=</span>  <span class='fl'>0.5</span>)
-<span class='no'>g1</span> <span class='kw'>&lt;-</span> <span class='no'>cgnp_pair</span>$<span class='no'>graph1</span>
-<span class='no'>g2</span> <span class='kw'>&lt;-</span> <span class='no'>cgnp_pair</span>$<span class='no'>graph2</span>
+    <pre class="examples"><div class='input'><span class='kw'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(n = <span class='fl'>10</span>, corr =  <span class='fl'>0.3</span>, p =  <span class='fl'>0.5</span>)
+<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
+<span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='co'># match G_1 &amp; G_2 with no seeds</span>
-<span class='fu'>graph_match_FW</span>(<span class='no'>g1</span>, <span class='no'>g2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_FW(A = g1, B = g2)
 #&gt; 
 #&gt; $corr
 #&gt;    corr_A corr_B
-#&gt; 1       1      8
-#&gt; 2       2     10
-#&gt; 3       3      6
-#&gt; 4       4      7
+#&gt; 1       1      9
+#&gt; 2       2      6
+#&gt; 3       3      7
+#&gt; 4       4      1
 #&gt; 5       5      5
-#&gt; 6       6      2
-#&gt; 7       7      3
-#&gt; 8       8      9
-#&gt; 9       9      1
-#&gt; 10     10      4
+#&gt; 6       6      3
+#&gt; 7       7      2
+#&gt; 8       8      8
+#&gt; 9       9      4
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 0
@@ -318,37 +318,37 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; $P
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . . . . . 1 . .
-#&gt;  [2,] . . . . . . . . . 1
-#&gt;  [3,] . . . . . 1 . . . .
-#&gt;  [4,] . . . . . . 1 . . .
+#&gt;  [1,] . . . . . . . . 1 .
+#&gt;  [2,] . . . . . 1 . . . .
+#&gt;  [3,] . . . . . . 1 . . .
+#&gt;  [4,] 1 . . . . . . . . .
 #&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . 1 . . . . . . . .
-#&gt;  [7,] . . 1 . . . . . . .
-#&gt;  [8,] . . . . . . . . 1 .
-#&gt;  [9,] 1 . . . . . . . . .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;  [6,] . . 1 . . . . . . .
+#&gt;  [7,] . 1 . . . . . . . .
+#&gt;  [8,] . . . . . . . 1 . .
+#&gt;  [9,] . . . 1 . . . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                          
-#&gt;  [1,] . . . . . . . 1 . .
-#&gt;  [2,] . . . . . . . . . 1
-#&gt;  [3,] . . . . . 1 . . . .
-#&gt;  [4,] . . . . . . 1 . . .
-#&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . 1 . . . . . . . .
-#&gt;  [7,] . . 1 . . . . . . .
-#&gt;  [8,] . . . . . . . . 1 .
-#&gt;  [9,] 1 . . . . . . . . .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;                                      
+#&gt;  [1,] . . .    .    . . . . 0.75 0.25
+#&gt;  [2,] . . .    .    . 1 . . .    .   
+#&gt;  [3,] . . .    .    . . 1 . .    .   
+#&gt;  [4,] 1 . .    .    . . . . .    .   
+#&gt;  [5,] . . .    .    1 . . . .    .   
+#&gt;  [6,] . . 0.75 0.25 . . . . .    .   
+#&gt;  [7,] . 1 .    .    . . . . .    .   
+#&gt;  [8,] . . .    .    . . . 1 .    .   
+#&gt;  [9,] . . 0.25 0.75 . . . . .    .   
+#&gt; [10,] . . .    .    . . . . 0.25 0.75
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 2
+#&gt; [1] 7
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some known node pairs as seeds</span>
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>10</span> <span class='kw'>&lt;=</span> <span class='fl'>3</span>
-<span class='fu'>graph_match_FW</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"bari"</span>)</div><div class='output co'>#&gt; $call
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
+<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"bari"</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_FW(A = g1, B = g2, seeds = seeds, start = "bari")
 #&gt; 
 #&gt; $corr
@@ -356,13 +356,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      5
-#&gt; 5       5      6
+#&gt; 4       4      6
+#&gt; 5       5      5
 #&gt; 6       6      7
-#&gt; 7       7      4
-#&gt; 8       8      8
-#&gt; 9       9      9
-#&gt; 10     10     10
+#&gt; 7       7     10
+#&gt; 8       8      9
+#&gt; 9       9      8
+#&gt; 10     10      4
 #&gt; 
 #&gt; $ns
 #&gt; [1] 3
@@ -373,13 +373,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . 1 . . . .
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] . . . . 1 . . . . .
 #&gt;  [6,] . . . . . . 1 . . .
-#&gt;  [7,] . . . 1 . . . . . .
-#&gt;  [8,] . . . . . . . 1 . .
-#&gt;  [9,] . . . . . . . . 1 .
-#&gt; [10,] . . . . . . . . . 1
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . . . . 1 .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . 1 . . . . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -387,128 +387,27 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . 1 . . . .
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] . . . . 1 . . . . .
 #&gt;  [6,] . . . . . . 1 . . .
-#&gt;  [7,] . . . 1 . . . . . .
-#&gt;  [8,] . . . . . . . 1 . .
-#&gt;  [9,] . . . . . . . . 1 .
-#&gt; [10,] . . . . . . . . . 1
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . . . . 1 .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . 1 . . . . . .
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 5
+#&gt; [1] 4
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some incorrect seeds</span>
-<span class='no'>hard_seeds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='no'>seeds</span>, <span class='kw'>nv</span> <span class='kw'>=</span> <span class='fl'>10</span>)$<span class='no'>seeds</span>),<span class='no'>hard_seeds</span>)
-<span class='fu'>graph_match_FW</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"convex"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in Matrix::t(A[[ch]]) %*% P: Cholmod error 'A and B inner dimensions must match' at file ../MatrixOps/cholmod_ssmult.c, line 82</span></div><div class='input'>
- <span class='no'>gp_list</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>, <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.3</span>, <span class='fl'>.5</span>), <span class='kw'>simplify</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
- <span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>1</span>]])
- <span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='no'>gp_list</span>, <span class='kw'>function</span>(<span class='no'>gp</span>)<span class='no'>gp</span><span class='kw'>[[</span><span class='fl'>2</span>]])
- <span class='no'>match</span> <span class='kw'>&lt;-</span> <span class='fu'>graph_match_FW</span>(<span class='no'>A</span>, <span class='no'>B</span>, <span class='kw'>seeds</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>start</span> <span class='kw'>=</span> <span class='st'>"bari"</span>, <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>20</span>)
- <span class='no'>match</span>$<span class='no'>corr</span></div><div class='output co'>#&gt;     corr_A corr_B
-#&gt; 1        1      1
-#&gt; 2        2      2
-#&gt; 3        3      3
-#&gt; 4        4      4
-#&gt; 5        5      5
-#&gt; 6        6      6
-#&gt; 7        7      7
-#&gt; 8        8      8
-#&gt; 9        9      9
-#&gt; 10      10     10
-#&gt; 11      11     11
-#&gt; 12      12     12
-#&gt; 13      13     13
-#&gt; 14      14     14
-#&gt; 15      15     15
-#&gt; 16      16     16
-#&gt; 17      17     17
-#&gt; 18      18     18
-#&gt; 19      19     19
-#&gt; 20      20     20
-#&gt; 21      21     21
-#&gt; 22      22     22
-#&gt; 23      23     23
-#&gt; 24      24     24
-#&gt; 25      25     25
-#&gt; 26      26     26
-#&gt; 27      27     27
-#&gt; 28      28     28
-#&gt; 29      29     29
-#&gt; 30      30     30
-#&gt; 31      31     31
-#&gt; 32      32     32
-#&gt; 33      33     33
-#&gt; 34      34     34
-#&gt; 35      35     35
-#&gt; 36      36     36
-#&gt; 37      37     37
-#&gt; 38      38     38
-#&gt; 39      39     39
-#&gt; 40      40     40
-#&gt; 41      41     41
-#&gt; 42      42     42
-#&gt; 43      43     43
-#&gt; 44      44     44
-#&gt; 45      45     45
-#&gt; 46      46     46
-#&gt; 47      47     47
-#&gt; 48      48     48
-#&gt; 49      49     49
-#&gt; 50      50     50
-#&gt; 51      51     51
-#&gt; 52      52     52
-#&gt; 53      53     53
-#&gt; 54      54     54
-#&gt; 55      55     55
-#&gt; 56      56     56
-#&gt; 57      57     57
-#&gt; 58      58     58
-#&gt; 59      59     59
-#&gt; 60      60     60
-#&gt; 61      61     61
-#&gt; 62      62     62
-#&gt; 63      63     63
-#&gt; 64      64     64
-#&gt; 65      65     65
-#&gt; 66      66     66
-#&gt; 67      67     67
-#&gt; 68      68     68
-#&gt; 69      69     69
-#&gt; 70      70     70
-#&gt; 71      71     71
-#&gt; 72      72     72
-#&gt; 73      73     73
-#&gt; 74      74     74
-#&gt; 75      75     75
-#&gt; 76      76     76
-#&gt; 77      77     77
-#&gt; 78      78     78
-#&gt; 79      79     79
-#&gt; 80      80     80
-#&gt; 81      81     81
-#&gt; 82      82     82
-#&gt; 83      83     83
-#&gt; 84      84     84
-#&gt; 85      85     85
-#&gt; 86      86     86
-#&gt; 87      87     87
-#&gt; 88      88     88
-#&gt; 89      89     89
-#&gt; 90      90     90
-#&gt; 91      91     91
-#&gt; 92      92     92
-#&gt; 93      93     93
-#&gt; 94      94     94
-#&gt; 95      95     95
-#&gt; 96      96     96
-#&gt; 97      97     97
-#&gt; 98      98     98
-#&gt; 99      99     99
-#&gt; 100    100    100</div><div class='input'>
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>10</span> <span class='kw'>&lt;=</span> <span class='fl'>3</span>
-<span class='fu'>graph_match_convex</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>)</div><div class='output co'>#&gt; $call
+<span class='kw'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='kw'>seeds</span>, nv = <span class='fl'>10</span>)<span class='op'>$</span><span class='kw'>seeds</span>),<span class='kw'>hard_seeds</span>)
+<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"convex"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in x %*% sx: Cholmod error 'A and B inner dimensions must match' at file ../MatrixOps/cholmod_ssmult.c, line 82</span></div><div class='input'>
+ <span class='kw'>gp_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>, <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.3</span>, <span class='fl'>.5</span>), simplify = <span class='fl'>FALSE</span>)
+ <span class='kw'>A</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>gp_list</span>, <span class='fu'>function</span>(<span class='kw'>gp</span>)<span class='kw'>gp</span>[[<span class='fl'>1</span>]])
+ <span class='kw'>B</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>gp_list</span>, <span class='fu'>function</span>(<span class='kw'>gp</span>)<span class='kw'>gp</span>[[<span class='fl'>2</span>]])
+ <span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'>graph_match_FW</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, seeds = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, start = <span class='st'>"bari"</span>, max_iter = <span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: coercing argument of type 'list' to logical</span></div><div class='output co'>#&gt; <span class='error'>Error in if (any(sapply(A, function(Al) ncol(Al) != totv1))) {    stop("A contains graphs of different orders. For multiple graph matching, all graphs must have the same number of vertices.")}: missing value where TRUE/FALSE needed</span></div><div class='input'> <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span></div><div class='output co'>#&gt; <span class='error'>Error in match$corr: object of type 'closure' is not subsettable</span></div><div class='input'>
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
+<span class='fu'>graph_match_convex</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_convex(A = g1, B = g2, seeds = seeds)
 #&gt; 
 #&gt; $corr
@@ -516,12 +415,12 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      4
-#&gt; 5       5      5
-#&gt; 6       6     10
-#&gt; 7       7      8
-#&gt; 8       8      7
-#&gt; 9       9      9
+#&gt; 4       4      7
+#&gt; 5       5      4
+#&gt; 6       6      5
+#&gt; 7       7      9
+#&gt; 8       8      8
+#&gt; 9       9     10
 #&gt; 10     10      6
 #&gt; 
 #&gt; $ns
@@ -533,51 +432,81 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . 1 . . . . . .
-#&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . . . . . . . . . 1
-#&gt;  [7,] . . . . . . . 1 . .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . . . . 1 .
+#&gt;  [4,] . . . . . . 1 . . .
+#&gt;  [5,] . . . 1 . . . . . .
+#&gt;  [6,] . . . . 1 . . . . .
+#&gt;  [7,] . . . . . . . . 1 .
+#&gt;  [8,] . . . . . . . 1 . .
+#&gt;  [9,] . . . . . . . . . 1
 #&gt; [10,] . . . . . 1 . . . .
 #&gt; 
 #&gt; $D
+#&gt; Sparse part
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                      
-#&gt;  [1,] 1 . . .           .           .           .          .         
-#&gt;  [2,] . 1 . .           .           .           .          .         
-#&gt;  [3,] . . 1 .           .           .           .          .         
-#&gt;  [4,] . . . 0.26735230  0.37609447  0.04902635 -0.29942739 0.27251366
-#&gt;  [5,] . . . 0.11708537  0.40473721  0.15247343  0.09264579 0.14476445
-#&gt;  [6,] . . . 0.18440840 -0.35097833  0.10057728  0.41947261 0.07799479
-#&gt;  [7,] . . . 0.02400028  0.28692356  0.34390237  0.25223287 0.21486882
-#&gt;  [8,] . . . 0.01296314  0.11341872  0.04657610  0.42400496 0.02400028
-#&gt;  [9,] . . . 0.14794108  0.06719712 -0.10508536  0.18385493 0.19874777
-#&gt; [10,] . . . 0.24624942  0.10260725  0.41252983 -0.07278376 0.06711023
-#&gt;                             
-#&gt;  [1,]  .          .         
-#&gt;  [2,]  .          .         
-#&gt;  [3,]  .          .         
-#&gt;  [4,]  0.1819672  0.15247343
-#&gt;  [5,]  0.0716335  0.01666025
-#&gt;  [6,]  0.2609408  0.30758447
-#&gt;  [7,] -0.2225052  0.10057728
-#&gt;  [8,]  0.4146134 -0.03557662
-#&gt;  [9,]  0.4047372  0.10260725
-#&gt; [10,] -0.1113869  0.35567394
+#&gt;                                                                        
+#&gt;  [1,] 1 . . .         .         .         .         .         .        
+#&gt;  [2,] . 1 . .         .         .         .         .         .        
+#&gt;  [3,] . . 1 .         .         .         .         .         .        
+#&gt;  [4,] . . . .         .         .         0.8167224 .         .        
+#&gt;  [5,] . . . 0.8167224 .         .         .         .         .        
+#&gt;  [6,] . . . .         0.8167224 .         .         .         .        
+#&gt;  [7,] . . . .         .         .         .         .         0.8167224
+#&gt;  [8,] . . . .         .         .         .         0.8167224 .        
+#&gt;  [9,] . . . .         .         .         .         .         .        
+#&gt; [10,] . . . .         .         0.8167224 .         .         .        
+#&gt;                
+#&gt;  [1,] .        
+#&gt;  [2,] .        
+#&gt;  [3,] .        
+#&gt;  [4,] .        
+#&gt;  [5,] .        
+#&gt;  [6,] .        
+#&gt;  [7,] .        
+#&gt;  [8,] .        
+#&gt;  [9,] 0.8167224
+#&gt; [10,] .        
+#&gt; plus left factor
+#&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
+#&gt;                
+#&gt;  [1,] .        
+#&gt;  [2,] .        
+#&gt;  [3,] .        
+#&gt;  [4,] 0.1832776
+#&gt;  [5,] 0.1832776
+#&gt;  [6,] 0.1832776
+#&gt;  [7,] 0.1832776
+#&gt;  [8,] 0.1832776
+#&gt;  [9,] 0.1832776
+#&gt; [10,] 0.1832776
+#&gt; times right factor transpose
+#&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
+#&gt;                
+#&gt;  [1,] .        
+#&gt;  [2,] .        
+#&gt;  [3,] .        
+#&gt;  [4,] 0.1428571
+#&gt;  [5,] 0.1428571
+#&gt;  [6,] 0.1428571
+#&gt;  [7,] 0.1428571
+#&gt;  [8,] 0.1428571
+#&gt;  [9,] 0.1428571
+#&gt; [10,] 0.1428571
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 25
+#&gt; [1] 2
+#&gt; 
+#&gt; $alpha_seq
+#&gt; [1] 0.1832776 1.0000000
 #&gt; </div><div class='input'>
-<span class='no'>hard_seeds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='no'>seeds</span>, <span class='fl'>10</span>)$<span class='no'>seeds</span>),<span class='no'>hard_seeds</span>)
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='kw'>seeds</span>, <span class='fl'>10</span>)<span class='op'>$</span><span class='kw'>seeds</span>),<span class='kw'>hard_seeds</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'># for some reason this fails in check</span>
-<span class='fu'>graph_match_convex</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>)
+<span class='fu'>graph_match_convex</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>)
 }
 
 <span class='co'># match G_1 &amp; G_2 using PATH algorithm</span>
-<span class='fu'>graph_match_PATH</span>(<span class='no'>g1</span>, <span class='no'>g2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_PATH</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_PATH(A = g1, B = g2)
 #&gt; 
 #&gt; $corr
@@ -613,27 +542,27 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                                                                            
-#&gt;  [1,] 0.7644578 .         .         .         .         0.2355422 .        
-#&gt;  [2,] .         0.7644578 .         .         .         .         .        
-#&gt;  [3,] .         .         0.7644578 .         .         .         .        
-#&gt;  [4,] 0.2355422 .         .         0.7644578 .         .         .        
-#&gt;  [5,] .         .         0.2355422 .         0.7644578 .         .        
-#&gt;  [6,] .         0.2355422 .         .         .         0.7644578 .        
-#&gt;  [7,] .         .         .         .         .         .         0.7644578
-#&gt;  [8,] .         .         .         .         0.2355422 .         .        
-#&gt;  [9,] .         .         .         .         .         .         0.2355422
-#&gt; [10,] .         .         .         0.2355422 .         .         .        
+#&gt;  [1,] 0.7635659 .         .         .         .         .         0.2364341
+#&gt;  [2,] .         0.7635659 .         .         .         .         .        
+#&gt;  [3,] .         .         0.7635659 .         0.2364341 .         .        
+#&gt;  [4,] 0.2364341 .         .         0.7635659 .         .         .        
+#&gt;  [5,] .         .         .         .         0.7635659 .         .        
+#&gt;  [6,] .         .         0.2364341 .         .         0.7635659 .        
+#&gt;  [7,] .         .         .         .         .         0.2364341 0.7635659
+#&gt;  [8,] .         0.2364341 .         .         .         .         .        
+#&gt;  [9,] .         .         .         .         .         .         .        
+#&gt; [10,] .         .         .         0.2364341 .         .         .        
 #&gt;                                    
 #&gt;  [1,] .         .         .        
-#&gt;  [2,] .         .         0.2355422
-#&gt;  [3,] 0.2355422 .         .        
+#&gt;  [2,] .         0.2364341 .        
+#&gt;  [3,] .         .         .        
 #&gt;  [4,] .         .         .        
-#&gt;  [5,] .         .         .        
+#&gt;  [5,] .         .         0.2364341
 #&gt;  [6,] .         .         .        
-#&gt;  [7,] .         0.2355422 .        
-#&gt;  [8,] 0.7644578 .         .        
-#&gt;  [9,] .         0.7644578 .        
-#&gt; [10,] .         .         0.7644578
+#&gt;  [7,] .         .         .        
+#&gt;  [8,] 0.7635659 .         .        
+#&gt;  [9,] 0.2364341 0.7635659 .        
+#&gt; [10,] .         .         0.7635659
 #&gt; 
 #&gt; $iter
 #&gt; [1] 2
@@ -642,8 +571,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; [1] 1
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using percolation graph matching method</span>
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span>
-<span class='fu'>graph_match_percolation</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
+<span class='fu'>graph_match_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_percolation(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
@@ -662,11 +591,11 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt; [1] 1 2 3 4 5 8 7 9 6
+#&gt; [1] 1 2 3 4 5 9 7 6 8
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using Expand When Stuck graph matching method</span>
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span>
-<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
+<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_ExpandWhenStuck(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
@@ -688,8 +617,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; [1] 1 2 3 4 5 8 6 9 7
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using soft percolation graph matching method</span>
-<span class='no'>seeds</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>5</span>
-<span class='fu'>graph_match_soft_percolation</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>seeds</span>, <span class='kw'>r</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_iter</span> <span class='kw'>=</span> <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
+<span class='fu'>graph_match_soft_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>, max_iter = <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
 #&gt; graph_match_soft_percolation(A = g1, B = g2, seeds = seeds, r = 2, 
 #&gt;     max_iter = 2)
 #&gt; 
@@ -700,27 +629,28 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 3      3      3
 #&gt; 4      4      4
 #&gt; 5      5      5
-#&gt; 9      6      8
-#&gt; 6      8      7
-#&gt; 8      9      9
-#&gt; 7     10     10
+#&gt; 9      6      6
+#&gt; 7      8      7
+#&gt; 6      9      9
+#&gt; 8     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt; [1] 1 2 3 4 5 9 6 8 7
+#&gt; [1] 1 2 3 4 5 9 7 6 8
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using IsoRank algorithm</span>
-<span class='no'>startm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='no'>startm</span>)[<span class='fl'>1</span>:<span class='fl'>4</span>] <span class='kw'>&lt;-</span> <span class='fl'>1</span>
-<span class='no'>GM_IsoRank</span> <span class='kw'>&lt;-</span> <span class='fu'>graph_match_IsoRank</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='no'>startm</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>.3</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"greedy"</span>)
+<span class='kw'>startm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='kw'>startm</span>)[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>] <span class='op'>&lt;-</span> <span class='fl'>1</span>
+<span class='kw'>GM_IsoRank</span> <span class='op'>&lt;-</span> <span class='fu'>graph_match_IsoRank</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>startm</span>, alpha = <span class='fl'>.3</span>, method = <span class='st'>"greedy"</span>)
 
 <span class='co'># match G_1 &amp; G_2 using Umeyama algorithm</span>
-<span class='no'>G</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>10</span>, <span class='fl'>.9</span>, <span class='fl'>.5</span>)
-<span class='no'>G1</span> <span class='kw'>&lt;-</span> <span class='no'>G</span>$<span class='no'>graph1</span>
-<span class='no'>G2</span> <span class='kw'>&lt;-</span> <span class='no'>G</span>$<span class='no'>graph2</span>
-<span class='no'>GM_U</span> <span class='kw'>&lt;-</span> <span class='fu'>graph_match_Umeyama</span>(<span class='no'>G1</span>, <span class='no'>G2</span>, <span class='no'>startm</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>.3</span>)</div></pre>
+<span class='kw'>G</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>10</span>, <span class='fl'>.9</span>, <span class='fl'>.5</span>)
+<span class='kw'>G1</span> <span class='op'>&lt;-</span> <span class='kw'>G</span><span class='op'>$</span><span class='kw'>graph1</span>
+<span class='kw'>G2</span> <span class='op'>&lt;-</span> <span class='kw'>G</span><span class='op'>$</span><span class='kw'>graph2</span>
+<span class='kw'>GM_U</span> <span class='op'>&lt;-</span> <span class='fu'>graph_match_Umeyama</span>(<span class='kw'>G1</span>, <span class='kw'>G2</span>, <span class='kw'>startm</span>, alpha = <span class='fl'>.3</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

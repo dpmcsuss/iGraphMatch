@@ -115,11 +115,11 @@
     <p>Measures for computing the goodness of matching for each vertex.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>row_cor</span>(<span class='no'>g1</span>, <span class='no'>g2</span>)
+    <pre class="usage"><span class='fu'>row_cor</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
 
-<span class='fu'>row_diff</span>(<span class='no'>g1</span>, <span class='no'>g2</span>)
+<span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
 
-<span class='fu'>row_perm_stat</span>(<span class='no'>g1</span>, <span class='no'>g2</span>, <span class='kw'>exact</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, exact = <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,29 +150,28 @@ the corresponding vertex.</p>
 value for the corresponding vertex.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>cgnp_pair</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sample_gnp.html'>sample_correlated_gnp_pair</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>corr</span> <span class='kw'>=</span>  <span class='fl'>0.3</span>,<span class='kw'>p</span> <span class='kw'>=</span>  <span class='fl'>0.5</span>)
-<span class='no'>g1</span> <span class='kw'>&lt;-</span> <span class='no'>cgnp_pair</span>$<span class='no'>graph1</span>
-<span class='no'>g2</span> <span class='kw'>&lt;-</span> <span class='no'>cgnp_pair</span>$<span class='no'>graph2</span>
-<span class='no'>match</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='graph_match_methods.html'>graph_match_FW</a></span>(<span class='no'>g1</span>, <span class='no'>g2</span>)
-<span class='no'>g2m</span> <span class='kw'>&lt;-</span> <span class='no'>g2</span>[<span class='no'>match</span>$<span class='no'>corr</span>$<span class='no'>corr_B</span>, <span class='no'>match</span>$<span class='no'>corr</span>$<span class='no'>corr_B</span>]
-<span class='no'>g1</span> <span class='kw'>&lt;-</span> <span class='no'>g1</span>[]
-<span class='fu'>row_cor</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] 0.4830918 0.5600000 0.6538719 0.6863354 0.4409622 0.7622483 0.5996796
-#&gt;  [8] 0.5458174 0.7179487 0.8442707 0.5658330 0.6016053 0.6421865 0.5951795
-#&gt; [15] 0.4078435 0.6404538 0.6669334 0.5165062 0.6887336 0.4845283 0.5951795
-#&gt; [22] 0.7313978 0.6734014 0.3178135 0.6068215 0.4845283 0.4025765 0.5722379
-#&gt; [29] 0.6076389 0.5570540 0.6863354 0.6471377 0.4387257 0.6776708 0.5636071
-#&gt; [36] 0.5212838 0.6819268 0.4783280 0.4577922 0.4845283 0.6419280 0.6016053
-#&gt; [43] 0.6471377 0.7305195 0.6404538 0.7163457 0.4845283 0.7190997 0.5212838
-#&gt; [50] 0.7808578</div><div class='input'><span class='fu'>row_diff</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] 12 14 17 17 11 19 15 13 18 21 14 15 17 15 10 16 17 13 17 12 15 20 17  8 15
-#&gt; [26] 12 10 15 14 13 17 16 11 17 14 13 17 12 12 12 16 15 16 18 16 18 12 18 13 19</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='no'>g1</span>, <span class='no'>g2m</span>)</div><div class='output co'>#&gt;  [1] -3.5709604 -2.9934050 -2.1535907 -2.1335262 -3.8521230 -1.5702803
-#&gt;  [7] -2.7112016 -3.2778606 -1.8499960 -0.9998196 -2.9900235 -2.7044863
-#&gt; [13] -2.1340101 -2.7044863 -4.1470343 -2.4259713 -2.1323650 -3.2786354
-#&gt; [19] -2.1319191 -3.5709604 -2.7044863 -1.2712147 -2.1377140 -4.7122143
-#&gt; [25] -2.7312805 -3.5709604 -4.1318864 -2.7038257 -2.9967699 -3.2806123
-#&gt; [31] -2.1335262 -2.4297064 -3.8482191 -2.1377140 -2.9899663 -3.2754463
-#&gt; [37] -2.1407410 -3.5609264 -3.5610169 -3.5709604 -2.4206230 -2.7044863
-#&gt; [43] -2.4178931 -1.8466346 -2.4452153 -1.8524837 -3.5822425 -1.8524837
-#&gt; [49] -3.2856469 -1.5777141</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(n = <span class='fl'>50</span>, corr =  <span class='fl'>0.3</span>,p =  <span class='fl'>0.5</span>)
+<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
+<span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
+<span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_FW.html'>graph_match_FW</a></span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
+<span class='kw'>g2m</span> <span class='op'>&lt;-</span> <span class='kw'>g2</span>[<span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>]
+<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>g1</span>[]
+<span class='fu'>row_cor</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)</div><div class='output co'>#&gt;  [1] 0.4800000 0.6441224 0.6211202 0.4395515 0.6755011 0.7128973 0.4974258
+#&gt;  [8] 0.6054939 0.7746902 0.6114222 0.5196155 0.7225749 0.5842492 0.5434484
+#&gt; [15] 0.6441224 0.6410256 0.7368193 0.3111252 0.8131578 0.5879663 0.4345365
+#&gt; [22] 0.5068573 0.3999875 0.5612812 0.5516036 0.5715878 0.4852143 0.5658330
+#&gt; [29] 0.5636071 0.6410256 0.6669334 0.6051003 0.5843961 0.7163457 0.6054019
+#&gt; [36] 0.5068573 0.6538719 0.7875409 0.7684729 0.5585852 0.5196155 0.6797437
+#&gt; [43] 0.7368193 0.5423957 0.5254539 0.4732134 0.6545754 0.6690753 0.6299253
+#&gt; [50] 0.5951795</div><div class='input'><span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)</div><div class='output co'>#&gt;  [1] 12 16 16 11 17 18 12 15 19 15 13 18 16 14 16 16 18  8 20 15 11 13 10 14 14
+#&gt; [26] 14 12 14 14 16 17 14 14 18 15 13 17 20 20 14 13 17 18 14 14 12 16 17 15 15</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)</div><div class='output co'>#&gt;  [1] -3.569459 -2.435408 -2.417722 -3.855193 -2.136376 -1.841854 -3.587370
+#&gt;  [8] -2.703463 -1.556106 -2.694760 -3.279322 -1.859487 -2.400363 -2.993585
+#&gt; [15] -2.417722 -2.422112 -1.833131 -4.712396 -1.274756 -2.707849 -3.864090
+#&gt; [22] -3.301622 -4.127843 -3.011364 -2.984849 -2.959242 -3.610455 -3.015873
+#&gt; [29] -3.006881 -2.430955 -2.127603 -2.971933 -2.955061 -1.855055 -2.721144
+#&gt; [36] -3.266277 -2.127603 -1.288019 -1.265968 -2.997991 -3.279322 -2.140789
+#&gt; [43] -1.868398 -2.976213 -2.971933 -3.569459 -2.448891 -2.123243 -2.739199
+#&gt; [50] -2.703463</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

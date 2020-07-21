@@ -60,7 +60,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="iGraphMatch_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>iGraphMatch</h1>
@@ -73,7 +73,9 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">iGraphMatch</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">iGraphMatch</span>)
+</pre></div>
 <div id="general-description-of-graph-matching" class="section level4">
 <h4 class="hasAnchor">
 <a href="#general-description-of-graph-matching" class="anchor"></a>General Description of Graph Matching</h4>
@@ -182,23 +184,28 @@
 <h3 class="hasAnchor">
 <a href="#simulations" class="anchor"></a>Simulations</h3>
 <p>Soft seeding algorithm can be easily implemented in R using the existing functions in <code>iGraphMatch</code> package. Basically, the main function used is <code>graph_match_FW</code> with specification of the start method and seeds which correspond to the hard seeds. For example, now we try to compare random doubly stochastic start, bari start and convex start which are discussed above and do simulations on the correlated Erdős-Rényi graphs model. To make the result easy to be shown, we sample a graph pair with a small cardinality 10 from the correlated Erdős-Rényi graphs model with the edge probability equal to 0.5 and the correlation between two graphs to be 0.5. Set the first three pairs of vertices to be hard seeds.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">igraph</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">iGraphMatch</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://igraph.org">igraph</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">iGraphMatch</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">8</span>)
-<span class="no">cgnp_pair</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_gnp.html">sample_correlated_gnp_pair</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">corr</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">p</span> <span class="kw">=</span> <span class="fl">.5</span>)
-<span class="no">g1</span> <span class="kw">&lt;-</span> <span class="no">cgnp_pair</span>$<span class="no">graph1</span>
-<span class="no">g2</span> <span class="kw">&lt;-</span> <span class="no">cgnp_pair</span>$<span class="no">graph2</span>
+<span class="kw">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_correlated_gnp_pair.html">sample_correlated_gnp_pair</a></span>(n = <span class="fl">10</span>, corr = <span class="fl">.5</span>, p = <span class="fl">.5</span>)
+<span class="kw">g1</span> <span class="op">&lt;-</span> <span class="kw">cgnp_pair</span><span class="op">$</span><span class="kw">graph1</span>
+<span class="kw">g2</span> <span class="op">&lt;-</span> <span class="kw">cgnp_pair</span><span class="op">$</span><span class="kw">graph2</span>
 
-(<span class="no">seeds</span> <span class="kw">&lt;-</span> <span class="fl">1</span>:<span class="fl">10</span> <span class="kw">&lt;=</span> <span class="fl">3</span>)
-<span class="co">#&gt;  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span></pre></body></html></div>
+(<span class="kw">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span>)
+<span class="co">#&gt;  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+</pre></div>
 <p>Then just randomly pick two pairs of vertices as soft seeds. Note that soft seeds may not be correct, but soft seeds may improve during the matching procedure. Let’s first pick two bad soft seeds {4,4} and {8,6} which is a combination of good soft seed and bad soft seed:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">bad_soft_seeds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>),<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>,<span class="fl">6</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">bad_soft_seeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>),<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>,<span class="fl">6</span>))
+</pre></div>
 <p>Initialization of different start matrix is very convenient in R with <code>iGraphPackage</code>. Function <code>init_start</code> returns a <span class="math inline">\(n_{ns}\)</span>-by-<span class="math inline">\(n_{ns}\)</span> matrix where <span class="math inline">\(n_{ns}\)</span> denotes the number of nonseeds vertices.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">nns</span> <span class="kw">&lt;-</span> <span class="fl">7</span>
-<span class="no">ns</span> <span class="kw">&lt;-</span> <span class="fl">3</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">digits</span> <span class="kw">=</span> <span class="fl">3</span>)
-(<span class="no">start_bari</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(<span class="kw">start</span> <span class="kw">=</span> <span class="st">"bari"</span>, <span class="kw">nns</span> <span class="kw">=</span> <span class="no">nns</span>, <span class="kw">ns</span> <span class="kw">=</span> <span class="no">ns</span>, <span class="kw">soft_seeds</span> <span class="kw">=</span> <span class="no">bad_soft_seeds</span>))
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">nns</span> <span class="op">&lt;-</span> <span class="fl">7</span>
+<span class="kw">ns</span> <span class="op">&lt;-</span> <span class="fl">3</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(digits = <span class="fl">3</span>)
+(<span class="kw">start_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(start = <span class="st">"bari"</span>, nns = <span class="kw">nns</span>, ns = <span class="kw">ns</span>, soft_seeds = <span class="kw">bad_soft_seeds</span>))
 <span class="co">#&gt; Sparse part</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;                   </span>
@@ -230,7 +237,7 @@
 <span class="co">#&gt; [6,] 0.2</span>
 <span class="co">#&gt; [7,] 0.2</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-(<span class="no">start_rds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(<span class="kw">start</span> <span class="kw">=</span> <span class="st">"rds"</span>, <span class="kw">nns</span> <span class="kw">=</span> <span class="no">nns</span>, <span class="kw">ns</span> <span class="kw">=</span> <span class="no">ns</span>, <span class="kw">soft_seeds</span> <span class="kw">=</span> <span class="no">bad_soft_seeds</span>))
+(<span class="kw">start_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(start = <span class="st">"rds"</span>, nns = <span class="kw">nns</span>, ns = <span class="kw">ns</span>, soft_seeds = <span class="kw">bad_soft_seeds</span>))
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;                                           </span>
 <span class="co">#&gt; [1,] 1 .      . .      .      .      .    </span>
@@ -240,58 +247,86 @@
 <span class="co">#&gt; [5,] . .      1 .      .      .      .    </span>
 <span class="co">#&gt; [6,] . 0.2467 . 0.1985 0.1893 0.1279 0.238</span>
 <span class="co">#&gt; [7,] . 0.2653 . 0.1660 0.0344 0.3761 0.158</span>
-(<span class="no">start_convex</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(<span class="kw">start</span> <span class="kw">=</span> <span class="st">"convex"</span>, <span class="kw">nns</span> <span class="kw">=</span> <span class="no">nns</span>, <span class="kw">ns</span> <span class="kw">=</span> <span class="no">ns</span>, <span class="kw">soft_seeds</span> <span class="kw">=</span> <span class="no">bad_soft_seeds</span>,
-                           <span class="kw">A</span> <span class="kw">=</span> <span class="no">g1</span>, <span class="kw">B</span> <span class="kw">=</span> <span class="no">g2</span>, <span class="kw">seeds</span> <span class="kw">=</span> <span class="no">seeds</span>))
+(<span class="kw">start_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span>(start = <span class="st">"convex"</span>, nns = <span class="kw">nns</span>, ns = <span class="kw">ns</span>, soft_seeds = <span class="kw">bad_soft_seeds</span>, 
+                           A = <span class="kw">g1</span>, B = <span class="kw">g2</span>, seeds = <span class="kw">seeds</span>))
+<span class="co">#&gt; Sparse part</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;                                               </span>
-<span class="co">#&gt; [1,] 1  .     .  .      .       .       .     </span>
-<span class="co">#&gt; [2,] .  0.339 .  0.0182 0.2108  0.5428 -0.1103</span>
-<span class="co">#&gt; [3,] .  0.543 .  0.1167 0.0835  0.3379 -0.0809</span>
-<span class="co">#&gt; [4,] .  0.403 .  0.5190 0.0182 -0.1103  0.1704</span>
-<span class="co">#&gt; [5,] .  .     1  .      .       .       .     </span>
-<span class="co">#&gt; [6,] . -0.108 .  0.3779 0.2068  0.0182  0.5055</span>
-<span class="co">#&gt; [7,] . -0.176 . -0.0318 0.4806  0.2115  0.5153</span></pre></body></html></div>
+<span class="co">#&gt;                                       </span>
+<span class="co">#&gt; [1,] 1 .     . .     .     .     .    </span>
+<span class="co">#&gt; [2,] . .     . .     0.768 .     .    </span>
+<span class="co">#&gt; [3,] . .     . .     .     .     0.768</span>
+<span class="co">#&gt; [4,] . .     . .     .     0.768 .    </span>
+<span class="co">#&gt; [5,] . .     1 .     .     .     .    </span>
+<span class="co">#&gt; [6,] . 0.768 . .     .     .     .    </span>
+<span class="co">#&gt; [7,] . .     . 0.768 .     .     .    </span>
+<span class="co">#&gt; plus left factor</span>
+<span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
+<span class="co">#&gt;           </span>
+<span class="co">#&gt; [1,] .    </span>
+<span class="co">#&gt; [2,] 0.232</span>
+<span class="co">#&gt; [3,] 0.232</span>
+<span class="co">#&gt; [4,] 0.232</span>
+<span class="co">#&gt; [5,] .    </span>
+<span class="co">#&gt; [6,] 0.232</span>
+<span class="co">#&gt; [7,] 0.232</span>
+<span class="co">#&gt; times right factor transpose</span>
+<span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
+<span class="co">#&gt;         </span>
+<span class="co">#&gt; [1,] .  </span>
+<span class="co">#&gt; [2,] 0.2</span>
+<span class="co">#&gt; [3,] .  </span>
+<span class="co">#&gt; [4,] 0.2</span>
+<span class="co">#&gt; [5,] 0.2</span>
+<span class="co">#&gt; [6,] 0.2</span>
+<span class="co">#&gt; [7,] 0.2</span>
+</pre></div>
 <p>Then implement seeded graph matching using the FAQ algorithm in R by using <code>graph_match_FW</code> function. To incorporate soft seeds, we specify the <code>start</code> argument in <code>graph_match_FW</code> function accordingly. Note that in this example, we assume the true permutation to be the identity matrix.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-<span class="no">match_bari</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="no">start_bari</span>)
-<span class="no">match_rds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="no">start_rds</span>)
-<span class="no">match_convex</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="no">start_convex</span>)
-<span class="no">err_bari_bad</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">match_bari</span>$<span class="no">corr</span>$<span class="no">corr_A</span>[!<span class="no">seeds</span>] <span class="kw">!=</span> <span class="no">match_bari</span>$<span class="no">corr</span>$<span class="no">corr_B</span>[!<span class="no">seeds</span>])
-<span class="no">err_rds_bad</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">match_rds</span>$<span class="no">corr</span>$<span class="no">corr_A</span>[!<span class="no">seeds</span>] <span class="kw">!=</span> <span class="no">match_rds</span>$<span class="no">corr</span>$<span class="no">corr_B</span>[!<span class="no">seeds</span>])
-<span class="no">err_convex_bad</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="no">match_convex</span>$<span class="no">corr</span>$<span class="no">corr_A</span>[!<span class="no">seeds</span>] <span class="kw">!=</span> <span class="no">match_convex</span>$<span class="no">corr</span>$<span class="no">corr_B</span>[!<span class="no">seeds</span>])</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
+<span class="kw">match_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_bari</span>)
+<span class="kw">match_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_rds</span>)
+<span class="kw">match_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_convex</span>)
+<span class="kw">err_bari_bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">match_bari</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_A</span>[<span class="op">!</span><span class="kw">seeds</span>] != <span class="kw">match_bari</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_B</span>[<span class="op">!</span><span class="kw">seeds</span>])
+<span class="kw">err_rds_bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">match_rds</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_A</span>[<span class="op">!</span><span class="kw">seeds</span>] != <span class="kw">match_rds</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_B</span>[<span class="op">!</span><span class="kw">seeds</span>])
+<span class="kw">err_convex_bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">match_convex</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_A</span>[<span class="op">!</span><span class="kw">seeds</span>] != <span class="kw">match_convex</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_B</span>[<span class="op">!</span><span class="kw">seeds</span>])
+</pre></div>
 <p>Since in this example both of the soft seeds are incorrect, intuitively not incorporating such incorrect information might yield better matching results. This motivates us to perform a comparative experiment on whether or not to incorporate such incorrect soft seeds. The R code for performing graph matching with only the hard seeds is similar to soft seeding except for different specification of the <code>start</code> argument.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-<span class="no">match_nss_bari</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="st">"bari"</span>)
-<span class="no">match_nss_rds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="st">"rds"</span>)
-<span class="no">match_nss_convex</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="st">"convex"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
+<span class="kw">match_nss_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"bari"</span>)
+<span class="kw">match_nss_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"rds"</span>)
+<span class="kw">match_nss_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"convex"</span>)
+</pre></div>
 <p>For completeness, we also include an example of good soft seeds, say {4,4} and {8,8}. Then we follow the same procedure as in the bad soft seeds case, and yield the matching results for good soft seeds when matching the same graphs. Since the codes corresponding soft seeding implementation are the same, we’ll skip the codes and only show the results comparing the three cases.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">good_soft_seeds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>),<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>,<span class="fl">8</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">good_soft_seeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>),<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">8</span>,<span class="fl">8</span>))
+</pre></div>
 <table class="table">
 <caption>Matching Errors With Various Initialization Methods</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">bari</th>
 <th align="right">rds</th>
 <th align="right">convex</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>good soft seeds</td>
+<td align="left">good soft seeds</td>
 <td align="right">0.714</td>
 <td align="right">0.571</td>
-<td align="right">0.429</td>
+<td align="right">0.714</td>
 </tr>
 <tr class="even">
-<td>bad soft seeds</td>
+<td align="left">bad soft seeds</td>
 <td align="right">0.714</td>
 <td align="right">0.714</td>
 <td align="right">0.714</td>
 </tr>
 <tr class="odd">
-<td>non soft seeds</td>
+<td align="left">non soft seeds</td>
 <td align="right">0.857</td>
 <td align="right">0.857</td>
-<td align="right">0.857</td>
+<td align="right">0.429</td>
 </tr>
 </tbody>
 </table>
@@ -338,27 +373,31 @@
 <h3 class="hasAnchor">
 <a href="#simulations-1" class="anchor"></a>Simulations</h3>
 <p>Now implement algorithm of finding core vertices in R with <code>iGraphMatch</code> package. First we sample a pair of graphs with 50 vertices from the correlated Erdős-Rényi graph model and let 5 out of the total vertices to be junk vertices using function <code>sample_correlated_gnp_pair_w_junk</code>. We also assume the first 10 vertices to be seeds. Then apply the FAQ algorithm to match two graphs.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">5</span>)
-<span class="no">cgnp_pair</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sample_gnp.html">sample_correlated_gnp_pair_w_junk</a></span>(<span class="kw">n</span> <span class="kw">=</span> <span class="fl">50</span>, <span class="kw">corr</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">p</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">ncore</span> <span class="kw">=</span> <span class="fl">45</span>)
-<span class="no">g1</span> <span class="kw">&lt;-</span> <span class="no">cgnp_pair</span>$<span class="no">graph1</span>
-<span class="no">g2</span> <span class="kw">&lt;-</span> <span class="no">cgnp_pair</span>$<span class="no">graph2</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">5</span>)
+<span class="kw">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_correlated_gnp_pair.html">sample_correlated_gnp_pair_w_junk</a></span>(n = <span class="fl">50</span>, corr = <span class="fl">.5</span>, p = <span class="fl">.5</span>, ncore = <span class="fl">45</span>)
+<span class="kw">g1</span> <span class="op">&lt;-</span> <span class="kw">cgnp_pair</span><span class="op">$</span><span class="kw">graph1</span>
+<span class="kw">g2</span> <span class="op">&lt;-</span> <span class="kw">cgnp_pair</span><span class="op">$</span><span class="kw">graph2</span>
 
-<span class="no">seeds</span> <span class="kw">&lt;-</span> <span class="fl">1</span> : <span class="fl">50</span> <span class="kw">&lt;=</span> <span class="fl">10</span>
-<span class="no">core</span> <span class="kw">&lt;-</span> <span class="fl">1</span> : <span class="fl">50</span> <span class="kw">&lt;=</span> <span class="fl">45</span>
-<span class="no">junk</span> <span class="kw">&lt;-</span> !<span class="no">core</span>
-<span class="no">non_seeds</span> <span class="kw">&lt;-</span> !<span class="no">seeds</span>
+<span class="kw">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">:</span> <span class="fl">50</span> <span class="op">&lt;=</span> <span class="fl">10</span>
+<span class="kw">core</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">:</span> <span class="fl">50</span> <span class="op">&lt;=</span> <span class="fl">45</span>
+<span class="kw">junk</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="kw">core</span>
+<span class="kw">non_seeds</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="kw">seeds</span>
 
-<span class="no">match</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/graph_match_methods.html">graph_match_FW</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="no">seeds</span>, <span class="kw">start</span> <span class="kw">=</span> <span class="st">"rds"</span>)</pre></body></html></div>
+<span class="kw">match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"rds"</span>)
+</pre></div>
 <p>Then implement the algorithm for finding core vertices, we use row permutation statistic as our measure in this example. The main steps of the algorithm involves calculating values of the row permutation statistic for each nonseed vertex and rank them in the order of increasing value of the statistic. These steps can be implemented by using the <code>best_matches</code> function. The <code>best_matches</code> function has the functionality of finding best matched vertices and identifying core vertices. Since we want to rank all the non-seed vertices in terms of their row permutation statistics, set argument <code>x</code> to be <code>non_seeds</code>, which denotes the vertices we are interested in. Also set argument <code>num</code> to be the number of non-seeds, which denotes the number of top ranked vertices we want to get. By returning the result in <code>A_best</code>, we get the indices corresponding to vertices in <span class="math inline">\(G1\)</span> in the order of decreasing likelihood of being core vertices.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">r</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/best_matches.html">best_matches</a></span>(<span class="no">g1</span>, <span class="no">g2</span>, <span class="kw">measure</span> <span class="kw">=</span> <span class="st">"row_perm_stat"</span>, <span class="kw">num</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">non_seeds</span>),
-                  <span class="kw">x</span> <span class="kw">=</span> <span class="no">non_seeds</span>, <span class="kw">match_corr</span> <span class="kw">=</span> <span class="no">match</span>$<span class="no">corr</span>)$<span class="no">A_best</span>
-<span class="no">r</span>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/best_matches.html">best_matches</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, measure = <span class="st">"row_perm_stat"</span>, num = <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">non_seeds</span>), 
+                  x = <span class="kw">non_seeds</span>, match_corr = <span class="kw">match</span><span class="op">$</span><span class="kw">corr</span>)<span class="op">$</span><span class="kw">A_best</span>
+<span class="kw">r</span>
 <span class="co">#&gt;  [1] 18 13 27 32 31 17 24 12 36 42 33 30 15 48 39 29 38 37 28 20 34 44 19 40 50</span>
-<span class="co">#&gt; [26] 14 25 21 43 46 35 11 49 47 16 45 22 26 41 23</span></pre></body></html></div>
+<span class="co">#&gt; [26] 14 25 21 43 46 35 11 49 47 16 45 22 26 41 23</span>
+</pre></div>
 <table class="table">
 <caption>Summarization Table for Core Identification Precisions</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">k1</th>
 <th align="right">k5</th>
 <th align="right">k10</th>
@@ -366,7 +405,7 @@
 <th align="right">k35</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>core identification precision</td>
+<td align="left">core identification precision</td>
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
@@ -377,7 +416,7 @@
 <table class="table">
 <caption>Summarization Table for Junk Identification Precisions</caption>
 <thead><tr class="header">
-<th></th>
+<th align="left"></th>
 <th align="right">k1</th>
 <th align="right">k2</th>
 <th align="right">k3</th>
@@ -385,7 +424,7 @@
 <th align="right">k5</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>junk identification precision</td>
+<td align="left">junk identification precision</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -435,9 +474,9 @@ seeds_adp <- best_matches(A = g1, B = g2, measure = row_perm_stat, num = 3, x = 
                           match_corr = match$corr)
 seeds_adp
 #>   A_best B_best
-#> 1     38     21
-#> 2     25     47
-#> 3     40     40
+#> 1      8      8
+#> 2     10     10
+#> 3     30     31
 ```
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
@@ -452,12 +491,12 @@ err_adp <- mean(match_adp$corr$corr_A[!seeds] != match_adp$corr$corr_B[!seeds])
 
 Table: Matching Errors for Adaptive Seeding
 
- err_orig   err_adp
----------  --------
-    0.975       0.8
+| err_orig| err_adp|
+|--------:|-------:|
+|    0.625|   0.625|
 
 
-Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.975 to 0.8 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
+Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.625 to 0.625 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{summary_er.pdf}

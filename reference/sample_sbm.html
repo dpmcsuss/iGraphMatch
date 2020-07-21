@@ -118,22 +118,22 @@ two graphs being <code>rho</code> and edge probability being <code>p</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>sample_correlated_sbm_pair</span>(
-  <span class='no'>n</span>,
-  <span class='no'>pref.matrix</span>,
-  <span class='no'>block.sizes</span>,
-  <span class='no'>rho</span>,
-  <span class='kw'>permutation</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>n</span>,
-  <span class='no'>...</span>
+  <span class='kw'>n</span>,
+  <span class='kw'>pref.matrix</span>,
+  <span class='kw'>block.sizes</span>,
+  <span class='kw'>rho</span>,
+  permutation = <span class='fl'>1</span><span class='op'>:</span><span class='kw'>n</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='fu'>sample_correlated_sbm_pair_w_junk</span>(
-  <span class='no'>n</span>,
-  <span class='no'>pref.matrix</span>,
-  <span class='no'>block.sizes</span>,
-  <span class='no'>rho</span>,
-  <span class='no'>core.block.sizes</span>,
-  <span class='kw'>permutation</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='no'>n</span>,
-  <span class='no'>...</span>
+  <span class='kw'>n</span>,
+  <span class='kw'>pref.matrix</span>,
+  <span class='kw'>block.sizes</span>,
+  <span class='kw'>rho</span>,
+  <span class='kw'>core.block.sizes</span>,
+  permutation = <span class='fl'>1</span><span class='op'>:</span><span class='kw'>n</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,11 +180,11 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
     <p>A list of two igraph object, named <code>graph1</code> and <code>graph2</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>pm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>( <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.1</span>, <span class='fl'>.001</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.001</span>, <span class='fl'>.05</span>) )
-<span class='fu'>sample_correlated_sbm_pair</span>(<span class='fl'>1000</span>, <span class='kw'>pref.matrix</span><span class='kw'>=</span><span class='no'>pm</span>, <span class='kw'>block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), <span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>)</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 66f5b1d U--- 1000 17005 -- Stochastic block-model
+    <pre class="examples"><div class='input'><span class='kw'>pm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span>( <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.1</span>, <span class='fl'>.001</span>), <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>.001</span>, <span class='fl'>.05</span>) )
+<span class='fu'>sample_correlated_sbm_pair</span>(<span class='fl'>1000</span>, pref.matrix=<span class='kw'>pm</span>, block.sizes=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), rho=<span class='fl'>0.5</span>)</div><div class='output co'>#&gt; $graph1
+#&gt; IGRAPH 46c7d05 U--- 1000 17005 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 66f5b1d:
+#&gt; + edges from 46c7d05:
 #&gt;  [1]  1-- 5  7-- 8  6-- 9  1--10  2--10  5--10  2--13  2--15  5--15  8--16
 #&gt; [11] 14--16  3--17  7--17 11--17 13--17  4--18  5--18  9--18 14--18 18--19
 #&gt; [21] 16--20 17--20 14--22 17--23 23--24  3--25 12--25 23--25 24--25  9--26
@@ -196,10 +196,10 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 19cbc72 U--- 1000 16960 -- Stochastic block-model
+#&gt; IGRAPH 99d8547 U--- 1000 16960 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from 19cbc72:
+#&gt; + edges from 99d8547:
 #&gt;  [1] 992-- 998 992-- 997 992-- 994 989--1000 989-- 999 988-- 995 988-- 992
 #&gt;  [8] 988-- 989 987--1000 984-- 999 984-- 997 983-- 990 983-- 987 979-- 996
 #&gt; [15] 979-- 990 979-- 985 979-- 981 978-- 992 977-- 983 974-- 984 972-- 999
@@ -208,11 +208,11 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; [36] 959-- 989 958-- 990 958-- 976 957-- 990 957-- 983 957-- 980 957-- 976
 #&gt; [43] 957-- 969 957-- 964 956-- 994 956-- 991 955-- 990 955-- 978 955-- 973
 #&gt; + ... omitted several edges
-#&gt; </div><div class='input'><span class='fu'>sample_correlated_sbm_pair_w_junk</span>(<span class='fl'>1000</span>, <span class='kw'>pref.matrix</span><span class='kw'>=</span><span class='no'>pm</span>, <span class='kw'>block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), <span class='kw'>rho</span><span class='kw'>=</span><span class='fl'>0.5</span>,
-<span class='kw'>core.block.sizes</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>200</span>,<span class='fl'>500</span>))</div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 4632998 U--- 1000 16847 -- Stochastic block-model
+#&gt; </div><div class='input'><span class='fu'>sample_correlated_sbm_pair_w_junk</span>(<span class='fl'>1000</span>, pref.matrix=<span class='kw'>pm</span>, block.sizes=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>300</span>,<span class='fl'>700</span>), rho=<span class='fl'>0.5</span>,
+core.block.sizes=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>200</span>,<span class='fl'>500</span>))</div><div class='output co'>#&gt; $graph1
+#&gt; IGRAPH b364eb8 U--- 1000 16847 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 4632998:
+#&gt; + edges from b364eb8:
 #&gt;  [1]  1-- 3  4-- 7  6-- 7  4-- 8  1-- 9  4-- 9  3--11  4--11  7--12  1--14
 #&gt; [11]  7--14  5--15 12--15  2--16  6--17  7--17 12--17 17--18  9--19 16--19
 #&gt; [21]  5--20  2--21  4--21  5--21  7--21 13--21 16--22 17--22 11--23  3--24
@@ -224,10 +224,10 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH e3cabad U--- 1000 16904 -- Stochastic block-model
+#&gt; IGRAPH 8e92187 U--- 1000 16904 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from e3cabad:
+#&gt; + edges from 8e92187:
 #&gt;  [1] 993--1000 991-- 992 990-- 998 990-- 993 989-- 997 988-- 990 984-- 987
 #&gt;  [8] 982-- 994 981-- 986 980-- 995 979-- 988 978-- 992 978-- 987 978-- 982
 #&gt; [15] 977-- 980 976-- 990 976-- 986 976-- 977 975-- 995 974-- 991 973-- 985
