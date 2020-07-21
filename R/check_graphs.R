@@ -25,12 +25,12 @@ check_graph <- function(A, B,
 
   # this will make the graphs be matrices if they are igraph objects
   if (is.list(A) && !igraph::is.igraph(A)) {
-    A <- lapply(A, function(Al) Al[])
+    A <- matrix_list(A)
   } else {
     A <- matrix_list(list(A[]))
   }
   if ( is.list(B) && !igraph::is.igraph(B)) {
-    B <- lapply(B, function(Bl) Bl[])
+    B <- matrix_list(B)
   } else {
     B <- matrix_list(list(B[]))
   }
@@ -60,20 +60,25 @@ check_graph <- function(A, B,
 
 
   try({
-    A <- lapply(A, function(Al) as(Al, "dgCMatrix"))
-    B <- lapply(B, function(Bl) as(Bl, "dgCMatrix"))
+    A <- matrix_list(lapply(A, function(Al) as(Al, "dgCMatrix")))
+    B <- matrix_list(lapply(B, function(Bl) as(Bl, "dgCMatrix")))
   }, silent = TRUE)
-  try({B <- as(B, "dgCMatrix")}, silent = TRUE)
+  # try({
+  #   A <- as(A, "dgCMatrix")
+  #   B <- as(B, "dgCMatrix")
+  # }, silent = TRUE)
 
   if (same_order) {
     if (totv1 > totv2) {
       diff <- totv1 - totv2
-      B <- lapply(B, function(Bl)
-        pad(Bl[], diff))
+      B <- pad(B, diff)
+      # B <- lapply(B, function(Bl)
+      #   pad(Bl[], diff))
     }else if (totv1 < totv2) {
       diff <- totv2 - totv1
-      A <- lapply(A, function(Al)
-        pad(Al[], diff))
+      A <- pad(A, diff)
+      # A <- lapply(A, function(Al)
+      #   pad(Al[], diff))
     }
   }
 

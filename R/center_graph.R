@@ -109,6 +109,10 @@ pad <- function(m, nr, nc = nr){
       a = Matrix(rbind2(m@a, Matrix(0, nr, da)), sparse = TRUE),
       b = Matrix(rbind2(m@b, Matrix(0, nc, da)), sparse = TRUE))
   }
+  else if(is(m, "matrix_list")) {
+    m <- lapply(m, function(ml) ml[])
+    matrix_list(lapply(m, pad, nr = nr, nc = nc))
+  }
   else{
     Matrix::bdiag(m, Matrix(0, nr, nc))
   }
