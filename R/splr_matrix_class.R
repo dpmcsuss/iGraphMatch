@@ -705,16 +705,21 @@ setMethod("[",
 setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop = 'logical') 
           , function(x, i, j, ..., drop) {
             if (drop) {
-              return(drop(x@x[i, j,...] + (x@a[i,]%*%t(x@b)[, j]) ))
+              return(drop(x@x[i, j,...] + (x@a[i,] %*% t(x@b)[, j]) ))
             } else {
-              return(new("splrMatrix", x@x[i, j,..., drop = FALSE], x@a[i,, drop = FALSE], x@b[j,, drop = FALSE]
+              return(splr(x@x[i, j,..., drop = FALSE], x@a[i,, drop = FALSE], x@b[j,, drop = FALSE]
                          , Dim = dim(x@x[i, j,..., drop = FALSE])) )
             }
     })
 
 
 col_index <- function(x, j, ..., drop) {
-  i <- c(1:(dim(x@x)[1]))
+  row_dim <- dim(x@x)[1]
+  i <- seq(row_dim)
+  if(row_dim == 0) {
+    i <- numeric()
+  }
+
   if (drop) {
     return(x@x[i, j,...] + (x@a[i, , drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) )
   } else {
@@ -737,15 +742,29 @@ setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = '
 setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'numeric', drop = 'missing'),
             function(x, j, ...) col_index(x, j, drop = FALSE))
 
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'logical', drop = 'logical'),
+            col_index)
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'missing', j = 'logical', drop = 'missing'),
+            function(x, j, ...) col_index(x, j, drop = FALSE))
+
 row_index <- function(x, i, ..., drop) {
-  j <- c(1:(dim(x@x)[2]))
+
+  row_dim <- dim(x@x)[2]
+  j <- seq(row_dim)
+  if(row_dim == 0) {
+    j <- numeric()
+  }
+
   if (drop) {
     return(drop(x@x[i, j,...] + (x@a[i,, drop = FALSE] %*% t(x@b)[, j, drop = FALSE]) ))
   } else {
     return( new("splrMatrix", 
       x = x@x[i, j,...],
-      a = x@a[i,, drop = FALSE], 
-      b = x@b[j,, drop = FALSE],
+      a = x@a[i, , drop = FALSE], 
+      b = x@b[j, , drop = FALSE],
       Dim = dim(x = x@x[i, j,...])))
   }
 }
@@ -758,28 +777,42 @@ setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = '
 setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'missing', drop = 'missing'),
             function(x, i, ...) row_index(x, i, drop = FALSE))
 
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'missing', drop = 'logical'),
+            row_index)
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop ='missing') 
-          , function(x, i, j, ...) {
-            
-            
-            return(new("splrMatrix", x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'missing', drop = 'missing'),
+            function(x, i, ...) row_index(x, i, drop = FALSE))
+
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'ANY', drop ='logical') 
+          , function(x, i, j, ..., drop) {
+            return(splr(x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
                        , Dim = dim(x@x[i, j,..., drop = FALSE])))
             
           })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop ='missing') 
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'logical', drop ='logical') 
+          , function(x, i, j, ..., drop) {
+            return(splr(x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
+                       , Dim = dim(x@x[i, j,..., drop = FALSE])))
+            
+          })
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'ANY', drop ='missing') 
           , function(x, i, j, ..., drop = TRUE) {
             
             
-            return(new("splrMatrix", x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE],
-                       Dim = (x = x@x[i, j,..., drop = FALSE])))
+            return(splr(x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE],
+                       Dim = dim(x = x@x[i, j,..., drop = FALSE])))
   })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'logical', drop = 'ANY') 
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'ANY', drop = 'ANY') 
           , function(x, i, j, ..., drop) {
             
             if (drop) {
@@ -787,19 +820,37 @@ setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'logical', drop = '
             } else {
               new('splrMatrix', x = x@x[i, j, drop = FALSE]
                   , a = as(x@a[i,, drop = FALSE],'Matrix'), b = as(x@b[j,, drop = FALSE],'Matrix')
-                  , Dim = (x = x@x[i, j,..., drop = FALSE]))
+                  , Dim = dim(x = x@x[i, j,..., drop = FALSE]))
               
             }
  })
 
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'logical', drop = 'missing') 
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'ANY', drop = 'missing') 
           , function(x, i, j, ...) {
             
             
             new('splrMatrix', x = as(x@x[i, j], "Matrix"), a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
                 , Dim = dim(as(x@x[i, j], "Matrix")))
+    })
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'numeric', drop = 'missing') 
+          , function(x, i, j, ...) {
+            
+            
+            new('splrMatrix', x = as(x@x[i, j], "Matrix"), a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
+                , Dim = dim(as(x@x[i, j], "Matrix")))
+    })
+
+#' @rdname splr
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'numeric', drop = 'logical') 
+          , function(x, i, j, ..., drop) {
+            
+            ret <- new('splrMatrix', x = as(x@x[i, j], "Matrix"), a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
+                , Dim = dim(as(x@x[i, j], "Matrix")))
+            ret
     })
 
 

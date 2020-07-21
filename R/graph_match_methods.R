@@ -96,8 +96,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
   similarity <- similarity %*% Matrix::t(rpmat)
 
   # keep only nonseeds
-  A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
-  B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
+  A <- A[nonseeds$A, nonseeds$A]
+  B <- B[nonseeds$B, nonseeds$B][rp, rp]
   nc <- length(A)
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
@@ -259,11 +259,14 @@ graph_match_convex <- function(A, B, seeds = NULL,
     
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
-  
+  alpha_seq <- NULL
   while(toggle && iter < max_iter){
     f_old <- f
     iter <- iter + 1
-    Grad <- ml_sum(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity)
+    Grad <- ml_sum(
+      AtA %*% P + P %*% BBt - ABns_sn +
+      -t(Ann) %*% P %*% Bnn - Ann %*% P %*% t(Bnn) +
+      similarity)
    
 
     corr <- do_lap(Grad, lap_method)
@@ -274,14 +277,14 @@ graph_match_convex <- function(A, B, seeds = NULL,
     Cnn <- Ann %*% (P - Pdir) - (P - Pdir) %*% Bnn
     Dnn <- Ann %*% Pdir - Pdir %*% Bnn
 
-    if(ns > 0){
-      Cns <- -(P-Pdir) %*% Bns
-      Csn <- Asn %*% (P-Pdir)
+    if(ns > 0) {
+      Cns <- - (P - Pdir) %*% Bns
+      Csn <- Asn %*% (P - Pdir)
 
       Dns <- Ans - Pdir %*% Bns
       Dsn <- Asn %*% Pdir - Bsn
-    }else{
-      Dns <- Dsn <-Cns <- Csn <- 0
+    } else {
+      Dns <- Dsn <- Cns <- Csn <- 0
     }
     aq <- innerproduct(Cnn, Cnn) +
       innerproduct(Cns, Cns) +
@@ -289,8 +292,9 @@ graph_match_convex <- function(A, B, seeds = NULL,
     bq <- innerproduct(Cnn, Dnn) +
       innerproduct(Cns, Dns) +
       innerproduct(Csn, Dsn)
-    aopt <- ifelse(aq == 0 && bq == 0, 0, -bq/aq)
-
+    aopt <- ifelse(aq == 0 && bq == 0, 0,
+      ifelse(-bq / aq > 1, 1, -bq/aq))
+    alpha_seq <- c(alpha_seq, aopt)
     P_new <- aopt * P + (1 - aopt) * Pdir
     f <- innerproduct(Ann %*% P_new - P_new %*% Bnn,
       Ann %*% P_new - P_new %*% Bnn)
@@ -324,7 +328,8 @@ graph_match_convex <- function(A, B, seeds = NULL,
     ns = ns, 
     P = P,
     D = D,
-    num_iter = iter)
+    num_iter = iter,
+    alpha_seq = alpha_seq)  
   z
 }
 

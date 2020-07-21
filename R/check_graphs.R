@@ -27,12 +27,12 @@ check_graph <- function(A, B,
   if (is.list(A) && !igraph::is.igraph(A)) {
     A <- lapply(A, function(Al) Al[])
   } else {
-    A <- list(A[])
+    A <- matrix_list(list(A[]))
   }
   if ( is.list(B) && !igraph::is.igraph(B)) {
     B <- lapply(B, function(Bl) Bl[])
   } else {
-    B <- list(B[])
+    B <- matrix_list(list(B[]))
   }
 
   totv1 <- ncol(A[[1]])
