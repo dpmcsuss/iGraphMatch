@@ -25,12 +25,12 @@ check_graph <- function(A, B,
 
   # this will make the graphs be matrices if they are igraph objects
   if (is.list(A) && !igraph::is.igraph(A)) {
-    A <- matrix_list(A)
+    A <- matrix_list(lapply(A, function(Al) Al[]))
   } else {
     A <- matrix_list(list(A[]))
   }
   if ( is.list(B) && !igraph::is.igraph(B)) {
-    B <- matrix_list(B)
+    B <- matrix_list(lapply(B, function(Bl) Bl[]))
   } else {
     B <- matrix_list(list(B[]))
   }

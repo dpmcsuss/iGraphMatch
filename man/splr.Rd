@@ -74,6 +74,7 @@
 \alias{[<-,splrMatrix,numeric,numeric,ANY-method}
 \alias{[<-,splrMatrix,numeric,missing,ANY-method}
 \alias{[<-,splrMatrix,missing,numeric,ANY-method}
+\alias{[<-,Matrix,ANY,ANY,splrMatrix-method}
 \alias{str,splrMatrix-method}
 \alias{t,splrMatrix-method}
 \alias{diag,splrMatrix-method}
@@ -226,6 +227,8 @@
 \S4method{[}{splrMatrix,numeric,missing,ANY}(x, i, j, ...) <- value
 
 \S4method{[}{splrMatrix,missing,numeric,ANY}(x, i, j, ...) <- value
+
+\S4method{[}{Matrix,ANY,ANY,splrMatrix}(x, i, j, ...) <- value
 
 \S4method{dim}{splrMatrix}(x)
 

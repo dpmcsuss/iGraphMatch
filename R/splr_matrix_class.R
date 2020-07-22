@@ -889,6 +889,7 @@ setMethod("[<-",
   })
 
 #document the issues with doing this
+
 #' @rdname splr
 setMethod("[<-",
   signature(x ="splrMatrix", i = 'numeric', j = 'numeric', value = 'ANY'),
@@ -933,6 +934,7 @@ setMethod("[<-",
 
 
 # Implementing this would be nice
+#' @rdname splr
 setMethod("[<-", signature(x ="Matrix", i = 'ANY', j = 'ANY', value = 'splrMatrix'),
           function(x, i, j, ..., value) {
             y <- x

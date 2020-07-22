@@ -71,7 +71,7 @@ center_graph <- function(A, scheme = c(-1, 1), use_splr = TRUE){
     } 
   } else {
     stop("scheme must be either 'center', 'naive', ",
-      "a positive integer, or a pair of scales.")
+      "a positive integer, or a pair of scalars.")
   }
   g
 }

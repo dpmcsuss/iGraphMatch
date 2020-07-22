@@ -34,7 +34,7 @@ split_igraph <- function(g, e_attr, strip_vertex_attr = FALSE) {
   }, silent = TRUE)
 
   if (strip_vertex_attr) {
-    for (v_attr in vertex_attr_names(g)){
+    for (v_attr in igraph::vertex_attr_names(g)){
       g <- igraph::delete_vertex_attr(g, v_attr)
     }
   }
