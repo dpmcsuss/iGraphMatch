@@ -296,7 +296,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 <span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='co'># match G_1 &amp; G_2 with no seeds</span>
-<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_FW(A = g1, B = g2)
 #&gt; 
 #&gt; $corr
@@ -348,7 +349,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some known node pairs as seeds</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
-<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"bari"</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"bari"</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_FW(A = g1, B = g2, seeds = seeds, start = "bari")
 #&gt; 
 #&gt; $corr
@@ -401,12 +403,63 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 <span class='co'># match G_1 &amp; G_2 with some incorrect seeds</span>
 <span class='kw'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='kw'>seeds</span>, nv = <span class='fl'>10</span>)<span class='op'>$</span><span class='kw'>seeds</span>),<span class='kw'>hard_seeds</span>)
-<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"convex"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in x %*% sx: Cholmod error 'A and B inner dimensions must match' at file ../MatrixOps/cholmod_ssmult.c, line 82</span></div><div class='input'>
+<span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"convex"</span>)
+</div><div class='output co'>#&gt; $call
+#&gt; graph_match_FW(A = g1, B = g2, seeds = seeds, start = "convex")
+#&gt; 
+#&gt; $corr
+#&gt;    corr_A corr_B
+#&gt; 1       1      1
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      5
+#&gt; 5       5      8
+#&gt; 6       6      4
+#&gt; 7       7      6
+#&gt; 8       8      7
+#&gt; 9       9      9
+#&gt; 10     10     10
+#&gt; 
+#&gt; $ns
+#&gt; [1] 5
+#&gt; 
+#&gt; $P
+#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
+#&gt;                          
+#&gt;  [1,] 1 . . . . . . . . .
+#&gt;  [2,] . 1 . . . . . . . .
+#&gt;  [3,] . . 1 . . . . . . .
+#&gt;  [4,] . . . . 1 . . . . .
+#&gt;  [5,] . . . . . . . 1 . .
+#&gt;  [6,] . . . 1 . . . . . .
+#&gt;  [7,] . . . . . 1 . . . .
+#&gt;  [8,] . . . . . . 1 . . .
+#&gt;  [9,] . . . . . . . . 1 .
+#&gt; [10,] . . . . . . . . . 1
+#&gt; 
+#&gt; $D
+#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
+#&gt;                          
+#&gt;  [1,] 1 . . . . . . . . .
+#&gt;  [2,] . 1 . . . . . . . .
+#&gt;  [3,] . . 1 . . . . . . .
+#&gt;  [4,] . . . . 1 . . . . .
+#&gt;  [5,] . . . . . . . 1 . .
+#&gt;  [6,] . . . 1 . . . . . .
+#&gt;  [7,] . . . . . 1 . . . .
+#&gt;  [8,] . . . . . . 1 . . .
+#&gt;  [9,] . . . . . . . . 1 .
+#&gt; [10,] . . . . . . . . . 1
+#&gt; 
+#&gt; $num_iter
+#&gt; [1] 6
+#&gt; </div><div class='input'>
  <span class='kw'>gp_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>, <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.3</span>, <span class='fl'>.5</span>), simplify = <span class='fl'>FALSE</span>)
  <span class='kw'>A</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>gp_list</span>, <span class='fu'>function</span>(<span class='kw'>gp</span>)<span class='kw'>gp</span>[[<span class='fl'>1</span>]])
  <span class='kw'>B</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>gp_list</span>, <span class='fu'>function</span>(<span class='kw'>gp</span>)<span class='kw'>gp</span>[[<span class='fl'>2</span>]])
  <span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'>graph_match_FW</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, seeds = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, start = <span class='st'>"bari"</span>, max_iter = <span class='fl'>20</span>)
- <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span></div><div class='output co'>#&gt;     corr_A corr_B
+ <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span>
+</div><div class='output co'>#&gt;     corr_A corr_B
 #&gt; 1        1      1
 #&gt; 2        2      2
 #&gt; 3        3      3
@@ -508,7 +561,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 99      99     99
 #&gt; 100    100    100</div><div class='input'>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
-<span class='fu'>graph_match_convex</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_convex</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_convex(A = g1, B = g2, seeds = seeds)
 #&gt; 
 #&gt; $corr
@@ -607,7 +661,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 }
 
 <span class='co'># match G_1 &amp; G_2 using PATH algorithm</span>
-<span class='fu'>graph_match_PATH</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_PATH</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_PATH(A = g1, B = g2)
 #&gt; 
 #&gt; $corr
@@ -673,7 +728,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using percolation graph matching method</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
-<span class='fu'>graph_match_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_percolation(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
@@ -696,7 +752,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using Expand When Stuck graph matching method</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
-<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_ExpandWhenStuck(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
@@ -719,7 +776,8 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using soft percolation graph matching method</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
-<span class='fu'>graph_match_soft_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>, max_iter = <span class='fl'>2</span>)</div><div class='output co'>#&gt; $call
+<span class='fu'>graph_match_soft_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>, max_iter = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; $call
 #&gt; graph_match_soft_percolation(A = g1, B = g2, seeds = seeds, r = 2, 
 #&gt;     max_iter = 2)
 #&gt; 
@@ -751,6 +809,7 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 <span class='kw'>G1</span> <span class='op'>&lt;-</span> <span class='kw'>G</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>G2</span> <span class='op'>&lt;-</span> <span class='kw'>G</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='kw'>GM_U</span> <span class='op'>&lt;-</span> <span class='fu'>graph_match_Umeyama</span>(<span class='kw'>G1</span>, <span class='kw'>G2</span>, <span class='kw'>startm</span>, alpha = <span class='fl'>.3</span>)
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -178,7 +178,8 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='kw'>A</span> <span class='op'>&lt;-</span> <span class='kw'>graphs</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>B</span> <span class='op'>&lt;-</span> <span class='kw'>graphs</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_FW.html'>graph_match_percolation</a></span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
-<span class='fu'>match_report</span>(<span class='kw'>res</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)</div><div class='output co'>#&gt; Call: 
+<span class='fu'>match_report</span>(<span class='kw'>res</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)
+</div><div class='output co'>#&gt; Call: 
 #&gt; graph_match_percolation(A = A, B = B, seeds = 1:4)
 #&gt; 
 #&gt; # Matches: 0
@@ -195,7 +196,8 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='kw'>A</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>gp_list</span>, <span class='fu'>function</span>(<span class='kw'>gp</span>)<span class='kw'>gp</span>[[<span class='fl'>1</span>]])
 <span class='kw'>B</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span>(<span class='kw'>gp_list</span>, <span class='fu'>function</span>(<span class='kw'>gp</span>)<span class='kw'>gp</span>[[<span class='fl'>2</span>]])
 <span class='kw'>corr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(corr_A = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>, corr_B = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>)
-<span class='fu'>edge_match_info</span>(<span class='kw'>corr</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)</div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
+<span class='fu'>edge_match_info</span>(<span class='kw'>corr</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)
+</div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
 #&gt; 1     1         1330           204         197             3219 28.31960
 #&gt; 2     2         1293           219         186             3252 28.46050
 #&gt; 3     3         1240           230         200             3280 29.32576</div></pre>
