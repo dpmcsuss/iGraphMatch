@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/iGraphMatch.html">Get started</a>
 </li>
 <li>
@@ -276,22 +270,22 @@ at the other places are derived by different start method.</p>
 <span class='fu'>init_start</span>(start = <span class='st'>"convex"</span>, nns = <span class='fl'>8</span>, A = <span class='kw'>g1</span>, B = <span class='kw'>g2</span>, seeds = <span class='kw'>seeds</span>)
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 6 x 6 sparse Matrix of class "dgCMatrix"
-#&gt;                                                 
-#&gt; [1,] . .         . .         .         0.9354933
-#&gt; [2,] . 0.9354933 . .         .         .        
-#&gt; [3,] . .         . 0.9354933 .         .        
-#&gt; [4,] . .         . .         .         .        
-#&gt; [5,] . .         . .         0.9354933 .        
-#&gt; [6,] . .         . .         .         .        
+#&gt;                                                                        
+#&gt; [1,] 0.13328194 0.19611679 0.08885970 0.02731295 .          0.167949552
+#&gt; [2,] 0.39248191 0.01715787 0.12085055 0.03884697 0.10428926 0.306033039
+#&gt; [3,] 0.03521968 0.15047160 0.16857130 .          0.02480547 0.009796253
+#&gt; [4,] 0.10322582 .          0.17849120 0.26527377 0.32283142 0.097672783
+#&gt; [5,] .          .          0.07672746 0.14552725 0.20427538 0.044711954
+#&gt; [6,] 0.07518620 .          0.30437658 0.22398246 0.21431266 0.178571215
 #&gt; plus left factor
 #&gt; 6 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;                
-#&gt; [1,] 0.06450671
-#&gt; [2,] 0.06450671
-#&gt; [3,] 0.06450671
-#&gt; [4,] 0.06450671
-#&gt; [5,] 0.06450671
-#&gt; [6,] 0.06450671
+#&gt; [1,] 0.00357089
+#&gt; [2,] 0.00357089
+#&gt; [3,] 0.00357089
+#&gt; [4,] 0.00357089
+#&gt; [5,] 0.00357089
+#&gt; [6,] 0.00357089
 #&gt; times right factor transpose
 #&gt; 6 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;           
@@ -305,26 +299,35 @@ at the other places are derived by different start method.</p>
 <span class='fu'>init_start</span>(start = <span class='st'>"convex"</span>, nns = <span class='fl'>8</span>, ns = <span class='fl'>2</span>, soft_seeds = <span class='kw'>ss</span>, A = <span class='kw'>g1</span>, B = <span class='kw'>g2</span>, seeds = <span class='kw'>seeds</span>)
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 8 x 8 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                             
-#&gt; [1,] .         . .         0.7748123 .         .         .         .        
-#&gt; [2,] 0.2251877 . .         .         .         0.7748123 .         .        
-#&gt; [3,] .         1 .         .         .         .         .         .        
-#&gt; [4,] .         . .         .         .         .         .         0.7748123
-#&gt; [5,] 0.7748123 . .         .         .         .         .         .        
-#&gt; [6,] .         . .         .         .         .         0.7748123 .        
-#&gt; [7,] .         . .         .         0.7748123 .         .         .        
-#&gt; [8,] .         . 0.7748123 .         .         .         .         .        
+#&gt;                                                                       
+#&gt; [1,] 0.14437522 0.19444813 0.09762770 0.03226265 0.03150764 0.14688151
+#&gt; [2,] 0.39080085 0.02405738 0.10762906 0.05954192 0.09506118 0.32290961
+#&gt; [3,] .          0.16035117 0.15212285 0.04781938 0.01467472 0.04585005
+#&gt; [4,] 0.07483836 .          0.18914549 0.26234580 0.31719357 0.11097040
+#&gt; [5,] 0.04781938 .          0.05839288 0.14133562 0.22098769 .         
+#&gt; [6,] 0.09706474 .          0.31115161 0.19834137 0.22348101 0.15671751
+#&gt; [7,] 0.10605107 0.36659236 0.02405738 0.12538966 0.05979307 0.07857364
+#&gt; [8,] 0.13905038 0.25455096 0.04662928 0.11971986 0.02405738 0.12485353
+#&gt;                          
+#&gt; [1,] 0.12196164 0.2176918
+#&gt; [2,] .          .        
+#&gt; [3,] 0.23681286 0.3423690
+#&gt; [4,] 0.03226265 .        
+#&gt; [5,] 0.51822070 .        
+#&gt; [6,] .          .        
+#&gt; [7,] 0.05451394 0.1717851
+#&gt; [8,] 0.02298447 0.2549104
 #&gt; plus left factor
 #&gt; 8 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;               
-#&gt; [1,] 0.2251877
-#&gt; [2,] .        
-#&gt; [3,] .        
-#&gt; [4,] 0.2251877
-#&gt; [5,] 0.2251877
-#&gt; [6,] 0.2251877
-#&gt; [7,] 0.2251877
-#&gt; [8,] 0.2251877
+#&gt;                
+#&gt; [1,] 0.01324374
+#&gt; [2,] .         
+#&gt; [3,] .         
+#&gt; [4,] 0.01324374
+#&gt; [5,] 0.01324374
+#&gt; [6,] 0.01324374
+#&gt; [7,] 0.01324374
+#&gt; [8,] 0.01324374
 #&gt; times right factor transpose
 #&gt; 8 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;               
@@ -354,7 +357,7 @@ at the other places are derived by different start method.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

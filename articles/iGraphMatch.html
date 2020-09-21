@@ -38,12 +38,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/iGraphMatch.html">Get started</a>
 </li>
 <li>
@@ -251,24 +245,24 @@
                            A = <span class="kw">g1</span>, B = <span class="kw">g2</span>, seeds = <span class="kw">seeds</span>))
 <span class="co">#&gt; Sparse part</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;                                       </span>
-<span class="co">#&gt; [1,] 1 .     . .     .     .     .    </span>
-<span class="co">#&gt; [2,] . .     . .     0.768 .     .    </span>
-<span class="co">#&gt; [3,] . .     . .     .     .     0.768</span>
-<span class="co">#&gt; [4,] . .     . .     .     0.768 .    </span>
-<span class="co">#&gt; [5,] . .     1 .     .     .     .    </span>
-<span class="co">#&gt; [6,] . 0.768 . .     .     .     .    </span>
-<span class="co">#&gt; [7,] . .     . 0.768 .     .     .    </span>
+<span class="co">#&gt;                                                     </span>
+<span class="co">#&gt; [1,] 0.2937 0.1704 .     0.1223 0.2045 0.0759 0.1332</span>
+<span class="co">#&gt; [2,] 0.0531 0.1423 .     .      0.0766 0.6387 0.0585</span>
+<span class="co">#&gt; [3,] 0.2368 0.4143 .     .      0.1203 0.1318 0.0660</span>
+<span class="co">#&gt; [4,] 0.0906 0.0527 0.250 0.4934 0.0585 .      0.0236</span>
+<span class="co">#&gt; [5,] .      0.0647 0.390 0.0585 0.3590 .      0.1279</span>
+<span class="co">#&gt; [6,] 0.2960 0.0711 0.134 0.2949 .      0.0904 0.0831</span>
+<span class="co">#&gt; [7,] 0.0299 0.0537 0.226 .      0.1502 0.0324 0.4769</span>
 <span class="co">#&gt; plus left factor</span>
 <span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;           </span>
-<span class="co">#&gt; [1,] .    </span>
-<span class="co">#&gt; [2,] 0.232</span>
-<span class="co">#&gt; [3,] 0.232</span>
-<span class="co">#&gt; [4,] 0.232</span>
-<span class="co">#&gt; [5,] .    </span>
-<span class="co">#&gt; [6,] 0.232</span>
-<span class="co">#&gt; [7,] 0.232</span>
+<span class="co">#&gt;            </span>
+<span class="co">#&gt; [1,] .     </span>
+<span class="co">#&gt; [2,] 0.0308</span>
+<span class="co">#&gt; [3,] 0.0308</span>
+<span class="co">#&gt; [4,] 0.0308</span>
+<span class="co">#&gt; [5,] .     </span>
+<span class="co">#&gt; [6,] 0.0308</span>
+<span class="co">#&gt; [7,] 0.0308</span>
 <span class="co">#&gt; times right factor transpose</span>
 <span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;         </span>
@@ -326,7 +320,7 @@
 <td align="left">non soft seeds</td>
 <td align="right">0.857</td>
 <td align="right">0.857</td>
-<td align="right">0.429</td>
+<td align="right">0.714</td>
 </tr>
 </tbody>
 </table>
@@ -474,9 +468,9 @@ seeds_adp <- best_matches(A = g1, B = g2, measure = row_perm_stat, num = 3, x = 
                           match_corr = match$corr)
 seeds_adp
 #>   A_best B_best
-#> 1      8      8
-#> 2     10     10
-#> 3     30     31
+#> 1     36     36
+#> 2      9     28
+#> 3     40     40
 ```
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
@@ -493,10 +487,10 @@ Table: Matching Errors for Adaptive Seeding
 
 | err_orig| err_adp|
 |--------:|-------:|
-|    0.625|   0.625|
+|     0.65|   0.525|
 
 
-Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.625 to 0.625 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
+Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.65 to 0.525 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{summary_er.pdf}
@@ -548,7 +542,7 @@ Figure \ref{fig:summary_Twitter} shows the average matching accuracy across 300 
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

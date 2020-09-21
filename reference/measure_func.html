@@ -79,12 +79,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/iGraphMatch.html">Get started</a>
 </li>
 <li>
@@ -154,28 +148,12 @@ value for the corresponding vertex.</p>
 <span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_FW.html'>graph_match_FW</a></span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
-<span class='kw'>g2m</span> <span class='op'>&lt;-</span> <span class='kw'>g2</span>[<span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>]
-<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>g1</span>[]
+</div><div class='output co'>#&gt; <span class='error'>Error in .local(x, i, j, ..., value): RHS 'value' (class dsparseVector) matches 'ANY', but must match matrix class splrMatrix</span></div><div class='input'><span class='kw'>g2m</span> <span class='op'>&lt;-</span> <span class='kw'>g2</span>[<span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>]
+</div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'i' in selecting a method for function '[': object of type 'closure' is not subsettable</span></div><div class='input'><span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>g1</span>[]
 <span class='fu'>row_cor</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
-</div><div class='output co'>#&gt;  [1] 0.5879663 0.5658330 0.4078435 0.3776016 0.4800000 0.5052506 0.5833333
-#&gt;  [8] 0.5681818 0.5735853 0.6819268 0.7631617 0.4395515 0.6930562 0.6964237
-#&gt; [15] 0.7618552 0.4906039 0.6797437 0.6545754 0.4481543 0.7163457 0.5611940
-#&gt; [22] 0.4577922 0.3333333 0.6195097 0.5970885 0.8190633 0.6404538 0.4709567
-#&gt; [29] 0.6602048 0.6133650 0.6579612 0.5587387 0.8910517 0.6114222 0.5951795
-#&gt; [36] 0.5996796 0.5722379 0.5747126 0.6016053 0.5842492 0.7190997 0.5970885
-#&gt; [43] 0.7022250 0.4732134 0.6388424 0.4427803 0.8286162 0.5747126 0.5970885
-#&gt; [50] 0.6493506</div><div class='input'><span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
-</div><div class='output co'>#&gt;  [1] 15 14 10  9 12 13 15 14 14 17 19 11 17 18 18 13 17 16 11 18 14 12  9 15 15
-#&gt; [26] 20 16 12 17 14 16 14 22 15 15 15 15 14 15 16 18 15 17 12 16 12 21 14 15 16</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
-</div><div class='output co'>#&gt;  [1] -2.7197725 -2.9782694 -4.1566848 -4.4458427 -3.5735106 -3.2705975
-#&gt;  [7] -2.7153356 -3.0130714 -3.0130714 -2.1517038 -1.5663825 -3.8595689
-#&gt; [13] -2.1276029 -1.8615975 -1.8300226 -3.2638122 -2.1432190 -2.4470433
-#&gt; [19] -3.8731190 -1.8571607 -2.9467905 -3.5848781 -4.3785284 -2.6858808
-#&gt; [25] -2.7271680 -1.2594505 -2.4470433 -3.5563462 -2.1383958 -2.9280663
-#&gt; [31] -2.3701494 -3.0058308 -0.7216706 -2.6927266 -2.7237171 -2.7104091
-#&gt; [37] -2.6991002 -3.0158730 -2.7104091 -2.4071839 -1.8571607 -2.6991002
-#&gt; [43] -2.1216411 -3.5493550 -2.4292773 -3.5904122 -0.9846082 -3.0158730
-#&gt; [49] -2.6991002 -2.4412646</div></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in row_cor(g1, g2m): object 'g2m' not found</span></div><div class='input'><span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+</div><div class='output co'>#&gt; <span class='error'>Error in row_diff(g1, g2m): object 'g2m' not found</span></div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+</div><div class='output co'>#&gt; <span class='error'>Error in row_perm_stat(g1, g2m): object 'g2m' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -191,7 +169,7 @@ value for the corresponding vertex.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
