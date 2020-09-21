@@ -897,9 +897,13 @@ setMethod("[<-",
     y <- x@x
     y[i, j] <- value
     a <- x@a
-    a[i,] <- 0
+    if (length(i) > 0) {
+      a[i,] <- 0
+    }
     b <- x@b
-    b[j,] <- 0
+    if (length(j) > 0) {
+      b[j,] <- 0
+    }
     new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
     
    })

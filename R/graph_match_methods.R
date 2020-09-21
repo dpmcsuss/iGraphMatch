@@ -223,7 +223,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   # make a random permutation
   rp <- sample(nn)
-  rpmat <- Matrix::Diagonal(nn)[rp, ]
+  rpmat <- Matrix::Diagonal(nn)[rp, ] 
 
   Asn <- A[seeds$A,nonseeds$A]
   Ann <- A[nonseeds$A,nonseeds$A]
@@ -260,10 +260,11 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
   alpha_seq <- NULL
+  Pseq <- list()
   while(toggle && iter < max_iter){
     f_old <- f
     iter <- iter + 1
-    Grad <- ml_sum(
+    Grad <- -ml_sum(
       AtA %*% P + P %*% BBt - ABns_sn +
       -t(Ann) %*% P %*% Bnn - Ann %*% P %*% t(Bnn) +
       similarity)
@@ -286,7 +287,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
     } else {
       Dns <- Dsn <- Cns <- Csn <- 0
     }
-    aq <- innerproduct(Cnn, Cnn) +
+    aq <- innerproduct(Cnn, Cnn) +    
       innerproduct(Cns, Cns) +
       innerproduct(Csn, Csn)
     bq <- innerproduct(Cnn, Dnn) +
@@ -295,9 +296,10 @@ graph_match_convex <- function(A, B, seeds = NULL,
     aopt <- ifelse(aq == 0 && bq == 0, 0,
       ifelse(-bq / aq > 1, 1, -bq/aq))
     alpha_seq <- c(alpha_seq, aopt)
+    Pseq <- c(Pseq, Pdir)
     P_new <- aopt * P + (1 - aopt) * Pdir
     f <- innerproduct(Ann %*% P_new - P_new %*% Bnn,
-      Ann %*% P_new - P_new %*% Bnn)
+      Ann %*% P_new - P_new %*% Bnn) + innerproduct(ABns_sn, P_new)
 
     f_diff <- abs(f - f_old)
     P_diff <- norm(P - P_new, "f")
@@ -318,8 +320,23 @@ graph_match_convex <- function(A, B, seeds = NULL,
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
-  D <- P
-  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  # D <- P
+  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  reorderA <- order(c(nonseeds$A, seeds$A))
+  reorderB <- order(c(nonseeds$B, seeds$B))
+
+  D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
+  D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+
+  # get_f <- function(a){
+  #   PP <- a * P + (1 - a) * Pdir
+  #   innerproduct(Ann %*% PP - PP %*% Bnn,
+  #     Ann %*% PP - PP %*% Bnn)
+  # }
+  # tibble(a = seq(0, 1, 0.01)) %>%
+  #   mutate(f = map_dbl(a, get_f)) %>%
+  #   ggplot(aes(a,f)) + geom_point() +
+  #   geom_vline(xintercept = aopt)
 
   cl <- match.call()
   z <- list(
@@ -329,7 +346,8 @@ graph_match_convex <- function(A, B, seeds = NULL,
     P = P,
     D = D,
     num_iter = iter,
-    alpha_seq = alpha_seq)  
+    seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
+  )  
   z
 }
 
