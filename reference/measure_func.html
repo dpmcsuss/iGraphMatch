@@ -148,12 +148,28 @@ value for the corresponding vertex.</p>
 <span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_FW.html'>graph_match_FW</a></span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
-</div><div class='output co'>#&gt; <span class='error'>Error in .local(x, i, j, ..., value): RHS 'value' (class dsparseVector) matches 'ANY', but must match matrix class splrMatrix</span></div><div class='input'><span class='kw'>g2m</span> <span class='op'>&lt;-</span> <span class='kw'>g2</span>[<span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>]
-</div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'i' in selecting a method for function '[': object of type 'closure' is not subsettable</span></div><div class='input'><span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>g1</span>[]
+<span class='kw'>g2m</span> <span class='op'>&lt;-</span> <span class='kw'>g2</span>[<span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>]
+<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>g1</span>[]
 <span class='fu'>row_cor</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
-</div><div class='output co'>#&gt; <span class='error'>Error in row_cor(g1, g2m): object 'g2m' not found</span></div><div class='input'><span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
-</div><div class='output co'>#&gt; <span class='error'>Error in row_diff(g1, g2m): object 'g2m' not found</span></div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
-</div><div class='output co'>#&gt; <span class='error'>Error in row_perm_stat(g1, g2m): object 'g2m' not found</span></div></pre>
+</div><div class='output co'>#&gt;  [1] 0.5150495 0.6930562 0.5681818 0.5917517 0.6400000 0.6930562 0.7582531
+#&gt;  [8] 0.5297882 0.7671768 0.7622483 0.5996796 0.7200000 0.6493506 0.5996796
+#&gt; [15] 0.6768034 0.5658330 0.5970885 0.6299253 0.5398155 0.6400000 0.5842654
+#&gt; [22] 0.4481543 0.5407502 0.7500000 0.5052506 0.5423957 0.6404538 0.4709567
+#&gt; [29] 0.6378205 0.4372960 0.5654117 0.5587387 0.5507246 0.5407502 0.6471377
+#&gt; [36] 0.5879663 0.6538719 0.6211202 0.4395515 0.4563292 0.5196155 0.5246525
+#&gt; [43] 0.5747126 0.6211202 0.6776708 0.5942275 0.6874729 0.6114222 0.8388354
+#&gt; [50] 0.5681818</div><div class='input'><span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+</div><div class='output co'>#&gt;  [1] 13 17 14 14 16 17 19 13 19 19 15 18 16 15 16 14 15 15 14 16 14 11 13 18 13
+#&gt; [26] 14 16 12 16 11 13 14 14 13 16 15 17 16 11 11 13 13 14 16 17 14 18 15 21 14</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+</div><div class='output co'>#&gt;  [1] -3.2918891 -2.1216411 -3.0130714 -3.0181288 -2.4292773 -2.1276029
+#&gt;  [7] -1.5711024 -3.2989747 -1.5835546 -1.5796906 -2.7104091 -1.8571607
+#&gt; [13] -2.4133515 -2.7197725 -2.4005947 -2.9782694 -2.7153356 -2.7325861
+#&gt; [19] -3.0158730 -2.4292773 -2.9467905 -3.8707815 -3.2400413 -1.8300226
+#&gt; [25] -3.2989747 -2.9711668 -2.4470433 -3.5563462 -2.4244024 -3.7778367
+#&gt; [31] -3.2214296 -3.0058308 -3.0097238 -3.2638122 -2.4377105 -2.7104091
+#&gt; [37] -2.1276029 -2.4443757 -3.8544356 -3.8348977 -3.2874523 -3.2705975
+#&gt; [43] -2.9782694 -2.4071839 -2.1432190 -3.0198401 -1.8418542 -2.7301243
+#&gt; [49] -0.9846082 -3.0130714</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

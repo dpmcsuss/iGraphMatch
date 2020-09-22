@@ -291,7 +291,56 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 <span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='co'># match G_1 &amp; G_2 with no seeds</span>
 <span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
-</div><div class='output co'>#&gt; <span class='error'>Error in .local(x, i, j, ..., value): RHS 'value' (class dsparseVector) matches 'ANY', but must match matrix class splrMatrix</span></div><div class='input'>
+</div><div class='output co'>#&gt; $call
+#&gt; graph_match_FW(A = g1, B = g2)
+#&gt; 
+#&gt; $corr
+#&gt;    corr_A corr_B
+#&gt; 1       1      8
+#&gt; 2       2     10
+#&gt; 3       3      6
+#&gt; 4       4      7
+#&gt; 5       5      5
+#&gt; 6       6      9
+#&gt; 7       7      3
+#&gt; 8       8      2
+#&gt; 9       9      1
+#&gt; 10     10      4
+#&gt; 
+#&gt; $ns
+#&gt; [1] 0
+#&gt; 
+#&gt; $P
+#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
+#&gt;                          
+#&gt;  [1,] . . . . . . . 1 . .
+#&gt;  [2,] . . . . . . . . . 1
+#&gt;  [3,] . . . . . 1 . . . .
+#&gt;  [4,] . . . . . . 1 . . .
+#&gt;  [5,] . . . . 1 . . . . .
+#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [7,] . . 1 . . . . . . .
+#&gt;  [8,] . 1 . . . . . . . .
+#&gt;  [9,] 1 . . . . . . . . .
+#&gt; [10,] . . . 1 . . . . . .
+#&gt; 
+#&gt; $D
+#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
+#&gt;                          
+#&gt;  [1,] . . . . . . . 1 . .
+#&gt;  [2,] . . . . . . . . . 1
+#&gt;  [3,] . . . . . 1 . . . .
+#&gt;  [4,] . . . . . . 1 . . .
+#&gt;  [5,] . . . . 1 . . . . .
+#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [7,] . . 1 . . . . . . .
+#&gt;  [8,] . 1 . . . . . . . .
+#&gt;  [9,] 1 . . . . . . . . .
+#&gt; [10,] . . . 1 . . . . . .
+#&gt; 
+#&gt; $num_iter
+#&gt; [1] 3
+#&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some known node pairs as seeds</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
 <span class='fu'>graph_match_FW</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, start = <span class='st'>"bari"</span>)
@@ -594,1127 +643,6 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 
 #&gt; $num_iter
 #&gt; [1] 100
-#&gt; 
-#&gt; $seq
-#&gt; $seq$alpha_seq
-#&gt;   [1] 0.1076707 0.5831962 0.8065760 0.8516346 0.8257825 0.9223287 0.9237181
-#&gt;   [8] 0.9354109 0.9464000 0.9585199 0.9632732 0.9617794 0.9503583 0.9669643
-#&gt;  [15] 0.9752237 0.9786937 0.9760522 0.9786866 0.9822018 0.9869172 0.9818157
-#&gt;  [22] 0.9781458 0.9824051 0.9804122 0.9863539 0.9864822 0.9891901 0.9853169
-#&gt;  [29] 0.9880383 0.9818069 0.9901659 0.9883028 0.9910934 0.9930368 0.9894673
-#&gt;  [36] 0.9839770 0.9906627 0.9935088 0.9921356 0.9918315 0.9872221 0.9921830
-#&gt;  [43] 0.9922363 0.9920575 0.9931195 0.9906574 0.9947572 0.9936680 0.9920599
-#&gt;  [50] 0.9955960 0.9877446 0.9922737 0.9937892 0.9926500 0.9931093 0.9950715
-#&gt;  [57] 0.9933537 0.9937059 0.9934875 0.9941581 0.9935178 0.9916240 0.9938127
-#&gt;  [64] 0.9957199 0.9945599 0.9935158 0.9952693 0.9939039 0.9954093 0.9941165
-#&gt;  [71] 0.9942263 0.9967243 0.9938397 0.9948680 0.9944109 0.9952822 0.9946550
-#&gt;  [78] 0.9962159 0.9946999 0.9951680 0.9955703 0.9946358 0.9950305 0.9962105
-#&gt;  [85] 0.9941263 0.9957302 0.9943910 0.9950177 0.9954722 0.9966827 0.9940848
-#&gt;  [92] 0.9966135 0.9961353 0.9958781 0.9957906 0.9953761 0.9968574 0.9962957
-#&gt;  [99] 0.9970417 0.9966657
-#&gt; 
-#&gt; $seq$Pseq
-#&gt; $seq$Pseq[[1]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . 1 . . . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[2]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[3]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] 1 . . . . . .
-#&gt; [5,] . 1 . . . . .
-#&gt; [6,] . . . 1 . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[4]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . . 1 .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . 1 . . . . .
-#&gt; 
-#&gt; $seq$Pseq[[5]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[6]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . . 1
-#&gt; [6,] . . . . . 1 .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[7]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[8]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . . . 1
-#&gt; [7,] . 1 . . . . .
-#&gt; 
-#&gt; $seq$Pseq[[9]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . 1 . . .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[10]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[11]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . . . 1 .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . 1 . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[12]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[13]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[14]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[15]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[16]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[17]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . 1 . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[18]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . . . 1 .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . 1 . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[19]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[20]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[21]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . . . 1
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[22]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[23]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[24]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[25]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[26]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[27]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[28]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[29]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[30]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[31]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[32]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[33]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[34]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . 1 . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[35]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[36]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[37]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[38]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . 1 . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[39]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[40]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[41]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[42]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[43]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[44]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[45]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[46]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[47]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . . . 1 .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] . . . . . . 1
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[48]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[49]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[50]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[51]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[52]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[53]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[54]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[55]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[56]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . 1 . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[57]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[58]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[59]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[60]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[61]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[62]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . 1 . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[63]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[64]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[65]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[66]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[67]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[68]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[69]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[70]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[71]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . 1 . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[72]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . . . . 1 .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[73]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[74]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[75]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[76]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[77]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[78]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . . . 1 .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[79]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[80]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[81]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[82]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[83]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[84]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[85]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[86]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[87]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[88]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[89]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[90]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . 1 . . . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[91]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . 1 . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[92]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[93]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . 1 . . . .
-#&gt; [2,] . . . 1 . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[94]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] 1 . . . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; $seq$Pseq[[95]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] . . . . . . 1
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[96]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . 1 . . .
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . . . . 1 . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[97]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . . . 1
-#&gt; [2,] . . . . 1 . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . 1 . . . . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . 1 . . . .
-#&gt; 
-#&gt; $seq$Pseq[[98]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . . 1 . .
-#&gt; [2,] . 1 . . . . .
-#&gt; [3,] 1 . . . . . .
-#&gt; [4,] . . 1 . . . .
-#&gt; [5,] . . . . . 1 .
-#&gt; [6,] . . . . . . 1
-#&gt; [7,] . . . 1 . . .
-#&gt; 
-#&gt; $seq$Pseq[[99]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . 1 . . . . .
-#&gt; [2,] . . . . . 1 .
-#&gt; [3,] . . 1 . . . .
-#&gt; [4,] . . . . 1 . .
-#&gt; [5,] . . . 1 . . .
-#&gt; [6,] 1 . . . . . .
-#&gt; [7,] . . . . . . 1
-#&gt; 
-#&gt; $seq$Pseq[[100]]
-#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"
-#&gt;                   
-#&gt; [1,] . . . 1 . . .
-#&gt; [2,] . . 1 . . . .
-#&gt; [3,] . . . . . 1 .
-#&gt; [4,] . . . . . . 1
-#&gt; [5,] 1 . . . . . .
-#&gt; [6,] . 1 . . . . .
-#&gt; [7,] . . . . 1 . .
-#&gt; 
-#&gt; 
 #&gt; </div><div class='input'>
 <span class='kw'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='fu'><a href='check_seeds.html'>check_seeds</a></span>(<span class='kw'>seeds</span>, <span class='fl'>10</span>)<span class='op'>$</span><span class='kw'>seeds</span>),<span class='kw'>hard_seeds</span>)
@@ -1725,7 +653,70 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 
 <span class='co'># match G_1 &amp; G_2 using PATH algorithm</span>
 <span class='fu'>graph_match_PATH</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
-</div><div class='output co'>#&gt; <span class='error'>Error in .local(x, i, j, ..., value): RHS 'value' (class dsparseVector) matches 'ANY', but must match matrix class splrMatrix</span></div><div class='input'>
+</div><div class='output co'>#&gt; $call
+#&gt; graph_match_PATH(A = g1, B = g2)
+#&gt; 
+#&gt; $corr
+#&gt;    corr_A corr_B
+#&gt; 1       1      1
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      4
+#&gt; 5       5      5
+#&gt; 6       6      6
+#&gt; 7       7      7
+#&gt; 8       8      8
+#&gt; 9       9      9
+#&gt; 10     10     10
+#&gt; 
+#&gt; $ns
+#&gt; [1] 0
+#&gt; 
+#&gt; $P
+#&gt; 10 x 10 diagonal matrix of class "ddiMatrix"
+#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+#&gt;  [1,]    1    .    .    .    .    .    .    .    .     .
+#&gt;  [2,]    .    1    .    .    .    .    .    .    .     .
+#&gt;  [3,]    .    .    1    .    .    .    .    .    .     .
+#&gt;  [4,]    .    .    .    1    .    .    .    .    .     .
+#&gt;  [5,]    .    .    .    .    1    .    .    .    .     .
+#&gt;  [6,]    .    .    .    .    .    1    .    .    .     .
+#&gt;  [7,]    .    .    .    .    .    .    1    .    .     .
+#&gt;  [8,]    .    .    .    .    .    .    .    1    .     .
+#&gt;  [9,]    .    .    .    .    .    .    .    .    1     .
+#&gt; [10,]    .    .    .    .    .    .    .    .    .     1
+#&gt; 
+#&gt; $D
+#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
+#&gt;                                                                              
+#&gt;  [1,] 0.7437845 .         .         0.0000000 .         .         .         0
+#&gt;  [2,] .         0.7437845 .         0.2562155 .         .         .         0
+#&gt;  [3,] .         .         0.7437845 .         .         0.2562155 .         .
+#&gt;  [4,] .         .         0.2562155 0.7437845 .         .         .         .
+#&gt;  [5,] 0.2562155 .         .         .         0.7437845 .         .         .
+#&gt;  [6,] .         0.0000000 .         .         .         0.7437845 0.2562155 .
+#&gt;  [7,] .         .         .         .         .         .         0.7437845 .
+#&gt;  [8,] .         .         .         .         .         .         0.0000000 1
+#&gt;  [9,] 0.0000000 0.2562155 .         .         0.0000000 .         .         .
+#&gt; [10,] .         .         .         0.0000000 0.2562155 0.0000000 .         .
+#&gt;                          
+#&gt;  [1,] .         0.2562155
+#&gt;  [2,] .         0.0000000
+#&gt;  [3,] 0.0000000 .        
+#&gt;  [4,] .         .        
+#&gt;  [5,] .         .        
+#&gt;  [6,] .         .        
+#&gt;  [7,] 0.2562155 0.0000000
+#&gt;  [8,] .         .        
+#&gt;  [9,] 0.7437845 .        
+#&gt; [10,] .         0.7437845
+#&gt; 
+#&gt; $iter
+#&gt; [1] 53
+#&gt; 
+#&gt; $lambda
+#&gt; [1] 1
+#&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using percolation graph matching method</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
 <span class='fu'>graph_match_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
