@@ -326,7 +326,12 @@ graph_match_convex <- function(A, B, seeds = NULL,
   reorderB <- order(c(nonseeds$B, seeds$B))
 
   D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
-  D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+  if (is(D, "splrMatrix")) {
+    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+  } else {
+    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+  }
+  
 
   # get_f <- function(a){
   #   PP <- a * P + (1 - a) * Pdir
@@ -345,8 +350,9 @@ graph_match_convex <- function(A, B, seeds = NULL,
     ns = ns, 
     P = P,
     D = D,
-    num_iter = iter,
-    seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
+    num_iter = iter
+    # ,
+    # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
   )  
   z
 }
