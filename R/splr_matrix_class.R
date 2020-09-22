@@ -874,20 +874,6 @@ setMethod("[",
  })
 
 
-
-#' @rdname splr
-setMethod("[<-",
-  signature(x = "sparseMatrix", i = 'ANY', j = 'ANY', value = 'splrMatrix'),
-  function(x, i, j, ..., value) {
-    new_x <- x
-    new_x[i, j] <- value@x
-    new_a <- Matrix(0, dim(x)[1], dim(value@a)[2])
-    new_a[i, ] <- value@a
-    new_b <- Matrix(0, dim(x)[2], dim(value@b)[2])
-    new_b[j, ] <- value@b
-    new("splrMatrix", x = new_x, a = new_a, b = new_b, Dim = dim(x))
-  })
-
 #document the issues with doing this
 
 #' @rdname splr
@@ -936,7 +922,7 @@ setMethod("[<-",
     new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
  })
 
-
+ 
 # Implementing this would be nice
 #' @rdname splr
 setMethod("[<-", signature(x ="Matrix", i = 'ANY', j = 'ANY', value = 'splrMatrix'),
@@ -949,6 +935,7 @@ setMethod("[<-", signature(x ="Matrix", i = 'ANY', j = 'ANY', value = 'splrMatri
             b[j,] <- value@b
             new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
  })
+
 
 
 #' @rdname splr

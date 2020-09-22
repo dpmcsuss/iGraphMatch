@@ -13,7 +13,7 @@ actual <- graph_match_convex(A, B)
 
 test_that("matching correspondence between graph1 and graph2",
   {
-    expect_equal(length(actual), 7)
+    expect_equal(length(actual), 6)
   })
 test_that("doubly stochastic", {
   expect_lt(sum(abs(rowSums(actual$D) - 1)), 10e-6)
