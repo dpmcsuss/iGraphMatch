@@ -176,13 +176,13 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 </div><div class='output co'>#&gt; Call: 
 #&gt; graph_match_percolation(A = A, B = B, seeds = 1:4)
 #&gt; 
-#&gt; # Matches: 0
-#&gt;                    
-#&gt; common_edges      0
-#&gt; missing_edges     1
-#&gt; extra_edges       1
-#&gt; common_non_edges 43
-#&gt; fnorm             2
+#&gt; # Matches: 1
+#&gt;                           
+#&gt; common_edges      4.000000
+#&gt; missing_edges     2.000000
+#&gt; extra_edges       2.000000
+#&gt; common_non_edges 37.000000
+#&gt; fnorm             2.828427
 #&gt; </div><div class='input'>
 <span class='kw'>gp_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span>(<span class='fl'>3</span>,
    <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>100</span>, <span class='fl'>.8</span>, <span class='fl'>.3</span>),
@@ -192,9 +192,9 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='kw'>corr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(corr_A = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>, corr_B = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>)
 <span class='fu'>edge_match_info</span>(<span class='kw'>corr</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)
 </div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
-#&gt; 1     1         1330           204         197             3219 28.31960
-#&gt; 2     2         1293           219         186             3252 28.46050
-#&gt; 3     3         1240           230         200             3280 29.32576</div></pre>
+#&gt; 1     1         1312           202         214             3222 28.84441
+#&gt; 2     2         1271           204         233             3242 29.56349
+#&gt; 3     3         1205           203         208             3334 28.67054</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -296,16 +296,16 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 
 #&gt; $corr
 #&gt;    corr_A corr_B
-#&gt; 1       1      8
-#&gt; 2       2     10
-#&gt; 3       3      6
+#&gt; 1       1      4
+#&gt; 2       2      1
+#&gt; 3       3      9
 #&gt; 4       4      7
-#&gt; 5       5      5
-#&gt; 6       6      9
-#&gt; 7       7      3
-#&gt; 8       8      2
-#&gt; 9       9      1
-#&gt; 10     10      4
+#&gt; 5       5      6
+#&gt; 6       6      5
+#&gt; 7       7      2
+#&gt; 8       8      8
+#&gt; 9       9      3
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 0
@@ -313,33 +313,33 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; $P
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . . . . . 1 . .
-#&gt;  [2,] . . . . . . . . . 1
-#&gt;  [3,] . . . . . 1 . . . .
+#&gt;  [1,] . . . 1 . . . . . .
+#&gt;  [2,] 1 . . . . . . . . .
+#&gt;  [3,] . . . . . . . . 1 .
 #&gt;  [4,] . . . . . . 1 . . .
-#&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . . . . . . . . 1 .
-#&gt;  [7,] . . 1 . . . . . . .
-#&gt;  [8,] . 1 . . . . . . . .
-#&gt;  [9,] 1 . . . . . . . . .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;  [5,] . . . . . 1 . . . .
+#&gt;  [6,] . . . . 1 . . . . .
+#&gt;  [7,] . 1 . . . . . . . .
+#&gt;  [8,] . . . . . . . 1 . .
+#&gt;  [9,] . . 1 . . . . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . . . . . 1 . .
-#&gt;  [2,] . . . . . . . . . 1
-#&gt;  [3,] . . . . . 1 . . . .
+#&gt;  [1,] . . . 1 . . . . . .
+#&gt;  [2,] 1 . . . . . . . . .
+#&gt;  [3,] . . . . . . . . 1 .
 #&gt;  [4,] . . . . . . 1 . . .
-#&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . . . . . . . . 1 .
-#&gt;  [7,] . . 1 . . . . . . .
-#&gt;  [8,] . 1 . . . . . . . .
-#&gt;  [9,] 1 . . . . . . . . .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;  [5,] . . . . . 1 . . . .
+#&gt;  [6,] . . . . 1 . . . . .
+#&gt;  [7,] . 1 . . . . . . . .
+#&gt;  [8,] . . . . . . . 1 . .
+#&gt;  [9,] . . 1 . . . . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 3
+#&gt; [1] 2
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some known node pairs as seeds</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
@@ -352,13 +352,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      6
+#&gt; 4       4      4
 #&gt; 5       5      5
-#&gt; 6       6      7
-#&gt; 7       7     10
+#&gt; 6       6      8
+#&gt; 7       7      7
 #&gt; 8       8      9
-#&gt; 9       9      8
-#&gt; 10     10      4
+#&gt; 9       9      6
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 3
@@ -369,13 +369,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [4,] . . . 1 . . . . . .
 #&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . . . . . . 1 . . .
-#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [6,] . . . . . . . 1 . .
+#&gt;  [7,] . . . . . . 1 . . .
 #&gt;  [8,] . . . . . . . . 1 .
-#&gt;  [9,] . . . . . . . 1 . .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;  [9,] . . . . . 1 . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -383,16 +383,16 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [4,] . . . 1 . . . . . .
 #&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . . . . . . 1 . . .
-#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [6,] . . . . . . . 1 . .
+#&gt;  [7,] . . . . . . 1 . . .
 #&gt;  [8,] . . . . . . . . 1 .
-#&gt;  [9,] . . . . . . . 1 . .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;  [9,] . . . . . 1 . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $num_iter
-#&gt; [1] 4
+#&gt; [1] 3
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 with some incorrect seeds</span>
 <span class='kw'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span>),<span class='fl'>2</span>)
@@ -407,12 +407,12 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 2       2      2
 #&gt; 3       3      3
 #&gt; 4       4      5
-#&gt; 5       5      6
+#&gt; 5       5     10
 #&gt; 6       6      4
-#&gt; 7       7      8
-#&gt; 8       8      7
-#&gt; 9       9      9
-#&gt; 10     10     10
+#&gt; 7       7      7
+#&gt; 8       8      9
+#&gt; 9       9      8
+#&gt; 10     10      6
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
@@ -424,12 +424,12 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
 #&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . 1 . . . .
+#&gt;  [5,] . . . . . . . . . 1
 #&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . 1 . .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . . . . 1 .
-#&gt; [10,] . . . . . . . . . 1
+#&gt;  [7,] . . . . . . 1 . . .
+#&gt;  [8,] . . . . . . . . 1 .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . . . 1 . . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -438,12 +438,12 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
 #&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . 1 . . . .
+#&gt;  [5,] . . . . . . . . . 1
 #&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . 1 . .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . . . . 1 .
-#&gt; [10,] . . . . . . . . . 1
+#&gt;  [7,] . . . . . . 1 . . .
+#&gt;  [8,] . . . . . . . . 1 .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . . . 1 . . . .
 #&gt; 
 #&gt; $num_iter
 #&gt; [1] 2
@@ -564,13 +564,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      8
+#&gt; 4       4      9
 #&gt; 5       5      5
-#&gt; 6       6     10
-#&gt; 7       7      6
-#&gt; 8       8      7
-#&gt; 9       9      9
-#&gt; 10     10      4
+#&gt; 6       6      8
+#&gt; 7       7      7
+#&gt; 8       8      4
+#&gt; 9       9      6
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 3
@@ -581,13 +581,13 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . . . . . 1 . .
+#&gt;  [4,] . . . . . . . . 1 .
 #&gt;  [5,] . . . . 1 . . . . .
-#&gt;  [6,] . . . . . . . . . 1
-#&gt;  [7,] . . . . . 1 . . . .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . . . . . . . . 1 .
-#&gt; [10,] . . . 1 . . . . . .
+#&gt;  [6,] . . . . . . . 1 . .
+#&gt;  [7,] . . . . . . 1 . . .
+#&gt;  [8,] . . . 1 . . . . . .
+#&gt;  [9,] . . . . . 1 . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $D
 #&gt; Sparse part
@@ -596,37 +596,37 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;  [1,] 1 . . .          .          .          .          .          .         
 #&gt;  [2,] . 1 . .          .          .          .          .          .         
 #&gt;  [3,] . . 1 .          .          .          .          .          .         
-#&gt;  [4,] . . . 0.13094970 0.19859335 0.15201277 .          0.27517216 .         
-#&gt;  [5,] . . . 0.11913853 0.40111065 0.25826019 0.04027245 0.08494896 0.08564368
-#&gt;  [6,] . . . 0.08949029 .          0.09100843 0.40847885 0.02120008 0.18984457
-#&gt;  [7,] . . . 0.15671849 0.13653036 0.28269271 0.03654878 0.16541532 0.04057926
-#&gt;  [8,] . . . 0.03871529 0.04057926 .          0.47895265 0.19189755 0.21410800
-#&gt;  [9,] . . . 0.17145926 0.15183484 0.07321282 0.02512172 0.06658902 0.45919896
-#&gt; [10,] . . . 0.28290291 0.06072601 0.13218753 .          0.18415138 .         
+#&gt;  [4,] . . . 0.25379158 0.23624274 0.02987928 0.15261265 .          0.18530399
+#&gt;  [5,] . . . 0.10171569 0.35773462 0.04090133 0.05781589 0.22191666 .         
+#&gt;  [6,] . . . 0.02761104 0.04456679 0.11069092 0.33427950 0.42650294 .         
+#&gt;  [7,] . . . 0.13685503 0.17125671 0.15678282 0.36094589 0.03970156 0.11901052
+#&gt;  [8,] . . . 0.32405512 0.11981019 .          0.07889860 0.15029744 0.20039768
+#&gt;  [9,] . . . .          0.01404013 0.33504886 .          0.11625465 0.40057264
+#&gt; [10,] . . . 0.14052407 0.04090133 0.31124932 .          0.02987928 0.07926769
 #&gt;                 
 #&gt;  [1,] .         
 #&gt;  [2,] .         
 #&gt;  [3,] .         
-#&gt;  [4,] 0.23264648
-#&gt;  [5,] .         
-#&gt;  [6,] 0.18935223
-#&gt;  [7,] 0.17088954
-#&gt;  [8,] 0.02512172
-#&gt;  [9,] 0.04195784
-#&gt; [10,] 0.32940664
+#&gt;  [4,] 0.12672228
+#&gt;  [5,] 0.20446833
+#&gt;  [6,] 0.04090133
+#&gt;  [7,] .         
+#&gt;  [8,] 0.11109349
+#&gt;  [9,] 0.11863624
+#&gt; [10,] 0.38273084
 #&gt; plus left factor
 #&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;                 
 #&gt;  [1,] .         
 #&gt;  [2,] .         
 #&gt;  [3,] .         
-#&gt;  [4,] 0.01062554
-#&gt;  [5,] 0.01062554
-#&gt;  [6,] 0.01062554
-#&gt;  [7,] 0.01062554
-#&gt;  [8,] 0.01062554
-#&gt;  [9,] 0.01062554
-#&gt; [10,] 0.01062554
+#&gt;  [4,] 0.01544748
+#&gt;  [5,] 0.01544748
+#&gt;  [6,] 0.01544748
+#&gt;  [7,] 0.01544748
+#&gt;  [8,] 0.01544748
+#&gt;  [9,] 0.01544748
+#&gt; [10,] 0.01544748
 #&gt; times right factor transpose
 #&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;                
@@ -689,30 +689,30 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                                                                              
-#&gt;  [1,] 0.7437845 .         .         0.0000000 .         .         .         0
-#&gt;  [2,] .         0.7437845 .         0.2562155 .         .         .         0
-#&gt;  [3,] .         .         0.7437845 .         .         0.2562155 .         .
-#&gt;  [4,] .         .         0.2562155 0.7437845 .         .         .         .
-#&gt;  [5,] 0.2562155 .         .         .         0.7437845 .         .         .
-#&gt;  [6,] .         0.0000000 .         .         .         0.7437845 0.2562155 .
-#&gt;  [7,] .         .         .         .         .         .         0.7437845 .
-#&gt;  [8,] .         .         .         .         .         .         0.0000000 1
-#&gt;  [9,] 0.0000000 0.2562155 .         .         0.0000000 .         .         .
-#&gt; [10,] .         .         .         0.0000000 0.2562155 0.0000000 .         .
-#&gt;                          
-#&gt;  [1,] .         0.2562155
-#&gt;  [2,] .         0.0000000
-#&gt;  [3,] 0.0000000 .        
-#&gt;  [4,] .         .        
-#&gt;  [5,] .         .        
-#&gt;  [6,] .         .        
-#&gt;  [7,] 0.2562155 0.0000000
-#&gt;  [8,] .         .        
-#&gt;  [9,] 0.7437845 .        
-#&gt; [10,] .         0.7437845
+#&gt;  [1,] 0.7295158 .         .         0.2704842 . .         .         .        
+#&gt;  [2,] 0.2704842 0.7295158 .         .         . .         .         .        
+#&gt;  [3,] .         .         0.7295158 .         . .         .         .        
+#&gt;  [4,] .         .         .         0.7295158 . .         0.2704842 .        
+#&gt;  [5,] .         .         .         .         1 .         .         .        
+#&gt;  [6,] .         .         .         .         . 0.7295158 .         0.2704842
+#&gt;  [7,] .         0.2704842 .         .         . .         0.7295158 .        
+#&gt;  [8,] .         .         .         .         . 0.2704842 .         0.7295158
+#&gt;  [9,] .         .         0.2704842 .         . .         .         .        
+#&gt; [10,] .         .         .         .         . .         .         .        
+#&gt;                  
+#&gt;  [1,] .         .
+#&gt;  [2,] .         .
+#&gt;  [3,] 0.2704842 .
+#&gt;  [4,] .         .
+#&gt;  [5,] .         .
+#&gt;  [6,] .         .
+#&gt;  [7,] .         .
+#&gt;  [8,] .         .
+#&gt;  [9,] 0.7295158 .
+#&gt; [10,] .         1
 #&gt; 
 #&gt; $iter
-#&gt; [1] 53
+#&gt; [1] 2
 #&gt; 
 #&gt; $lambda
 #&gt; [1] 1
@@ -724,22 +724,23 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; graph_match_percolation(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
-#&gt;   corr_A corr_B
-#&gt; 1      1      1
-#&gt; 2      2      2
-#&gt; 3      3      3
-#&gt; 4      4      4
-#&gt; 5      5      5
-#&gt; 6      6      8
-#&gt; 7      8      7
-#&gt; 8      9      9
-#&gt; 9     10     10
+#&gt;    corr_A corr_B
+#&gt; 1       1      1
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      4
+#&gt; 5       5      5
+#&gt; 6       6      8
+#&gt; 7       7      7
+#&gt; 8       8      9
+#&gt; 9       9      6
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt; [1] 1 2 3 4 5 8 7 9 6
+#&gt;  [1]  1  2  3  4  5  9 10  8  7  6
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using Expand When Stuck graph matching method</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
@@ -748,22 +749,23 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt; graph_match_ExpandWhenStuck(A = g1, B = g2, seeds = seeds, r = 2)
 #&gt; 
 #&gt; $corr
-#&gt;   corr_A corr_B
-#&gt; 1      1      1
-#&gt; 2      2      2
-#&gt; 3      3      3
-#&gt; 4      4      4
-#&gt; 5      5      5
-#&gt; 6      6      8
-#&gt; 7      8      7
-#&gt; 8      9      9
-#&gt; 9     10     10
+#&gt;    corr_A corr_B
+#&gt; 1       1      1
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      4
+#&gt; 5       5      5
+#&gt; 6       6      8
+#&gt; 7       7      7
+#&gt; 8       8      9
+#&gt; 9       9      6
+#&gt; 10     10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt; [1] 1 2 3 4 5 8 6 9 7
+#&gt;  [1]  1  2  3  4  5  9 10  8  7  6
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using soft percolation graph matching method</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
@@ -773,22 +775,23 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 #&gt;     max_iter = 2)
 #&gt; 
 #&gt; $corr
-#&gt;   corr_A corr_B
-#&gt; 1      1      1
-#&gt; 2      2      2
-#&gt; 3      3      3
-#&gt; 4      4      4
-#&gt; 5      5      5
-#&gt; 9      6      8
-#&gt; 6      8      7
-#&gt; 8      9      9
-#&gt; 7     10     10
+#&gt;    corr_A corr_B
+#&gt; 1       1      1
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      4
+#&gt; 5       5      5
+#&gt; 10      6      7
+#&gt; 9       7      8
+#&gt; 8       8      6
+#&gt; 7       9      9
+#&gt; 6      10     10
 #&gt; 
 #&gt; $ns
 #&gt; [1] 5
 #&gt; 
 #&gt; $order
-#&gt; [1] 1 2 3 4 5 9 6 8 7
+#&gt;  [1]  1  2  3  4  5 10  9  8  7  6
 #&gt; </div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using IsoRank algorithm</span>
 <span class='kw'>startm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span>)
