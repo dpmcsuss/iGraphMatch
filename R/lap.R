@@ -17,10 +17,17 @@
 #'  best matching column for each row.
 #'  
 #'
-#' @details 
+#' @details TODO: details for the method
+#' 
 #' 
 #' @examples
-#' 
+#' set.seed(12345)
+#' cost <- Matrix::rsparsematrix(10, 10, .5)
+#' cbind(
+#'  do_lap(cost, "lapjv"),
+#'  do_lap(cost, "lapmod"),
+#'  do_lap(cost, "clue")
+#' )
 #' 
 #' @export
 do_lap <- function(score, method){

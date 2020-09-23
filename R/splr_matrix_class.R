@@ -487,6 +487,7 @@ setMethod("-", signature(e1 ="splrMatrix", e2 ="Matrix"),
     .leftadd(e1 = e1, e2 = -e2)
   })
 
+#' @rdname splr
 setMethod("-", signature(e1 ="splrMatrix", e2 ="ddiMatrix"), 
   function(e1, e2) {
     .leftadd(e1 = e1, e2 = -e2)
