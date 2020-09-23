@@ -18,7 +18,7 @@ test_that("Spripped attrs", {
 test_that("Error on non igraph", {
   expect_error(
     split_igraph(1, "a"),
-    `"g must be an igraph object"
+    "g must be an igraph object"
   )
 })
 
