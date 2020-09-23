@@ -37,6 +37,7 @@
 \alias{+,splrMatrix,ANY-method}
 \alias{-,splrMatrix,missing-method}
 \alias{-,splrMatrix,Matrix-method}
+\alias{-,splrMatrix,ddiMatrix-method}
 \alias{-,splrMatrix,numeric-method}
 \alias{-,splrMatrix,ANY-method}
 \alias{+,Matrix,splrMatrix-method}
@@ -150,6 +151,8 @@
 \S4method{-}{splrMatrix,missing}(e1, e2 = NULL)
 
 \S4method{-}{splrMatrix,Matrix}(e1, e2)
+
+\S4method{-}{splrMatrix,ddiMatrix}(e1, e2)
 
 \S4method{-}{splrMatrix,numeric}(e1, e2)
 

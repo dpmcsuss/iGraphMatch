@@ -22,9 +22,15 @@ using one of three methods. For an n x n score matrix it find
 where \eqn{\Pi_n} denotes all permutations on n objects.
 }
 \details{
-
+TODO: details for the method
 }
 \examples{
-
+set.seed(12345)
+cost <- Matrix::rsparsematrix(10, 10, .5)
+cbind(
+ do_lap(cost, "lapjv"),
+ do_lap(cost, "lapmod"),
+ do_lap(cost, "clue")
+)
 
 }
