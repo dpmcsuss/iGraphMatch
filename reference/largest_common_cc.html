@@ -148,18 +148,18 @@ the original graphs remain in the induced subgraph.</p>
 <span class='kw'>lccs1</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, min_degree = <span class='fl'>1</span>)
 <span class='co'># induced subgraph</span>
 <span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>g1</span>
-</div><div class='output co'>#&gt; IGRAPH b5e9491 U--- 8 7 -- Erdos renyi (gnp) graph
+</div><div class='output co'>#&gt; IGRAPH 24d0d12 U--- 8 7 -- Erdos renyi (gnp) graph
 #&gt; + attr: name (g/c), type (g/c), loops (g/l), p (g/n)
-#&gt; + edges from b5e9491:
+#&gt; + edges from 24d0d12:
 #&gt; [1] 1--5 4--6 5--6 2--7 6--7 3--8 6--8</div><div class='input'><span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>g2</span>
-</div><div class='output co'>#&gt; IGRAPH 172754d U--- 8 8 -- Erdos renyi (gnp) graph
+</div><div class='output co'>#&gt; IGRAPH d887294 U--- 8 8 -- Erdos renyi (gnp) graph
 #&gt; + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1
 #&gt; | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),
 #&gt; | loops (g/l), p (g/n)
-#&gt; + edges from 172754d:
+#&gt; + edges from d887294:
 #&gt; [1] 6--8 6--7 4--6 3--8 2--7 2--4 1--6 1--5</div><div class='input'><span class='co'># label of vertices of the induced subgraph in the original graph</span>
 <span class='kw'>igraph</span>::<span class='fu'><a href='https://rdrr.io/pkg/igraph/man/V.html'>V</a></span>(<span class='kw'>g1</span>)[<span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>keep</span>]
-</div><div class='output co'>#&gt; + 8/10 vertices, from 4c71e78:
+</div><div class='output co'>#&gt; + 8/10 vertices, from 6688aec:
 #&gt; [1]  1  2  4  5  7  8  9 10</div><div class='input'>
 <span class='co'># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span>
 <span class='kw'>lccs3</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, min_degree = <span class='fl'>3</span>)
