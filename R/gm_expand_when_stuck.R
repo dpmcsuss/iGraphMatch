@@ -1,4 +1,4 @@
-#' @rdname graph_match_methods
+#' @rdname gm_perco
 #' @return \code{graph_match_ExpandWhenStuck} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
@@ -9,6 +9,9 @@
 #' Endowment, 8(10):1010–1021.
 #'
 #' @examples
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using Expand When Stuck graph matching method
 #' seeds <- 1:5
 #' graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)

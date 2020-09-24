@@ -1,4 +1,6 @@
-#' @rdname graph_match_methods
+#' @rdname gm_spectral
+#' 
+#' @title Spectral Graph Matching Methods
 #' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 

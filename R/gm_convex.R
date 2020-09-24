@@ -5,6 +5,11 @@
 #'   \code{corr_B} and the number of seeds. 
 #'
 #' @examples
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
+#' # match G_1 & G_2 with no seeds
+#' graph_match_FW(g1, g2)
 #' seeds <- 1:10 <= 3
 #' graph_match_convex(g1, g2, seeds)
 #'
@@ -76,7 +81,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
   alpha_seq <- NULL
-  Pseq <- list()
+  # Pseq <- list()
   while(toggle && iter < max_iter){
     f_old <- f
     iter <- iter + 1
@@ -112,7 +117,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
     aopt <- ifelse(aq == 0 && bq == 0, 0,
       ifelse(-bq / aq > 1, 1, -bq/aq))
     alpha_seq <- c(alpha_seq, aopt)
-    Pseq <- c(Pseq, Pdir)
+    # Pseq <- c(Pseq, Pdir)
     P_new <- aopt * P + (1 - aopt) * Pdir
     f <- innerproduct(Ann %*% P_new - P_new %*% Bnn,
       Ann %*% P_new - P_new %*% Bnn)
@@ -142,7 +147,12 @@ graph_match_convex <- function(A, B, seeds = NULL,
   reorderB <- order(c(nonseeds$B, seeds$B))
 
   D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
-  D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+  if (is(D, "splrMatrix")) {
+    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+  } else {
+    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+  }
+  
 
   # get_f <- function(a){
   #   PP <- a * P + (1 - a) * Pdir
@@ -161,8 +171,8 @@ graph_match_convex <- function(A, B, seeds = NULL,
     ns = ns, 
     P = P,
     D = D,
-    num_iter = iter,
-    seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
+    num_iter = iter
+    # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
   )  
   z
 }

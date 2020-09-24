@@ -88,7 +88,15 @@ match_report <- function(match, A, B, true_label = NULL, directed = NULL){
 }
 
 
-#' @todo document
+#' @title document
+#' @description Return aligned versions of A and B according to
+#'  a result of match method
+#' 
+#' @param match Result from a a graph matching method.
+#' @param A A matrix, igraph object, or list of either.
+#'  Likely used in the call for creating match.
+#' @param B A matrix, igraph object, or list of either.
+#'  Likely used in the call for creating match.
 #' @export
 matched_adjs <- function(match, A, B){
   graph_pair <- check_graph(A, B)

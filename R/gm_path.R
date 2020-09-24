@@ -1,4 +1,4 @@
-#' @rdname graph_match_methods
+#' @rdname gm_fw
 #' 
 #' @return \code{graph_match_PATH} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
@@ -11,6 +11,9 @@
 #' pages 2227-2242.
 #'
 #' @param epsilon A small number
+#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
+#'   on the information in network topology over other information such as
+#'   similarity scores
 #' 
 #' @examples
 #' # match G_1 & G_2 using PATH algorithm

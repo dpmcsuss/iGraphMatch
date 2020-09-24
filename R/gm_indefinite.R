@@ -1,4 +1,4 @@
-#' @title Graph Match - Frank Wolf
+#' @title Frank-Wolfe Graph Matching Methods
 #'
 #' @description Match two given graphs, returns a list of graph matching
 #'   results, including matching correspondence vector of \eqn{G_2} with respect
@@ -17,12 +17,7 @@
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param max_iter A number. Maximum number of replacing matches equals to
 #'   max_iter times number of total vertices of \eqn{G_1}.
-#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
-#'   on the information in network topology over other information such as
-#'   similarity scores
 #' @param lap_method Choice for lap method.
-#' @param method A character. Choice of method to extract mapping from score matrix,
-#'   including greedy method and the Hungarian algorithm.
 #'
 #' @rdname gm_fw
 #'   
@@ -32,11 +27,6 @@
 #'   \code{corr_B} and the number of seeds. 
 #'
 #' @examples
-#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
-#' g1 <- cgnp_pair$graph1
-#' g2 <- cgnp_pair$graph2
-#' # match G_1 & G_2 with no seeds
-#' graph_match_FW(g1, g2)
 #'
 #' # match G_1 & G_2 with some known node pairs as seeds
 #' seeds <- 1:10 <= 3
@@ -47,7 +37,7 @@
 #' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 #' graph_match_FW(g1, g2, seeds, start = "convex")
 #'
-#'  gp_list <- replicate(3, sample_correlated_gnp_pair(100, .3, .5), simplify = FALSE)
+#'  gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
 #'  A <- lapply(gp_list, function(gp)gp[[1]])
 #'  B <- lapply(gp_list, function(gp)gp[[2]])
 #'  match <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
@@ -178,7 +168,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     num_iter = iter)
 }
 
-#' @rdname graph_match_methods
+#' @rdname gm_fw
 #' @export
 gm_indefinite <- graph_match_FW
 

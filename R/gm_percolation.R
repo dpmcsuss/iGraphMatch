@@ -3,13 +3,22 @@ cal_mark <- function(x,y){
 }
 
 
+#' @title Percolation Graph Matching Methods
 #' @rdname gm_perco
+#' 
 #' @return \code{graph_match_percolation} returns a list of graph matching results,
 #'   including the graph matching formula, a data frame containing the matching 
 #'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
 #'   \code{corr_B}, the number of seeds and the order of nodes getting matched.
 #' 
-#' 
+#'
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either. 
+#' @param seeds A vector of integers or logicals, a matrix or a data frame. If
+#'   the seed pairs have the same indices in both graphs then seeds can be a
+#'   vector. If not, seeds must be  a matrix
+#'   or a data frame, with the first column being the indices of \eqn{G_1} and
+#'   the second column being the corresponding indices of \eqn{G_2}.
 #' @param r A number. Threshold of neighboring pair scores.
 #'
 #' @references L. Yartseva and M. Grossglauser (2013), \emph{On the performance

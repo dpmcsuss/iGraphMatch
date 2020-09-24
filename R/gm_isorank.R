@@ -1,5 +1,23 @@
 
-#' @rdname graph_match_methods
+#' @rdname gm_spectral
+#' 
+#' 
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either. 
+#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
+#' @param seeds A vector of integers or logicals, a matrix or a data frame. If
+#'   the seed pairs have the same indices in both graphs then seeds can be a
+#'   vector. If not, seeds must be  a matrix
+#'   or a data frame, with the first column being the indices of \eqn{G_1} and
+#'   the second column being the corresponding indices of \eqn{G_2}.
+#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
+#'   on the information in network topology over other information such as
+#'   similarity scores
+#' @param max_iter A number. Maximum number of replacing matches equals to
+#'   max_iter times number of total vertices of \eqn{G_1}.
+#' @param method A character. Choice of method to extract mapping from score matrix,
+#'   including greedy method and the Hungarian algorithm.
+#' 
 #' @return \code{graph_match_IsoRank} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
@@ -11,6 +29,9 @@
 #' orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
 #'
 #' @examples
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using IsoRank algorithm
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
