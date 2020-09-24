@@ -7,7 +7,6 @@
 \alias{graph_match_PATH}
 \alias{graph_match_percolation}
 \alias{graph_match_ExpandWhenStuck}
-\alias{graph_match_soft_percolation}
 \alias{graph_match_IsoRank}
 \alias{graph_match_Umeyama}
 \title{Graph Match Methods}
@@ -55,8 +54,6 @@ graph_match_PATH(
 graph_match_percolation(A, B, seeds, r = 2)
 
 graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
-
-graph_match_soft_percolation(A, B, seeds, r = 2, max_iter = 100)
 
 graph_match_IsoRank(
   A,
@@ -131,11 +128,6 @@ including greedy method and the Hungarian algorithm.}
   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
   and \code{corr_B}, the number of seeds and the order of nodes getting matched.
 
-\code{graph_match_soft_percolation} returns a list of graph matching 
-  results, including the graph matching formula, a data frame containing the 
-  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-  and \code{corr_B}, the number of seeds and the order of nodes getting matched.
-
 \code{graph_match_IsoRank} returns a list of graph matching 
   results, including the graph matching formula, a data frame containing the 
   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
@@ -194,10 +186,6 @@ graph_match_percolation(g1, g2, seeds, r = 2)
 # match G_1 & G_2 using Expand When Stuck graph matching method
 seeds <- 1:5
 graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
-
-# match G_1 & G_2 using soft percolation graph matching method
-seeds <- 1:5
-graph_match_soft_percolation(g1, g2, seeds, r = 2, max_iter = 2)
 
 # match G_1 & G_2 using IsoRank algorithm
 startm <- matrix(0, 10, 10)

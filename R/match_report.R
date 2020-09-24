@@ -87,13 +87,16 @@ match_report <- function(match, A, B, true_label = NULL, directed = NULL){
   invisible(match)
 }
 
+
+#' @todo document
+#' @export
 matched_adjs <- function(match, A, B){
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
 
-  list(A_m = A[match$corr_A, match$corr_A],
-    B_m = B[match$corr_B, match$corr_B])
+  list(A_m = A[match$corr$corr_A, match$corr$corr_A],
+    B_m = B[match$corr$corr_B, match$corr$corr_B])
 }
 
 
@@ -263,7 +266,7 @@ match_plot_igraph <- function(A, B, match,
 #' 
 #' @export
 match_plot_matrix <- function(A, B, match) {
-  ch <- check_graph(A, B, same_order = FALSE, as_igraph = TRUE)
+  ch <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
   nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
 
   corr_A <- match$corr$corr_A[seq(nv)]
