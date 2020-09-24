@@ -148,18 +148,18 @@ the original graphs remain in the induced subgraph.</p>
 <span class='kw'>lccs1</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, min_degree = <span class='fl'>1</span>)
 <span class='co'># induced subgraph</span>
 <span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>g1</span>
-</div><div class='output co'>#&gt; IGRAPH e9ca756 U--- 2 1 -- Erdos renyi (gnp) graph
+</div><div class='output co'>#&gt; IGRAPH e4bdd6e U--- 2 1 -- Erdos renyi (gnp) graph
 #&gt; + attr: name (g/c), type (g/c), loops (g/l), p (g/n)
-#&gt; + edge from e9ca756:
+#&gt; + edge from e4bdd6e:
 #&gt; [1] 1--2</div><div class='input'><span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>g2</span>
-</div><div class='output co'>#&gt; IGRAPH da4dc39 U--- 2 1 -- Erdos renyi (gnp) graph
+</div><div class='output co'>#&gt; IGRAPH 3cd058d U--- 2 1 -- Erdos renyi (gnp) graph
 #&gt; + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1
 #&gt; | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),
 #&gt; | loops (g/l), p (g/n)
-#&gt; + edge from da4dc39:
+#&gt; + edge from 3cd058d:
 #&gt; [1] 1--2</div><div class='input'><span class='co'># label of vertices of the induced subgraph in the original graph</span>
 <span class='kw'>igraph</span>::<span class='fu'><a href='https://rdrr.io/pkg/igraph/man/V.html'>V</a></span>(<span class='kw'>g1</span>)[<span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>keep</span>]
-</div><div class='output co'>#&gt; + 2/10 vertices, from 852c431:
+</div><div class='output co'>#&gt; + 2/10 vertices, from 86b6f99:
 #&gt; [1]  9 10</div><div class='input'>
 <span class='co'># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span>
 <span class='kw'>lccs3</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, min_degree = <span class='fl'>3</span>)
