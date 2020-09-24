@@ -118,6 +118,9 @@ dense matrix.</p>
     <pre class="usage"># S4 method for splrMatrix
 show(object)
 
+# S4 method for splrMatrix
+print(x)
+
 # S4 method for splrMatrix,splrMatrix
 %*%(x, y)
 
@@ -170,6 +173,9 @@ length(x)
 *(e1, e2)
 
 # S4 method for splrMatrix,ddiMatrix
+*(e1, e2)
+
+# S4 method for ddiMatrix,splrMatrix
 *(e1, e2)
 
 # S4 method for matrix,splrMatrix
@@ -308,7 +314,7 @@ mean(x, ...)
 [(x, i, j, ..., drop = TRUE)
 
 # S4 method for splrMatrix,numeric,ANY,missing
-[(x, i, j, ..., drop = TRUE)
+[(x, i, j, ..., drop = FALSE)
 
 # S4 method for splrMatrix,logical,ANY,ANY
 [(x, i, j, ..., drop = TRUE)

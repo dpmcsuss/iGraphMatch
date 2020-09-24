@@ -320,7 +320,7 @@
 <td align="left">non soft seeds</td>
 <td align="right">0.857</td>
 <td align="right">0.857</td>
-<td align="right">0.714</td>
+<td align="right">0.857</td>
 </tr>
 </tbody>
 </table>
@@ -468,9 +468,9 @@ seeds_adp <- best_matches(A = g1, B = g2, measure = row_perm_stat, num = 3, x = 
                           match_corr = match$corr)
 seeds_adp
 #>   A_best B_best
-#> 1     36     36
-#> 2      9     28
-#> 3     40     40
+#> 1     34     48
+#> 2     33     33
+#> 3     11     25
 ```
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
@@ -487,10 +487,10 @@ Table: Matching Errors for Adaptive Seeding
 
 | err_orig| err_adp|
 |--------:|-------:|
-|     0.65|   0.525|
+|     0.75|   0.475|
 
 
-Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.65 to 0.525 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
+Table 5 shows the matching errors with only the original seeds and after adding 3 seeds adaptively, the matching error is reduced from 0.75 to 0.475 in one iteration. Again we also present the result figures from simulations on larger graphs and with more monte carlo replicates to illustrate the performance of adaptive seeds. Figure \ref{fig:summary_er}, \ref{fig:summary_rdpg} and figure \ref{fig:summary_Twitter} show the average results of 300 monte carlo replicates.
 
 \begin{figure}
     \includegraphics[width=\linewidth]{summary_er.pdf}

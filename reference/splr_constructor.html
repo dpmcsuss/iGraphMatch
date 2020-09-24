@@ -117,28 +117,10 @@ of the form <code>x + a %*% t(b)</code> for faster
 computation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>splr</span>(
-  <span class='kw'>x</span>,
-  a = <span class='kw'>NULL</span>,
-  b = <span class='kw'>NULL</span>,
-  rank = <span class='kw'>NULL</span>,
-  factorize = <span class='fl'>FALSE</span>,
-  tol = <span class='fl'>1e-05</span>,
-  dimnames = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>...</span>
-)
+    <pre class="usage"><span class='fu'>splr</span>(<span class='kw'>x</span>, a = <span class='kw'>NULL</span>, b = <span class='kw'>NULL</span>, rank = <span class='kw'>NULL</span>, dimnames = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>), <span class='kw'>...</span>)
 
 <span class='co'># S4 method for Matrix,Matrix,Matrix</span>
-<span class='fu'>splr</span>(
-  <span class='kw'>x</span>,
-  a = <span class='kw'>NULL</span>,
-  b = <span class='kw'>NULL</span>,
-  rank = <span class='kw'>NULL</span>,
-  factorize = <span class='fl'>FALSE</span>,
-  tol = <span class='fl'>1e-05</span>,
-  dimnames = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>),
-  <span class='kw'>...</span>
-)</pre>
+<span class='fu'>splr</span>(<span class='kw'>x</span>, a = <span class='kw'>NULL</span>, b = <span class='kw'>NULL</span>, rank = <span class='kw'>NULL</span>, dimnames = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>NULL</span>, <span class='kw'>NULL</span>), <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -157,16 +139,7 @@ computation.</p>
     </tr>
     <tr>
       <th>rank</th>
-      <td><p>the estimated rank of the matrix to be factorized.  If <code>rank</code> is not provided, a guess is made</p></td>
-    </tr>
-    <tr>
-      <th>factorize</th>
-      <td><p>a safeguard to prevent unnecessary computation (e.g. if the matrix is very large).  If <code>a</code> 
-is provided and <code>factorize = FALSE</code>, an error will result.</p></td>
-    </tr>
-    <tr>
-      <th>tol</th>
-      <td><p>the tolerance for the eigenvalues if <code>rank</code> is not provided</p></td>
+      <td><p>rank of the matrix to be factorized.</p></td>
     </tr>
     <tr>
       <th>dimnames</th>

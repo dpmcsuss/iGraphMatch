@@ -184,11 +184,11 @@ at the other places are derived by different start method.</p>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                                       
-#&gt; [1,] .         0.1115607 .         .         .        
-#&gt; [2,] .         .         .         .         0.1115607
-#&gt; [3,] 0.1115607 .         .         .         .        
-#&gt; [4,] .         .         0.1115607 .         .        
-#&gt; [5,] .         .         .         0.1115607 .        
+#&gt; [1,] .         .         0.1115607 .         .        
+#&gt; [2,] .         .         .         0.1115607 .        
+#&gt; [3,] .         0.1115607 .         .         .        
+#&gt; [4,] .         .         .         .         0.1115607
+#&gt; [5,] 0.1115607 .         .         .         .        
 #&gt; plus left factor
 #&gt; 5 x 1 Matrix of class "dgeMatrix"
 #&gt;           [,1]
@@ -232,26 +232,26 @@ at the other places are derived by different start method.</p>
 #&gt; [4,] .  
 #&gt; [5,] .  </div><div class='input'><span class='fu'>init_start</span>(start = <span class='st'>"rds"</span>, nns = <span class='fl'>5</span>, soft_seeds = <span class='kw'>ss</span>)
 </div><div class='output co'>#&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
-#&gt;                                         
-#&gt; [1,] 0.09504713 0.6350081 . . 0.26994477
-#&gt; [2,] 0.04046090 0.2558310 . . 0.70370813
-#&gt; [3,] 0.85826635 0.1114134 . . 0.03032022
-#&gt; [4,] .          .         1 . .         
-#&gt; [5,] .          .         . 1 .         </div><div class='input'><span class='fu'>init_start</span>(start = <span class='st'>"rds_perm_bari"</span>, nns = <span class='fl'>5</span>, soft_seeds = <span class='kw'>ss</span>)
+#&gt;                                           
+#&gt; [1,] 0.2467334 0.75276096 . . 0.0005056175
+#&gt; [2,] 0.3658244 0.16235676 . . 0.4718187980
+#&gt; [3,] 0.3874998 0.08460401 . . 0.5278961803
+#&gt; [4,] .         .          1 . .           
+#&gt; [5,] .         .          . 1 .           </div><div class='input'><span class='fu'>init_start</span>(start = <span class='st'>"rds_perm_bari"</span>, nns = <span class='fl'>5</span>, soft_seeds = <span class='kw'>ss</span>)
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
-#&gt;                                       
-#&gt; [1,] .         0.1853663 . . .        
-#&gt; [2,] .         .         . . 0.1853663
-#&gt; [3,] 0.1853663 .         . . .        
-#&gt; [4,] .         .         1 . .        
-#&gt; [5,] .         .         . 1 .        
+#&gt;                                          
+#&gt; [1,] .          0.06963822 . . .         
+#&gt; [2,] .          .          . . 0.06963822
+#&gt; [3,] 0.06963822 .          . . .         
+#&gt; [4,] .          .          1 . .         
+#&gt; [5,] .          .          . 1 .         
 #&gt; plus left factor
 #&gt; 5 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;               
-#&gt; [1,] 0.8146337
-#&gt; [2,] 0.8146337
-#&gt; [3,] 0.8146337
+#&gt; [1,] 0.9303618
+#&gt; [2,] 0.9303618
+#&gt; [3,] 0.9303618
 #&gt; [4,] .        
 #&gt; [5,] .        
 #&gt; times right factor transpose
@@ -270,22 +270,22 @@ at the other places are derived by different start method.</p>
 <span class='fu'>init_start</span>(start = <span class='st'>"convex"</span>, nns = <span class='fl'>8</span>, A = <span class='kw'>g1</span>, B = <span class='kw'>g2</span>, seeds = <span class='kw'>seeds</span>)
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 6 x 6 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                        
-#&gt; [1,] 0.22861790 .          0.125170950 0.28966124 .          0.06116252
-#&gt; [2,] .          0.37128473 0.259021939 0.04357185 0.26142103 .         
-#&gt; [3,] 0.07321359 .          0.357786365 0.04453249 0.05557494 0.05062157
-#&gt; [4,] 0.20787151 0.02725747 0.040957382 0.31659753 0.06440368 0.15696999
-#&gt; [5,] 0.04453249 0.36357585 0.009973983 .          0.17960978 0.39448988
-#&gt; [6,] 0.02094831 0.08364535 .           0.00635793 0.22248873 0.16632133
+#&gt;                                                                     
+#&gt; [1,] 0.36291383 0.06019802 .          0.17651139 .         0.2315202
+#&gt; [2,] 0.23152019 0.17651139 0.20759913 .          .         0.2175319
+#&gt; [3,] .          .          0.17651139 0.06019802 0.2075991 .        
+#&gt; [4,] 0.03463272 0.23152019 0.15733390 0.20759913 0.1808800 0.1765114
+#&gt; [5,] 0.02556530 0.20759913 0.23152019 0.15733390 0.2111441 0.1553147
+#&gt; [6,] 0.17651139 0.15531470 0.06019802 0.23152019 0.1573339 0.2075991
 #&gt; plus left factor
 #&gt; 6 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;                 
-#&gt; [1,] 0.007818011
-#&gt; [2,] 0.007818011
-#&gt; [3,] 0.007818011
-#&gt; [4,] 0.007818011
-#&gt; [5,] 0.007818011
-#&gt; [6,] 0.007818011
+#&gt;                
+#&gt; [1,] 0.01152266
+#&gt; [2,] 0.01152266
+#&gt; [3,] 0.01152266
+#&gt; [4,] 0.01152266
+#&gt; [5,] 0.01152266
+#&gt; [6,] 0.01152266
 #&gt; times right factor transpose
 #&gt; 6 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;           
@@ -299,35 +299,35 @@ at the other places are derived by different start method.</p>
 <span class='fu'>init_start</span>(start = <span class='st'>"convex"</span>, nns = <span class='fl'>8</span>, ns = <span class='fl'>2</span>, soft_seeds = <span class='kw'>ss</span>, A = <span class='kw'>g1</span>, B = <span class='kw'>g2</span>, seeds = <span class='kw'>seeds</span>)
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 8 x 8 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                          
-#&gt; [1,] 0.213077413 .           0.133444518 0.29780651 .          0.06235369
-#&gt; [2,] 0.006968792 0.348744678 0.241782476 0.01359491 0.27349609 0.04789109
-#&gt; [3,] 0.107741989 0.006968792 0.360482979 .          0.06204852 0.03296219
-#&gt; [4,] 0.234783269 0.031754582 .           0.30976561 0.07278060 0.18033325
-#&gt; [5,] .           0.419800013 0.007303381 0.03653871 0.14721997 0.38216914
-#&gt; [6,] 0.046251810 .           .           0.01331466 0.28180318 0.16847664
-#&gt; [7,] 0.243476261 0.039289895 0.225054964 0.07221321 0.02164175 .         
-#&gt; [8,] 0.147700466 0.153442039 0.024962889 0.24979761 0.13404109 0.11884521
+#&gt;                                                                       
+#&gt; [1,] 0.51977511 0.01341221 0.26447749 0.03056273 .          0.16080231
+#&gt; [2,] 0.28578275 .          0.08501762 0.04942849 .          0.37449512
+#&gt; [3,] 0.13027064 0.01097015 0.35178329 0.04150701 0.03591476 .         
+#&gt; [4,] 0.04150701 0.37555692 0.13109196 0.03890272 0.22040351 0.18156772
+#&gt; [5,] .          0.24618509 .          0.33843665 0.29342651 0.04872369
+#&gt; [6,] .          0.22350339 0.02034067 0.33854267 0.20888409 0.17509455
+#&gt; [7,] 0.02266448 .          0.11486616 0.08012357 0.05814788 .         
+#&gt; [8,] .          0.13037223 0.02145266 0.07152602 0.17225309 0.04834646
 #&gt;                           
-#&gt; [1,] 0.27170888 0.01464020
-#&gt; [2,] 0.06752197 .         
-#&gt; [3,] 0.34046489 0.08933064
-#&gt; [4,] .          0.16361389
-#&gt; [5,] .          .         
-#&gt; [6,] 0.01087226 0.47231266
-#&gt; [7,] 0.30246322 0.08889191
-#&gt; [8,] .          0.16424190
+#&gt; [1,] .          .         
+#&gt; [2,] 0.16358945 0.04168657
+#&gt; [3,] 0.18263005 0.24692410
+#&gt; [4,] .          .         
+#&gt; [5,] 0.06225790 .         
+#&gt; [6,] 0.02266448 .         
+#&gt; [7,] 0.35392886 0.35929890
+#&gt; [8,] 0.20395911 0.34112028
 #&gt; plus left factor
 #&gt; 8 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;                 
-#&gt; [1,] 0.006968792
-#&gt; [2,] .          
-#&gt; [3,] .          
-#&gt; [4,] 0.006968792
-#&gt; [5,] 0.006968792
-#&gt; [6,] 0.006968792
-#&gt; [7,] 0.006968792
-#&gt; [8,] 0.006968792
+#&gt;                
+#&gt; [1,] 0.01097015
+#&gt; [2,] .         
+#&gt; [3,] .         
+#&gt; [4,] 0.01097015
+#&gt; [5,] 0.01097015
+#&gt; [6,] 0.01097015
+#&gt; [7,] 0.01097015
+#&gt; [8,] 0.01097015
 #&gt; times right factor transpose
 #&gt; 8 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;               
