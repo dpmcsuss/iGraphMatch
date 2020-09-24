@@ -120,7 +120,7 @@ based on several evaluation metrics associated with nodes and edges of two graph
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>match</th>
-      <td><p>Graph matching result see <a href='graph_match_FW.html'>graph match methods</a>.</p></td>
+      <td><p>Graph matching result see <a href='graph_match_convex.html'>graph match methods</a>.</p></td>
     </tr>
     <tr>
       <th>A</th>
@@ -171,7 +171,7 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
     <pre class="examples"><div class='input'><span class='kw'>graphs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>10</span>, <span class='fl'>.5</span>, <span class='fl'>.3</span>)
 <span class='kw'>A</span> <span class='op'>&lt;-</span> <span class='kw'>graphs</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>B</span> <span class='op'>&lt;-</span> <span class='kw'>graphs</span><span class='op'>$</span><span class='kw'>graph2</span>
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_FW.html'>graph_match_percolation</a></span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
+<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_ExpandWhenStuck.html'>graph_match_percolation</a></span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
 <span class='fu'>match_report</span>(<span class='kw'>res</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)
 </div><div class='output co'>#&gt; Call: 
 #&gt; graph_match_percolation(A = A, B = B, seeds = 1:4)
@@ -192,9 +192,9 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='kw'>corr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(corr_A = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>, corr_B = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>)
 <span class='fu'>edge_match_info</span>(<span class='kw'>corr</span>, <span class='kw'>A</span>, <span class='kw'>B</span>)
 </div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
-#&gt; 1     1         1312           202         214             3222 28.84441
-#&gt; 2     2         1271           204         233             3242 29.56349
-#&gt; 3     3         1205           203         208             3334 28.67054</div></pre>
+#&gt; 1     1         1282           193         204             3271 28.17801
+#&gt; 2     2         1281           203         221             3245 29.12044
+#&gt; 3     3         1293           194         204             3259 28.21347</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

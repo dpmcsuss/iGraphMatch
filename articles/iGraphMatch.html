@@ -246,23 +246,23 @@
 <span class="co">#&gt; Sparse part</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;                                                     </span>
-<span class="co">#&gt; [1,] 0.2937 0.1704 .     0.1223 0.2045 0.0759 0.1332</span>
-<span class="co">#&gt; [2,] 0.0531 0.1423 .     .      0.0766 0.6387 0.0585</span>
-<span class="co">#&gt; [3,] 0.2368 0.4143 .     .      0.1203 0.1318 0.0660</span>
-<span class="co">#&gt; [4,] 0.0906 0.0527 0.250 0.4934 0.0585 .      0.0236</span>
-<span class="co">#&gt; [5,] .      0.0647 0.390 0.0585 0.3590 .      0.1279</span>
-<span class="co">#&gt; [6,] 0.2960 0.0711 0.134 0.2949 .      0.0904 0.0831</span>
-<span class="co">#&gt; [7,] 0.0299 0.0537 0.226 .      0.1502 0.0324 0.4769</span>
+<span class="co">#&gt; [1,] 0.2966 0.1674 .     0.1241 0.2022 0.0735 0.1362</span>
+<span class="co">#&gt; [2,] 0.0578 0.1430 .     .      0.0780 0.6394 0.0536</span>
+<span class="co">#&gt; [3,] 0.2316 0.4194 .     .      0.1247 0.1305 0.0656</span>
+<span class="co">#&gt; [4,] 0.0911 0.0573 0.250 0.4985 0.0536 .      0.0216</span>
+<span class="co">#&gt; [5,] .      0.0703 0.390 0.0536 0.3636 .      0.1225</span>
+<span class="co">#&gt; [6,] 0.2956 0.0652 0.133 0.2955 .      0.0934 0.0885</span>
+<span class="co">#&gt; [7,] 0.0274 0.0492 0.227 .      0.1497 0.0350 0.4836</span>
 <span class="co">#&gt; plus left factor</span>
 <span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;            </span>
 <span class="co">#&gt; [1,] .     </span>
-<span class="co">#&gt; [2,] 0.0308</span>
-<span class="co">#&gt; [3,] 0.0308</span>
-<span class="co">#&gt; [4,] 0.0308</span>
+<span class="co">#&gt; [2,] 0.0282</span>
+<span class="co">#&gt; [3,] 0.0282</span>
+<span class="co">#&gt; [4,] 0.0282</span>
 <span class="co">#&gt; [5,] .     </span>
-<span class="co">#&gt; [6,] 0.0308</span>
-<span class="co">#&gt; [7,] 0.0308</span>
+<span class="co">#&gt; [6,] 0.0282</span>
+<span class="co">#&gt; [7,] 0.0282</span>
 <span class="co">#&gt; times right factor transpose</span>
 <span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;         </span>
@@ -277,9 +277,9 @@
 <p>Then implement seeded graph matching using the FAQ algorithm in R by using <code>graph_match_FW</code> function. To incorporate soft seeds, we specify the <code>start</code> argument in <code>graph_match_FW</code> function accordingly. Note that in this example, we assume the true permutation to be the identity matrix.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-<span class="kw">match_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_bari</span>)
-<span class="kw">match_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_rds</span>)
-<span class="kw">match_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_convex</span>)
+<span class="kw">match_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_bari</span>)
+<span class="kw">match_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_rds</span>)
+<span class="kw">match_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="kw">start_convex</span>)
 <span class="kw">err_bari_bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">match_bari</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_A</span>[<span class="op">!</span><span class="kw">seeds</span>] != <span class="kw">match_bari</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_B</span>[<span class="op">!</span><span class="kw">seeds</span>])
 <span class="kw">err_rds_bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">match_rds</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_A</span>[<span class="op">!</span><span class="kw">seeds</span>] != <span class="kw">match_rds</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_B</span>[<span class="op">!</span><span class="kw">seeds</span>])
 <span class="kw">err_convex_bad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">match_convex</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_A</span>[<span class="op">!</span><span class="kw">seeds</span>] != <span class="kw">match_convex</span><span class="op">$</span><span class="kw">corr</span><span class="op">$</span><span class="kw">corr_B</span>[<span class="op">!</span><span class="kw">seeds</span>])
@@ -287,9 +287,9 @@
 <p>Since in this example both of the soft seeds are incorrect, intuitively not incorporating such incorrect information might yield better matching results. This motivates us to perform a comparative experiment on whether or not to incorporate such incorrect soft seeds. The R code for performing graph matching with only the hard seeds is similar to soft seeding except for different specification of the <code>start</code> argument.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">123</span>)
-<span class="kw">match_nss_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"bari"</span>)
-<span class="kw">match_nss_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"rds"</span>)
-<span class="kw">match_nss_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"convex"</span>)
+<span class="kw">match_nss_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"bari"</span>)
+<span class="kw">match_nss_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"rds"</span>)
+<span class="kw">match_nss_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"convex"</span>)
 </pre></div>
 <p>For completeness, we also include an example of good soft seeds, say {4,4} and {8,8}. Then we follow the same procedure as in the bad soft seeds case, and yield the matching results for good soft seeds when matching the same graphs. Since the codes corresponding soft seeding implementation are the same, we’ll skip the codes and only show the results comparing the three cases.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
@@ -378,7 +378,7 @@
 <span class="kw">junk</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="kw">core</span>
 <span class="kw">non_seeds</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="kw">seeds</span>
 
-<span class="kw">match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_FW.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"rds"</span>)
+<span class="kw">match</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/graph_match_convex.html">graph_match_FW</a></span>(<span class="kw">g1</span>, <span class="kw">g2</span>, <span class="kw">seeds</span>, start = <span class="st">"rds"</span>)
 </pre></div>
 <p>Then implement the algorithm for finding core vertices, we use row permutation statistic as our measure in this example. The main steps of the algorithm involves calculating values of the row permutation statistic for each nonseed vertex and rank them in the order of increasing value of the statistic. These steps can be implemented by using the <code>best_matches</code> function. The <code>best_matches</code> function has the functionality of finding best matched vertices and identifying core vertices. Since we want to rank all the non-seed vertices in terms of their row permutation statistics, set argument <code>x</code> to be <code>non_seeds</code>, which denotes the vertices we are interested in. Also set argument <code>num</code> to be the number of non-seeds, which denotes the number of top ranked vertices we want to get. By returning the result in <code>A_best</code>, we get the indices corresponding to vertices in <span class="math inline">\(G1\)</span> in the order of decreasing likelihood of being core vertices.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">

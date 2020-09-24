@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find the largest common connected subgraph(LCCS) — largest_common_cc • iGraphMatch</title>
+<title>Percolation Graph Matching Methods — graph_match_ExpandWhenStuck • iGraphMatch</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,8 @@
 
 
 
-<meta property="og:title" content="Find the largest common connected subgraph(LCCS) — largest_common_cc" />
-<meta property="og:description" content="Assume two aligned graphs, find the largest common connect subgraph of these
-two graphs, which is an induced connected subgraph of both graphs that has as many vertices
-as possible." />
+<meta property="og:title" content="Percolation Graph Matching Methods — graph_match_ExpandWhenStuck" />
+<meta property="og:description" content="Percolation Graph Matching Methods" />
 
 
 
@@ -102,67 +100,114 @@ as possible." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find the largest common connected subgraph(LCCS)</h1>
+    <h1>Percolation Graph Matching Methods</h1>
     
-    <div class="hidden name"><code>largest_common_cc.Rd</code></div>
+    <div class="hidden name"><code>gm_perco.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Assume two aligned graphs, find the largest common connect subgraph of these
-two graphs, which is an induced connected subgraph of both graphs that has as many vertices
-as possible.</p>
+    <p>Percolation Graph Matching Methods</p>
     </div>
 
-    <pre class="usage"><span class='fu'>largest_common_cc</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, min_degree = <span class='fl'>1</span>)</pre>
+    <pre class="usage"><span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
+
+<span class='fu'>graph_match_percolation</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>A</th>
-      <td><p>A matrix or an igraph object. Adjacency matrix of \(G_1\).</p></td>
+      <td><p>A matrix, igraph object, or list of either.</p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>A matrix or an igraph object. Adjacency matrix of \(G_2\).</p></td>
+      <td><p>A matrix, igraph object, or list of either.</p></td>
     </tr>
     <tr>
-      <th>min_degree</th>
-      <td><p>A number. Defines the level of connectness of the obtained largest common
-connected subgraph. The induced subgraph is an graph with a minimum degree of vertices equal
-to min_degree.</p></td>
+      <th>seeds</th>
+      <td><p>A vector of integers or logicals, a matrix or a data frame. If
+the seed pairs have the same indices in both graphs then seeds can be a
+vector. If not, seeds must be  a matrix
+or a data frame, with the first column being the indices of \(G_1\) and
+the second column being the corresponding indices of \(G_2\).</p></td>
+    </tr>
+    <tr>
+      <th>r</th>
+      <td><p>A number. Threshold of neighboring pair scores.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>largest_common_cc</code> returns the common largest connected subgraphs of
-two aligned graphs in the igraph object form and a logical vector indicating which vertices in
-the original graphs remain in the induced subgraph.</p>
+    <p><code>graph_match_ExpandWhenStuck</code> returns a list of graph matching 
+  results, including the graph matching formula, a data frame containing the 
+  matching correspondence between \(G_1\) and \(G_2\) named <code>corr_A</code> 
+  and <code>corr_B</code>, the number of seeds and the order of nodes getting matched.</p>
+<p><code>graph_match_percolation</code> returns a list of graph matching results,
+  including the graph matching formula, a data frame containing the matching 
+  correspondence between \(G_1\) and \(G_2\) named <code>corr_A</code> and 
+  <code>corr_B</code>, the number of seeds and the order of nodes getting matched.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
+<em>Growing a graph matching from a handful of seeds</em>. Proc. of the VLDB
+Endowment, 8(10):1010–1021.</p>
+<p>L. Yartseva and M. Grossglauser (2013), <em>On the performance
+  of percolation graph matching</em>. COSN, Boston, MA, USA, pages 119–130.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(n = <span class='fl'>10</span>, corr =  <span class='fl'>0.7</span>, p =  <span class='fl'>0.2</span>)
+    <pre class="examples"><div class='input'><span class='kw'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(n = <span class='fl'>10</span>, corr =  <span class='fl'>0.3</span>, p =  <span class='fl'>0.5</span>)
 <span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
 <span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
-<span class='co'># put no constraint on the minimum degree of the common largest conncect subgraph</span>
-<span class='kw'>lccs1</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, min_degree = <span class='fl'>1</span>)
-<span class='co'># induced subgraph</span>
-<span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>g1</span>
-</div><div class='output co'>#&gt; IGRAPH b5e9491 U--- 8 7 -- Erdos renyi (gnp) graph
-#&gt; + attr: name (g/c), type (g/c), loops (g/l), p (g/n)
-#&gt; + edges from b5e9491:
-#&gt; [1] 1--5 4--6 5--6 2--7 6--7 3--8 6--8</div><div class='input'><span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>g2</span>
-</div><div class='output co'>#&gt; IGRAPH 172754d U--- 8 8 -- Erdos renyi (gnp) graph
-#&gt; + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1
-#&gt; | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),
-#&gt; | loops (g/l), p (g/n)
-#&gt; + edges from 172754d:
-#&gt; [1] 6--8 6--7 4--6 3--8 2--7 2--4 1--6 1--5</div><div class='input'><span class='co'># label of vertices of the induced subgraph in the original graph</span>
-<span class='kw'>igraph</span>::<span class='fu'><a href='https://rdrr.io/pkg/igraph/man/V.html'>V</a></span>(<span class='kw'>g1</span>)[<span class='kw'>lccs1</span><span class='op'>$</span><span class='kw'>keep</span>]
-</div><div class='output co'>#&gt; + 8/10 vertices, from 4c71e78:
-#&gt; [1]  1  2  4  5  7  8  9 10</div><div class='input'>
-<span class='co'># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span>
-<span class='kw'>lccs3</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, min_degree = <span class='fl'>3</span>)
+<span class='co'># match G_1 &amp; G_2 using Expand When Stuck graph matching method</span>
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
+<span class='fu'>graph_match_ExpandWhenStuck</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; $call
+#&gt; graph_match_ExpandWhenStuck(A = g1, B = g2, seeds = seeds, r = 2)
+#&gt; 
+#&gt; $corr
+#&gt;   corr_A corr_B
+#&gt; 1      1      1
+#&gt; 2      2      2
+#&gt; 3      3      3
+#&gt; 4      4      4
+#&gt; 5      5      5
+#&gt; 6      6      7
+#&gt; 7      7     10
+#&gt; 8      8      6
+#&gt; 9      9      9
+#&gt; 
+#&gt; $ns
+#&gt; [1] 5
+#&gt; 
+#&gt; $order
+#&gt; [1] 1 2 3 4 5 8 9 6 7
+#&gt; </div><div class='input'>
+<span class='co'># match G_1 &amp; G_2 using percolation graph matching method</span>
+<span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>
+<span class='fu'>graph_match_percolation</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>, r = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; $call
+#&gt; graph_match_percolation(A = g1, B = g2, seeds = seeds, r = 2)
+#&gt; 
+#&gt; $corr
+#&gt;   corr_A corr_B
+#&gt; 1      1      1
+#&gt; 2      2      2
+#&gt; 3      3      3
+#&gt; 4      4      4
+#&gt; 5      5      5
+#&gt; 6      6      9
+#&gt; 7      7      7
+#&gt; 8      8      8
+#&gt; 9      9      6
+#&gt; 
+#&gt; $ns
+#&gt; [1] 5
+#&gt; 
+#&gt; $order
+#&gt; [1] 1 2 3 4 5 8 9 7 6
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

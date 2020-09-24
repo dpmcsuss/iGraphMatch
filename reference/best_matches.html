@@ -158,17 +158,17 @@ in \(G_1\) named <code>A_best</code> and the indices of best matched vertices in
 <span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
 <span class='kw'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>50</span> <span class='op'>&lt;=</span> <span class='fl'>10</span>
 <span class='kw'>nonseeds</span> <span class='op'>&lt;-</span> <span class='op'>!</span><span class='kw'>seeds</span>
-<span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_FW.html'>graph_match_FW</a></span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>)
+<span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_convex.html'>graph_match_FW</a></span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='kw'>seeds</span>)
 
 <span class='co'># Application: select best matched seeds from non seeds as new seeds, and do the</span>
 <span class='co'># graph matching iteratively to get higher matching accuracy</span>
 <span class='fu'>best_matches</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, <span class='st'>"row_perm_stat"</span>, num = <span class='fl'>5</span>, x = <span class='kw'>nonseeds</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span>)
 </div><div class='output co'>#&gt;   A_best B_best
-#&gt; 1     19     35
-#&gt; 2     23     24
-#&gt; 3     42     18
-#&gt; 4     15     38
-#&gt; 5     48     14</div><div class='input'>
+#&gt; 1     32     26
+#&gt; 2     43     43
+#&gt; 3     31     17
+#&gt; 4     23     33
+#&gt; 5     19     35</div><div class='input'>
 
 </div></pre>
   </div>
