@@ -23,6 +23,7 @@
 setClass("matrix_list", contains = "list")
 
 #' @rdname matrix_list
+#' @export
 matrix_list <- matrix_list <- function(ml)
   new("matrix_list", ml)
 

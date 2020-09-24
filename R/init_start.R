@@ -56,9 +56,8 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     tryCatch(
       start <- sf(nns, ns, soft_seeds, ...),
       error = function(e){
-        print(e)
-        stop("Functions passed to init_start must have",
-          "at least the arguments nns, ns, and softs_seeds")
+        stop(e, "\nNote: functions passed to init_start must have",
+          " at least the arguments nns, ns, and softs_seeds")
       })
 
     # if we get back a full size matrix then just return
@@ -66,6 +65,11 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
       return(start)
     }
     # otherwise add in seeds below
+    if (all(dim(start) != nns - nss)) {
+      stop("Functions passed to init start must return",
+        " a square matrix-like object with dimension ", nns,
+        " or", nns - nss)
+    }
   } else if (start == "bari"){
     start <- bari_start(nns - nss, ns)
   } else if (start == "rds") {
@@ -76,14 +80,14 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     # start at bari with soft seeds
     start <- init_start("bari", nns, ns, soft_seeds)
     # match and pull out doubly stochastic
-    start <- graph_match_convex(..., start = start)$D 
+    start <- graph_match_convex(..., start = start)$D
 
     # don't add back in soft seeds b/c we've used them for convex
     # maybe message/warning about this being a silly thing
     # to do
-    if (exists("seeds")) {
+    if ("seeds" %in% names(list(...))) {
       # needed to avoid check problems
-      seeds <- eval(parse(text = "seeds"))
+      seeds <- list(...)$seeds
       nonseeds <- check_seeds(seeds, nv = nns + ns)$nonseeds
       start <- start[nonseeds$A, nonseeds$B]
     }

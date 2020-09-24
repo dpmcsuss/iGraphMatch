@@ -25,14 +25,14 @@ check_graph <- function(A, B,
 
   # this will make the graphs be matrices if they are igraph objects
   if (is.list(A) && !igraph::is.igraph(A)) {
-    A <- lapply(A, function(Al) Al[])
+    A <- matrix_list(lapply(A, function(Al) Al[]))
   } else {
-    A <- list(A[])
+    A <- matrix_list(list(A[]))
   }
   if ( is.list(B) && !igraph::is.igraph(B)) {
-    B <- lapply(B, function(Bl) Bl[])
+    B <- matrix_list(lapply(B, function(Bl) Bl[]))
   } else {
-    B <- list(B[])
+    B <- matrix_list(list(B[]))
   }
 
   totv1 <- ncol(A[[1]])
@@ -51,7 +51,7 @@ check_graph <- function(A, B,
         "square matrices for matching.")
     }
     if (any(sapply(B, function(Bl) nrow(Bl) != totv2))) {
-      stop("B is not square. graph_match_FW only supports ",
+      stop("B is not square. This method only supports ",
         "square matrices for matching.")
     }
   } else {
@@ -60,28 +60,33 @@ check_graph <- function(A, B,
 
 
   try({
-    A <- lapply(A, function(Al) as(Al, "dgCMatrix"))
-    B <- lapply(B, function(Bl) as(Bl, "dgCMatrix"))
+    A <- matrix_list(lapply(A, function(Al) as(Al, "dgCMatrix")))
+    B <- matrix_list(lapply(B, function(Bl) as(Bl, "dgCMatrix")))
   }, silent = TRUE)
-  try({B <- as(B, "dgCMatrix")}, silent = TRUE)
+  # try({
+  #   A <- as(A, "dgCMatrix")
+  #   B <- as(B, "dgCMatrix")
+  # }, silent = TRUE)
 
   if (same_order) {
     if (totv1 > totv2) {
       diff <- totv1 - totv2
-      B <- lapply(B, function(Bl)
-        pad(Bl[], diff))
+      B <- pad(B, diff)
+      # B <- lapply(B, function(Bl)
+      #   pad(Bl[], diff))
     }else if (totv1 < totv2) {
       diff <- totv2 - totv1
-      A <- lapply(A, function(Al)
-        pad(Al[], diff))
+      A <- pad(A, diff)
+      # A <- lapply(A, function(Al)
+      #   pad(Al[], diff))
     }
   }
 
-  if (! as_list) {
+  if (!as_list) {
     if (length(A) > 1) {
       stop("A is multi-layer and must be converted to single layer.\
        (check_graph: is_list = FALSE)")
-    } else if (length(A) > 1) {
+    } else if (length(B) > 1) {
       stop("B is multi-layer and must be converted to single layer.\
        (check_graph: is_list = FALSE)")
     } else {

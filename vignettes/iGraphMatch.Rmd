@@ -360,7 +360,7 @@ The inputs are the adjacency matrices of two graphs A and B. Both graphs are com
 	\Output{Matching accuracies of core vertices before and after adding additional seeds}
 
 \end{algorithm}
-
+<!-- 
 ### Simulations
 Now implement the algorithm in R with `iGraphMatch` package on the correlated stochastic block  model. First use function `sample_correlated_sbm_pair_w_junk` to sample a pair of graphs from the correlated stochastic block model with 50 nodes in each graph and the correlation between two graphs is 0.5. We set the number of blocks in each graph to be 2 of sizes 15 and 35 and specify the edge probabilities between vertices within the smaller block, the bigger block and across blocks to be 0.3, 0.5 and 0.7 respectively. In this example, we consider a core-junk setting by setting the first 10 and 30 vertices in each block to be core vertices, while the rest being junk vertices. Finally let the first 5 core vertices in block be known seeds.
 ```{r, warning=FALSE, message=FALSE}
@@ -433,7 +433,7 @@ In order to evaluate the performance the algorithm \ref{alg:adaptive-seeds} with
 To mimick the core-junk setting in the context of Twitter data, we sample three disjoint sets of users from 431 users, namely $C, J_{April}$ and $J_{May}$ of sizes $n_c,n_j$ and $n_j$ respectively. Then combine $C$ and $J_{April}$ to get an induced subgraph of Twitter users from April. Similarly, Combine $C$ and $J_{May}$ to get the second graph, the induced subgraph of Twitter users from May. Since three vertex sets are disjoint, vertices $J_{April}$ and $J_{May}$ don't have an alignment in the other graph. Hence $J_{April}$ and $J_{May}$ are the junk vertices, and vertices $C$ are the core vertices. 
 
 Figure \ref{fig:summary_Twitter} shows the average matching accuracy across 300 monte carlo replicates of graphs sampled with $n=250$, $n_s\in \{0,20,50\}$ and $n_j \in \{5,20,50\}$. Adding hard seeds effectively increase matching accuracy in each iteration. Although the original matching accuracy is lower with smaller number of original seeds, matching accuracy increases quicker when we add adaptive seeds.
-
+ -->
 
 ##Discussion
 The primary goal of this package is to facilitate research related to graph matching by providing a variety of useful tools in several aspects of graph matching problem, including graph matching algorithm, quality measure, random graph models etc. In `iGraphMatch` package we implement two graph matching algorithms, the FAQ algorithm and the convex relaxed algorithm. Both algorithms are applicable to the setting with junk vertice which is a more general case. Moreover, the package is capable of handling weighted graphs and graphs with different orders (by adding padding \cite{core-iden}). For future works, we target to implement more graph matching algorithms aiming at enhancing the computational efficiency, which is especially significant to matching two large scale graphs.

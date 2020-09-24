@@ -17,4 +17,3 @@ test_that("doubly stochastic matrix start w. soft seeds", {
     as.matrix(rds_sinkhorn_start(2, 2, soft_seeds = data.frame(A = 4, B = 4))),
                diag(2))
 })
-

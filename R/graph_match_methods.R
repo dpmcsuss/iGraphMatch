@@ -58,7 +58,7 @@
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
   start = "convex", max_iter = 20,
-  similarity = NULL, lap_method = NULL){
+  similarity = NULL, lap_method = NULL) {
 
 
   graph_pair <- check_graph(A, B)
@@ -88,7 +88,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   # seed to non-seed info
   s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
-
   P <- P[, rp]
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
@@ -97,8 +96,8 @@ graph_match_FW <- function(A, B, seeds = NULL,
   similarity <- similarity %*% Matrix::t(rpmat)
 
   # keep only nonseeds
-  A <- lapply(A, function(Al) Al[nonseeds$A, nonseeds$A])
-  B <- lapply(B, function(Bl) Bl[nonseeds$B, nonseeds$B][rp, rp])
+  A <- A[nonseeds$A, nonseeds$A]
+  B <- B[nonseeds$B, nonseeds$B][rp, rp]
   nc <- length(A)
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
@@ -106,7 +105,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
 
   while(toggle && iter < max_iter){
-
     iter <- iter + 1
     # non-seed to non-seed info
     tAnn_P_Bnn <- zero_mat
@@ -169,7 +167,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
   D <- P
-  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
+  D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
 
   cl <- match.call()
   list(
@@ -225,7 +223,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   # make a random permutation
   rp <- sample(nn)
-  rpmat <- Matrix::Diagonal(nn)[rp, ]
+  rpmat <- Matrix::Diagonal(nn)[rp, ] 
 
   Asn <- A[seeds$A,nonseeds$A]
   Ann <- A[nonseeds$A,nonseeds$A]
@@ -261,11 +259,15 @@ graph_match_convex <- function(A, B, seeds = NULL,
     
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
-  
+  alpha_seq <- NULL
+  Pseq <- list()
   while(toggle && iter < max_iter){
     f_old <- f
     iter <- iter + 1
-    Grad <- ml_sum(AtA%*%P + P%*%BBt - ABns_sn - t(Ann)%*%P%*%Bnn - Ann%*%P%*%t(Bnn) + similarity)
+    Grad <- -ml_sum(
+      AtA %*% P + P %*% BBt - ABns_sn +
+      -t(Ann) %*% P %*% Bnn - Ann %*% P %*% t(Bnn) +
+      similarity)
    
 
     corr <- do_lap(Grad, lap_method)
@@ -276,26 +278,28 @@ graph_match_convex <- function(A, B, seeds = NULL,
     Cnn <- Ann %*% (P - Pdir) - (P - Pdir) %*% Bnn
     Dnn <- Ann %*% Pdir - Pdir %*% Bnn
 
-    if(ns > 0){
-      Cns <- -(P-Pdir) %*% Bns
-      Csn <- Asn %*% (P-Pdir)
+    if(ns > 0) {
+      Cns <- - (P - Pdir) %*% Bns
+      Csn <- Asn %*% (P - Pdir)
 
       Dns <- Ans - Pdir %*% Bns
       Dsn <- Asn %*% Pdir - Bsn
-    }else{
-      Dns <- Dsn <-Cns <- Csn <- 0
+    } else {
+      Dns <- Dsn <- Cns <- Csn <- 0
     }
-    aq <- innerproduct(Cnn, Cnn) +
+    aq <- innerproduct(Cnn, Cnn) +    
       innerproduct(Cns, Cns) +
       innerproduct(Csn, Csn)
     bq <- innerproduct(Cnn, Dnn) +
       innerproduct(Cns, Dns) +
       innerproduct(Csn, Dsn)
-    aopt <- ifelse(aq == 0 && bq == 0, 0, -bq/aq)
-
+    aopt <- ifelse(aq == 0 && bq == 0, 0,
+      ifelse(-bq / aq > 1, 1, -bq/aq))
+    alpha_seq <- c(alpha_seq, aopt)
+    Pseq <- c(Pseq, Pdir)
     P_new <- aopt * P + (1 - aopt) * Pdir
     f <- innerproduct(Ann %*% P_new - P_new %*% Bnn,
-      Ann %*% P_new - P_new %*% Bnn)
+      Ann %*% P_new - P_new %*% Bnn) + innerproduct(ABns_sn, P_new)
 
     f_diff <- abs(f - f_old)
     P_diff <- norm(P - P_new, "f")
@@ -316,8 +320,28 @@ graph_match_convex <- function(A, B, seeds = NULL,
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(nv)[corr, ]
-  D <- P
-  D[nonseeds$A, nonseeds$B] <- as.matrix(D_ns %*% rpmat)
+  # D <- P
+  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  reorderA <- order(c(nonseeds$A, seeds$A))
+  reorderB <- order(c(nonseeds$B, seeds$B))
+
+  D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
+  if (is(D, "splrMatrix")) {
+    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+  } else {
+    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+  }
+  
+
+  # get_f <- function(a){
+  #   PP <- a * P + (1 - a) * Pdir
+  #   innerproduct(Ann %*% PP - PP %*% Bnn,
+  #     Ann %*% PP - PP %*% Bnn)
+  # }
+  # tibble(a = seq(0, 1, 0.01)) %>%
+  #   mutate(f = map_dbl(a, get_f)) %>%
+  #   ggplot(aes(a,f)) + geom_point() +
+  #   geom_vline(xintercept = aopt)
 
   cl <- match.call()
   z <- list(
@@ -326,7 +350,10 @@ graph_match_convex <- function(A, B, seeds = NULL,
     ns = ns, 
     P = P,
     D = D,
-    num_iter = iter)
+    num_iter = iter
+    # ,
+    # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
+  )  
   z
 }
 

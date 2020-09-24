@@ -37,6 +37,7 @@
 \alias{+,splrMatrix,ANY-method}
 \alias{-,splrMatrix,missing-method}
 \alias{-,splrMatrix,Matrix-method}
+\alias{-,splrMatrix,ddiMatrix-method}
 \alias{-,splrMatrix,numeric-method}
 \alias{-,splrMatrix,ANY-method}
 \alias{+,Matrix,splrMatrix-method}
@@ -55,17 +56,25 @@
 \alias{[,splrMatrix,missing,missing,missing-method}
 \alias{[,splrMatrix,numeric,numeric,logical-method}
 \alias{[,splrMatrix,missing,numeric,logical-method}
-\alias{[,splrMatrix,numeric,missing,logical-method}
-\alias{[,splrMatrix,numeric,numeric,missing-method}
-\alias{[,splrMatrix,logical,logical,ANY-method}
-\alias{[,splrMatrix,logical,logical,missing-method}
 \alias{[,splrMatrix,missing,numeric,missing-method}
+\alias{[,splrMatrix,missing,logical,logical-method}
+\alias{[,splrMatrix,missing,logical,missing-method}
+\alias{[,splrMatrix,numeric,missing,logical-method}
 \alias{[,splrMatrix,numeric,missing,missing-method}
+\alias{[,splrMatrix,logical,missing,logical-method}
+\alias{[,splrMatrix,logical,missing,missing-method}
+\alias{[,splrMatrix,numeric,ANY,logical-method}
+\alias{[,splrMatrix,numeric,logical,logical-method}
+\alias{[,splrMatrix,numeric,ANY,missing-method}
+\alias{[,splrMatrix,logical,ANY,ANY-method}
+\alias{[,splrMatrix,logical,ANY,missing-method}
+\alias{[,splrMatrix,logical,numeric,missing-method}
+\alias{[,splrMatrix,logical,numeric,logical-method}
 \alias{[,splrMatrix,matrix,missing,missing-method}
-\alias{[<-,sparseMatrix,ANY,ANY,splrMatrix-method}
 \alias{[<-,splrMatrix,numeric,numeric,ANY-method}
 \alias{[<-,splrMatrix,numeric,missing,ANY-method}
 \alias{[<-,splrMatrix,missing,numeric,ANY-method}
+\alias{[<-,Matrix,ANY,ANY,splrMatrix-method}
 \alias{str,splrMatrix-method}
 \alias{t,splrMatrix-method}
 \alias{diag,splrMatrix-method}
@@ -143,6 +152,8 @@
 
 \S4method{-}{splrMatrix,Matrix}(e1, e2)
 
+\S4method{-}{splrMatrix,ddiMatrix}(e1, e2)
+
 \S4method{-}{splrMatrix,numeric}(e1, e2)
 
 \S4method{-}{splrMatrix,ANY}(e1, e2)
@@ -179,31 +190,45 @@
 
 \S4method{[}{splrMatrix,missing,numeric,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{splrMatrix,numeric,missing,logical}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{splrMatrix,numeric,numeric,missing}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{splrMatrix,numeric,numeric,missing}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{splrMatrix,logical,logical,ANY}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{splrMatrix,logical,logical,missing}(x, i, j, ..., drop = TRUE)
-
-\S4method{[}{splrMatrix,missing,missing,missing}(x, i = NULL, j = NULL, drop = NULL)
-
 \S4method{[}{splrMatrix,missing,numeric,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,missing,logical,logical}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,missing,logical,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,numeric,missing,logical}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{splrMatrix,numeric,missing,missing}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{splrMatrix,matrix,missing,missing}(x, i, j, ..., drop = TRUE)
+\S4method{[}{splrMatrix,logical,missing,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{sparseMatrix,ANY,ANY,splrMatrix}(x, i, j, ...) <- value
+\S4method{[}{splrMatrix,logical,missing,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,numeric,ANY,logical}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,numeric,logical,logical}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,numeric,ANY,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,logical,ANY,ANY}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,logical,ANY,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,logical,numeric,missing}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,logical,numeric,logical}(x, i, j, ..., drop = TRUE)
+
+\S4method{[}{splrMatrix,missing,missing,missing}(x, i = NULL, j = NULL, drop = NULL)
+
+\S4method{[}{splrMatrix,matrix,missing,missing}(x, i, j, ..., drop = TRUE)
 
 \S4method{[}{splrMatrix,numeric,numeric,ANY}(x, i, j, ...) <- value
 
 \S4method{[}{splrMatrix,numeric,missing,ANY}(x, i, j, ...) <- value
 
 \S4method{[}{splrMatrix,missing,numeric,ANY}(x, i, j, ...) <- value
+
+\S4method{[}{Matrix,ANY,ANY,splrMatrix}(x, i, j, ...) <- value
 
 \S4method{dim}{splrMatrix}(x)
 

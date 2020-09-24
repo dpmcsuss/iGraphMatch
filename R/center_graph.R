@@ -71,7 +71,7 @@ center_graph <- function(A, scheme = c(-1, 1), use_splr = TRUE){
     } 
   } else {
     stop("scheme must be either 'center', 'naive', ",
-      "a positive integer, or a pair of scales.")
+      "a positive integer, or a pair of scalars.")
   }
   g
 }
@@ -108,6 +108,10 @@ pad <- function(m, nr, nc = nr){
       x = bdiag(m@x, Matrix(0, nr, nc)),
       a = Matrix(rbind2(m@a, Matrix(0, nr, da)), sparse = TRUE),
       b = Matrix(rbind2(m@b, Matrix(0, nc, da)), sparse = TRUE))
+  }
+  else if(is(m, "matrix_list")) {
+    m <- lapply(m, function(ml) ml[])
+    matrix_list(lapply(m, pad, nr = nr, nc = nc))
   }
   else{
     Matrix::bdiag(m, Matrix(0, nr, nc))

@@ -43,8 +43,7 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2){
   } 
 
   # otherwise, things seem wrong
-  stop(paste0("Similarity matrix must be either NULL or ", 
-      "a square matrix of dimension equal to the number of nonseeds, ", 
+  stop(paste0("Square similarity matrices must have dimension equal to the number of nonseeds, ", 
       nn, ", or the total number of vertices, ", nv, "."))
 
 }
