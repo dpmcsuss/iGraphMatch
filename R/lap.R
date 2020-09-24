@@ -1,29 +1,61 @@
-do_lap <- function(Grad, method, ...){
-  n <- nrow(Grad)
+
+
+#' @title Linear (sum) assignment problem
+#'
+#' @description Compute the best bipartite matching
+#' using one of three methods. For an n x n score matrix it find
+#' \eqn{\max_{v\in \Pi_n} \sum_{i=1}^n score_{i, v(i)}}
+#' where \eqn{\Pi_n} denotes all permutations on n objects.
+#'
+#' @param score matrix of pairwise scores
+#' @param method One off "lapjv", "lapmod", or "clue"
+#' 
+#'
+#' @rdname do_lap
+#'
+#' @return \code{do_lap} returns a vector which indicates the 
+#'  best matching column for each row.
+#'  
+#'
+#' @details TODO: details for the method
+#' 
+#' 
+#' @examples
+#' set.seed(12345)
+#' cost <- Matrix::rsparsematrix(10, 10, .5)
+#' cbind(
+#'  do_lap(cost, "lapjv"),
+#'  do_lap(cost, "lapmod"),
+#'  do_lap(cost, "clue")
+#' )
+#' 
+#' @export
+do_lap <- function(score, method){
+  n <- nrow(score)
   switch(method,
     lapjv = { 
-      Grad <- as.matrix(Grad)
-      rlapjv::lapjv(Grad, # round(Grad * n ^ 2 * max(Grad)),
+      score <- as.matrix(score)
+      rlapjv::lapjv(score, # round(score * n ^ 2 * max(score)),
         maximize = TRUE)
     },
     lapmod = {
-      if( class(Grad) == "splrMatrix" ){
-        rlapjv::lapmod(splr_to_sparse(Grad),
+      if( class(score) == "splrMatrix" ){
+        rlapjv::lapmod(splr_to_sparse(score),
           maximize = TRUE)
       } else {
-        rlapjv::lapmod(Grad, maximize = TRUE)
+        rlapjv::lapmod(score, maximize = TRUE)
       }
     },
     clue = {
-      Grad <- as.matrix(Grad)
-      Grad <- Grad - min(Grad)
-      as.vector(clue::solve_LSAP(Grad,
+      score <- as.matrix(score)
+      score <- score - min(score)
+      as.vector(clue::solve_LSAP(score,
         maximum = TRUE))
     },
     # sinkhorn = {
     #   lambda <- 10
     #   n_iter <- 20
-    #   sinkhorn(exp(lambda * Grad), n_iter)      
+    #   sinkhorn(exp(lambda * score), n_iter)      
     # },
     stop(paste0("The LAP method ", method,
         " is not implemented. Please use one of lapjv, lapmod, or clue."))

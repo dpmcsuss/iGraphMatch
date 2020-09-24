@@ -16,11 +16,7 @@ get_s_to_ns <- function(Alist, Blist, seeds, nonseeds,
     Bsn <- B[seeds$B,nonseeds$B] %*% t(pmat)
     Bns <- pmat %*% B[nonseeds$B,seeds$B]
 
-    if (ns == 1){
-      outer(Ans, Bns) + outer(Asn, Bsn)
-    } else {
-      (Ans %*% t(Bns)) + (t(Asn) %*% Bsn)
-    }
+    tcrossprod(Ans, Bns) + crossprod(Asn, Bsn)
   }
 
   if (!is(Alist, "list")){

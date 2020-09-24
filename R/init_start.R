@@ -56,9 +56,8 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     tryCatch(
       start <- sf(nns, ns, soft_seeds, ...),
       error = function(e){
-        print(e)
-        stop("Functions passed to init_start must have",
-          "at least the arguments nns, ns, and softs_seeds")
+        stop(e, "\nNote: functions passed to init_start must have",
+          " at least the arguments nns, ns, and softs_seeds")
       })
 
     # if we get back a full size matrix then just return
@@ -66,6 +65,11 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
       return(start)
     }
     # otherwise add in seeds below
+    if (all(dim(start) != nns - nss)) {
+      stop("Functions passed to init start must return",
+        " a square matrix-like object with dimension ", nns,
+        " or", nns - nss)
+    }
   } else if (start == "bari"){
     start <- bari_start(nns - nss, ns)
   } else if (start == "rds") {

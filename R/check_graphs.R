@@ -51,7 +51,7 @@ check_graph <- function(A, B,
         "square matrices for matching.")
     }
     if (any(sapply(B, function(Bl) nrow(Bl) != totv2))) {
-      stop("B is not square. graph_match_FW only supports ",
+      stop("B is not square. This method only supports ",
         "square matrices for matching.")
     }
   } else {
@@ -82,11 +82,11 @@ check_graph <- function(A, B,
     }
   }
 
-  if (! as_list) {
+  if (!as_list) {
     if (length(A) > 1) {
       stop("A is multi-layer and must be converted to single layer.\
        (check_graph: is_list = FALSE)")
-    } else if (length(A) > 1) {
+    } else if (length(B) > 1) {
       stop("B is multi-layer and must be converted to single layer.\
        (check_graph: is_list = FALSE)")
     } else {

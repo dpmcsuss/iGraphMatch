@@ -179,4 +179,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
 }
 
 #' @rdname graph_match_methods
+#' @export
 gm_indefinite <- graph_match_FW
+
