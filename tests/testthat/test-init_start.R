@@ -16,10 +16,16 @@ test_that("random doubly stochastic start w/o soft seeds", {
     matrix(c(0.47,0.53,0.53,0.47),nrow=2))
 })
 set.seed(123)
-test_that("doubly stochastic matrix start w/o soft seeds", {
-  expect_equivalent(round(as.matrix(init_start(start = "rds_perm_bari", nns = 2)),2),
-               matrix(c(0.36,0.64,0.64,0.36),nrow=2))
-})
+test_that("doubly stochastic matrix start w/o soft seeds", 
+  {
+    expect_equivalent(
+      round(as.matrix(init_start(start = "rds_perm_bari", nns = 2)),2),
+      structure(
+        c(0.64, 0.36, 0.36, 0.64),
+        .Dim = c(2L, 2L), .Dimnames = list(NULL, NULL))
+    )
+  }
+)
 
 
 # initialize start matrix with soft seeds
@@ -41,10 +47,19 @@ test_that("random doubly stochastic start w. soft seeds", {
 })
 
 set.seed(123)
-test_that("doubly stochastic matrix start w. soft seeds", {
-  expect_equivalent(round(as.matrix(init_start(start = "rds_perm_bari", nns = 3,ns=2,soft_seeds=ss)),2),
-                    matrix(c(0,0.36,0.64,1,0,0,0,0.64,0.36)))
-})
+test_that("doubly stochastic matrix start w. soft seeds", 
+  {
+    expect_equivalent(
+      round(as.matrix(
+        init_start(start = "rds_perm_bari", nns = 3,ns=2,soft_seeds=ss)
+      ),2),
+      structure(
+        c(0, 0.64, 0.36, 1, 0, 0, 0, 0.36, 0.64),
+        .Dim = c(3L, 3L), .Dimnames = list(NULL, NULL)
+      )
+    )
+  }
+)
 
 
 set.seed(123)

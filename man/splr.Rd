@@ -2,6 +2,7 @@
 % Please edit documentation in R/splr_matrix_class.R
 \name{show,splrMatrix-method}
 \alias{show,splrMatrix-method}
+\alias{print,splrMatrix-method}
 \alias{\%*\%,splrMatrix,splrMatrix-method}
 \alias{\%*\%,splrMatrix,matrix_list-method}
 \alias{\%*\%,matrix_list,splrMatrix-method}
@@ -20,6 +21,7 @@
 \alias{*,splrMatrix,splrMatrix-method}
 \alias{*,Matrix,splrMatrix-method}
 \alias{*,splrMatrix,ddiMatrix-method}
+\alias{*,ddiMatrix,splrMatrix-method}
 \alias{*,matrix,splrMatrix-method}
 \alias{*,numeric,splrMatrix-method}
 \alias{*,ANY,splrMatrix-method}
@@ -82,6 +84,8 @@
 \usage{
 \S4method{show}{splrMatrix}(object)
 
+\S4method{print}{splrMatrix}(x)
+
 \S4method{\%*\%}{splrMatrix,splrMatrix}(x, y)
 
 \S4method{\%*\%}{splrMatrix,matrix_list}(x, y)
@@ -117,6 +121,8 @@
 \S4method{*}{Matrix,splrMatrix}(e1, e2)
 
 \S4method{*}{splrMatrix,ddiMatrix}(e1, e2)
+
+\S4method{*}{ddiMatrix,splrMatrix}(e1, e2)
 
 \S4method{*}{matrix,splrMatrix}(e1, e2)
 
@@ -208,7 +214,7 @@
 
 \S4method{[}{splrMatrix,numeric,logical,logical}(x, i, j, ..., drop = TRUE)
 
-\S4method{[}{splrMatrix,numeric,ANY,missing}(x, i, j, ..., drop = TRUE)
+\S4method{[}{splrMatrix,numeric,ANY,missing}(x, i, j, ..., drop = FALSE)
 
 \S4method{[}{splrMatrix,logical,ANY,ANY}(x, i, j, ..., drop = TRUE)
 
