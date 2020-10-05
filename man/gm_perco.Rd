@@ -5,9 +5,9 @@
 \alias{graph_match_percolation}
 \title{Percolation Graph Matching Methods}
 \usage{
-graph_match_ExpandWhenStuck(A, B, seeds, r = 2)
+graph_match_ExpandWhenStuck(A, B, seeds, similarity = NULL, r = 2)
 
-graph_match_percolation(A, B, seeds, r = 2)
+graph_match_percolation(A, B, seeds, similarity = NULL, r = 2)
 }
 \arguments{
 \item{A}{A matrix, igraph object, or list of either.}
@@ -19,6 +19,8 @@ the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
+
+\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
 
 \item{r}{A number. Threshold of neighboring pair scores.}
 }

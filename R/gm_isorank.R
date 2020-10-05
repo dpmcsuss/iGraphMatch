@@ -1,6 +1,5 @@
-
-#' @rdname gm_spectral
-#' 
+#' @title Spectral Graph Matching Methods: IsoRank Algorithm
+#' @rdname gm_isorank
 #' 
 #' @param A A matrix, igraph object, or list of either.
 #' @param B A matrix, igraph object, or list of either. 

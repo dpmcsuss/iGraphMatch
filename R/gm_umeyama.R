@@ -1,6 +1,18 @@
-#' @rdname gm_spectral
+#' @title Spectral Graph Matching Methods: Umeyama Algorithm
+#' @rdname gm_Umeyama
 #' 
-#' @title Spectral Graph Matching Methods
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either. 
+#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
+#' @param seeds A vector of integers or logicals, a matrix or a data frame. If
+#'   the seed pairs have the same indices in both graphs then seeds can be a
+#'   vector. If not, seeds must be  a matrix.
+#'   or a data frame, with the first column being the indices of \eqn{G_1} and
+#'   the second column being the corresponding indices of \eqn{G_2}.
+#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
+#'   on the information in network topology over other information such as
+#'   similarity scores.
+#'   
 #' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
@@ -18,7 +30,8 @@
 #'
 #' @export
 #'
-graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .5){
+graph_match_Umeyama <- function(A, B, similarity = NULL, 
+                                seeds = NULL, alpha = .5){
 
   # USE CHECK GRAPH
   A <- A[]
@@ -39,7 +52,6 @@ graph_match_Umeyama <- function(A, B, similarity = NULL, seeds = NULL, alpha = .
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
-  #similarity <- similarity %*% Matrix::t(rpmat)
 
   if(!isSymmetric(as.matrix(A)) | !isSymmetric(as.matrix(B))){
     # construct Hermitian matrices by adjacency matrices

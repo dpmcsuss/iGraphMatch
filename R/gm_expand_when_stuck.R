@@ -19,7 +19,8 @@
 #' @export
 #'
 #'
-graph_match_ExpandWhenStuck <- function(A, B, seeds, r = 2){
+graph_match_ExpandWhenStuck <- function(A, B, seeds, 
+                                        similarity = NULL, r = 2){
   # this will make the graphs be matrices if they are igraph objects
   graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
   A <- graph_pair[[1]]
