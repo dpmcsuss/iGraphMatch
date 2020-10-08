@@ -109,13 +109,13 @@
     <p>initialize the start matrix for graph matching iteration.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>bari_start</span>(<span class='kw'>nns</span>, ns = <span class='fl'>0</span>, soft_seeds = <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>bari_start</span><span class='op'>(</span><span class='va'>nns</span>, ns <span class='op'>=</span> <span class='fl'>0</span>, soft_seeds <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>rds_sinkhorn_start</span>(<span class='kw'>nns</span>, ns = <span class='fl'>0</span>, soft_seeds = <span class='kw'>NULL</span>, distribution = <span class='st'>"runif"</span>)
+<span class='fu'>rds_sinkhorn_start</span><span class='op'>(</span><span class='va'>nns</span>, ns <span class='op'>=</span> <span class='fl'>0</span>, soft_seeds <span class='op'>=</span> <span class='cn'>NULL</span>, distribution <span class='op'>=</span> <span class='st'>"runif"</span><span class='op'>)</span>
 
-<span class='fu'>rds_perm_bari_start</span>(<span class='kw'>nns</span>, ns = <span class='fl'>0</span>, soft_seeds = <span class='kw'>NULL</span>, g = <span class='fl'>1</span>, is_splr = <span class='fl'>TRUE</span>)
+<span class='fu'>rds_perm_bari_start</span><span class='op'>(</span><span class='va'>nns</span>, ns <span class='op'>=</span> <span class='fl'>0</span>, soft_seeds <span class='op'>=</span> <span class='cn'>NULL</span>, g <span class='op'>=</span> <span class='fl'>1</span>, is_splr <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>rds_from_sim_start</span>(<span class='kw'>nns</span>, ns = <span class='fl'>0</span>, soft_seeds = <span class='kw'>NULL</span>, <span class='kw'>sim</span>)</pre>
+<span class='fu'>rds_from_sim_start</span><span class='op'>(</span><span class='va'>nns</span>, ns <span class='op'>=</span> <span class='fl'>0</span>, soft_seeds <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>sim</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +172,7 @@ with 1's corresponding to adaptive seeds.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Case without soft seeds</span>
-<span class='fu'>bari_start</span>(<span class='fl'>3</span>)
+<span class='fu'>bari_start</span><span class='op'>(</span><span class='fl'>3</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 3 x 3 sparse Matrix of class "dsCMatrix"
 #&gt;           
@@ -192,7 +192,7 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [2,] 0.3333333
 #&gt; [3,] 0.3333333</div><div class='input'>
 <span class='co'>## Case with correct soft seeds and input is a vector</span>
-<span class='fu'>bari_start</span>(nns=<span class='fl'>5</span>, ns=<span class='fl'>3</span>, soft_seeds=<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>7</span>, <span class='fl'>8</span>))
+<span class='fu'>bari_start</span><span class='op'>(</span>nns<span class='op'>=</span><span class='fl'>5</span>, ns<span class='op'>=</span><span class='fl'>3</span>, soft_seeds<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>7</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dsCMatrix"
 #&gt;               
@@ -218,7 +218,7 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [4,] .  
 #&gt; [5,] .  </div><div class='input'>
 <span class='co'>## Case with erroneous soft seeds and the input is a matrix</span>
-<span class='fu'>bari_start</span>(nns=<span class='fl'>5</span>, soft_seeds=<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), nrow=<span class='fl'>2</span>))
+<span class='fu'>bari_start</span><span class='op'>(</span>nns<span class='op'>=</span><span class='fl'>5</span>, soft_seeds<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>, nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;               
@@ -244,7 +244,7 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [4,] 0.3333333
 #&gt; [5,] 0.3333333</div><div class='input'>
 <span class='co'>## Case without soft seeds</span>
-<span class='fu'>rds_sinkhorn_start</span>(<span class='fl'>5</span>)
+<span class='fu'>rds_sinkhorn_start</span><span class='op'>(</span><span class='fl'>5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 5 x 5 Matrix of class "dgeMatrix"
 #&gt;           [,1]      [,2]       [,3]      [,4]      [,5]
 #&gt; [1,] 0.2964893 0.2694481 0.08613913 0.2408804 0.1070430
@@ -253,9 +253,9 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [4,] 0.3323903 0.1886302 0.25158475 0.1265853 0.1008094
 #&gt; [5,] 0.1862334 0.2879922 0.13686300 0.1648652 0.2240462</div><div class='input'>
 <span class='co'>## Case with soft seeds and the input is a data frame</span>
-<span class='fu'>rds_sinkhorn_start</span>(nns=<span class='fl'>5</span>,
-   soft_seeds = <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), nrow=<span class='fl'>2</span>)),
-   distribution = <span class='st'>"rnorm"</span>)
+<span class='fu'>rds_sinkhorn_start</span><span class='op'>(</span>nns<span class='op'>=</span><span class='fl'>5</span>,
+   soft_seeds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>, nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
+   distribution <span class='op'>=</span> <span class='st'>"rnorm"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                        
 #&gt; [1,] 0.3078137 . . 0.07183856 0.6203477
@@ -264,7 +264,7 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [4,] .         . 1 .          .        
 #&gt; [5,] 0.5135573 . . 0.30250796 0.1839348</div><div class='input'>
 <span class='co'>## Case without soft seeds</span>
-<span class='fu'>rds_perm_bari_start</span>(nns=<span class='fl'>5</span>)
+<span class='fu'>rds_perm_bari_start</span><span class='op'>(</span>nns<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                                  
@@ -290,7 +290,7 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [4,]  0.2
 #&gt; [5,]  0.2</div><div class='input'>
 <span class='co'>## Case with soft seeds and the input is a data frame</span>
-<span class='fu'>rds_perm_bari_start</span>(nns=<span class='fl'>5</span>, ns=<span class='fl'>0</span>, soft_seeds=<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span>), nrow=<span class='fl'>2</span>)))
+<span class='fu'>rds_perm_bari_start</span><span class='op'>(</span>nns<span class='op'>=</span><span class='fl'>5</span>, ns<span class='op'>=</span><span class='fl'>0</span>, soft_seeds<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>3</span><span class='op'>)</span>, nrow<span class='op'>=</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 5 x 5 sparse Matrix of class "dgCMatrix"
 #&gt;                                       
@@ -315,10 +315,10 @@ with 1's corresponding to adaptive seeds.</p>
 #&gt; [3,] .        
 #&gt; [4,] 0.3333333
 #&gt; [5,] 0.3333333</div><div class='input'>
-<span class='kw'>sim</span> <span class='op'>&lt;-</span> <span class='kw'>Matrix</span>::<span class='fu'><a href='https://rdrr.io/pkg/Matrix/man/rsparsematrix.html'>rsparsematrix</a></span>(<span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>.4</span>,
- rand.x = <span class='fu'>function</span>(<span class='kw'>n</span>) <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>,<span class='kw'>n</span>))
-<span class='kw'>start_sparse</span> <span class='op'>&lt;-</span> <span class='fu'>rds_from_sim_start</span>(<span class='fl'>10</span>, sim = <span class='kw'>sim</span>)
-<span class='kw'>start_dense</span> <span class='op'>&lt;-</span> <span class='fu'>rds_from_sim_start</span>(<span class='fl'>10</span>, sim = <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='kw'>sim</span>))
+<span class='va'>sim</span> <span class='op'>&lt;-</span> <span class='fu'>Matrix</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/Matrix/man/rsparsematrix.html'>rsparsematrix</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>.4</span>,
+ rand.x <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='va'>n</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>start_sparse</span> <span class='op'>&lt;-</span> <span class='fu'>rds_from_sim_start</span><span class='op'>(</span><span class='fl'>10</span>, sim <span class='op'>=</span> <span class='va'>sim</span><span class='op'>)</span>
+<span class='va'>start_dense</span> <span class='op'>&lt;-</span> <span class='fu'>rds_from_sim_start</span><span class='op'>(</span><span class='fl'>10</span>, sim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>sim</span><span class='op'>)</span><span class='op'>)</span>
 
 </div></pre>
   </div>

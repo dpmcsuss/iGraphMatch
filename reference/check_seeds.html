@@ -111,7 +111,7 @@ indices of \(G_1\) and the second column being the corresponding indices of \(G_
 indices of \(G_1\) and the second column being the corresponding indices of \(G_2\)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check_seeds</span>(<span class='kw'>seeds</span>, <span class='kw'>nv</span>, logical = <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>check_seeds</span><span class='op'>(</span><span class='va'>seeds</span>, <span class='va'>nv</span>, logical <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,7 +144,7 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>#input is a vector of logicals</span>
-<span class='fu'>check_seeds</span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>, nv = <span class='fl'>10</span>)
+<span class='fu'>check_seeds</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>, nv <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $seeds
 #&gt;   A B
 #&gt; 1 1 1
@@ -162,7 +162,7 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 #&gt; 7 10 10
 #&gt; </div><div class='input'>
 <span class='co'>#input is a vector of integers</span>
-<span class='fu'>check_seeds</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>7</span>,<span class='fl'>3</span>), nv = <span class='fl'>10</span>)
+<span class='fu'>check_seeds</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>4</span>,<span class='fl'>2</span>,<span class='fl'>7</span>,<span class='fl'>3</span><span class='op'>)</span>, nv <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $seeds
 #&gt;   A B
 #&gt; 1 1 1
@@ -180,7 +180,7 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 #&gt; 5 10 10
 #&gt; </div><div class='input'>
 <span class='co'>#input is a matrix</span>
-<span class='fu'>check_seeds</span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>2</span>), nv = <span class='fl'>10</span>)
+<span class='fu'>check_seeds</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>2</span><span class='op'>)</span>, nv <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $seeds
 #&gt;   A B
 #&gt; 1 1 3
@@ -198,7 +198,7 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 #&gt; 8 10 10
 #&gt; </div><div class='input'>
 <span class='co'>#input is a data frame</span>
-<span class='fu'>check_seeds</span>(<span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>2</span>)), nv = <span class='fl'>10</span>)
+<span class='fu'>check_seeds</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>,<span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>, nv <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $seeds
 #&gt;   A B
 #&gt; 1 1 3

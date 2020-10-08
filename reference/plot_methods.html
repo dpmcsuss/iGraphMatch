@@ -115,9 +115,9 @@ and <code>match_plot_matrix</code> which shows an adjacency
 matrix plot.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>match_plot_igraph</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>match</span>, color = <span class='fl'>TRUE</span>, linetype = <span class='fl'>TRUE</span>)
+    <pre class="usage"><span class='fu'>match_plot_igraph</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>match</span>, color <span class='op'>=</span> <span class='cn'>TRUE</span>, linetype <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>match_plot_matrix</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>match</span>)</pre>
+<span class='fu'>match_plot_matrix</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>match</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,14 +172,14 @@ for <code>m &lt;- match_plot_match(...)</code>.</p>
 <p>This only plots and returns the matched vertices.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>123</span>)
-<span class='kw'>graphs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(<span class='fl'>20</span>, <span class='fl'>.5</span>, <span class='fl'>.3</span>)
-<span class='kw'>A</span> <span class='op'>&lt;-</span> <span class='kw'>graphs</span><span class='op'>$</span><span class='kw'>graph1</span>
-<span class='kw'>B</span> <span class='op'>&lt;-</span> <span class='kw'>graphs</span><span class='op'>$</span><span class='kw'>graph2</span>
-<span class='kw'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_ExpandWhenStuck.html'>graph_match_percolation</a></span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>123</span><span class='op'>)</span>
+<span class='va'>graphs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>.5</span>, <span class='fl'>.3</span><span class='op'>)</span>
+<span class='va'>A</span> <span class='op'>&lt;-</span> <span class='va'>graphs</span><span class='op'>$</span><span class='va'>graph1</span>
+<span class='va'>B</span> <span class='op'>&lt;-</span> <span class='va'>graphs</span><span class='op'>$</span><span class='va'>graph2</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_ExpandWhenStuck.html'>graph_match_percolation</a></span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 
-<span class='fu'>match_plot_igraph</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>res</span>)
-</div><div class='img'><img src='plot_methods-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>match_plot_matrix</span>(<span class='kw'>A</span>, <span class='kw'>B</span>, <span class='kw'>res</span>)
+<span class='fu'>match_plot_igraph</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>res</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_methods-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>match_plot_matrix</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>res</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_methods-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

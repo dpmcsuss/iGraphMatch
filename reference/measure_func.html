@@ -109,11 +109,11 @@
     <p>Measures for computing the goodness of matching for each vertex.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>row_cor</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
+    <pre class="usage"><span class='fu'>row_cor</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span><span class='op'>)</span>
 
-<span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
+<span class='fu'>row_diff</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span><span class='op'>)</span>
 
-<span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>, exact = <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>row_perm_stat</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, exact <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,13 +144,13 @@ the corresponding vertex.</p>
 value for the corresponding vertex.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span>(n = <span class='fl'>50</span>, corr =  <span class='fl'>0.3</span>,p =  <span class='fl'>0.5</span>)
-<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph1</span>
-<span class='kw'>g2</span> <span class='op'>&lt;-</span> <span class='kw'>cgnp_pair</span><span class='op'>$</span><span class='kw'>graph2</span>
-<span class='kw'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_convex.html'>graph_match_FW</a></span>(<span class='kw'>g1</span>, <span class='kw'>g2</span>)
-<span class='kw'>g2m</span> <span class='op'>&lt;-</span> <span class='kw'>g2</span>[<span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>, <span class='kw'>match</span><span class='op'>$</span><span class='kw'>corr</span><span class='op'>$</span><span class='kw'>corr_B</span>]
-<span class='kw'>g1</span> <span class='op'>&lt;-</span> <span class='kw'>g1</span>[]
-<span class='fu'>row_cor</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+    <pre class="examples"><div class='input'><span class='va'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>50</span>, corr <span class='op'>=</span>  <span class='fl'>0.3</span>,p <span class='op'>=</span>  <span class='fl'>0.5</span><span class='op'>)</span>
+<span class='va'>g1</span> <span class='op'>&lt;-</span> <span class='va'>cgnp_pair</span><span class='op'>$</span><span class='va'>graph1</span>
+<span class='va'>g2</span> <span class='op'>&lt;-</span> <span class='va'>cgnp_pair</span><span class='op'>$</span><span class='va'>graph2</span>
+<span class='va'>match</span> <span class='op'>&lt;-</span> <span class='fu'><a href='graph_match_convex.html'>graph_match_FW</a></span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span><span class='op'>)</span>
+<span class='va'>g2m</span> <span class='op'>&lt;-</span> <span class='va'>g2</span><span class='op'>[</span><span class='va'>match</span><span class='op'>$</span><span class='va'>corr</span><span class='op'>$</span><span class='va'>corr_B</span>, <span class='va'>match</span><span class='op'>$</span><span class='va'>corr</span><span class='op'>$</span><span class='va'>corr_B</span><span class='op'>]</span>
+<span class='va'>g1</span> <span class='op'>&lt;-</span> <span class='va'>g1</span><span class='op'>[</span><span class='op'>]</span>
+<span class='fu'>row_cor</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2m</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] 0.6776708 0.5297882 0.4952556 0.5318327 0.7582531 0.7304842 0.4807692
 #&gt;  [8] 0.4438111 0.6471377 0.4438111 0.6698075 0.4775641 0.5879663 0.5996796
 #&gt; [15] 0.5212838 0.6575252 0.5970885 0.5587387 0.5542575 0.8104012 0.7368193
@@ -158,9 +158,9 @@ value for the corresponding vertex.</p>
 #&gt; [29] 0.5212838 0.8361441 0.5570540 0.7190997 0.6797437 0.2821283 0.5612812
 #&gt; [36] 0.6322504 0.5860920 0.5722379 0.5879663 0.6054939 0.5842654 0.5970885
 #&gt; [43] 0.6291615 0.5658330 0.4702093 0.4807692 0.6908009 0.6755011 0.6114222
-#&gt; [50] 0.7999183</div><div class='input'><span class='fu'>row_diff</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+#&gt; [50] 0.7999183</div><div class='input'><span class='fu'>row_diff</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2m</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] 17 13 13 13 19 18 12 11 16 11 16 12 15 15 13 16 15 14 14 19 18 13 15 11 13
-#&gt; [26] 18 15 13 13 21 13 18 17  7 14 16 15 15 15 15 14 15 16 14 12 12 18 17 15 18</div><div class='input'><span class='fu'>row_perm_stat</span>(<span class='kw'>g1</span>, <span class='kw'>g2m</span>)
+#&gt; [26] 18 15 13 13 21 13 18 17  7 14 16 15 15 15 15 14 15 16 14 12 12 18 17 15 18</div><div class='input'><span class='fu'>row_perm_stat</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2m</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] -2.124456 -3.302064 -3.293680 -3.302064 -1.571267 -1.816127 -3.579854
 #&gt;  [8] -3.847156 -2.402571 -3.839044 -2.447778 -3.579854 -2.709941 -2.715960
 #&gt; [15] -3.275218 -2.444158 -2.715960 -2.964679 -2.973557 -1.515325 -1.824060
