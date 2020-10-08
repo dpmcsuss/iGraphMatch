@@ -10,8 +10,9 @@ cal_mark <- function(x,y){
 #'   including the graph matching formula, a data frame containing the matching 
 #'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
 #'   \code{corr_B}, the number of seeds and the order of nodes getting matched.
-#' 
-#'
+#'   
+#'   
+#'   
 #' @param A A matrix, igraph object, or list of either.
 #' @param B A matrix, igraph object, or list of either. 
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
@@ -27,50 +28,62 @@ cal_mark <- function(x,y){
 #'
 #' @examples
 #' # match G_1 & G_2 using percolation graph matching method
-#' seeds <- 1:5
 #' graph_match_percolation(g1, g2, seeds, r = 2)
 #'
 #' @export
 #'
 #'
 graph_match_percolation <- function (A, B, seeds, 
-                                     similarity = NULL, r = 2)
-{
-  graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
+                                     similarity = NULL, r = 2) {
+  
+  graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
-  
-  directed <- !(isSymmetric(A) && isSymmetric(B))
+  nc <- length(A)
 
   n <- max(totv1, totv2)
-  seeds <- check_seeds(seeds, n)$seeds
+  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
+  nonseeds <- seeds$nonseeds
+  seeds <- seeds$seeds
   ns <- nrow(seeds)
   Z <- seeds #matched nodes
-  M <- matrix(0, totv1, totv2) #marks matrix
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- (similarity - min(similarity)) / (max(similarity) - min(similarity))
+  if(is.na(similarity)[1,1]){
+    M <- matrix(0, totv1, totv2) #marks matrix
+  } else{
+    M <- similarity
+  }
+  
   
   # mark neighbors
-  for(i in 1:nrow(seeds)){
-    A_adj <- which(A[seeds$A[i],]>0)
-    B_adj <- which(B[seeds$B[i],]>0)
-    if(length(A_adj) != 0 && length(B_adj) != 0){
-      mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i], B_adj], cal_mark)
-      M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-    }
-    if(directed){
-      A <- Matrix::t(A)
-      B <- Matrix::t(B)
-      A_adj <- which(A[seeds$A[i],]>0)
-      B_adj <- which(B[seeds$B[i],]>0)
+  for(ch in 1:nc){
+    directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
+    
+    for(i in 1:nrow(seeds)){
+      A_adj <- which(A[[ch]][seeds$A[i],]>0)
+      B_adj <- which(B[[ch]][seeds$B[i],]>0)
       if(length(A_adj) != 0 && length(B_adj) != 0){
-        mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i], B_adj], cal_mark)
+        mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
         M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
       }
-      A <- Matrix::t(A)
-      B <- Matrix::t(B)
+      if(directed){
+        A[[ch]] <- Matrix::t(A[[ch]])
+        B[[ch]] <- Matrix::t(B[[ch]])
+        A_adj <- which(A[[ch]][seeds$A[i],]>0)
+        B_adj <- which(B[[ch]][seeds$B[i],]>0)
+        if(length(A_adj) != 0 && length(B_adj) != 0){
+          mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
+          M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        }
+        A[[ch]] <- Matrix::t(A[[ch]])
+        B[[ch]] <- Matrix::t(B[[ch]])
+      }
     }
   }
+  
   M[seeds$A,] <- -n
   M[,seeds$B] <- -n
   
@@ -81,19 +94,21 @@ graph_match_percolation <- function (A, B, seeds,
     Z <- rbind(Z,max_ind)
     
     # update mark matrix
-    A_adj <- which(A[max_ind[1],]>0)
-    B_adj <- which(B[max_ind[2],]>0)
-    mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
-    M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-    if(directed){
-      A <- Matrix::t(A)
-      B <- Matrix::t(B)
-      A_adj <- which(A[max_ind[1],]>0)
-      B_adj <- which(B[max_ind[2],]>0)
-      mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+    for( ch in 1:nc ){
+      A_adj <- which(A[[ch]][max_ind[1],]>0)
+      B_adj <- which(B[[ch]][max_ind[2],]>0)
+      mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
       M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-      A <- Matrix::t(A)
-      B <- Matrix::t(B)
+      if(directed){
+        A[[ch]] <- Matrix::t(A[[ch]])
+        B[[ch]] <- Matrix::t(B[[ch]])
+        A_adj <- which(A[[ch]][max_ind[1],]>0)
+        B_adj <- which(B[[ch]][max_ind[2],]>0)
+        mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        A[[ch]] <- Matrix::t(A[[ch]])
+        B[[ch]] <- Matrix::t(B[[ch]])
+      }
     }
     
     M[max_ind[1],] <- -n

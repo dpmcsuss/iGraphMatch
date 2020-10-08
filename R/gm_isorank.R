@@ -32,63 +32,64 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using IsoRank algorithm
-#' startm <- matrix(0, 10, 10)
-#' diag(startm)[1:4] <- 1
+#' startm <- init_start("bari", nns = 6, ns = 4)
 #' GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
 #'
 #' @export
 #'
 graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, 
                                 alpha = .5, max_iter = 50, method = "greedy"){
-  A <- A[]
-  B <- B[]
   
-  totv1 <- nrow(A)
-  totv2 <- nrow(B)
+  graph_pair <- check_graph(A, B)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  totv1 <- graph_pair$totv1
+  totv2 <- graph_pair$totv2
+  nc <- length(A)
   
-  # padding if two graphs different sizes
-  if(totv1 > totv2){
-    diff <- totv1 - totv2
-    B <- pad(B[], diff)
-  }else if(totv1 < totv2){
-    diff <- totv2 - totv1
-    A <- pad(A[], diff)
-  }
-  
-  # computing transition matrix A
-  colS_A <- Matrix::colSums(A)
-  colS_B <- Matrix::colSums(B)
-  A <- A %*% Matrix::Diagonal(nrow(A), ifelse(colS_A == 0, 0, 1/colS_A))
-  B <- B %*% Matrix::Diagonal(nrow(B), ifelse(colS_B == 0, 0, 1/colS_B))
-  E <- similarity / sum(abs(similarity))
-  
-  # computing R by power method
-  R_new <- E
-  tol <- 1e-2
-  iter <- 1
-  diff <- 1
-  while(diff > tol & iter <= max_iter){
-    
-    R <- R_new
-    if(alpha>0){
-      AR <- A %*% R %*% Matrix::t(B)
-      AR <- alpha * AR + (1-alpha) * E
-    } else{
-      AR <- A %*% R %*% Matrix::t(B)
-    }
-    R_new <- AR / sum(abs(AR))
-    diff <- sum(abs(R-R_new))
-    iter <- iter + 1
-  }
-
-  seeds_log <- check_seeds(seeds, nv = max(totv1, totv2), logical = TRUE)
   seeds <- check_seeds(seeds, nv = max(totv1, totv2))
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
-  R <- R[!seeds_log, !seeds_log]
-  R <- as.matrix(R)
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  if(!is.null(similarity) && dim(similarity)[1] != dim(similarity)[2]){
+    diff <- dim(similarity)[1] - dim(similarity)[2]
+    similarity <- pad(similarity, max(-diff, 0), max(diff, 0))
+  }
+  R <- E <- similarity / sum(abs(similarity))
+  tol <- 1e-2
+  R_tot <- matrix(0, nrow(R), ncol(R))
+  
+  for( ch in 1:nc ){
+    
+    iter <- 1
+    diff <- 1
+    
+    # computing transition matrix A
+    colS_A <- Matrix::colSums(A[[ch]])
+    colS_B <- Matrix::colSums(B[[ch]])
+    A[[ch]] <- A[[ch]] %*% Matrix::Diagonal(nrow(A[[ch]]), ifelse(colS_A == 0, 0, 1/colS_A))
+    B[[ch]] <- B[[ch]] %*% Matrix::Diagonal(nrow(B[[ch]]), ifelse(colS_B == 0, 0, 1/colS_B))
+    
+    # computing R by power method
+    while(diff > tol & iter <= max_iter){
+      
+      if(alpha>0){
+        AR <- A[[ch]] %*% R %*% Matrix::t(B[[ch]])
+        AR <- alpha * AR + (1-alpha) * E
+      } else{
+        AR <- A[[ch]] %*% R %*% Matrix::t(B[[ch]])
+      }
+      R_new <- AR / sum(abs(AR))
+      diff <- sum(abs(R-R_new))
+      iter <- iter + 1
+      R <- R_new
+    }
+    
+    R <- as.matrix(R)
+    R_tot <- R_tot + R
+  }
+  
   # find GNA
+  R <- R_tot[nonseeds$A, nonseeds$B]
   if(method == "greedy"){
     corr <- NULL
     while (max(R)>0) {

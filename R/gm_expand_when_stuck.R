@@ -1,3 +1,8 @@
+cal_mark <- function(x,y){
+  1 - abs(x - y) / max(x, y)
+}
+
+
 #' @rdname gm_perco
 #' @return \code{graph_match_ExpandWhenStuck} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
@@ -21,49 +26,66 @@
 #'
 graph_match_ExpandWhenStuck <- function(A, B, seeds, 
                                         similarity = NULL, r = 2){
-  # this will make the graphs be matrices if they are igraph objects
-  graph_pair <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
+
+  graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
-
-  weighted <- any(A != 0 | A != 1 | B != 0 | B != 1)
+  nc <- length(A)
 
   n <- max(totv1, totv2)
-  P <- Matrix::Matrix(0, nrow = totv1, ncol = totv2)
-  seeds <- check_seeds(seeds, n)$seeds
+  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
+  nonseeds <- seeds$nonseeds
+  seeds_ori <- seeds <- seeds$seeds
   ns <- nrow(seeds)
-  seeds_ori <- seeds
-  P[as.matrix(seeds)] <- 1
-  M <- Matrix::Matrix(0, totv1, totv2)
+  Z <- seeds #matched nodes
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
+  similarity <- (similarity - min(similarity)) / (max(similarity) - min(similarity))
+  if(is.na(similarity)[1,1]){
+    M <- matrix(0, totv1, totv2) #marks matrix
+  } else{
+    M <- similarity
+  }
   M[seeds_ori$A,] <- -n * n
   M[,seeds_ori$B] <- -n * n
-  Z <- seeds
 
   # deferred percolation graph matching
   while(nrow(seeds) != 0){
     # mark neighbors
-    if(weighted){
+    for(ch in 1:nc){
+      directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
+      
       for(i in 1:nrow(seeds)){
-        A_adj <- which(A[seeds$A[i],]>0)
-        B_adj <- which(B[seeds$B[i],]>0)
+        A_adj <- which(A[[ch]][seeds$A[i],]>0)
+        B_adj <- which(B[[ch]][seeds$B[i],]>0)
         if(length(A_adj) != 0 && length(B_adj) != 0){
-          mark <- outer(A[seeds$A[i],A_adj], B[seeds$B[i],B_adj], cal_mark)
+          mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
         }
+        if(directed){
+          A[[ch]] <- Matrix::t(A[[ch]])
+          B[[ch]] <- Matrix::t(B[[ch]])
+          A_adj <- which(A[[ch]][seeds$A[i],]>0)
+          B_adj <- which(B[[ch]][seeds$B[i],]>0)
+          if(length(A_adj) != 0 && length(B_adj) != 0){
+            mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
+            M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+          }
+          A[[ch]] <- Matrix::t(A[[ch]])
+          B[[ch]] <- Matrix::t(B[[ch]])
+        }
       }
-    } else{
-      Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-      Pi[as.matrix(seeds)] <- 1
-      M <- M + (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
     }
 
     # choose pairs with marks ge r
     while(max(M) >= r){
       max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
       if(nrow(max_ind) != 1){
-        degree_diff <- abs(rowSums(A)[max_ind[,1]]-rowSums(B)[max_ind[,2]])
+        degree_diff <- 0
+        for (ch in 1:nc) {
+          degree_diff <- degree_diff + abs(rowSums(A[[ch]])[max_ind[,1]]-rowSums(B[[ch]])[max_ind[,2]])
+        }
         max_ind <- max_ind[which(degree_diff == min(degree_diff)),]
         if(is.vector(max_ind) == FALSE){
           max_ind <- max_ind[sample(nrow(max_ind),1),]
@@ -71,34 +93,32 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
       }
 
       # update mark matrix
-      if(weighted){
-        A_adj <- which(A[max_ind[1],]>0)
-        B_adj <- which(B[max_ind[2],]>0)
-        if(length(A_adj) != 0 && length(B_adj) != 0){
-          mark <- outer(A[max_ind[1],A_adj], B[max_ind[2],B_adj], cal_mark)
+      for( ch in 1:nc ){
+        A_adj <- which(A[[ch]][max_ind[1],]>0)
+        B_adj <- which(B[[ch]][max_ind[2],]>0)
+        mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
+        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+        if(directed){
+          A[[ch]] <- Matrix::t(A[[ch]])
+          B[[ch]] <- Matrix::t(B[[ch]])
+          A_adj <- which(A[[ch]][max_ind[1],]>0)
+          B_adj <- which(B[[ch]][max_ind[2],]>0)
+          mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+          A[[ch]] <- Matrix::t(A[[ch]])
+          B[[ch]] <- Matrix::t(B[[ch]])
         }
-      } else{
-        Pi <- Matrix::Matrix(0, nrow=totv1, ncol = totv2)
-        Pi[max_ind[1], max_ind[2]] <- 1 
-        delta <- (Matrix::t(A) %*% Pi %*% B + A %*% Pi %*% Matrix::t(B)) / 2
-        M <- M + delta
       }
+  
       M[max_ind[1],] <- -n * n
       M[,max_ind[2]] <- -n * n
       max_ind <- data.frame(A = max_ind[1], B = max_ind[2])
       Z <- rbind(Z, max_ind)
     }
 
-    seeds_old <- seeds
     seeds <- which(M > 0 & M < r, arr.ind = TRUE)
-    seeds <- data.frame(A=seeds[,1], B=seeds[,2])
+    seeds <- data.frame(A = seeds[,1], B = seeds[,2])
 
-    if(nrow(seeds) == nrow(seeds_old)){
-      if(sum(seeds == seeds_old)==2*nrow(seeds)){
-        break
-      }
-    }
   }
 
   # matching result
