@@ -42,10 +42,9 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
   Z <- seeds #matched nodes
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   similarity <- (similarity - min(similarity)) / (max(similarity) - min(similarity))
-  if(is.na(similarity)[1,1]){
-    M <- matrix(0, totv1, totv2) #marks matrix
-  } else{
-    M <- similarity
+  M <- matrix(0, totv1, totv2) #marks matrix
+  if(!is.na(similarity)[1,1]){
+    M[nonseeds$A, nonseeds$B] <- similarity
   }
   M[seeds_ori$A,] <- -n * n
   M[,seeds_ori$B] <- -n * n
@@ -116,9 +115,14 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
       Z <- rbind(Z, max_ind)
     }
 
+    seeds_old <- seeds
     seeds <- which(M > 0 & M < r, arr.ind = TRUE)
     seeds <- data.frame(A = seeds[,1], B = seeds[,2])
-
+    
+    if( (nrow(seeds) == nrow(seeds_old)) && (sum(seeds == seeds_old) == 2*nrow(seeds))){
+      break
+    }
+    
   }
 
   # matching result
