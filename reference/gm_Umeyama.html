@@ -160,8 +160,26 @@ similarity scores.</p></td>
 <span class='va'>g2</span> <span class='op'>&lt;-</span> <span class='va'>G</span><span class='op'>$</span><span class='va'>graph2</span>
 <span class='va'>startm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='va'>startm</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
-<span class='fu'>graph_match_Umeyama</span><span class='op'>(</span><span class='va'>G1</span>, <span class='va'>G2</span>, <span class='va'>startm</span>, alpha <span class='op'>=</span> <span class='fl'>.3</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in check_graph(A, B): object 'G1' not found</span></div><div class='input'>
+<span class='fu'>graph_match_Umeyama</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>startm</span>, alpha <span class='op'>=</span> <span class='fl'>.3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $call
+#&gt; graph_match_Umeyama(A = g1, B = g2, similarity = startm, alpha = 0.3)
+#&gt; 
+#&gt; $corr
+#&gt;    corr_A corr_B
+#&gt; 1       1      1
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      4
+#&gt; 5       5      5
+#&gt; 6       6      6
+#&gt; 7       7      7
+#&gt; 8       8      8
+#&gt; 9       9      9
+#&gt; 10     10     10
+#&gt; 
+#&gt; $ns
+#&gt; [1] 0
+#&gt; </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
