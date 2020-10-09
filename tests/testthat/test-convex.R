@@ -22,3 +22,10 @@ test_that("doubly stochastic", {
 test_that("number of seeds", {
   expect_equal(actual$ns,0)
 })
+
+
+# test output error when given start = "convex"
+test_that("doubly stochastic", {
+  expect_error(graph_match_convex(A, B, start = "convex"), 
+               "Cannot start convex with convex. Try \"bari\" or another option.")
+})
