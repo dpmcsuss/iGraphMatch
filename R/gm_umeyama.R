@@ -70,6 +70,6 @@ graph_match_Umeyama <- function(A, B, similarity = NULL,
   corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
   corr <- corr[order(corr$corr_A),]
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = 0)
+  z <- list(call = cl, corr = corr, ns = nrow(seeds))
   z
 }
