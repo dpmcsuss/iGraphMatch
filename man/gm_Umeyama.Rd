@@ -35,9 +35,11 @@ Spectral Graph Matching Methods: Umeyama Algorithm
 \examples{
 # match G_1 & G_2 using Umeyama algorithm
 G <- sample_correlated_gnp_pair(10, .9, .5)
-G1 <- G$graph1
-G2 <- G$graph2
-GM_U <- graph_match_Umeyama(G1, G2, startm, alpha = .3)
+g1 <- G$graph1
+g2 <- G$graph2
+startm <- matrix(0, 10, 10)
+diag(startm)[1:4] <- 1
+graph_match_Umeyama(G1, G2, startm, alpha = .3)
 
 }
 \references{

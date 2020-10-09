@@ -32,7 +32,8 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using IsoRank algorithm
-#' startm <- init_start("bari", nns = 6, ns = 4)
+#' startm <- matrix(0, 10, 10)
+#' diag(startm)[1:4] <- 1
 #' GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
 #'
 #' @export

@@ -47,7 +47,6 @@ seeds <- 1:5
 graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 
 # match G_1 & G_2 using percolation graph matching method
-seeds <- 1:5
 graph_match_percolation(g1, g2, seeds, r = 2)
 
 }
