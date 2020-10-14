@@ -41,10 +41,10 @@ gm_indefinite(
 graph_match_PATH(
   A,
   B,
-  similarity = NULL,
   seeds = NULL,
-  alpha = 0.5,
-  epsilon = 1
+  similarity = NULL,
+  epsilon = 1,
+  lap_method = NULL
 )
 }
 \arguments{
@@ -69,10 +69,6 @@ max_iter times number of total vertices of \eqn{G_1}.}
 \item{tol}{A number. Tolerance of edge disagreements.}
 
 \item{lap_method}{Choice for lap method.}
-
-\item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
-on the information in network topology over other information such as
-similarity scores}
 
 \item{epsilon}{A small number}
 }

@@ -1,5 +1,5 @@
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/dpmcsuss/iGraphMatch/branch/master/graph/badge.svg)](https://codecov.io/gh/dpmcsuss/iGraphMatch?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/dpmcsuss/iGraphMatch/branch/dev/graph/badge.svg)](https://codecov.io/gh/dpmcsuss/iGraphMatch?branch=dev)
 <!-- badges: end -->
 
 <!-- [![Build Status](https://travis-ci.com/dpmcsuss/iGraphMatch.svg?branch=dev)](https://travis-ci.com/dpmcsuss/iGraphMatch) -->
@@ -35,3 +35,18 @@ Documentation
 ------------
 
 Documentation can be found via the help in R and at https://dpmcsuss.github.io/iGraphMatch/.
+
+
+
+Author and Contributors
+-----------------------
+
+The primary authors for the package are Vince Lyzinski, Zihuan Qiao, and Daniel Sussman.
+
+Joshua Agterberg, Lujia Wang, and Yixin Kong also provided important contributions. We also want to thank all of our users, especially Youngser Park, for their feedback and patience as we continue to develop the package.
+
+
+Support
+-------
+
+This work was supported in part by grants from DARPA (FA8750-20-2-1001 and FA8750-18-0035) and from MIT Lincoln Labs.

@@ -9,9 +9,6 @@
 #'   vector. If not, seeds must be  a matrix.
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
-#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
-#'   on the information in network topology over other information such as
-#'   similarity scores.
 #'   
 #' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
@@ -28,12 +25,12 @@
 #' g2 <- G$graph2
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
-#' graph_match_Umeyama(g1, g2, startm, alpha = .3)
+#' graph_match_Umeyama(g1, g2, startm)
 #'
 #' @export
 #'
 graph_match_Umeyama <- function(A, B, similarity = NULL, 
-                                seeds = NULL, alpha = .5){
+                                seeds = NULL){
   
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
@@ -58,11 +55,11 @@ graph_match_Umeyama <- function(A, B, similarity = NULL,
     U_A <- eigen(A[[ch]])$vectors
     U_B <- eigen(B[[ch]])$vectors
     AB <- Matrix::tcrossprod(abs(U_B), abs(U_A))
-    Grad <- Grad + alpha * AB[nonseeds$A, nonseeds$B]
+    Grad <- Grad + AB[nonseeds$A, nonseeds$B]
   }
   
 
-  Grad <- alpha * Grad / nc + (1-alpha) * Matrix::t(similarity)
+  Grad <- Grad + Matrix::t(similarity)
   Grad <- Grad - min(Grad)
   lap_method <- set_lap_method(NULL, totv1, totv2)
   ind <- do_lap(Grad, lap_method)

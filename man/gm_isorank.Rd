@@ -9,7 +9,6 @@ graph_match_IsoRank(
   B,
   similarity,
   seeds = NULL,
-  alpha = 0.5,
   max_iter = 50,
   method = "greedy"
 )
@@ -26,10 +25,6 @@ the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
-
-\item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
-on the information in network topology over other information such as
-similarity scores}
 
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
@@ -54,7 +49,7 @@ g2 <- cgnp_pair$graph2
 # match G_1 & G_2 using IsoRank algorithm
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
-GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
+GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, method = "greedy")
 
 }
 \references{
