@@ -9,9 +9,6 @@
 #'   vector. If not, seeds must be  a matrix
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
-#' @param alpha A number betwen 0 and 1. Bigger alpha means putting more importance
-#'   on the information in network topology over other information such as
-#'   similarity scores
 #' @param max_iter A number. Maximum number of replacing matches equals to
 #'   max_iter times number of total vertices of \eqn{G_1}.
 #' @param method A character. Choice of method to extract mapping from score matrix,
@@ -34,12 +31,12 @@
 #' # match G_1 & G_2 using IsoRank algorithm
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
-#' GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, alpha = .3, method = "greedy")
+#' GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, method = "greedy")
 #'
 #' @export
 #'
 graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, 
-                                alpha = .5, max_iter = 50, method = "greedy"){
+                                max_iter = 50, method = "greedy"){
   
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
@@ -73,12 +70,8 @@ graph_match_IsoRank <- function(A, B, similarity, seeds = NULL,
     # computing R by power method
     while(diff > tol & iter <= max_iter){
       
-      if(alpha>0){
-        AR <- A[[ch]] %*% R %*% Matrix::t(B[[ch]])
-        AR <- alpha * AR + (1-alpha) * E
-      } else{
-        AR <- A[[ch]] %*% R %*% Matrix::t(B[[ch]])
-      }
+      AR <- A[[ch]] %*% R %*% Matrix::t(B[[ch]])
+      AR <- AR + E
       R_new <- AR / sum(abs(AR))
       diff <- sum(abs(R-R_new))
       iter <- iter + 1

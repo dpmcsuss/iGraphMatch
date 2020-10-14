@@ -50,9 +50,8 @@ graph_match_percolation <- function (A, B, seeds,
   ns <- nrow(seeds)
   Z <- seeds #matched nodes
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
-  similarity <- (similarity - min(similarity)) / (max(similarity) - min(similarity))
   M <- matrix(0, totv1, totv2) #marks matrix
-  if(!is.na(similarity)[1,1]){
+  if(sum(abs(similarity)) != 0){
     M[nonseeds$A, nonseeds$B] <- similarity
   }
   

@@ -4,7 +4,7 @@
 \alias{graph_match_Umeyama}
 \title{Spectral Graph Matching Methods: Umeyama Algorithm}
 \usage{
-graph_match_Umeyama(A, B, similarity = NULL, seeds = NULL, alpha = 0.5)
+graph_match_Umeyama(A, B, similarity = NULL, seeds = NULL)
 }
 \arguments{
 \item{A}{A matrix, igraph object, or list of either.}
@@ -18,10 +18,6 @@ the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be  a matrix.
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
-
-\item{alpha}{A number betwen 0 and 1. Bigger alpha means putting more importance
-on the information in network topology over other information such as
-similarity scores.}
 }
 \value{
 \code{graph_match_Umeyama} returns a list of graph matching 
@@ -39,7 +35,7 @@ g1 <- G$graph1
 g2 <- G$graph2
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
-graph_match_Umeyama(g1, g2, startm, alpha = .3)
+graph_match_Umeyama(g1, g2, startm)
 
 }
 \references{

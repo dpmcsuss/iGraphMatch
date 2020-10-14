@@ -10,21 +10,17 @@ diag(startm)[1:4] <- 1
 seeds<-1:4
 
 test_that("order of nodes getting matched", {
-  expect_equal(graph_match_IsoRank(A, B, startm, seeds, alpha = .3, method = "greedy")$order,
+  expect_equal(graph_match_IsoRank(A, B, startm, seeds, method = "greedy")$order,
                c(1,2,3,4,6,10,8,7,5,9))
 })
 test_that("test LAP method", {
-  expect_equal(graph_match_IsoRank(A, B, startm, seeds, alpha = .3, method = "LAP")$ns, 4)
-})
-test_that("test alpha = 0", {
-  expect_equal(graph_match_IsoRank(A, B, startm, seeds, alpha = 0, method = "LAP")$corr,
-               data.frame(corr_A = c(1:10), corr_B = c(1,2,3,4,10,8,7,9,5,6), row.names = as.character(1:10)))
+  expect_equal(graph_match_IsoRank(A, B, startm, seeds, method = "LAP")$ns, 4)
 })
 
 # create similarity score matrix that is not a square matrix
 startm <- startm[1:8,]
 test_that("test padding for similarity scores", {
-  expect_equal(graph_match_IsoRank(A, B, startm, seeds = NULL, alpha = 0.5, method = "LAP")$corr,
+  expect_equal(graph_match_IsoRank(A, B, startm, seeds = NULL, method = "LAP")$corr,
                data.frame(corr_A = c(1:10), corr_B = c(1,2,3,4,9,6,7,8,5,10), row.names = as.character(1:10)))
 })
 
