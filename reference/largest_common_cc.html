@@ -148,18 +148,18 @@ the original graphs remain in the induced subgraph.</p>
 <span class='va'>lccs1</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, min_degree <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='co'># induced subgraph</span>
 <span class='va'>lccs1</span><span class='op'>$</span><span class='va'>g1</span>
-</div><div class='output co'>#&gt; IGRAPH 2b4318a U--- 6 6 -- Erdos renyi (gnp) graph
+</div><div class='output co'>#&gt; IGRAPH 18213c8 U--- 6 6 -- Erdos renyi (gnp) graph
 #&gt; + attr: name (g/c), type (g/c), loops (g/l), p (g/n)
-#&gt; + edges from 2b4318a:
+#&gt; + edges from 18213c8:
 #&gt; [1] 1--2 2--4 3--5 1--6 2--6 3--6</div><div class='input'><span class='va'>lccs1</span><span class='op'>$</span><span class='va'>g2</span>
-</div><div class='output co'>#&gt; IGRAPH dfcba71 U--- 6 6 -- Erdos renyi (gnp) graph
+</div><div class='output co'>#&gt; IGRAPH a9b2e78 U--- 6 6 -- Erdos renyi (gnp) graph
 #&gt; + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1
 #&gt; | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),
 #&gt; | loops (g/l), p (g/n)
-#&gt; + edges from dfcba71:
+#&gt; + edges from a9b2e78:
 #&gt; [1] 5--6 3--6 3--5 3--4 2--6 1--6</div><div class='input'><span class='co'># label of vertices of the induced subgraph in the original graph</span>
 <span class='fu'>igraph</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/igraph/man/V.html'>V</a></span><span class='op'>(</span><span class='va'>g1</span><span class='op'>)</span><span class='op'>[</span><span class='va'>lccs1</span><span class='op'>$</span><span class='va'>keep</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; + 6/10 vertices, from 218606e:
+</div><div class='output co'>#&gt; + 6/10 vertices, from 9766550:
 #&gt; [1]  2  4  6  8  9 10</div><div class='input'>
 <span class='co'># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span>
 <span class='va'>lccs3</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, min_degree <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>

@@ -147,10 +147,10 @@
 <span class='fu'>graph_match_PATH</span><span class='op'>(</span>
   <span class='va'>A</span>,
   <span class='va'>B</span>,
-  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   seeds <span class='op'>=</span> <span class='cn'>NULL</span>,
-  alpha <span class='op'>=</span> <span class='fl'>0.5</span>,
-  epsilon <span class='op'>=</span> <span class='fl'>1</span>
+  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
+  epsilon <span class='op'>=</span> <span class='fl'>1</span>,
+  lap_method <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -193,12 +193,6 @@ max_iter times number of total vertices of \(G_1\).</p></td>
     <tr>
       <th>lap_method</th>
       <td><p>Choice for lap method.</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>A number betwen 0 and 1. Bigger alpha means putting more importance
-on the information in network topology over other information such as
-similarity scores</p></td>
     </tr>
     <tr>
       <th>epsilon</th>
@@ -520,64 +514,50 @@ pages 2227-2242.</p>
 #&gt; 
 #&gt; $corr
 #&gt;    corr_A corr_B
-#&gt; 1       1      1
-#&gt; 2       2      2
-#&gt; 3       3      3
+#&gt; 1       1      8
+#&gt; 2       2      9
+#&gt; 3       3      1
 #&gt; 4       4      4
-#&gt; 5       5      5
-#&gt; 6       6      6
-#&gt; 7       7      7
-#&gt; 8       8      8
-#&gt; 9       9      9
-#&gt; 10     10     10
+#&gt; 5       5      3
+#&gt; 6       6     10
+#&gt; 7       7      6
+#&gt; 8       8      7
+#&gt; 9       9      2
+#&gt; 10     10      5
 #&gt; 
 #&gt; $ns
 #&gt; [1] 0
 #&gt; 
 #&gt; $P
-#&gt; 10 x 10 diagonal matrix of class "ddiMatrix"
-#&gt;       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
-#&gt;  [1,]    1    .    .    .    .    .    .    .    .     .
-#&gt;  [2,]    .    1    .    .    .    .    .    .    .     .
-#&gt;  [3,]    .    .    1    .    .    .    .    .    .     .
-#&gt;  [4,]    .    .    .    1    .    .    .    .    .     .
-#&gt;  [5,]    .    .    .    .    1    .    .    .    .     .
-#&gt;  [6,]    .    .    .    .    .    1    .    .    .     .
-#&gt;  [7,]    .    .    .    .    .    .    1    .    .     .
-#&gt;  [8,]    .    .    .    .    .    .    .    1    .     .
-#&gt;  [9,]    .    .    .    .    .    .    .    .    1     .
-#&gt; [10,]    .    .    .    .    .    .    .    .    .     1
+#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
+#&gt;                          
+#&gt;  [1,] . . . . . . . 1 . .
+#&gt;  [2,] . . . . . . . . 1 .
+#&gt;  [3,] 1 . . . . . . . . .
+#&gt;  [4,] . . . 1 . . . . . .
+#&gt;  [5,] . . 1 . . . . . . .
+#&gt;  [6,] . . . . . . . . . 1
+#&gt;  [7,] . . . . . 1 . . . .
+#&gt;  [8,] . . . . . . 1 . . .
+#&gt;  [9,] . 1 . . . . . . . .
+#&gt; [10,] . . . . 1 . . . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                                
-#&gt;  [1,] 0.730916 .        .        . .        .        .        0.269084 .       
-#&gt;  [2,] .        0.730916 .        . .        .        .        .        0.269084
-#&gt;  [3,] 0.269084 .        0.730916 . .        .        .        .        .       
-#&gt;  [4,] .        .        .        1 .        .        .        .        .       
-#&gt;  [5,] .        .        0.269084 . 0.730916 .        .        .        .       
-#&gt;  [6,] .        .        .        . .        0.730916 .        .        .       
-#&gt;  [7,] .        .        .        . .        0.269084 0.730916 .        .       
-#&gt;  [8,] .        .        .        . .        .        0.269084 0.730916 .       
-#&gt;  [9,] .        0.269084 .        . .        .        .        .        0.730916
-#&gt; [10,] .        .        .        . 0.269084 .        .        .        .       
-#&gt;               
-#&gt;  [1,] .       
-#&gt;  [2,] .       
-#&gt;  [3,] .       
-#&gt;  [4,] .       
-#&gt;  [5,] .       
-#&gt;  [6,] 0.269084
-#&gt;  [7,] .       
-#&gt;  [8,] .       
-#&gt;  [9,] .       
-#&gt; [10,] 0.730916
+#&gt;                                          
+#&gt;  [1,] . . . . . . . 0.5176403 0.4823597 .
+#&gt;  [2,] . . . . . . . 0.4823597 0.5176403 .
+#&gt;  [3,] 1 . . . . . . .         .         .
+#&gt;  [4,] . . . 1 . . . .         .         .
+#&gt;  [5,] . . 1 . . . . .         .         .
+#&gt;  [6,] . . . . . . . .         .         1
+#&gt;  [7,] . . . . . 1 . .         .         .
+#&gt;  [8,] . . . . . . 1 .         .         .
+#&gt;  [9,] . 1 . . . . . .         .         .
+#&gt; [10,] . . . . 1 . . .         .         .
 #&gt; 
 #&gt; $iter
-#&gt; [1] 2
-#&gt; 
-#&gt; $lambda
-#&gt; [1] 1
+#&gt; [1] 6
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
