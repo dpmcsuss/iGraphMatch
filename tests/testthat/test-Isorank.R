@@ -25,13 +25,11 @@ test_that("test padding for similarity scores", {
 })
 
 set.seed(12)
-g2 <- sample_correlated_gnp_pair(n = 10, corr = 0.7, p = 0.3)
-A2 <- g2$graph1
-B2 <- g2$graph2
-
-A_l <- list(A, A2)
-B_l <- list(B, B2)
+gp_list <- replicate(2, sample_correlated_gnp_pair(10, .5, .5), simplify = FALSE)
+A <- lapply(gp_list, function(gp)gp[[1]])
+B <- lapply(gp_list, function(gp)gp[[2]])
+seeds <- 1:3
 
 test_that("IsoRank multi-layer", {
-  expect_equal(graph_match_IsoRank(A_l, B_l, startm, seeds = 1:3)$ns, 3)
+  expect_equal(graph_match_IsoRank(A, B, startm, seeds = 1:3)$ns, 3)
 })

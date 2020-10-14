@@ -45,13 +45,13 @@ test_that("ExpandWhenStuck multi-layer", {
 
 
 # multiple candidate matches with same score
-set.seed(123)
-g <- sample_correlated_gnp_pair(n = 50, corr = 0.5, p = 0.8, directed = TRUE)
-A <- g$graph1
-B <- g$graph2
-seeds <- 1:10
+set.seed(12)
+gp_list <- replicate(2, sample_correlated_gnp_pair(10, .5, .5), simplify = FALSE)
+A <- lapply(gp_list, function(gp)gp[[1]])
+B <- lapply(gp_list, function(gp)gp[[2]])
+seeds <- 1:3
 test_that("perco w. similarity score", {
-  expect_equal(graph_match_ExpandWhenStuck(A, B, seeds = seeds)$ns, 10)
+  expect_equal(graph_match_ExpandWhenStuck(A, B, seeds = seeds)$ns, 3)
 })
 
 
