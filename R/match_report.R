@@ -286,6 +286,8 @@ match_plot_matrix <- function(A, B, match) {
   m <- A - B
   col <- grDevices::colorRampPalette(
     c("#AA4444", "#888888", "#44AA44"))
-  print(image(m, col.regions = col(256)))
+  m_max <- max(abs(m))
+  at <- seq(-m_max * 1.0001, m_max * 1.0001, length.out = 16)
+  print(image(m, col.regions = col(15), at=at, colorkey=list(at = at)))
   invisible(m) 
 }
