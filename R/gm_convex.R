@@ -114,8 +114,9 @@ graph_match_convex <- function(A, B, seeds = NULL,
     bq <- innerproduct(Cnn, Dnn) +
       innerproduct(Cns, Dns) +
       innerproduct(Csn, Dsn)
-    aopt <- ifelse(aq == 0 && bq == 0, 0,
-      ifelse(-bq / aq > 1, 1, -bq/aq))
+    
+    aopt <- ifelse(aq == 0 & bq == 0, 0,
+      ifelse(-bq / aq > 1, 1, -bq / aq))
     alpha_seq <- c(alpha_seq, aopt)
     # Pseq <- c(Pseq, Pdir)
     P_new <- aopt * P + (1 - aopt) * Pdir

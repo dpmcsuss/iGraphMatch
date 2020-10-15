@@ -573,10 +573,16 @@ setMethod("innerproduct", signature(x = "Matrix", y = "splrMatrix"),
   function(x, y){ .innerproduct_Matrix(y, x)})
 
 #' @rdname innerproduct
-setMethod("innerproduct", signature(x = "matrix_list", y = "matrix_list"),
+setMethod(
+  "innerproduct",
+  signature(x = "matrix_list", y = "matrix_list"),
   function(x, y){
-  sapply(seq_along(x), function(i) innerproduct(x[[i]], y[[i]]))
-})
+    sum(sapply(
+      seq_along(x),
+      function(i) innerproduct(x[[i]], y[[i]])
+    ))
+  }
+)
 
 
 #complete
