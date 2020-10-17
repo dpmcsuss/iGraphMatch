@@ -11,9 +11,9 @@ graph_match_convex(
   A,
   B,
   seeds = NULL,
+  similarity = NULL,
   start = "bari",
   max_iter = 100,
-  similarity = NULL,
   tol = 1e-05,
   lap_method = NULL
 )
@@ -22,9 +22,9 @@ graph_match_FW(
   A,
   B,
   seeds = NULL,
+  similarity = NULL,
   start = "bari",
   max_iter = 20,
-  similarity = NULL,
   lap_method = NULL
 )
 
@@ -32,9 +32,9 @@ gm_indefinite(
   A,
   B,
   seeds = NULL,
+  similarity = NULL,
   start = "bari",
   max_iter = 20,
-  similarity = NULL,
   lap_method = NULL
 )
 
@@ -58,13 +58,13 @@ vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
 
+\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
+
 \item{start}{A matrix or a character. Any \code{nns-by-nns} matrix or
 character value like "bari" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
-
-\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 

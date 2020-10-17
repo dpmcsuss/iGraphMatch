@@ -46,8 +46,8 @@
 #' @export
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
-  start = "bari", max_iter = 20,
-  similarity = NULL, lap_method = NULL) {
+  similarity = NULL, start = "bari", 
+  max_iter = 20, lap_method = NULL) {
 
 
   graph_pair <- check_graph(A, B)

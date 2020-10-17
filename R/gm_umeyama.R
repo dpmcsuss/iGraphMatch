@@ -29,8 +29,8 @@
 #'
 #' @export
 #'
-graph_match_Umeyama <- function(A, B, similarity = NULL, 
-                                seeds = NULL){
+graph_match_Umeyama <- function(A, B, seeds = NULL, 
+                                similarity = NULL){
   
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]

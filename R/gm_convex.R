@@ -24,7 +24,7 @@
 #'
 #'
 graph_match_convex <- function(A, B, seeds = NULL, 
-  start = "bari", max_iter = 100, similarity = NULL,
+  similarity = NULL, start = "bari", max_iter = 100, 
   tol = 1e-5, lap_method = NULL) {
   graph_pair <- check_graph(A, B)
   A <- matrix_list(graph_pair[[1]])

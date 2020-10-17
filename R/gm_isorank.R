@@ -35,7 +35,7 @@
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, similarity, seeds = NULL, 
+graph_match_IsoRank <- function(A, B, seeds = NULL, similarity, 
                                 max_iter = 50, method = "greedy"){
   
   graph_pair <- check_graph(A, B)
