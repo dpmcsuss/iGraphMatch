@@ -112,8 +112,8 @@
     <pre class="usage"><span class='fu'>graph_match_IsoRank</span><span class='op'>(</span>
   <span class='va'>A</span>,
   <span class='va'>B</span>,
-  <span class='va'>similarity</span>,
   seeds <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>similarity</span>,
   max_iter <span class='op'>=</span> <span class='fl'>50</span>,
   method <span class='op'>=</span> <span class='st'>"greedy"</span>
 <span class='op'>)</span></pre>
@@ -130,16 +130,16 @@
       <td><p>A matrix, igraph object, or list of either.</p></td>
     </tr>
     <tr>
-      <th>similarity</th>
-      <td><p>A matrix. An <code>n-by-n</code> matrix containing vertex similaities.</p></td>
-    </tr>
-    <tr>
       <th>seeds</th>
       <td><p>A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \(G_1\) and
 the second column being the corresponding indices of \(G_2\).</p></td>
+    </tr>
+    <tr>
+      <th>similarity</th>
+      <td><p>A matrix. An <code>n-by-n</code> matrix containing vertex similaities.</p></td>
     </tr>
     <tr>
       <th>max_iter</th>
@@ -174,7 +174,7 @@ orthology detection</em>. Proc Natl Acad Sci. USA, pages 12763-12768.</p>
 <span class='va'>startm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>10</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='va'>startm</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
 <span class='va'>GM_IsoRank</span> <span class='op'>&lt;-</span> <span class='fu'>graph_match_IsoRank</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>startm</span>, method <span class='op'>=</span> <span class='st'>"greedy"</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='error'>Error in graph_match_IsoRank(g1, g2, startm, method = "greedy"): argument "similarity" is missing, with no default</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

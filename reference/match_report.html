@@ -176,13 +176,13 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 </div><div class='output co'>#&gt; Call: 
 #&gt; graph_match_percolation(A = A, B = B, seeds = 1:4)
 #&gt; 
-#&gt; # Matches: 0
-#&gt;                    
-#&gt; common_edges      3
-#&gt; missing_edges     1
-#&gt; extra_edges       1
-#&gt; common_non_edges 40
-#&gt; fnorm             2
+#&gt; # Matches: 1
+#&gt;                           
+#&gt; common_edges      4.000000
+#&gt; missing_edges     2.000000
+#&gt; extra_edges       2.000000
+#&gt; common_non_edges 37.000000
+#&gt; fnorm             2.828427
 #&gt; </div><div class='input'>
 <span class='va'>gp_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fl'>3</span>,
    <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>.8</span>, <span class='fl'>.3</span><span class='op'>)</span>,
@@ -192,8 +192,8 @@ or undirected. NULL defaults to !isSymmetric(A).</p></td>
 <span class='va'>corr</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>corr_A <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span>, corr_B <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>100</span><span class='op'>)</span>
 <span class='fu'>edge_match_info</span><span class='op'>(</span><span class='va'>corr</span>, <span class='va'>A</span>, <span class='va'>B</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   layer common_edges missing_edges extra_edges common_non_edges    fnorm
-#&gt; 1     1         1283           193         213             3261 28.49561
-#&gt; 2     2         1281           202         207             3260 28.60070
+#&gt; 1     1         1282           193         204             3271 28.17801
+#&gt; 2     2         1281           203         221             3245 29.12044
 #&gt; 3     3         1293           194         204             3259 28.21347</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

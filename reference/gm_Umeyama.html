@@ -109,7 +109,7 @@
     <p>Spectral Graph Matching Methods: Umeyama Algorithm</p>
     </div>
 
-    <pre class="usage"><span class='fu'>graph_match_Umeyama</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, similarity <span class='op'>=</span> <span class='cn'>NULL</span>, seeds <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>graph_match_Umeyama</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, seeds <span class='op'>=</span> <span class='cn'>NULL</span>, similarity <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -123,16 +123,16 @@
       <td><p>A matrix, igraph object, or list of either.</p></td>
     </tr>
     <tr>
-      <th>similarity</th>
-      <td><p>A matrix. An <code>n-by-n</code> matrix containing vertex similaities.</p></td>
-    </tr>
-    <tr>
       <th>seeds</th>
       <td><p>A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be  a matrix.
 or a data frame, with the first column being the indices of \(G_1\) and
 the second column being the corresponding indices of \(G_2\).</p></td>
+    </tr>
+    <tr>
+      <th>similarity</th>
+      <td><p>A matrix. An <code>n-by-n</code> matrix containing vertex similaities.</p></td>
     </tr>
     </table>
 
@@ -156,23 +156,32 @@ the second column being the corresponding indices of \(G_2\).</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='va'>startm</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>
 <span class='fu'>graph_match_Umeyama</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>startm</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $call
-#&gt; graph_match_Umeyama(A = g1, B = g2, similarity = startm)
+#&gt; graph_match_Umeyama(A = g1, B = g2, seeds = startm)
 #&gt; 
 #&gt; $corr
 #&gt;    corr_A corr_B
-#&gt; 1       1      1
-#&gt; 2       2      2
-#&gt; 3       3      3
-#&gt; 4       4      4
-#&gt; 5       5      5
-#&gt; 6       6      6
-#&gt; 7       7      7
-#&gt; 8       8      8
-#&gt; 9       9      9
-#&gt; 10     10     10
+#&gt; 2       0      1
+#&gt; 3       0      0
+#&gt; 4       0      0
+#&gt; 5       0      0
+#&gt; 6       0      0
+#&gt; 7       0      0
+#&gt; 8       0      0
+#&gt; 9       0      0
+#&gt; 10      0      0
+#&gt; 1       1      0
+#&gt; 11      2      2
+#&gt; 12      3      3
+#&gt; 13      4      4
+#&gt; 14      5      5
+#&gt; 15      6      6
+#&gt; 16      7      7
+#&gt; 17      8      8
+#&gt; 18      9      9
+#&gt; 19     10     10
 #&gt; 
 #&gt; $ns
-#&gt; [1] 0
+#&gt; [1] 10
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

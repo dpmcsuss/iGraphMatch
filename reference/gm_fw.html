@@ -117,9 +117,9 @@
   <span class='va'>A</span>,
   <span class='va'>B</span>,
   seeds <span class='op'>=</span> <span class='cn'>NULL</span>,
+  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   start <span class='op'>=</span> <span class='st'>"bari"</span>,
   max_iter <span class='op'>=</span> <span class='fl'>100</span>,
-  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   tol <span class='op'>=</span> <span class='fl'>1e-05</span>,
   lap_method <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
@@ -128,9 +128,9 @@
   <span class='va'>A</span>,
   <span class='va'>B</span>,
   seeds <span class='op'>=</span> <span class='cn'>NULL</span>,
+  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   start <span class='op'>=</span> <span class='st'>"bari"</span>,
   max_iter <span class='op'>=</span> <span class='fl'>20</span>,
-  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   lap_method <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
@@ -138,9 +138,9 @@
   <span class='va'>A</span>,
   <span class='va'>B</span>,
   seeds <span class='op'>=</span> <span class='cn'>NULL</span>,
+  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   start <span class='op'>=</span> <span class='st'>"bari"</span>,
   max_iter <span class='op'>=</span> <span class='fl'>20</span>,
-  similarity <span class='op'>=</span> <span class='cn'>NULL</span>,
   lap_method <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
@@ -173,6 +173,10 @@ or a data frame, with the first column being the indices of \(G_1\) and
 the second column being the corresponding indices of \(G_2\).</p></td>
     </tr>
     <tr>
+      <th>similarity</th>
+      <td><p>A matrix. An <code>n-by-n</code> matrix containing vertex similaities.</p></td>
+    </tr>
+    <tr>
       <th>start</th>
       <td><p>A matrix or a character. Any <code>nns-by-nns</code> matrix or
 character value like "bari" or "convex" to initialize the starting matrix.</p></td>
@@ -181,10 +185,6 @@ character value like "bari" or "convex" to initialize the starting matrix.</p></
       <th>max_iter</th>
       <td><p>A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \(G_1\).</p></td>
-    </tr>
-    <tr>
-      <th>similarity</th>
-      <td><p>A matrix. An <code>n-by-n</code> matrix containing vertex similaities.</p></td>
     </tr>
     <tr>
       <th>tol</th>
