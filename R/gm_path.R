@@ -23,7 +23,7 @@ delta_cal <- function(x, y){
 #'
 #'
 graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL, 
-                             epsilon = 1, lap_method = NULL){
+                             epsilon = 1, tol = 1e-05, lap_method = NULL){
   
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
@@ -40,7 +40,7 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   
   # lambda=0, convex relaxation
-  convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, tol = 1e-10)
+  convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, tol = tol)
   P <- convex_m$P[nonseeds$A, nonseeds$B]
   
   lambda <- 0

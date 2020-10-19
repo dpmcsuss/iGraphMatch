@@ -44,6 +44,7 @@ graph_match_PATH(
   seeds = NULL,
   similarity = NULL,
   epsilon = 1,
+  tol = 1e-05,
   lap_method = NULL
 )
 }
