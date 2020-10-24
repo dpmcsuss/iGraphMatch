@@ -74,21 +74,12 @@ max_iter times number of total vertices of \eqn{G_1}.}
 \item{epsilon}{A small number}
 }
 \value{
-\code{graph_match_convex} returns a list of graph matching results,
-  including the graph matching formula, a data frame containing the matching 
-  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-  \code{corr_B} and the number of seeds.
-
-\code{graph_match_FW} returns a list of graph matching results,
-  including the graph matching formula, a data frame containing the matching 
-  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-  \code{corr_B} and the number of seeds.
-
-\code{graph_match_PATH} returns a list of graph matching results,
-  including the graph matching formula, a data frame containing the matching 
-  correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-  \code{corr_B}, the number of seeds if any, the permutation matrix and the
-  doubly stochastic matrix before projection onto the permutation set.
+\code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match
+  _PATH} return a list of graph matching results, including the graph matching 
+  formula, a data frame containing the matching correspondence between \eqn{G_1} 
+  and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic 
+  matrix from the last iteration and the permutation matrix after projection, 
+  seeds and number of iterations.
 }
 \description{
 Match two given graphs, returns a list of graph matching

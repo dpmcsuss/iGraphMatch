@@ -13,7 +13,7 @@
 #' @return \code{graph_match_Umeyama} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-#'   and \code{corr_B} and the number of seeds. 
+#'   and \code{corr_B} and seeds. 
 #'
 #' @references S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
 #'   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
@@ -67,6 +67,9 @@ graph_match_Umeyama <- function(A, B, seeds = NULL,
   corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
   corr <- corr[order(corr$corr_A),]
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = nrow(seeds))
+  z <- list(
+    call = cl, 
+    corr = corr, 
+    seeds = seeds)
   z
 }

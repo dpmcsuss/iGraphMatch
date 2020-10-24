@@ -14,7 +14,8 @@ test_that("matching correspondence between graph1 and graph2", {
                data.frame(corr_A = c(1:10), corr_B = c(1,2,3,4,5,10,7,8,9,6)))
 })
 test_that("number of seeds", {
-  expect_equal(graph_match_Umeyama(A, B, seeds, startm)$ns, 4)
+  expect_equal(graph_match_Umeyama(A, B, seeds, startm)$seeds, 
+               data.frame(A = 1:4, B = 1:4))
 })
 
 # sample a pair of directed graphs 
@@ -28,7 +29,7 @@ test_that("matching correspondence between graph1 and graph2 for directed graphs
                data.frame(corr_A = c(1:10), corr_B = c(1,2,3,4,8,9,7,10,6,5)))
 })
 test_that("number of seeds for directed graphs", {
-  expect_equal(graph_match_Umeyama(A, B, similarity = startm)$ns, 0)
+  expect_equal(nrow(graph_match_Umeyama(A, B, similarity = startm)$seeds), 0)
 })
 
 
@@ -39,7 +40,8 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 seeds <- 1:3
 
 test_that("Umeyama multi-layer", {
-  expect_equal(graph_match_Umeyama(A, B, seeds = 1:3)$ns, 3)
+  expect_equal(graph_match_Umeyama(A, B, seeds = 1:3)$seeds, 
+               data.frame(A = 1:3, B = 1:3))
 })
 
 

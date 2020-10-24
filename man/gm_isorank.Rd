@@ -36,8 +36,8 @@ including greedy method and the Hungarian algorithm.}
 \code{graph_match_IsoRank} returns a list of graph matching 
   results, including the graph matching formula, a data frame containing the 
   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-  and \code{corr_B} and the number of seeds. If choose the greedy method to
-  extract mapping, the order of nodes getting matched will also be returned.
+  and \code{corr_B} and seeds. If choose the greedy method to extract mapping, 
+  the order of nodes getting matched will also be returned.
 }
 \description{
 Spectral Graph Matching Methods: IsoRank Algorithm
@@ -49,7 +49,7 @@ g2 <- cgnp_pair$graph2
 # match G_1 & G_2 using IsoRank algorithm
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
-GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, method = "greedy")
+GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
 
 }
 \references{

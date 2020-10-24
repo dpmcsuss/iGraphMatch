@@ -14,7 +14,8 @@ test_that("order of nodes getting matched", {
                c(1,2,3,4,6,10,8,7,5,9))
 })
 test_that("test LAP method", {
-  expect_equal(graph_match_IsoRank(A, B, seeds, startm, method = "LAP")$ns, 4)
+  expect_equal(graph_match_IsoRank(A, B, seeds, startm, method = "LAP")$seeds, 
+               data.frame(A = 1:4, B = 1:4))
 })
 
 # create similarity score matrix that is not a square matrix
@@ -31,5 +32,6 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 seeds <- 1:3
 
 test_that("IsoRank multi-layer", {
-  expect_equal(graph_match_IsoRank(A, B, seeds = 1:3, startm)$ns, 3)
+  expect_equal(graph_match_IsoRank(A, B, seeds = 1:3, startm)$seeds, 
+               data.frame(A = 1:3, B = 1:3))
 })

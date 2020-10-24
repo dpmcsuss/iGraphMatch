@@ -20,7 +20,7 @@ test_that("doubly stochastic", {
   expect_lt(sum(abs(colSums(actual$D) - 1)), 10e-6)
 })
 test_that("number of seeds", {
-  expect_equal(actual$ns,0)
+  expect_equal(nrow(actual$seeds),0)
 })
 
 

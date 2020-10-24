@@ -8,13 +8,14 @@ B <- cgnp_pair$graph2
 seeds<-1:4
 
 test_that("matching correspondence between graph1 and graph2", {
-  expect_equal(graph_match_PATH(A, B, seeds)$ns, 4)
+  expect_equal(graph_match_PATH(A, B, seeds)$seeds, data.frame(A = 1:4, B = 1:4))
 })
 
 
 startm <- matrix(rnorm(100), 10)
 test_that("add similarity scores", {
-  expect_equal(graph_match_PATH(A, B, seeds, similarity = startm)$ns, 4)
+  expect_equal(graph_match_PATH(A, B, seeds, similarity = startm)$seeds, 
+               data.frame(A = 1:4, B = 1:4))
 })
 
 # sample a pair of directed graphs 
@@ -25,7 +26,7 @@ B <- cgnp_pair$graph2
 seeds <- c(1,3,5)
 
 test_that("PATH for directed graphs", {
-  expect_equal(graph_match_PATH(A, B, seeds)$ns, 3)
+  expect_equal(graph_match_PATH(A, B, seeds)$seeds, data.frame(A = c(1,3,5), B = c(1,3,5)))
 })
 
 
@@ -36,6 +37,7 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 seeds <- 1:3
 
 test_that("PATH multi-layer", {
-  expect_equal(graph_match_PATH(A, B, seeds = 1:3, epsilon = 5)$ns, 3)
+  expect_equal(graph_match_PATH(A, B, seeds = 1:3, epsilon = 5)$seeds, 
+               data.frame(A = 1:3, B = 1:3))
 })
 

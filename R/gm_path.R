@@ -3,12 +3,6 @@ delta_cal <- function(x, y){
 }
 #' @rdname gm_fw
 #' 
-#' @return \code{graph_match_PATH} returns a list of graph matching results,
-#'   including the graph matching formula, a data frame containing the matching 
-#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-#'   \code{corr_B}, the number of seeds if any, the permutation matrix and the
-#'   doubly stochastic matrix before projection onto the permutation set. 
-#'
 #' @references M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
 #' algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
 #' pages 2227-2242.
@@ -206,7 +200,12 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   corr <- data.frame(corr_A = 1:n, corr_B = corr)
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = nrow(seeds), 
-            P = P, D = D, iter = iter)
+  z <- list(
+    call = cl, 
+    corr = corr, 
+    seeds = seeds, 
+    P = P, 
+    D = D, 
+    iter = iter)
   z
 }

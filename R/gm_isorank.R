@@ -17,8 +17,8 @@
 #' @return \code{graph_match_IsoRank} returns a list of graph matching 
 #'   results, including the graph matching formula, a data frame containing the 
 #'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-#'   and \code{corr_B} and the number of seeds. If choose the greedy method to
-#'   extract mapping, the order of nodes getting matched will also be returned.
+#'   and \code{corr_B} and seeds. If choose the greedy method to extract mapping, 
+#'   the order of nodes getting matched will also be returned.
 #'
 #' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 #' multiple protein interaction networks with application to functional
@@ -31,7 +31,7 @@
 #' # match G_1 & G_2 using IsoRank algorithm
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
-#' GM_IsoRank <- graph_match_IsoRank(g1, g2, startm, method = "greedy")
+#' GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
 #'
 #' @export
 #'
@@ -100,7 +100,11 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
+    z <- list(
+      call = cl, 
+      corr = corr, 
+      seeds = seeds, 
+      order = order)
     z
   } else if(method == "LAP"){
     # Hungarian alg.
@@ -111,7 +115,10 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(call = cl, corr = corr, ns = nrow(seeds))
+    z <- list(
+      call = cl, 
+      corr = corr, 
+      seeds = seeds)
     z
   }
 }

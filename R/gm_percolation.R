@@ -6,10 +6,11 @@ cal_mark <- function(x,y){
 #' @title Percolation Graph Matching Methods
 #' @rdname gm_perco
 #' 
-#' @return \code{graph_match_percolation} returns a list of graph matching results,
-#'   including the graph matching formula, a data frame containing the matching 
-#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-#'   \code{corr_B}, the number of seeds and the order of nodes getting matched.
+#' @return \code{graph_match_percolation} and \code{graph_match_ExpandWhenStuck} 
+#'   returns a list of graph matching results, including the graph matching formula, 
+#'   a data frame containing the matching correspondence between \eqn{G_1} and 
+#'   \eqn{G_2} named \code{corr_A} and \code{corr_B}, seeds and the order of nodes 
+#'   getting matched.
 #'   
 #'   
 #'   
@@ -119,6 +120,10 @@ graph_match_percolation <- function (A, B, seeds,
   rownames(corr) <- paste0(as.character(1:nrow(corr)))
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = nrow(seeds), order = order)
+  z <- list(
+    call = cl, 
+    corr = corr, 
+    seeds = seeds, 
+    order = order)
   z
 }

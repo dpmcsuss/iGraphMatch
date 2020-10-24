@@ -11,15 +11,15 @@ hard_cor <- c(1, 5, 3) # correct
 hard_incor <- data.frame(A = c(1, 2, 3), B = c(1, 2, 5)) # contain incorrect
 
 test_that("FW with no seed", {
-  expect_equal(graph_match_FW(A, B, seeds = NULL, start = "bari")$ns, 0)
+  expect_equal(nrow(graph_match_FW(A, B, seeds = NULL, start = "bari")$seeds), 0)
 })
 
 test_that("FW with correct hard seeds", {
-  expect_equal(graph_match_FW(A, B, seeds = hard_cor, start = "bari")$ns, 3)
+  expect_equal(graph_match_FW(A, B, seeds = hard_cor, start = "bari")$seeds, data.frame(A = c(1, 5, 3), B = c(1, 5, 3)))
 })
 
 test_that("FW with incorrect hard seeds", {
-  expect_equal(graph_match_FW(A, B, seeds = hard_incor, start = "bari")$ns, 3)
+  expect_equal(graph_match_FW(A, B, seeds = hard_incor, start = "bari")$seeds, data.frame(A = c(1, 2, 3), B = c(1, 2, 5)))
 })
 
 set.seed(12)
@@ -31,7 +31,7 @@ A_l <- list(A, A2)
 B_l <- list(B, B2)
 
 test_that("FW multi-layer", {
-  expect_equal(graph_match_FW(A_l, B_l, seeds = 1:3, start = "bari")$ns, 3)
+  expect_equal(graph_match_FW(A_l, B_l, seeds = 1:3, start = "bari")$seeds, data.frame(A = 1:3, B = 1:3))
 })
 
 

@@ -1,8 +1,4 @@
 #' @rdname gm_fw
-#' @return \code{graph_match_convex} returns a list of graph matching results,
-#'   including the graph matching formula, a data frame containing the matching 
-#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-#'   \code{corr_B} and the number of seeds. 
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
@@ -169,10 +165,10 @@ graph_match_convex <- function(A, B, seeds = NULL,
   z <- list(
     call = cl,
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
-    ns = ns, 
+    seeds = seeds, 
     P = P,
     D = D,
-    num_iter = iter
+    iter = iter
     # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
   )  
   z

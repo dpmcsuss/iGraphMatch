@@ -4,11 +4,6 @@ cal_mark <- function(x,y){
 
 
 #' @rdname gm_perco
-#' @return \code{graph_match_ExpandWhenStuck} returns a list of graph matching 
-#'   results, including the graph matching formula, a data frame containing the 
-#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-#'   and \code{corr_B}, the number of seeds and the order of nodes getting matched.
-#'
 #' @references E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 #' \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
 #' Endowment, 8(10):1010–1021.
@@ -131,6 +126,10 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
   rownames(corr) <- paste0(as.character(1:nrow(corr)))
   
   cl <- match.call()
-  z <- list(call = cl, corr = corr, ns = ns, order = order)
+  z <- list(
+    call = cl, 
+    corr = corr, 
+    seeds = seeds_ori, 
+    order = order)
   z
 }

@@ -21,10 +21,12 @@
 #'
 #' @rdname gm_fw
 #'   
-#' @return \code{graph_match_FW} returns a list of graph matching results,
-#'   including the graph matching formula, a data frame containing the matching 
-#'   correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} and 
-#'   \code{corr_B} and the number of seeds. 
+#' @return \code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match
+#'   _PATH} return a list of graph matching results, including the graph matching 
+#'   formula, a data frame containing the matching correspondence between \eqn{G_1} 
+#'   and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic 
+#'   matrix from the last iteration and the permutation matrix after projection, 
+#'   seeds and number of iterations. 
 #'
 #' @examples
 #'
@@ -170,10 +172,10 @@ graph_match_FW <- function(A, B, seeds = NULL,
   list(
     call = cl, 
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
-    ns = ns,
+    seeds = seeds,
     P = P,
     D = D,
-    num_iter = iter)
+    iter = iter)
 }
 
 #' @rdname gm_fw

@@ -23,7 +23,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 \code{graph_match_Umeyama} returns a list of graph matching 
   results, including the graph matching formula, a data frame containing the 
   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-  and \code{corr_B} and the number of seeds.
+  and \code{corr_B} and seeds.
 }
 \description{
 Spectral Graph Matching Methods: Umeyama Algorithm
