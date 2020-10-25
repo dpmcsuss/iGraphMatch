@@ -5,7 +5,7 @@
 #'
 #' @param A A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_1}.
 #' @param B A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_2}.
-#' @param match_obj Matching object. Output of the graph matching function.
+#' @param match Graph matching result see graph match methods.
 #' @param measure A character. Measure for computing goodness of matching.
 #' @param num An integer. Number of pairs of best matched vertices needed.
 #'
@@ -23,20 +23,20 @@
 #'
 #' # Application: select best matched seeds from non seeds as new seeds, and do the
 #' # graph matching iteratively to get higher matching accuracy
-#' best_matches(A = g1, B = g2, match_obj = match, measure = "row_perm_stat", num = 5)
+#' best_matches(A = g1, B = g2, match = match, measure = "row_perm_stat", num = 5)
 #'
 #'
 #' @export
 #'
-best_matches <- function(A, B, match_obj, measure, num){
+best_matches <- function(A, B, match, measure, num){
   
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   nv <- nrow(A[[1]])
   nc <- length(A)
-  x <- !check_seeds(match_obj$seeds, nv, logical = TRUE)
-  match_corr <- match_obj$corr
+  x <- !check_seeds(match$seeds, nv, logical = TRUE)
+  match_corr <- match$corr
   x <- x[match_corr[,1]]
   match_corr <- match_corr[x,]
   stat <- rep(0, sum(x))

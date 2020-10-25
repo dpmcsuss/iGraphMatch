@@ -4,14 +4,14 @@
 \alias{best_matches}
 \title{Choose best matches}
 \usage{
-best_matches(A, B, match_obj, measure, num)
+best_matches(A, B, match, measure, num)
 }
 \arguments{
 \item{A}{A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_1}.}
 
 \item{B}{A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_2}.}
 
-\item{match_obj}{Matching object. Output of the graph matching function.}
+\item{match}{Graph matching result see graph match methods.}
 
 \item{measure}{A character. Measure for computing goodness of matching.}
 
@@ -36,7 +36,7 @@ match <- graph_match_FW(g1, g2, seeds)
 
 # Application: select best matched seeds from non seeds as new seeds, and do the
 # graph matching iteratively to get higher matching accuracy
-best_matches(A = g1, B = g2, match_obj = match, measure = "row_perm_stat", num = 5)
+best_matches(A = g1, B = g2, match = match, measure = "row_perm_stat", num = 5)
 
 
 }
