@@ -4,29 +4,23 @@
 \alias{best_matches}
 \title{Choose best matches}
 \usage{
-best_matches(A, B, measure, num, x, match_corr)
+best_matches(A, B, match_obj, measure, num)
 }
 \arguments{
-\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
+\item{A}{A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_1}.}
 
-\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
+\item{B}{A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_2}.}
+
+\item{match_obj}{Matching object. Output of the graph matching function.}
 
 \item{measure}{A character. Measure for computing goodness of matching.}
 
 \item{num}{An integer. Number of pairs of best matched vertices needed.}
-
-\item{x}{A vector of logical. \code{TRUE} indicates the corresponding vertex in \eqn{G_1} is of 
-interest in finding best matched vertices. Length of vector should be the number of vertices 
-of graphs.}
-
-\item{match_corr}{A matrix or data frame. Graph matching correspondence between \eqn{G_1} and 
-\eqn{G_2} with the first column represents indices in \eqn{G_1} and the second column represents
-indices in \eqn{G_2}.}
 }
 \value{
 \code{best_matches} returns a data frame with the indices of best matched vertices
-in \eqn{G_1} named \code{A_best} and the indices of best matched vertices in \eqn{G_2} named
-\code{B_best}.
+in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
+\code{B_best} and the values of measure for best matches.
 }
 \description{
 Find a set of vertices pairs in the order of goodness of matching according to a
@@ -42,7 +36,7 @@ match <- graph_match_FW(g1, g2, seeds)
 
 # Application: select best matched seeds from non seeds as new seeds, and do the
 # graph matching iteratively to get higher matching accuracy
-best_matches(g1, g2, "row_perm_stat", num = 5, x = nonseeds, match$corr)
+best_matches(A = g1, B = g2, match_obj = match, measure = "row_perm_stat", num = 5)
 
 
 }
