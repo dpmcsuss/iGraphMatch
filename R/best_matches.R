@@ -50,13 +50,13 @@ best_matches <- function(A, B, match, measure, num){
   }
 
   # find top ranking nodes pairs
-  if(measure == "row_diff"){
+  if(measure != "row_cor"){
     stat <- -stat
   }
   rperm <- sample(length(stat))
   stat <- stat[rperm]
   topindex <- order(stat, decreasing = TRUE)[1:num]
-  if(measure == "row_diff"){
+  if(measure != "row_cor"){
     measure_value <- -stat[topindex]
   } else{
     measure_value <- stat[topindex]
