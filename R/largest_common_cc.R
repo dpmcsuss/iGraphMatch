@@ -33,6 +33,11 @@
 #' @export
 #'
 largest_common_cc <- function(A, B, min_degree = 1){
+  graph_pair <- check_graph(A, B)
+  A <- graph_pair[[1]]
+  B <- graph_pair[[2]]
+  A <- graph_from_adjacency_matrix(as.matrix(A[[1]]))
+  B <- graph_from_adjacency_matrix(as.matrix(B[[1]]))
   keep <- rep(TRUE, igraph::vcount(A))
   while (!(igraph::is_connected(A) && igraph::is_connected(B))){
     cc1 <- igraph::components(A)
