@@ -111,18 +111,22 @@ specified measure." />
 specified measure.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>best_matches</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>measure</span>, <span class='va'>num</span>, <span class='va'>x</span>, <span class='va'>match_corr</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>best_matches</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>match</span>, <span class='va'>measure</span>, <span class='va'>num</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>A</th>
-      <td><p>A matrix or an igraph object. Adjacency matrix of \(G_1\).</p></td>
+      <td><p>A matrix, an igraph object or a list of either. Adjacency matrix of \(G_1\).</p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>A matrix or an igraph object. Adjacency matrix of \(G_2\).</p></td>
+      <td><p>A matrix, an igraph object or a list of either. Adjacency matrix of \(G_2\).</p></td>
+    </tr>
+    <tr>
+      <th>match</th>
+      <td><p>Graph matching result see graph match methods.</p></td>
     </tr>
     <tr>
       <th>measure</th>
@@ -132,25 +136,13 @@ specified measure.</p>
       <th>num</th>
       <td><p>An integer. Number of pairs of best matched vertices needed.</p></td>
     </tr>
-    <tr>
-      <th>x</th>
-      <td><p>A vector of logical. <code>TRUE</code> indicates the corresponding vertex in \(G_1\) is of 
-interest in finding best matched vertices. Length of vector should be the number of vertices 
-of graphs.</p></td>
-    </tr>
-    <tr>
-      <th>match_corr</th>
-      <td><p>A matrix or data frame. Graph matching correspondence between \(G_1\) and 
-\(G_2\) with the first column represents indices in \(G_1\) and the second column represents
-indices in \(G_2\).</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>best_matches</code> returns a data frame with the indices of best matched vertices
-in \(G_1\) named <code>A_best</code> and the indices of best matched vertices in \(G_2\) named
-<code>B_best</code>.</p>
+in \(G_1\) named <code>A_best</code>, the indices of best matched vertices in \(G_2\) named
+<code>B_best</code> and the values of measure for best matches.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>cgnp_pair</span> <span class='op'>&lt;-</span> <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>50</span>, corr <span class='op'>=</span>  <span class='fl'>0.3</span>, p <span class='op'>=</span>  <span class='fl'>0.5</span><span class='op'>)</span>
@@ -162,13 +154,13 @@ in \(G_1\) named <code>A_best</code> and the indices of best matched vertices in
 
 <span class='co'># Application: select best matched seeds from non seeds as new seeds, and do the</span>
 <span class='co'># graph matching iteratively to get higher matching accuracy</span>
-<span class='fu'>best_matches</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='st'>"row_perm_stat"</span>, num <span class='op'>=</span> <span class='fl'>5</span>, x <span class='op'>=</span> <span class='va'>nonseeds</span>, <span class='va'>match</span><span class='op'>$</span><span class='va'>corr</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   A_best B_best
-#&gt; 1     32     26
-#&gt; 2     43     43
-#&gt; 3     31     17
-#&gt; 4     23     33
-#&gt; 5     19     35</div><div class='input'>
+<span class='fu'>best_matches</span><span class='op'>(</span>A <span class='op'>=</span> <span class='va'>g1</span>, B <span class='op'>=</span> <span class='va'>g2</span>, match <span class='op'>=</span> <span class='va'>match</span>, measure <span class='op'>=</span> <span class='st'>"row_perm_stat"</span>, num <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   A_best B_best measure_value
+#&gt; 1     32     26     -4.616247
+#&gt; 2     31     17     -3.971424
+#&gt; 3     23     33     -3.692430
+#&gt; 4     43     43     -3.654615
+#&gt; 5     36     34     -3.411871</div><div class='input'>
 
 </div></pre>
   </div>

@@ -154,29 +154,29 @@ centered graph.  Defaults to TRUE.</p></td>
 <span class='fu'>center_graph</span><span class='op'>(</span><span class='va'>A</span>, scheme <span class='op'>=</span> <span class='st'>"naive"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . 1 1 1 1 1 . .
-#&gt;  [2,] . . 1 1 . 1 . 1 . .
-#&gt;  [3,] . 1 . 1 1 1 . . 1 .
-#&gt;  [4,] 1 1 1 . . 1 . 1 1 1
-#&gt;  [5,] 1 . 1 . . 1 1 . . .
-#&gt;  [6,] 1 1 1 1 1 . . 1 . 1
-#&gt;  [7,] 1 . . . 1 . . . 1 .
-#&gt;  [8,] 1 1 . 1 . 1 . . 1 .
-#&gt;  [9,] . . 1 1 . . 1 1 . 1
-#&gt; [10,] . . . 1 . 1 . . 1 .</div><div class='input'><span class='fu'>center_graph</span><span class='op'>(</span><span class='va'>A</span>, scheme <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span>
+#&gt;  [1,] . . . 1 . 1 . 1 1 .
+#&gt;  [2,] . . . . . 1 . . . 1
+#&gt;  [3,] . . . 1 1 1 . 1 1 .
+#&gt;  [4,] 1 . 1 . 1 . 1 1 1 1
+#&gt;  [5,] . . 1 1 . 1 . 1 . 1
+#&gt;  [6,] 1 1 1 . 1 . . 1 . .
+#&gt;  [7,] . . . 1 . . . 1 . .
+#&gt;  [8,] 1 . 1 1 1 1 1 . . 1
+#&gt;  [9,] 1 . 1 1 . . . . . 1
+#&gt; [10,] . 1 . 1 1 . . 1 1 .</div><div class='input'><span class='fu'>center_graph</span><span class='op'>(</span><span class='va'>A</span>, scheme <span class='op'>=</span> <span class='st'>"center"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . 2 2 2 2 2 . .
-#&gt;  [2,] . . 2 2 . 2 . 2 . .
-#&gt;  [3,] . 2 . 2 2 2 . . 2 .
-#&gt;  [4,] 2 2 2 . . 2 . 2 2 2
-#&gt;  [5,] 2 . 2 . . 2 2 . . .
-#&gt;  [6,] 2 2 2 2 2 . . 2 . 2
-#&gt;  [7,] 2 . . . 2 . . . 2 .
-#&gt;  [8,] 2 2 . 2 . 2 . . 2 .
-#&gt;  [9,] . . 2 2 . . 2 2 . 2
-#&gt; [10,] . . . 2 . 2 . . 2 .
+#&gt;  [1,] . . . 2 . 2 . 2 2 .
+#&gt;  [2,] . . . . . 2 . . . 2
+#&gt;  [3,] . . . 2 2 2 . 2 2 .
+#&gt;  [4,] 2 . 2 . 2 . 2 2 2 2
+#&gt;  [5,] . . 2 2 . 2 . 2 . 2
+#&gt;  [6,] 2 2 2 . 2 . . 2 . .
+#&gt;  [7,] . . . 2 . . . 2 . .
+#&gt;  [8,] 2 . 2 2 2 2 2 . . 2
+#&gt;  [9,] 2 . 2 2 . . . . . 2
+#&gt; [10,] . 2 . 2 2 . . 2 2 .
 #&gt; plus left factor
 #&gt; 10 x 1 Matrix of class "dgeMatrix"
 #&gt;       [,1]
@@ -206,55 +206,55 @@ centered graph.  Defaults to TRUE.</p></td>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . 1 1 1 1 1 . .
-#&gt;  [2,] . . 1 1 . 1 . 1 . .
-#&gt;  [3,] . 1 . 1 1 1 . . 1 .
-#&gt;  [4,] 1 1 1 . . 1 . 1 1 1
-#&gt;  [5,] 1 . 1 . . 1 1 . . .
-#&gt;  [6,] 1 1 1 1 1 . . 1 . 1
-#&gt;  [7,] 1 . . . 1 . . . 1 .
-#&gt;  [8,] 1 1 . 1 . 1 . . 1 .
-#&gt;  [9,] . . 1 1 . . 1 1 . 1
-#&gt; [10,] . . . 1 . 1 . . 1 .
+#&gt;  [1,] . . . 1 . 1 . 1 1 .
+#&gt;  [2,] . . . . . 1 . . . 1
+#&gt;  [3,] . . . 1 1 1 . 1 1 .
+#&gt;  [4,] 1 . 1 . 1 . 1 1 1 1
+#&gt;  [5,] . . 1 1 . 1 . 1 . 1
+#&gt;  [6,] 1 1 1 . 1 . . 1 . .
+#&gt;  [7,] . . . 1 . . . 1 . .
+#&gt;  [8,] 1 . 1 1 1 1 1 . . 1
+#&gt;  [9,] 1 . 1 1 . . . . . 1
+#&gt; [10,] . 1 . 1 1 . . 1 1 .
 #&gt; plus left factor
 #&gt; 10 x 2 Matrix of class "dgeMatrix"
-#&gt;            [,1]        [,2]
-#&gt;  [1,] 1.6052764 -0.34741168
-#&gt;  [2,] 1.5297273 -0.61136564
-#&gt;  [3,] 1.6869922  1.15956139
-#&gt;  [4,] 2.2225141 -0.00999191
-#&gt;  [5,] 1.2308767 -0.35506731
-#&gt;  [6,] 2.1797139 -0.66872171
-#&gt;  [7,] 0.8437653  0.80762453
-#&gt;  [8,] 1.7599590  1.15670323
-#&gt;  [9,] 1.4932886 -1.46075405
-#&gt; [10,] 1.1489778  0.79875193
+#&gt;             [,1]        [,2]
+#&gt;  [1,] -1.4266715 -1.13673002
+#&gt;  [2,] -0.6162417  0.33644545
+#&gt;  [3,] -1.7840988 -1.17207575
+#&gt;  [4,] -2.1689697  0.70022477
+#&gt;  [5,] -1.8224011  0.09707993
+#&gt;  [6,] -1.5388633  0.27160763
+#&gt;  [7,] -0.8562444 -0.66610536
+#&gt;  [8,] -2.1967317  1.12928790
+#&gt;  [9,] -1.3695523  1.02100136
+#&gt; [10,] -1.6031451 -1.19568248
 #&gt; times right factor transpose
 #&gt; 10 x 2 Matrix of class "dgeMatrix"
-#&gt;             [,1]         [,2]
-#&gt;  [1,] -0.3128525 -0.129703177
-#&gt;  [2,] -0.2981287 -0.228248124
-#&gt;  [3,] -0.3287781  0.432912312
-#&gt;  [4,] -0.4331460 -0.003730394
-#&gt;  [5,] -0.2398857 -0.132561340
-#&gt;  [6,] -0.4248047 -0.249661522
-#&gt;  [7,] -0.1644415  0.301519699
-#&gt;  [8,] -0.3429986  0.431845241
-#&gt;  [9,] -0.2910272 -0.545360011
-#&gt; [10,] -0.2239244  0.298207189</div><div class='input'><span class='fu'>center_graph</span><span class='op'>(</span><span class='va'>A</span>, scheme <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+#&gt;            [,1]        [,2]
+#&gt;  [1,] 0.2798129 -0.41387085
+#&gt;  [2,] 0.1208634  0.12249607
+#&gt;  [3,] 0.3499150 -0.42673983
+#&gt;  [4,] 0.4253997  0.25494411
+#&gt;  [5,] 0.3574273  0.03534573
+#&gt;  [6,] 0.3018170  0.09888934
+#&gt;  [7,] 0.1679351 -0.24252161
+#&gt;  [8,] 0.4308447  0.41116125
+#&gt;  [9,] 0.2686101  0.37173532
+#&gt; [10,] 0.3144246 -0.43533479</div><div class='input'><span class='fu'>center_graph</span><span class='op'>(</span><span class='va'>A</span>, scheme <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>4</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Sparse part
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . 6 6 6 6 6 . .
-#&gt;  [2,] . . 6 6 . 6 . 6 . .
-#&gt;  [3,] . 6 . 6 6 6 . . 6 .
-#&gt;  [4,] 6 6 6 . . 6 . 6 6 6
-#&gt;  [5,] 6 . 6 . . 6 6 . . .
-#&gt;  [6,] 6 6 6 6 6 . . 6 . 6
-#&gt;  [7,] 6 . . . 6 . . . 6 .
-#&gt;  [8,] 6 6 . 6 . 6 . . 6 .
-#&gt;  [9,] . . 6 6 . . 6 6 . 6
-#&gt; [10,] . . . 6 . 6 . . 6 .
+#&gt;  [1,] . . . 6 . 6 . 6 6 .
+#&gt;  [2,] . . . . . 6 . . . 6
+#&gt;  [3,] . . . 6 6 6 . 6 6 .
+#&gt;  [4,] 6 . 6 . 6 . 6 6 6 6
+#&gt;  [5,] . . 6 6 . 6 . 6 . 6
+#&gt;  [6,] 6 6 6 . 6 . . 6 . .
+#&gt;  [7,] . . . 6 . . . 6 . .
+#&gt;  [8,] 6 . 6 6 6 6 6 . . 6
+#&gt;  [9,] 6 . 6 6 . . . . . 6
+#&gt; [10,] . 6 . 6 6 . . 6 6 .
 #&gt; plus left factor
 #&gt; 10 x 1 Matrix of class "dgeMatrix"
 #&gt;       [,1]
