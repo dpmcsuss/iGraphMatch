@@ -302,8 +302,8 @@ match <- graph_match_FW(g1, g2, seeds, start = "rds")
 Then implement the algorithm for finding core vertices, we use row permutation statistic as our measure in this example. The main steps of the algorithm involves calculating values of the row permutation statistic for each nonseed vertex and rank them in the order of increasing value of the statistic. These steps can be implemented by using the `best_matches` function. The `best_matches` function has the functionality of finding best matched vertices and identifying core vertices. Since we want to rank all the non-seed vertices in terms of their row permutation statistics, set argument `x` to be `non_seeds`, which denotes the vertices we are interested in. Also set argument `num` to be the number of non-seeds, which denotes the number of top ranked vertices we want to get. By returning the result in `A_best`, we get the indices corresponding to vertices in $G1$ in the order of decreasing likelihood of being core vertices. 
 
 ```{r}
-r <- best_matches(g1, g2, measure = "row_perm_stat", num = sum(non_seeds), 
-                  x = non_seeds, match_corr = match$corr)$A_best
+r <- best_matches(A = g1, B = g2, match = match,
+                  measure = "row_perm_stat", num = sum(non_seeds))$A_best
 r
 ```
 
@@ -384,8 +384,8 @@ err <- mean(match$corr$corr_A[!seeds] != match$corr$corr_B[!seeds])
 
 Analyze goodness of matching by using the row permutation statistics measure and select top 3 best matched pairs of vertices as adaptive seeds. Step 3 and 4 can be implemented by using the `best_matches` function as the following:
 ```{r,warning=FALSE, message=FALSE}
-seeds_adp <- best_matches(A = g1, B = g2, measure = row_perm_stat, num = 3, x = !seeds, 
-                          match_corr = match$corr)
+seeds_adp <- best_matches(A = g1, B = g2, match = match, 
+                            measure = "row_perm_stat", num = 3)
 seeds_adp
 ```
 
