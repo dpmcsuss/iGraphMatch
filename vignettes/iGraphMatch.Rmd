@@ -391,7 +391,7 @@ seeds_adp
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
 ```{r}
-seeds <- rbind(as.matrix(check_seeds(seeds, nv = 50)$seeds), as.matrix(seeds_adp))
+seeds <- rbind(as.matrix(check_seeds(seeds, nv = 50)$seeds), as.matrix(seeds_adp)[,1:2])
 match_adp <- graph_match_FW(g1, g2, seeds=seeds, start = "convex")
 seeds <- 1 : 50 <= 10
 err_adp <- mean(match_adp$corr$corr_A[!seeds] != match_adp$corr$corr_B[!seeds])
