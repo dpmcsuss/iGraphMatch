@@ -36,7 +36,7 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
   ns <- nrow(seeds)
   Z <- seeds #matched nodes
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
-  M <- matrix(0, totv1, totv2) #marks matrix
+  M <- Matrix(0, totv1, totv2) #marks matrix
   if(sum(abs(similarity)) != 0){
     M[nonseeds$A, nonseeds$B] <- similarity
   }
