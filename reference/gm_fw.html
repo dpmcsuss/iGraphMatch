@@ -227,15 +227,15 @@ pages 2227-2242.</p>
 #&gt; $corr
 #&gt;    corr_A corr_B
 #&gt; 1       1      9
-#&gt; 2       2      1
-#&gt; 3       3      7
-#&gt; 4       4      4
-#&gt; 5       5      2
-#&gt; 6       6      8
-#&gt; 7       7      6
-#&gt; 8       8     10
-#&gt; 9       9      3
-#&gt; 10     10      5
+#&gt; 2       2      2
+#&gt; 3       3      3
+#&gt; 4       4      6
+#&gt; 5       5      1
+#&gt; 6       6      7
+#&gt; 7       7      8
+#&gt; 8       8      5
+#&gt; 9       9      4
+#&gt; 10     10     10
 #&gt; 
 #&gt; $seeds
 #&gt; [1] A B
@@ -245,32 +245,32 @@ pages 2227-2242.</p>
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
 #&gt;  [1,] . . . . . . . . 1 .
-#&gt;  [2,] 1 . . . . . . . . .
-#&gt;  [3,] . . . . . . 1 . . .
-#&gt;  [4,] . . . 1 . . . . . .
-#&gt;  [5,] . 1 . . . . . . . .
-#&gt;  [6,] . . . . . . . 1 . .
-#&gt;  [7,] . . . . . 1 . . . .
-#&gt;  [8,] . . . . . . . . . 1
-#&gt;  [9,] . . 1 . . . . . . .
-#&gt; [10,] . . . . 1 . . . . .
+#&gt;  [2,] . 1 . . . . . . . .
+#&gt;  [3,] . . 1 . . . . . . .
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] 1 . . . . . . . . .
+#&gt;  [6,] . . . . . . 1 . . .
+#&gt;  [7,] . . . . . . . 1 . .
+#&gt;  [8,] . . . . 1 . . . . .
+#&gt;  [9,] . . . 1 . . . . . .
+#&gt; [10,] . . . . . . . . . 1
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                          
-#&gt;  [1,] . . . . . . . . 1 .
-#&gt;  [2,] 1 . . . . . . . . .
-#&gt;  [3,] . . . . . . 1 . . .
-#&gt;  [4,] . . . 1 . . . . . .
-#&gt;  [5,] . 1 . . . . . . . .
-#&gt;  [6,] . . . . . . . 1 . .
-#&gt;  [7,] . . . . . 1 . . . .
-#&gt;  [8,] . . . . . . . . . 1
-#&gt;  [9,] . . 1 . . . . . . .
-#&gt; [10,] . . . . 1 . . . . .
+#&gt;                                  
+#&gt;  [1,] . .   .   .   . . .   . 1 .
+#&gt;  [2,] . 0.5 0.5 .   . . .   . . .
+#&gt;  [3,] . .   0.5 0.5 . . .   . . .
+#&gt;  [4,] . .   .   .   . 1 .   . . .
+#&gt;  [5,] 1 .   .   .   . . .   . . .
+#&gt;  [6,] . 0.5 .   .   . . 0.5 . . .
+#&gt;  [7,] . .   .   .   . . .   1 . .
+#&gt;  [8,] . .   .   .   1 . .   . . .
+#&gt;  [9,] . .   .   0.5 . . 0.5 . . .
+#&gt; [10,] . .   .   .   . . .   . . 1
 #&gt; 
 #&gt; $iter
-#&gt; [1] 3
+#&gt; [1] 5
 #&gt; </div><div class='input'><span class='va'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>3</span>
 <span class='fu'>graph_match_convex</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>seeds</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $call
@@ -282,9 +282,9 @@ pages 2227-2242.</p>
 #&gt; 2       2      2
 #&gt; 3       3      3
 #&gt; 4       4      6
-#&gt; 5       5     10
-#&gt; 6       6      8
-#&gt; 7       7      9
+#&gt; 5       5      8
+#&gt; 6       6      9
+#&gt; 7       7     10
 #&gt; 8       8      4
 #&gt; 9       9      7
 #&gt; 10     10      5
@@ -302,9 +302,9 @@ pages 2227-2242.</p>
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
 #&gt;  [4,] . . . . . 1 . . . .
-#&gt;  [5,] . . . . . . . . . 1
-#&gt;  [6,] . . . . . . . 1 . .
-#&gt;  [7,] . . . . . . . . 1 .
+#&gt;  [5,] . . . . . . . 1 . .
+#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [7,] . . . . . . . . . 1
 #&gt;  [8,] . . . 1 . . . . . .
 #&gt;  [9,] . . . . . . 1 . . .
 #&gt; [10,] . . . . 1 . . . . .
@@ -312,41 +312,41 @@ pages 2227-2242.</p>
 #&gt; $D
 #&gt; Sparse part
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                             
-#&gt;  [1,] 1 . . .          .          .          .          .          .        
-#&gt;  [2,] . 1 . .          .          .          .          .          .        
-#&gt;  [3,] . . 1 .          .          .          .          .          .        
-#&gt;  [4,] . . . 0.17779632 0.06936628 0.24859027 0.13815133 0.20177904 0.1363893
-#&gt;  [5,] . . . 0.20177904 0.24859027 .          0.17779632 0.13638931 .        
-#&gt;  [6,] . . . 0.06936628 0.17779632 0.20177904 .          0.24859027 0.1381513
-#&gt;  [7,] . . . 0.13638931 .          0.17779632 0.20177904 0.13815133 0.3179566
-#&gt;  [8,] . . . 0.24859027 0.13815133 0.13638931 0.06936628 .          0.2017790
-#&gt;  [9,] . . . .          .          0.13815133 0.38497958 0.06936628 0.1777963
-#&gt; [10,] . . . 0.13815133 0.33816836 0.06936628 .          0.17779632 .        
-#&gt;                
-#&gt;  [1,] .        
-#&gt;  [2,] .        
-#&gt;  [3,] .        
-#&gt;  [4,] .        
-#&gt;  [5,] 0.2075176
-#&gt;  [6,] 0.1363893
-#&gt;  [7,] .        
-#&gt;  [8,] 0.1777963
-#&gt;  [9,] 0.2017790
-#&gt; [10,] 0.2485903
-#&gt; plus left factor
-#&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
+#&gt;                                                                              
+#&gt;  [1,] 1 . . .          .          .          .          .          .         
+#&gt;  [2,] . 1 . .          .          .          .          .          .         
+#&gt;  [3,] . . 1 .          .          .          .          .          .         
+#&gt;  [4,] . . . 0.27919036 0.05780339 0.42310436 .          .          0.09580695
+#&gt;  [5,] . . . 0.06187874 0.20055466 0.05780339 0.13317976 0.32409410 0.18325619
+#&gt;  [6,] . . . .          .          0.21221351 0.30159106 .          0.36122562
+#&gt;  [7,] . . . 0.12076295 0.22038771 .          0.07903374 0.15814365 .         
+#&gt;  [8,] . . . 0.32409410 0.06187874 0.30477711 .          0.09493491 0.17693803
+#&gt;  [9,] . . . 0.06053148 0.13317976 .          0.36122562 0.07903374 0.18067157
+#&gt; [10,] . . . 0.15144074 0.32409410 .          0.12286817 0.34169196 .         
 #&gt;                 
 #&gt;  [1,] .         
 #&gt;  [2,] .         
 #&gt;  [3,] .         
-#&gt;  [4,] 0.02792745
-#&gt;  [5,] 0.02792745
-#&gt;  [6,] 0.02792745
-#&gt;  [7,] 0.02792745
-#&gt;  [8,] 0.02792745
-#&gt;  [9,] 0.02792745
-#&gt; [10,] 0.02792745
+#&gt;  [4,] 0.14199330
+#&gt;  [5,] 0.03713152
+#&gt;  [6,] 0.12286817
+#&gt;  [7,] 0.41957031
+#&gt;  [8,] 0.03527547
+#&gt;  [9,] 0.18325619
+#&gt; [10,] 0.05780339
+#&gt; plus left factor
+#&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
+#&gt;                  
+#&gt;  [1,] .          
+#&gt;  [2,] .          
+#&gt;  [3,] .          
+#&gt;  [4,] 0.002101634
+#&gt;  [5,] 0.002101634
+#&gt;  [6,] 0.002101634
+#&gt;  [7,] 0.002101634
+#&gt;  [8,] 0.002101634
+#&gt;  [9,] 0.002101634
+#&gt; [10,] 0.002101634
 #&gt; times right factor transpose
 #&gt; 10 x 1 sparse Matrix of class "dgCMatrix"
 #&gt;                
@@ -362,7 +362,7 @@ pages 2227-2242.</p>
 #&gt; [10,] 0.1428571
 #&gt; 
 #&gt; $iter
-#&gt; [1] 8
+#&gt; [1] 12
 #&gt; </div><div class='input'>
 <span class='va'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
 <span class='va'>seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='fu'><a href='check_seeds.html'>check_seeds</a></span><span class='op'>(</span><span class='va'>seeds</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>$</span><span class='va'>seeds</span><span class='op'>)</span>,<span class='va'>hard_seeds</span><span class='op'>)</span>
@@ -383,13 +383,13 @@ pages 2227-2242.</p>
 #&gt; 1       1      1
 #&gt; 2       2      2
 #&gt; 3       3      3
-#&gt; 4       4      4
-#&gt; 5       5      8
-#&gt; 6       6      5
-#&gt; 7       7      9
-#&gt; 8       8      6
+#&gt; 4       4      6
+#&gt; 5       5      4
+#&gt; 6       6      9
+#&gt; 7       7     10
+#&gt; 8       8      8
 #&gt; 9       9      7
-#&gt; 10     10     10
+#&gt; 10     10      5
 #&gt; 
 #&gt; $seeds
 #&gt;   A B
@@ -403,13 +403,13 @@ pages 2227-2242.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . 1 . . . . . .
-#&gt;  [5,] . . . . . . . 1 . .
-#&gt;  [6,] . . . . 1 . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . 1 . . . .
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] . . . 1 . . . . . .
+#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . . . 1 . .
 #&gt;  [9,] . . . . . . 1 . . .
-#&gt; [10,] . . . . . . . . . 1
+#&gt; [10,] . . . . 1 . . . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -417,13 +417,13 @@ pages 2227-2242.</p>
 #&gt;  [1,] 1 . . . . . . . . .
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
-#&gt;  [4,] . . . 1 . . . . . .
-#&gt;  [5,] . . . . . . . 1 . .
-#&gt;  [6,] . . . . 1 . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . 1 . . . .
+#&gt;  [4,] . . . . . 1 . . . .
+#&gt;  [5,] . . . 1 . . . . . .
+#&gt;  [6,] . . . . . . . . 1 .
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . . . 1 . .
 #&gt;  [9,] . . . . . . 1 . . .
-#&gt; [10,] . . . . . . . . . 1
+#&gt; [10,] . . . . 1 . . . . .
 #&gt; 
 #&gt; $iter
 #&gt; [1] 2
@@ -441,12 +441,12 @@ pages 2227-2242.</p>
 #&gt; 2       2      2
 #&gt; 3       3      3
 #&gt; 4       4      5
-#&gt; 5       5     10
+#&gt; 5       5      9
 #&gt; 6       6      4
-#&gt; 7       7      9
-#&gt; 8       8      8
-#&gt; 9       9      7
-#&gt; 10     10      6
+#&gt; 7       7     10
+#&gt; 8       8      6
+#&gt; 9       9      8
+#&gt; 10     10      7
 #&gt; 
 #&gt; $seeds
 #&gt;   A B
@@ -463,12 +463,12 @@ pages 2227-2242.</p>
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
 #&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . . . . . 1
+#&gt;  [5,] . . . . . . . . 1 .
 #&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . . . 1 . .
-#&gt;  [9,] . . . . . . 1 . . .
-#&gt; [10,] . . . . . 1 . . . .
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . 1 . . . .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . . . . 1 . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
@@ -477,15 +477,15 @@ pages 2227-2242.</p>
 #&gt;  [2,] . 1 . . . . . . . .
 #&gt;  [3,] . . 1 . . . . . . .
 #&gt;  [4,] . . . . 1 . . . . .
-#&gt;  [5,] . . . . . . . . . 1
+#&gt;  [5,] . . . . . . . . 1 .
 #&gt;  [6,] . . . 1 . . . . . .
-#&gt;  [7,] . . . . . . . . 1 .
-#&gt;  [8,] . . . . . . . 1 . .
-#&gt;  [9,] . . . . . . 1 . . .
-#&gt; [10,] . . . . . 1 . . . .
+#&gt;  [7,] . . . . . . . . . 1
+#&gt;  [8,] . . . . . 1 . . . .
+#&gt;  [9,] . . . . . . . 1 . .
+#&gt; [10,] . . . . . . 1 . . .
 #&gt; 
 #&gt; $iter
-#&gt; [1] 3
+#&gt; [1] 2
 #&gt; </div><div class='input'>
  <span class='va'>gp_list</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>replicate</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='fu'><a href='sample_correlated_gnp_pair.html'>sample_correlated_gnp_pair</a></span><span class='op'>(</span><span class='fl'>20</span>, <span class='fl'>.3</span>, <span class='fl'>.5</span><span class='op'>)</span>, simplify <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
  <span class='va'>A</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>lapply</a></span><span class='op'>(</span><span class='va'>gp_list</span>, <span class='kw'>function</span><span class='op'>(</span><span class='va'>gp</span><span class='op'>)</span><span class='va'>gp</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
@@ -503,16 +503,16 @@ pages 2227-2242.</p>
 #&gt; 8       8      8
 #&gt; 9       9      9
 #&gt; 10     10     10
-#&gt; 11     11     13
+#&gt; 11     11     11
 #&gt; 12     12     12
-#&gt; 13     13     20
+#&gt; 13     13     13
 #&gt; 14     14     14
 #&gt; 15     15     15
 #&gt; 16     16     16
 #&gt; 17     17     17
 #&gt; 18     18     18
-#&gt; 19     19     11
-#&gt; 20     20     19</div><div class='input'>
+#&gt; 19     19     19
+#&gt; 20     20     20</div><div class='input'>
 <span class='co'># match G_1 &amp; G_2 using PATH algorithm</span>
 <span class='fu'>graph_match_PATH</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $call
@@ -520,16 +520,16 @@ pages 2227-2242.</p>
 #&gt; 
 #&gt; $corr
 #&gt;    corr_A corr_B
-#&gt; 1       1      8
-#&gt; 2       2      9
-#&gt; 3       3      1
-#&gt; 4       4      4
-#&gt; 5       5      3
-#&gt; 6       6     10
+#&gt; 1       1      9
+#&gt; 2       2      4
+#&gt; 3       3      8
+#&gt; 4       4      2
+#&gt; 5       5      1
+#&gt; 6       6      7
 #&gt; 7       7      6
-#&gt; 8       8      7
-#&gt; 9       9      2
-#&gt; 10     10      5
+#&gt; 8       8      5
+#&gt; 9       9     10
+#&gt; 10     10      3
 #&gt; 
 #&gt; $seeds
 #&gt; [1] A B
@@ -538,33 +538,33 @@ pages 2227-2242.</p>
 #&gt; $P
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
 #&gt;                          
-#&gt;  [1,] . . . . . . . 1 . .
-#&gt;  [2,] . . . . . . . . 1 .
-#&gt;  [3,] 1 . . . . . . . . .
-#&gt;  [4,] . . . 1 . . . . . .
-#&gt;  [5,] . . 1 . . . . . . .
-#&gt;  [6,] . . . . . . . . . 1
+#&gt;  [1,] . . . . . . . . 1 .
+#&gt;  [2,] . . . 1 . . . . . .
+#&gt;  [3,] . . . . . . . 1 . .
+#&gt;  [4,] . 1 . . . . . . . .
+#&gt;  [5,] 1 . . . . . . . . .
+#&gt;  [6,] . . . . . . 1 . . .
 #&gt;  [7,] . . . . . 1 . . . .
-#&gt;  [8,] . . . . . . 1 . . .
-#&gt;  [9,] . 1 . . . . . . . .
-#&gt; [10,] . . . . 1 . . . . .
+#&gt;  [8,] . . . . 1 . . . . .
+#&gt;  [9,] . . . . . . . . . 1
+#&gt; [10,] . . 1 . . . . . . .
 #&gt; 
 #&gt; $D
 #&gt; 10 x 10 sparse Matrix of class "dgCMatrix"
-#&gt;                                          
-#&gt;  [1,] . . . . . . . 0.5176403 0.4823597 .
-#&gt;  [2,] . . . . . . . 0.4823597 0.5176403 .
-#&gt;  [3,] 1 . . . . . . .         .         .
-#&gt;  [4,] . . . 1 . . . .         .         .
-#&gt;  [5,] . . 1 . . . . .         .         .
-#&gt;  [6,] . . . . . . . .         .         1
-#&gt;  [7,] . . . . . 1 . .         .         .
-#&gt;  [8,] . . . . . . 1 .         .         .
-#&gt;  [9,] . 1 . . . . . .         .         .
-#&gt; [10,] . . . . 1 . . .         .         .
+#&gt;                          
+#&gt;  [1,] . . . . . . . . 1 .
+#&gt;  [2,] . . . 1 . . . . . .
+#&gt;  [3,] . . . . . . . 1 . .
+#&gt;  [4,] . 1 . . . . . . . .
+#&gt;  [5,] 1 . . . . . . . . .
+#&gt;  [6,] . . . . . . 1 . . .
+#&gt;  [7,] . . . . . 1 . . . .
+#&gt;  [8,] . . . . 1 . . . . .
+#&gt;  [9,] . . . . . . . . . 1
+#&gt; [10,] . . 1 . . . . . . .
 #&gt; 
 #&gt; $iter
-#&gt; [1] 6
+#&gt; [1] 1
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
