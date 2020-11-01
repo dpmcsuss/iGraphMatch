@@ -25,7 +25,7 @@
 #' g2 <- G$graph2
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
-#' graph_match_Umeyama(g1, g2, startm)
+#' graph_match_Umeyama(g1, g2, similarity = startm)
 #'
 #' @export
 #'
