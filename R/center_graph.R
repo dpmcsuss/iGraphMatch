@@ -37,7 +37,7 @@
 center_graph <- function(A, scheme = c(-1, 1), use_splr = TRUE){
   if (!(length(scheme) %in% c(1,2))) {
     stop("scheme must be either 'center', 'naive', ",
-      "a positive integer, or a pair of scales.")
+      "a positive integer, or a pair of scalars.")
   }
 
   if (is.character(scheme) && scheme == "center") {
