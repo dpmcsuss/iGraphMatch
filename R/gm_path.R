@@ -42,7 +42,7 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   iter <- 0
   lap_method <- set_lap_method(NULL, totv1, totv2)
   
-  Grad <- matrix(0, n, n)
+  Grad <- Matrix(0, n, n)
   Sym <- norm <- list()
   Asn <- Ans <- Ann <- list()
   Bsn <- Bns <- Bnn <- list()

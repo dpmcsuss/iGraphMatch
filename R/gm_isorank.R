@@ -54,7 +54,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
   }
   R <- E <- similarity / sum(abs(similarity))
   tol <- 1e-2
-  R_tot <- matrix(0, nrow(R), ncol(R))
+  R_tot <- Matrix(0, nrow(R), ncol(R))
   
   for( ch in 1:nc ){
     
@@ -78,7 +78,6 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
       R <- R_new
     }
     
-    R <- as.matrix(R)
     R_tot <- R_tot + R
   }
   
