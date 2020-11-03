@@ -25,7 +25,7 @@
 #' g2 <- G$graph2
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
-#' graph_match_Umeyama(g1, g2, startm)
+#' graph_match_Umeyama(g1, g2, similarity = startm)
 #'
 #' @export
 #'
@@ -61,9 +61,18 @@ graph_match_Umeyama <- function(A, B, seeds = NULL,
 
   Grad <- Grad + Matrix::t(similarity)
   Grad <- Grad - min(Grad)
+  
+  # make a random permutation
+  nn <- nrow(A[[1]]) - nrow(seeds)
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
+  Grad <- Grad[,rp]
+  
   lap_method <- set_lap_method(NULL, totv1, totv2)
   ind <- do_lap(Grad, lap_method)
-
+  
+  # undo rand perm here
+  ind <- rp[ind]
   corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
   corr <- corr[order(corr$corr_A),]
   cl <- match.call()

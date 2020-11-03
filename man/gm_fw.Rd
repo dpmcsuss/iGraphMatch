@@ -14,7 +14,7 @@ graph_match_convex(
   similarity = NULL,
   start = "bari",
   max_iter = 100,
-  tol = 1e-05,
+  tol = 0.00001,
   lap_method = NULL
 )
 
@@ -44,7 +44,8 @@ graph_match_PATH(
   seeds = NULL,
   similarity = NULL,
   epsilon = 1,
-  tol = 1e-05,
+  tol = 0.00001,
+  max_iter = 20,
   lap_method = NULL
 )
 }

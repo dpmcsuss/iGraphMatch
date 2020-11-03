@@ -17,7 +17,8 @@ delta_cal <- function(x, y){
 #'
 #'
 graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL, 
-                             epsilon = 1, tol = 1e-05, lap_method = NULL){
+                             epsilon = 1, tol = 1e-05, max_iter = 20, 
+                             lap_method = NULL){
   
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
@@ -30,11 +31,13 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   seeds <- check_seeds(seeds, n)
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
-  nn <- n - nrow(seeds)
+  ns <- nrow(seeds)
+  nn <- n - ns
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   
   # lambda=0, convex relaxation
-  convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, tol = tol)
+  convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, 
+                                 tol = tol, max_iter = max_iter)
   P <- convex_m$P[nonseeds$A, nonseeds$B]
   
   lambda <- 0
@@ -49,6 +52,13 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   L_Asn <- L_Ans <- L_Ann <- list()
   L_Bsn <- L_Bns <- L_Bnn <- list()
   deltann <- list()
+  
+  # make a random permutation
+  nn <- nrow(A[[1]]) - nrow(seeds)
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
+  similarity <- similarity %*% Matrix::t(rpmat)
+  P <- P %*% Matrix::t(rpmat)
   
   ###### multi-layer starts from here
   for (ch in 1:nc) {
@@ -65,16 +75,16 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
     Asn[[ch]] <- A[[ch]][seeds$A, nonseeds$A]
     Ans[[ch]] <- A[[ch]][nonseeds$A, seeds$A]
     Ann[[ch]] <- A[[ch]][nonseeds$A, nonseeds$A]
-    Bsn[[ch]] <- B[[ch]][seeds$B, nonseeds$B]
-    Bns[[ch]] <- B[[ch]][nonseeds$B, seeds$B]
-    Bnn[[ch]] <- B[[ch]][nonseeds$B, nonseeds$B]
-    deltann[[ch]] <- delta[nonseeds$B, nonseeds$A]
+    Bsn[[ch]] <- B[[ch]][seeds$B, nonseeds$B] %*% Matrix::t(rpmat)
+    Bns[[ch]] <- rpmat %*% B[[ch]][nonseeds$B, seeds$B]
+    Bnn[[ch]] <- rpmat %*% B[[ch]][nonseeds$B, nonseeds$B] %*% Matrix::t(rpmat)
+    deltann[[ch]] <- rpmat %*% delta[nonseeds$B, nonseeds$A]
     L_Asn[[ch]] <- L_A[seeds$A, nonseeds$A]
     L_Ans[[ch]] <- L_A[nonseeds$A, seeds$A]
     L_Ann[[ch]] <- L_A[nonseeds$A, nonseeds$A]
-    L_Bsn[[ch]] <- L_B[seeds$B, nonseeds$B]
-    L_Bns[[ch]] <- L_B[nonseeds$B, seeds$B]
-    L_Bnn[[ch]] <- L_B[nonseeds$B, nonseeds$B]
+    L_Bsn[[ch]] <- L_B[seeds$B, nonseeds$B] %*% Matrix::t(rpmat)
+    L_Bns[[ch]] <- rpmat %*% L_B[nonseeds$B, seeds$B]
+    L_Bnn[[ch]] <- rpmat %*% L_B[nonseeds$B, nonseeds$B] %*% Matrix::t(rpmat)
   }
   
   
@@ -191,18 +201,28 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   
   D_ns <- P
   corr_ns <- do_lap(P, lap_method)
+  # undo rand perm here
+  corr_ns <- rp[corr_ns]
+  
   corr <- 1:n
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
   P <- Matrix::Diagonal(n)[corr, ]
-  D <- P
-  D[nonseeds$A, nonseeds$B] <- D_ns
-  corr <- data.frame(corr_A = 1:n, corr_B = corr)
+  # D <- P
+  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  reorderA <- order(c(nonseeds$A, seeds$A))
+  reorderB <- order(c(nonseeds$B, seeds$B))
   
+  D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
+  if (is(D, "splrMatrix")) {
+    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+  } else {
+    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+  }
   cl <- match.call()
   z <- list(
     call = cl, 
-    corr = corr, 
+    corr = data.frame(corr_A = 1:n, corr_B = corr), 
     seeds = seeds, 
     P = P, 
     D = D, 

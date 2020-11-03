@@ -106,9 +106,16 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
       order = order)
     z
   } else if(method == "LAP"){
+    # make a random permutation
+    nn <- nrow(A[[1]]) - nrow(seeds)
+    rp <- sample(nn)
+    rpmat <- Matrix::Diagonal(nn)[rp, ]
+    R <- R %*% Matrix::t(rpmat)
     # Hungarian alg.
     lap_method <- set_lap_method(NULL, totv1, totv2)
     corr <- do_lap(R - min(R), lap_method)
+    # undo rand perm here
+    corr <- rp[corr]
     corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[corr]))
     corr <- corr[order(corr$corr_A),] 
     names(corr) <- c("corr_A","corr_B")
