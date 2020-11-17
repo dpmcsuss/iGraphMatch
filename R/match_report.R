@@ -273,7 +273,7 @@ match_plot_igraph <- function(A, B, match,
 #' @rdname plot_methods
 #' 
 #' @export
-match_plot_matrix <- function(A, B, match) {
+match_plot_matrix <- function(A, B, match,...) {
   ch <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
   nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
 
@@ -288,6 +288,6 @@ match_plot_matrix <- function(A, B, match) {
     c("#AA4444", "#888888", "#44AA44"))
   m_max <- max(abs(m))
   at <- seq(-m_max * 1.0001, m_max * 1.0001, length.out = 16)
-  print(image(m, col.regions = col(15), at=at, colorkey=list(at = at)))
+  print(image(m, col.regions = col(15), at=at, colorkey=list(at = at),...))
   invisible(m) 
 }
