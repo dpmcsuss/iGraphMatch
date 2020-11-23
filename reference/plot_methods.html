@@ -115,9 +115,17 @@ and <code>match_plot_matrix</code> which shows an adjacency
 matrix plot.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>match_plot_igraph</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>match</span>, color <span class='op'>=</span> <span class='cn'>TRUE</span>, linetype <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>match_plot_igraph</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>match</span>, color <span class='op'>=</span> <span class='cn'>TRUE</span>, linetype <span class='op'>=</span> <span class='cn'>TRUE</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>match_plot_matrix</span><span class='op'>(</span><span class='va'>A</span>, <span class='va'>B</span>, <span class='va'>match</span><span class='op'>)</span></pre>
+<span class='fu'>match_plot_matrix</span><span class='op'>(</span>
+  <span class='va'>A</span>,
+  <span class='va'>B</span>,
+  <span class='va'>match</span>,
+  col.regions <span class='op'>=</span> <span class='cn'>NULL</span>,
+  at <span class='op'>=</span> <span class='cn'>NULL</span>,
+  colorkey <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +154,23 @@ graph(s) they are in.</p></td>
       <th>linetype</th>
       <td><p>Whether to set edge linetypes according
 to which graph(s) they are in.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>additional parameters passed to either the
+igraph plot function or the Matrix image function.</p></td>
+    </tr>
+    <tr>
+      <th>col.regions</th>
+      <td><p>NULL for default colors, otherwise see <a href='https://rdrr.io/pkg/Matrix/man/image-methods.html'>image-methods</a></p></td>
+    </tr>
+    <tr>
+      <th>at</th>
+      <td><p>NULL for default at values for at (ensures zero is grey), otherwise see <a href='https://rdrr.io/pkg/Matrix/man/image-methods.html'>image-methods</a></p></td>
+    </tr>
+    <tr>
+      <th>colorkey</th>
+      <td><p>NULL for default colorkey, otherwise see <a href='https://rdrr.io/pkg/Matrix/man/image-methods.html'>image-methods</a></p></td>
     </tr>
     </table>
 
