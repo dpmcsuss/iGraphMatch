@@ -4,7 +4,9 @@
 \name{C.Elegans}
 \alias{C.Elegans}
 \title{Chemical synapses and electrical synapses networks of roundworm}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \usage{
 C.Elegans
 }
@@ -19,8 +21,5 @@ Pearson's correlation bewteen two graphs is 0.17.
 Two networks are stored in a list in the form of igraph objects, where
 the first network in the list is the chemical synapses network and the
 other one is the electrical synapses network.
-}
-\details{
-
 }
 \keyword{datasets}

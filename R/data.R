@@ -12,7 +12,7 @@
 #' other one is the electrical synapses network.
 #'
 #'
-#' }
+#' 
 "C.Elegans"
 
 
@@ -29,5 +29,5 @@
 #' list in the form of igraph objects.
 #'
 #'
-#' }
+#' 
 "Enron"

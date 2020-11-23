@@ -193,6 +193,8 @@ edge_match_info <- function(corr, A, B,
 #'  graph(s) they are in.
 #' @param linetype Whether to set edge linetypes according
 #'  to which graph(s) they are in.
+#' @param ... additional parameters passed to either the
+#'  igraph plot function or the Matrix image function.
 #' 
 #' @returns Both functions return values invisibly.
 #' \code{match_plot_igraph} returns the union of the
@@ -229,7 +231,7 @@ edge_match_info <- function(corr, A, B,
 #' match_plot_matrix(A, B, res)
 #' @export
 match_plot_igraph <- function(A, B, match,
-  color = TRUE, linetype = TRUE) {
+  color = TRUE, linetype = TRUE, ...) {
 
   ch <- check_graph(A, B, same_order = FALSE, as_igraph = TRUE)
   
@@ -254,7 +256,7 @@ match_plot_igraph <- function(A, B, match,
   g <- igraph::delete_edge_attr(g, "in_A")
   g <- igraph::delete_edge_attr(g, "in_B")
 
-  pal <- c("#888888", "#44AA44", "#AA4444")
+  pal <- c("#888888", "#4444AA", "#AA4444")
   igraph::E(g)$color <- pal[1]
   igraph::E(g)$lty <- 1
   if (color) {
@@ -266,14 +268,17 @@ match_plot_igraph <- function(A, B, match,
       as.numeric(as.factor(igraph::E(g)$edge_match))
   }
 
-  plot(g)
+  plot(g, ...)
   invisible(g)
 }
 
 #' @rdname plot_methods
-#' 
+#' @param col.regions NULL for default colors, otherwise see \link[Matrix]{image-methods}
+#' @param at NULL for default at values for at (ensures zero is grey), otherwise see \link[Matrix]{image-methods}
+#' @param colorkey NULL for default colorkey, otherwise see \link[Matrix]{image-methods}
+#'
 #' @export
-match_plot_matrix <- function(A, B, match,...) {
+match_plot_matrix <- function(A, B, match, col.regions = NULL, at = NULL, colorkey = NULL, ...) {
   ch <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
   nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
 
@@ -284,10 +289,18 @@ match_plot_matrix <- function(A, B, match,...) {
   B <- ch$g2[corr_B, corr_B]
 
   m <- A - B
-  col <- grDevices::colorRampPalette(
-    c("#AA4444", "#888888", "#44AA44"))
   m_max <- max(abs(m))
-  at <- seq(-m_max * 1.0001, m_max * 1.0001, length.out = 16)
-  print(image(m, col.regions = col(15), at=at, colorkey=list(at = at),...))
-  invisible(m) 
+  if (is.null(at)) {  
+    at <- seq(-m_max * 1.0001, m_max * 1.0001, length.out = 16)
+  }
+  if (is.null(col.regions)) {
+    col <- grDevices::colorRampPalette(
+      c("#AA4444", "#888888", "#4444AA"))
+    col.regions <- col(length(at) - 1)
+  }
+  if (is.null(colorkey)) {
+    colorkey <- list(at = at)
+  }
+  print(image(m, col.regions = col.regions, at = at, colorkey = colorkey, ...))
+  invisible(m)
 }

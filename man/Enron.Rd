@@ -4,7 +4,9 @@
 \name{Enron}
 \alias{Enron}
 \title{Email communication networks of Enron Corporation}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \usage{
 Enron
 }
@@ -18,8 +20,5 @@ There are 488 and 482 edges in two networks respectively and the empirical
 Pearson's correlation bewteen two graphs is 0.85.
 Two email communication networks for two different weeks are stored in a
 list in the form of igraph objects.
-}
-\details{
-
 }
 \keyword{datasets}
