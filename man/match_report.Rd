@@ -19,9 +19,9 @@ edge_match_info(corr, A, B, directed = NULL)
 \item{true_label}{A vector. NULL if the true correspondence
 between two graphs is unknown. A vector indicating the
 true correspondence in the second graph if the true
-correspondence is known.#'}
+correspondence is known.}
 
-\item{directed}{Whether the graphs should be treated as directed 
+\item{directed}{Whether the graphs should be treated as directed
 or undirected. NULL defaults to !isSymmetric(A).}
 
 \item{corr}{Correspondence data.frame as given by match$corr}
