@@ -25,10 +25,10 @@ the second column being the corresponding indices of \eqn{G_2}.}
 \item{r}{A number. Threshold of neighboring pair scores.}
 }
 \value{
-\code{graph_match_percolation} and \code{graph_match_ExpandWhenStuck} 
-  returns a list of graph matching results, including the graph matching formula, 
-  a data frame containing the matching correspondence between \eqn{G_1} and 
-  \eqn{G_2} named \code{corr_A} and \code{corr_B}, seeds and the order of nodes 
+\code{graph_match_percolation} and \code{graph_match_ExpandWhenStuck}
+  returns a list of graph matching results, including the graph matching formula,
+  a data frame containing the matching correspondence between \eqn{G_1} and
+  \eqn{G_2} named \code{corr_A} and \code{corr_B}, seeds and the order of nodes
   getting matched.
 }
 \description{

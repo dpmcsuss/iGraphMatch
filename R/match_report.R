@@ -261,13 +261,12 @@ match_plot_igraph <- function(A, B, match,
   igraph::E(g)$lty <- 1
   if (color) {
     igraph::E(g)$color <- 
-      pal[as.numeric(as.factor(igraph::E(g)$edge_match,
+      pal[as.numeric(factor(igraph::E(g)$edge_match,
         levels = c("Both", "Only A", "Only B")))]
-    ))]
   }
   if (linetype) {
     igraph::E(g)$lty <- 
-      as.numeric(as.factor(igraph::E(g)$edge_match,
+      as.numeric(factor(igraph::E(g)$edge_match,
         levels = c("Both", "Only A", "Only B")))
   }
 
