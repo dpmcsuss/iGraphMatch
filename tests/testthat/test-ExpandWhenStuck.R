@@ -12,15 +12,20 @@ test_that("matching correspondence between graph1 and graph2", {
 })
 
 test_that("test number of seeds", {
-  expect_equal(graph_match_ExpandWhenStuck(A, B,seeds, r = 2)$seeds, 
+  expect_equal(graph_match_ExpandWhenStuck(A, B,seeds, r = 2)$seeds,
                data.frame(A = 1:4, B = 1:4))
 })
 
 # with similarity score
 sim <- matrix(rnorm(100), 10)
-test_that("perco w. similarity score", {
+test_that("exp w. similarity score", {
   expect_equal(graph_match_ExpandWhenStuck(A, B, seeds = seeds, similarity = sim)$seeds,
                data.frame(A = 1:4, B = 1:4))
+})
+
+test_that("exp w. similarity score & no seeds", {
+  expect_equal(nrow(graph_match_ExpandWhenStuck(A, B, seeds = NULL, similarity = sim)$seeds),
+               0)
 })
 
 # directed graphs

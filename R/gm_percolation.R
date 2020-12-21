@@ -5,17 +5,17 @@ cal_mark <- function(x,y){
 
 #' @title Percolation Graph Matching Methods
 #' @rdname gm_perco
-#' 
-#' @return \code{graph_match_percolation} and \code{graph_match_ExpandWhenStuck} 
-#'   returns a list of graph matching results, including the graph matching formula, 
-#'   a data frame containing the matching correspondence between \eqn{G_1} and 
-#'   \eqn{G_2} named \code{corr_A} and \code{corr_B}, seeds and the order of nodes 
+#'
+#' @return \code{graph_match_percolation} and \code{graph_match_ExpandWhenStuck}
+#'   returns a list of graph matching results, including the graph matching formula,
+#'   a data frame containing the matching correspondence between \eqn{G_1} and
+#'   \eqn{G_2} named \code{corr_A} and \code{corr_B}, seeds and the order of nodes
 #'   getting matched.
-#'   
-#'   
-#'   
+#'
+#'
+#'
 #' @param A A matrix, igraph object, or list of either.
-#' @param B A matrix, igraph object, or list of either. 
+#' @param B A matrix, igraph object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix
@@ -34,9 +34,9 @@ cal_mark <- function(x,y){
 #' @export
 #'
 #'
-graph_match_percolation <- function (A, B, seeds, 
+graph_match_percolation <- function (A, B, seeds,
                                      similarity = NULL, r = 2) {
-  
+
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
@@ -51,47 +51,50 @@ graph_match_percolation <- function (A, B, seeds,
   ns <- nrow(seeds)
   Z <- seeds #matched nodes
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
-  M <- Matrix(0, totv1, totv2) #marks matrix
+  M <- Matrix(0, n, n) #marks matrix
   if(sum(abs(similarity)) != 0){
     M[nonseeds$A, nonseeds$B] <- similarity
   }
-  
-  
+
+
   # mark neighbors
-  for(ch in 1:nc){
-    directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
-    
-    for(i in 1:nrow(seeds)){
-      A_adj <- which(A[[ch]][seeds$A[i],]>0)
-      B_adj <- which(B[[ch]][seeds$B[i],]>0)
-      if(length(A_adj) != 0 && length(B_adj) != 0){
-        mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
-        M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
-      }
-      if(directed){
-        A[[ch]] <- Matrix::t(A[[ch]])
-        B[[ch]] <- Matrix::t(B[[ch]])
+  if(nrow(seeds) != 0){
+    for(ch in 1:nc){
+      directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
+
+      for(i in 1:nrow(seeds)){
         A_adj <- which(A[[ch]][seeds$A[i],]>0)
         B_adj <- which(B[[ch]][seeds$B[i],]>0)
         if(length(A_adj) != 0 && length(B_adj) != 0){
           mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
         }
-        A[[ch]] <- Matrix::t(A[[ch]])
-        B[[ch]] <- Matrix::t(B[[ch]])
+        if(directed){
+          A[[ch]] <- Matrix::t(A[[ch]])
+          B[[ch]] <- Matrix::t(B[[ch]])
+          A_adj <- which(A[[ch]][seeds$A[i],]>0)
+          B_adj <- which(B[[ch]][seeds$B[i],]>0)
+          if(length(A_adj) != 0 && length(B_adj) != 0){
+            mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
+            M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
+          }
+          A[[ch]] <- Matrix::t(A[[ch]])
+          B[[ch]] <- Matrix::t(B[[ch]])
+        }
       }
     }
+
+    M[seeds$A,] <- -n
+    M[,seeds$B] <- -n
   }
-  
-  M[seeds$A,] <- -n
-  M[,seeds$B] <- -n
-  
+
+
   while(max(M) >= r){
     max_ind <- Matrix::which(M == max(M), arr.ind = TRUE)
     max_ind <- max_ind[sample(nrow(max_ind),1),]
-    
+
     Z <- rbind(Z,max_ind)
-    
+
     # update mark matrix
     for( ch in 1:nc ){
       A_adj <- which(A[[ch]][max_ind[1],]>0)
@@ -100,6 +103,7 @@ graph_match_percolation <- function (A, B, seeds,
         mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
         M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
       }
+      directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
       if(directed){
         A[[ch]] <- Matrix::t(A[[ch]])
         B[[ch]] <- Matrix::t(B[[ch]])
@@ -113,21 +117,21 @@ graph_match_percolation <- function (A, B, seeds,
         B[[ch]] <- Matrix::t(B[[ch]])
       }
     }
-    
+
     M[max_ind[1],] <- -n
     M[,max_ind[2]] <- -n
   }
-  
-  order <- order(Z$A)
+
+  order <- order(Z[,1])
   corr <- Z[order,]
   names(corr) <- c("corr_A","corr_B")
   rownames(corr) <- paste0(as.character(1:nrow(corr)))
-  
+
   cl <- match.call()
   z <- list(
-    call = cl, 
-    corr = corr, 
-    seeds = seeds, 
+    call = cl,
+    corr = corr,
+    seeds = seeds,
     order = order)
   z
 }

@@ -8,15 +8,20 @@ B <- g$graph2
 seeds <- c(1, 5, 3)
 
 test_that("perco of same sizes", {
-  expect_equal(graph_match_percolation(A, B, seeds = seeds)$seeds, 
+  expect_equal(graph_match_percolation(A, B, seeds = seeds)$seeds,
                data.frame(A = c(1, 5, 3), B = c(1, 5, 3)))
 })
 
 # with similarity score
 sim <- matrix(rnorm(100), 10)
 test_that("perco w. similarity score", {
-  expect_equal(graph_match_percolation(A, B, seeds = seeds, similarity = sim)$seeds, 
+  expect_equal(graph_match_percolation(A, B, seeds = seeds, similarity = sim)$seeds,
                data.frame(A = c(1, 5, 3), B = c(1, 5, 3)))
+})
+
+test_that("percolation without seeds", {
+  expect_equal(nrow(graph_match_percolation(A, B, seeds = NULL, similarity = sim)$seeds),
+               0)
 })
 
 # directed graphs
@@ -36,7 +41,9 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 seeds <- 1:3
 
 test_that("percolation multi-layer", {
-  expect_equal(graph_match_percolation(A, B, seeds = 1:3)$seeds, 
+  expect_equal(graph_match_percolation(A, B, seeds = 1:3)$seeds,
                data.frame(A = 1:3, B = 1:3))
 })
+
+
 
