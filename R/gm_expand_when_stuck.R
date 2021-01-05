@@ -1,5 +1,5 @@
 cal_mark <- function(x,y){
-  1 - abs(x - y) / max(x, y)
+  1 - abs(x - y) / max(abs(x), abs(y))
 }
 
 
@@ -64,8 +64,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
       # update mark matrix
       for( ch in 1:nc ){
         directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
-        A_adj <- which(A[[ch]][max_ind[1],]>0)
-        B_adj <- which(B[[ch]][max_ind[2],]>0)
+        A_adj <- which(A[[ch]][max_ind[1],]!=0)
+        B_adj <- which(B[[ch]][max_ind[2],]!=0)
         if(length(A_adj) != 0 && length(B_adj) != 0){
           mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
@@ -74,8 +74,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
         if(directed){
           A[[ch]] <- Matrix::t(A[[ch]])
           B[[ch]] <- Matrix::t(B[[ch]])
-          A_adj <- which(A[[ch]][max_ind[1],]>0)
-          B_adj <- which(B[[ch]][max_ind[2],]>0)
+          A_adj <- which(A[[ch]][max_ind[1],]!=0)
+          B_adj <- which(B[[ch]][max_ind[2],]!=0)
           if(length(A_adj) != 0 && length(B_adj) != 0){
             mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
             M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
@@ -100,8 +100,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
       directed <- !(isSymmetric(A[[ch]]) && isSymmetric(B[[ch]]))
 
       for(i in 1:nrow(seeds)){
-        A_adj <- which(A[[ch]][seeds$A[i],]>0)
-        B_adj <- which(B[[ch]][seeds$B[i],]>0)
+        A_adj <- which(A[[ch]][seeds$A[i],]!=0)
+        B_adj <- which(B[[ch]][seeds$B[i],]!=0)
         if(length(A_adj) != 0 && length(B_adj) != 0){
           mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
@@ -109,8 +109,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
         if(directed){
           A[[ch]] <- Matrix::t(A[[ch]])
           B[[ch]] <- Matrix::t(B[[ch]])
-          A_adj <- which(A[[ch]][seeds$A[i],]>0)
-          B_adj <- which(B[[ch]][seeds$B[i],]>0)
+          A_adj <- which(A[[ch]][seeds$A[i],]!=0)
+          B_adj <- which(B[[ch]][seeds$B[i],]!=0)
           if(length(A_adj) != 0 && length(B_adj) != 0){
             mark <- outer(A[[ch]][seeds$A[i],A_adj], B[[ch]][seeds$B[i], B_adj], cal_mark)
             M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
@@ -137,8 +137,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
 
       # update mark matrix
       for( ch in 1:nc ){
-        A_adj <- which(A[[ch]][max_ind[1],]>0)
-        B_adj <- which(B[[ch]][max_ind[2],]>0)
+        A_adj <- which(A[[ch]][max_ind[1],]!=0)
+        B_adj <- which(B[[ch]][max_ind[2],]!=0)
         if(length(A_adj) != 0 && length(B_adj) != 0){
           mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
           M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
@@ -146,8 +146,8 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
         if(directed){
           A[[ch]] <- Matrix::t(A[[ch]])
           B[[ch]] <- Matrix::t(B[[ch]])
-          A_adj <- which(A[[ch]][max_ind[1],]>0)
-          B_adj <- which(B[[ch]][max_ind[2],]>0)
+          A_adj <- which(A[[ch]][max_ind[1],]!=0)
+          B_adj <- which(B[[ch]][max_ind[2],]!=0)
           if(length(A_adj) != 0 && length(B_adj) != 0){
             mark <- outer(A[[ch]][max_ind[1],A_adj], B[[ch]][max_ind[2],B_adj], cal_mark)
             M[A_adj, B_adj] <- M[A_adj, B_adj] + mark
