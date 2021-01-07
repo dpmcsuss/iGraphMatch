@@ -35,7 +35,7 @@
 #'
 #' @usage data(Enron)
 #' 
-#' #' @examples 
+#' @examples 
 #' data(Enron)
 #' g1 <- Enron[[1]]
 #' g2 <- Enron[[2]]

@@ -9,11 +9,6 @@ An object of class \code{list} of length 2.
 }
 \usage{
 data(Enron)
-
-#' @examples 
-data(Enron)
-g1 <- Enron[[1]]
-g2 <- Enron[[2]]
 }
 \description{
 The Enron network data consists of email messages between 184 employees
@@ -25,5 +20,11 @@ There are 488 and 482 edges in two networks respectively and the empirical
 Pearson's correlation bewteen two graphs is 0.85.
 Two email communication networks for two different weeks are stored in a
 list in the form of igraph objects.
+}
+\examples{
+data(Enron)
+g1 <- Enron[[1]]
+g2 <- Enron[[2]]
+
 }
 \keyword{datasets}
