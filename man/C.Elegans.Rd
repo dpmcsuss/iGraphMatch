@@ -8,7 +8,7 @@
 An object of class \code{list} of length 2.
 }
 \usage{
-C.Elegans
+data(C.Elegans)
 }
 \description{
 C.Elegans networks consist of the chemical synapses network and the
@@ -21,5 +21,11 @@ Pearson's correlation bewteen two graphs is 0.17.
 Two networks are stored in a list in the form of igraph objects, where
 the first network in the list is the chemical synapses network and the
 other one is the electrical synapses network.
+}
+\examples{
+data(C.Elegans)
+g1 <- C.Elegans[[1]]
+g2 <- C.Elegans[[2]]
+
 }
 \keyword{datasets}

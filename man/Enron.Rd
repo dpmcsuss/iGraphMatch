@@ -8,7 +8,12 @@
 An object of class \code{list} of length 2.
 }
 \usage{
-Enron
+data(Enron)
+
+#' @examples 
+data(Enron)
+g1 <- Enron[[1]]
+g2 <- Enron[[2]]
 }
 \description{
 The Enron network data consists of email messages between 184 employees
