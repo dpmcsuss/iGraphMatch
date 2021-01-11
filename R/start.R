@@ -96,29 +96,15 @@ rds_sinkhorn <- function(n, distribution="runif"){
 #' 
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
-  rds <- rds_perm_bari(nns - nss, g, is_splr)
+  rds <- rds_perm_bari(nns - nss, g)
   add_soft_seeds(rds, nns, ns, soft_seeds)
 }
 
 
 
-rds_perm_bari <- function(nns, g, is_splr = TRUE){
-  alpha <- stats::runif(1, 0, g)
-  if(is_splr){
-    if(is.numeric(alpha * rperm(nns))){
-      x <- sparseMatrix(x = alpha * rperm(nns), i=1, j=1)
-    } else{
-      x <- alpha * rperm(nns)
-    }
-    new("splrMatrix",
-        x = x, 
-        a = Matrix(1 - alpha, nns), b = Matrix(1 / nns, nns),
-        Dim = c(as.integer(nns), as.integer(nns)),
-        Dimnames = list(NULL, NULL))
-  } else {
-    (1 - alpha) * bari_start(nns) +
-        alpha * rperm(nns)
-  }
+rds_perm_bari <- function(nns, g){
+  alpha <- g * stats::runif(1)
+  (1 - alpha) * bari_start(nns) + alpha * rperm(nns)
 }
 
 #' @rdname start

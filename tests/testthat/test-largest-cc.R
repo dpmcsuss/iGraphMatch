@@ -15,6 +15,6 @@ test_that("largest cc w. min_degree", {
   expect_length(lcc1$keep, n)
   
   expect_length(lcc3, 3)
-  expect_equal(sum(lcc3$keep), 0)
+  expect_equal(sum(lcc3$keep), 2)
   expect_length(lcc3$keep, n)
 })

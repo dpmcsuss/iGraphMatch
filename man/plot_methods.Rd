@@ -5,9 +5,17 @@
 \alias{match_plot_matrix}
 \title{Plotting methods for visualizing matches}
 \usage{
-match_plot_igraph(A, B, match, color = TRUE, linetype = TRUE)
+match_plot_igraph(A, B, match, color = TRUE, linetype = TRUE, ...)
 
-match_plot_matrix(A, B, match)
+match_plot_matrix(
+  A,
+  B,
+  match,
+  col.regions = NULL,
+  at = NULL,
+  colorkey = NULL,
+  ...
+)
 }
 \arguments{
 \item{A}{First graph. For \code{match_plot_igraph}
@@ -24,6 +32,15 @@ graph(s) they are in.}
 
 \item{linetype}{Whether to set edge linetypes according
 to which graph(s) they are in.}
+
+\item{...}{additional parameters passed to either the
+igraph plot function or the Matrix image function.}
+
+\item{col.regions}{NULL for default colors, otherwise see \link[Matrix]{image-methods}}
+
+\item{at}{NULL for default at values for at (ensures zero is grey), otherwise see \link[Matrix]{image-methods}}
+
+\item{colorkey}{NULL for default colorkey, otherwise see \link[Matrix]{image-methods}}
 }
 \value{
 Both functions return values invisibly.
@@ -40,7 +57,7 @@ and \code{match_plot_matrix} which shows an adjacency
 matrix plot.
 }
 \details{
-Grey edges/pixels indicate common edges, red 
+Grey edges/pixels indicate common edges, red
 indicates edges only in graph A and green
 represents edges only graph B. The corresponding
 linetypes are solid, short dash, and long dash.

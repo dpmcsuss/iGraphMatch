@@ -7,27 +7,9 @@
 \alias{splr,Matrix,Matrix,Matrix-method}
 \title{Sparse Plus Low-Rank Matrices}
 \usage{
-splr(
-  x,
-  a = NULL,
-  b = NULL,
-  rank = NULL,
-  factorize = FALSE,
-  tol = 1e-05,
-  dimnames = list(NULL, NULL),
-  ...
-)
+splr(x, a = NULL, b = NULL, rank = NULL, dimnames = list(NULL, NULL), ...)
 
-\S4method{splr}{Matrix,Matrix,Matrix}(
-  x,
-  a = NULL,
-  b = NULL,
-  rank = NULL,
-  factorize = FALSE,
-  tol = 1e-05,
-  dimnames = list(NULL, NULL),
-  ...
-)
+\S4method{splr}{Matrix,Matrix,Matrix}(x, a = NULL, b = NULL, rank = NULL, dimnames = list(NULL, NULL), ...)
 }
 \arguments{
 \item{x}{As in Matrix}
@@ -36,12 +18,7 @@ splr(
 
 \item{b}{As in Matrix}
 
-\item{rank}{the estimated rank of the matrix to be factorized.  If \code{rank} is not provided, a guess is made}
-
-\item{factorize}{a safeguard to prevent unnecessary computation (e.g. if the matrix is very large).  If \code{a} 
-is provided and \code{factorize = FALSE}, an error will result.}
-
-\item{tol}{the tolerance for the eigenvalues if \code{rank} is not provided}
+\item{rank}{rank of the matrix to be factorized.}
 
 \item{dimnames}{optional - the list of names for the matrix}
 

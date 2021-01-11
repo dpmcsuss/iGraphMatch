@@ -20,5 +20,12 @@ test_that("doubly stochastic", {
   expect_lt(sum(abs(colSums(actual$D) - 1)), 10e-6)
 })
 test_that("number of seeds", {
-  expect_equal(actual$ns,0)
+  expect_equal(nrow(actual$seeds),0)
+})
+
+
+# test output error when given start = "convex"
+test_that("doubly stochastic", {
+  expect_error(graph_match_convex(A, B, start = "convex"), 
+               "Cannot start convex with convex. Try \"bari\" or another option.")
 })
