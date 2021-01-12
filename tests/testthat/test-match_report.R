@@ -2,9 +2,9 @@
 
 context("hard-seeding Frank Wolfe with incorrect seeds")
 
-try({
-  sink("/dev/null")
-})
+# try({
+#   sink("/dev/null")
+# })
 # sample pair of graphs w. 10 vertices
 g <- sample_correlated_gnp_pair(n = 10, corr = 0.5, p = 0.5)
 A <- matrix_list(list(g$graph1[], g$graph1[]))
@@ -27,4 +27,4 @@ test_that(
     )
   }
 )
-sink()
+# sink()
