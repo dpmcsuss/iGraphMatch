@@ -6,20 +6,25 @@
 \alias{iGraphMatch-package}
 \title{iGraphMatch: Tools for approximately solving graph matching problems}
 \description{
-iGraphMatch is an R package for graph
-    matching. The package works for both igraph objects and matrix
-    objects. You provide the adjacency matrices of two graphs and some
-    other information you might know, choose the graph matching method,
-    and it returns the graph matching results. iGraphMatch also provides a
-    bunch of useful functions you might need related to graph
-    matching.
+iGraphMatch is an R package for graph matching. The package
+  works for both igraph objects and matrix objects. You provide the adjacency
+  matrices of two graphs and some other information you might know, choose the
+  graph matching method, and it returns the graph matching results. iGraphMatch
+  also provides a bunch of useful functions you might need related to graph
+  matching.
 }
 \author{
-\strong{Maintainer}: Zihuan Qiao \email{zhqiao@bu.edu}
+\strong{Maintainer}: Daniel Sussman \email{sussman@bu.edu}
 
 Authors:
 \itemize{
-  \item Daniel Sussman \email{sussman@bu.edu}
+  \item Zihuan Qiao \email{zhqiao@bu.edu}
+}
+
+Other contributors:
+\itemize{
+  \item Joshua Agterberg [contributor]
+  \item Lujia Wang [contributor]
 }
 
 }
