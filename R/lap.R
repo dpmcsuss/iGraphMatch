@@ -32,6 +32,7 @@
 #' @export
 do_lap <- function(score, method){
   n <- nrow(score)
+  method <- set_lap_method(method, n, n)
   switch(method,
     lapjv = { 
       score <- as.matrix(score)
@@ -76,6 +77,12 @@ set_lap_method <- function(lap_method, totv1, totv2){
       lap_method <- "clue"
     }
   }
+  if (lap_method %in% c("lapmod", "lapjv") && 
+      !("rlapjv" %in% rownames(utils::installed.packages()))) {
+    
+      warning("LAP method reverting to 'clue' because the 'rlapjv' package is not installed.")
+      lap_method <- "clue"
+    }
   lap_method
 }
 
