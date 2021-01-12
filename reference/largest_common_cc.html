@@ -76,7 +76,7 @@ as possible." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -150,15 +150,15 @@ the original graphs remain in the induced subgraph.</p>
 <span class='va'>lccs1</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, min_degree <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='co'># induced subgraph</span>
 <span class='va'>lccs1</span><span class='op'>$</span><span class='va'>g1</span>
-</div><div class='output co'>#&gt; IGRAPH 23fd2cd D--- 8 14 -- 
-#&gt; + edges from 23fd2cd:
+</div><div class='output co'>#&gt; IGRAPH be9bbf4 D--- 8 14 -- 
+#&gt; + edges from be9bbf4:
 #&gt;  [1] 1-&gt;5 2-&gt;7 3-&gt;8 4-&gt;6 5-&gt;1 5-&gt;6 6-&gt;4 6-&gt;5 6-&gt;7 6-&gt;8 7-&gt;2 7-&gt;6 8-&gt;3 8-&gt;6</div><div class='input'><span class='va'>lccs1</span><span class='op'>$</span><span class='va'>g2</span>
-</div><div class='output co'>#&gt; IGRAPH 07172c6 D--- 8 16 -- 
-#&gt; + edges from 07172c6:
+</div><div class='output co'>#&gt; IGRAPH ad5be9d D--- 8 16 -- 
+#&gt; + edges from ad5be9d:
 #&gt;  [1] 1-&gt;5 1-&gt;6 2-&gt;4 2-&gt;7 3-&gt;8 4-&gt;2 4-&gt;6 5-&gt;1 6-&gt;1 6-&gt;4 6-&gt;7 6-&gt;8 7-&gt;2 7-&gt;6 8-&gt;3
 #&gt; [16] 8-&gt;6</div><div class='input'><span class='co'># label of vertices of the induced subgraph in the original graph</span>
 <span class='fu'>igraph</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/igraph/man/V.html'>V</a></span><span class='op'>(</span><span class='va'>g1</span><span class='op'>)</span><span class='op'>[</span><span class='va'>lccs1</span><span class='op'>$</span><span class='va'>keep</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; + 8/10 vertices, from e975992:
+</div><div class='output co'>#&gt; + 8/10 vertices, from 0264f83:
 #&gt; [1]  1  2  4  5  7  8  9 10</div><div class='input'>
 <span class='co'># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span>
 <span class='va'>lccs3</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, min_degree <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
