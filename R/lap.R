@@ -67,7 +67,7 @@ set_lap_method <- function(lap_method, totv1, totv2){
   methods <- c("lapmod", "lapjv", "clue") #, "sinkhorn")
   if (!is.null(lap_method) && !(lap_method %in% methods)){
     stop(paste("Unrecognized LAP method:", lap_method,
-      "Please use one of:", methods))
+      "Please use one of:", paste(methods, collapse = " ")))
   }
   if (is.null(lap_method)){
     if("rlapjv" %in% rownames(utils::installed.packages()) &&

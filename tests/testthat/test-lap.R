@@ -35,7 +35,7 @@ test_that(
     expect_error({
       do_lap(cost, "other")
     },
-    "The LAP method other is not implemented.*")
+    "Unrecognized LAP method: other Please use one of: lapmod lapjv clue.*")
   }
 )
 
