@@ -8,7 +8,7 @@
 #' where \eqn{\Pi_n} denotes all permutations on n objects.
 #'
 #' @param score matrix of pairwise scores
-#' @param method One off "lapjv", "lapmod", or "clue"
+#' @param method One of "lapjv", "lapmod", or "clue"
 #' 
 #'
 #' @rdname do_lap
@@ -17,7 +17,10 @@
 #'  best matching column for each row.
 #'  
 #'
-#' @details TODO: details for the method
+#' @details Solves a linear assignment using one of three methods. 
+#'  clue uses solve_lsap from the clue package.
+#'  lapjv uses the Jonker-Volgenaut approach implemented in this package.
+#'  lapmod use a version that exploits sparsity in the score matrix.
 #' 
 #' 
 #' @examples
@@ -36,15 +39,15 @@ do_lap <- function(score, method){
   switch(method,
     lapjv = { 
       score <- as.matrix(score)
-      rlapjv::lapjv(score, # round(score * n ^ 2 * max(score)),
+      lapjv(score, # round(score * n ^ 2 * max(score)),
         maximize = TRUE)
     },
     lapmod = {
       if( class(score) == "splrMatrix" ){
-        rlapjv::lapmod(splr_to_sparse(score),
+        lapmod(splr_to_sparse(score),
           maximize = TRUE)
       } else {
-        rlapjv::lapmod(score, maximize = TRUE)
+        lapmod(score, maximize = TRUE)
       }
     },
     clue = {
@@ -77,12 +80,6 @@ set_lap_method <- function(lap_method, totv1, totv2){
       lap_method <- "clue"
     }
   }
-  if (lap_method %in% c("lapmod", "lapjv") && 
-      !("rlapjv" %in% rownames(utils::installed.packages()))) {
-    
-      warning("LAP method reverting to 'clue' because the 'rlapjv' package is not installed.")
-      lap_method <- "clue"
-    }
   lap_method
 }
 

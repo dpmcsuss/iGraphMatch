@@ -9,7 +9,7 @@ do_lap(score, method)
 \arguments{
 \item{score}{matrix of pairwise scores}
 
-\item{method}{One off "lapjv", "lapmod", or "clue"}
+\item{method}{One of "lapjv", "lapmod", or "clue"}
 }
 \value{
 \code{do_lap} returns a vector which indicates the 
@@ -22,7 +22,10 @@ using one of three methods. For an n x n score matrix it find
 where \eqn{\Pi_n} denotes all permutations on n objects.
 }
 \details{
-TODO: details for the method
+Solves a linear assignment using one of three methods. 
+ clue uses solve_lsap from the clue package.
+ lapjv uses the Jonker-Volgenaut approach implemented in this package.
+ lapmod use a version that exploits sparsity in the score matrix.
 }
 \examples{
 set.seed(12345)

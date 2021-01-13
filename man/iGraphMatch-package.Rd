@@ -4,7 +4,7 @@
 \name{iGraphMatch-package}
 \alias{iGraphMatch}
 \alias{iGraphMatch-package}
-\title{iGraphMatch: Tools for approximately solving graph matching problems}
+\title{iGraphMatch: Tools Graph Matching}
 \description{
 iGraphMatch is an R package for graph matching. The package
   works for both igraph objects and matrix objects. You provide the adjacency
