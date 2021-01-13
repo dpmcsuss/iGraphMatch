@@ -9,7 +9,7 @@
 #' @param maximize If FALSE (default) then costs are minimized and if TRUE the 
 #' costs are maximized
 #'
-#' @detail The C++ code for this method is modified from code in the
+#' @details The C++ code for this method is modified from code in the
 #'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
 #' 
 #' @return The assignment of rows to columns as an integer vector
@@ -49,7 +49,7 @@ lapmod_index <- function(n, cc, ii, kk, maximize = FALSE) {
 #' @param maximize If FALSE (default) then costs are minimized and if TRUE the 
 #' costs are maximized
 #'
-#' @detail The C++ code for this method is modified from code in the
+#' @details The C++ code for this method is modified from code in the
 #'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
 #' 
 #' @return The assignment of rows to columns as an integer vector

@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 cpp_lapjv <- function(cost, maximize = FALSE) {
-    .Call('_iGraphMatch_cpp_lapjv', PACKAGE = 'iGraphMatch', cost, maximize)
+    .Call(`_iGraphMatch_cpp_lapjv`, cost, maximize)
 }
 
 cpp_lapmod <- function(n, cc, ii, kk, maximize = FALSE) {
-    .Call('_iGraphMatch_cpp_lapmod', PACKAGE = 'iGraphMatch', n, cc, ii, kk, maximize)
+    .Call(`_iGraphMatch_cpp_lapmod`, n, cc, ii, kk, maximize)
 }
 

@@ -36,12 +36,12 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 2
-#' init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
+#' \dontrun{
+#'  init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
+#'  # FW graph matching with incorrect seeds to start at convex start
+#'  init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
+#' }
 #'
-#' # FW graph matching with incorrect seeds to start at convex start
-#' init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
-#'
-#' # 
 #'
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){

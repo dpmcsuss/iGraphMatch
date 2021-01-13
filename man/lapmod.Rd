@@ -19,3 +19,7 @@ The assignment of rows to columns as an integer vector
 Find a set of vertices pairs in the order of goodness of matching according to a
 specified measure.
 }
+\details{
+The C++ code for this method is modified from code in the
+ \href{https://github.com/Bram94/lapjv}{python lapjv} package.
+}
