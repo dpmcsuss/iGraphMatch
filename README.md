@@ -12,7 +12,7 @@ Installation
 ------------
 ``` r
 # install.packages("devtools")
-devtools::install_github("dpmcsuss/iGraphMatch"
+devtools::install_github("dpmcsuss/iGraphMatch")
 ```
 
 This package is still in development. The `dev` branch of the package might be more stable. This can be installed via devtools with
