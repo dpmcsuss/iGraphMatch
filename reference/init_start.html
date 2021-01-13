@@ -269,79 +269,12 @@ at the other places are derived by different start method.</p>
 <span class='va'>g1</span> <span class='op'>&lt;-</span> <span class='va'>cgnp_pair</span><span class='op'>$</span><span class='va'>graph1</span>
 <span class='va'>g2</span> <span class='op'>&lt;-</span> <span class='va'>cgnp_pair</span><span class='op'>$</span><span class='va'>graph2</span>
 <span class='va'>seeds</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span> <span class='op'>&lt;=</span> <span class='fl'>2</span>
-<span class='fu'>init_start</span><span class='op'>(</span>start <span class='op'>=</span> <span class='st'>"convex"</span>, nns <span class='op'>=</span> <span class='fl'>8</span>, A <span class='op'>=</span> <span class='va'>g1</span>, B <span class='op'>=</span> <span class='va'>g2</span>, seeds <span class='op'>=</span> <span class='va'>seeds</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sparse part
-#&gt; 6 x 6 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                     
-#&gt; [1,] 0.08193779 0.05651882 0.1999733 0.1899887 0.06802023 0.03544415
-#&gt; [2,] .          0.19997327 0.2931860 0.1304665 0.14522087 0.14776763
-#&gt; [3,] 0.13046646 0.09873990 0.1592690 .         .          0.15900198
-#&gt; [4,] 0.14776763 0.21240426 .         0.2632563 0.03544415 0.09873990
-#&gt; [5,] 0.09873990 0.26246636 .         .         0.27823409 0.34519414
-#&gt; [6,] 0.10346438 0.06328308 0.1304665 0.2409398 0.09873990 .         
-#&gt; plus left factor
-#&gt; 6 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;               
-#&gt; [1,] 0.0153655
-#&gt; [2,] 0.0153655
-#&gt; [3,] 0.0153655
-#&gt; [4,] 0.0153655
-#&gt; [5,] 0.0153655
-#&gt; [6,] 0.0153655
-#&gt; times right factor transpose
-#&gt; 6 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;           
-#&gt; [1,] 0.125
-#&gt; [2,] 0.125
-#&gt; [3,] 0.125
-#&gt; [4,] 0.125
-#&gt; [5,] 0.125
-#&gt; [6,] 0.125</div><div class='input'>
-<span class='co'># FW graph matching with incorrect seeds to start at convex start</span>
-<span class='fu'>init_start</span><span class='op'>(</span>start <span class='op'>=</span> <span class='st'>"convex"</span>, nns <span class='op'>=</span> <span class='fl'>8</span>, ns <span class='op'>=</span> <span class='fl'>2</span>, soft_seeds <span class='op'>=</span> <span class='va'>ss</span>, A <span class='op'>=</span> <span class='va'>g1</span>, B <span class='op'>=</span> <span class='va'>g2</span>, seeds <span class='op'>=</span> <span class='va'>seeds</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Sparse part
-#&gt; 8 x 8 sparse Matrix of class "dgCMatrix"
-#&gt;                                                                          
-#&gt; [1,] 0.213077413 .           0.133444518 0.29780651 .          0.06235369
-#&gt; [2,] 0.006968792 0.348744678 0.241782476 0.01359491 0.27349609 0.04789109
-#&gt; [3,] 0.107741989 0.006968792 0.360482979 .          0.06204852 0.03296219
-#&gt; [4,] 0.234783269 0.031754582 .           0.30976561 0.07278060 0.18033325
-#&gt; [5,] .           0.419800013 0.007303381 0.03653871 0.14721997 0.38216914
-#&gt; [6,] 0.046251810 .           .           0.01331466 0.28180318 0.16847664
-#&gt; [7,] 0.243476261 0.039289895 0.225054964 0.07221321 0.02164175 .         
-#&gt; [8,] 0.147700466 0.153442039 0.024962889 0.24979761 0.13404109 0.11884521
-#&gt;                           
-#&gt; [1,] 0.27170888 0.01464020
-#&gt; [2,] 0.06752197 .         
-#&gt; [3,] 0.34046489 0.08933064
-#&gt; [4,] .          0.16361389
-#&gt; [5,] .          .         
-#&gt; [6,] 0.01087226 0.47231266
-#&gt; [7,] 0.30246322 0.08889191
-#&gt; [8,] .          0.16424190
-#&gt; plus left factor
-#&gt; 8 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;                 
-#&gt; [1,] 0.006968792
-#&gt; [2,] .          
-#&gt; [3,] .          
-#&gt; [4,] 0.006968792
-#&gt; [5,] 0.006968792
-#&gt; [6,] 0.006968792
-#&gt; [7,] 0.006968792
-#&gt; [8,] 0.006968792
-#&gt; times right factor transpose
-#&gt; 8 x 1 sparse Matrix of class "dgCMatrix"
-#&gt;               
-#&gt; [1,] .        
-#&gt; [2,] .        
-#&gt; [3,] 0.1666667
-#&gt; [4,] 0.1666667
-#&gt; [5,] 0.1666667
-#&gt; [6,] 0.1666667
-#&gt; [7,] 0.1666667
-#&gt; [8,] 0.1666667</div><div class='input'>
-<span class='co'># </span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+ <span class='fu'>init_start</span><span class='op'>(</span>start <span class='op'>=</span> <span class='st'>"convex"</span>, nns <span class='op'>=</span> <span class='fl'>8</span>, A <span class='op'>=</span> <span class='va'>g1</span>, B <span class='op'>=</span> <span class='va'>g2</span>, seeds <span class='op'>=</span> <span class='va'>seeds</span><span class='op'>)</span>
+ <span class='co'># FW graph matching with incorrect seeds to start at convex start</span>
+ <span class='fu'>init_start</span><span class='op'>(</span>start <span class='op'>=</span> <span class='st'>"convex"</span>, nns <span class='op'>=</span> <span class='fl'>8</span>, ns <span class='op'>=</span> <span class='fl'>2</span>, soft_seeds <span class='op'>=</span> <span class='va'>ss</span>, A <span class='op'>=</span> <span class='va'>g1</span>, B <span class='op'>=</span> <span class='va'>g2</span>, seeds <span class='op'>=</span> <span class='va'>seeds</span><span class='op'>)</span>
+<span class='op'>}</span>
+
 
 </div></pre>
   </div>

@@ -128,7 +128,7 @@ where \(\Pi_n\) denotes all permutations on n objects.</p>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>One off "lapjv", "lapmod", or "clue"</p></td>
+      <td><p>One of "lapjv", "lapmod", or "clue"</p></td>
     </tr>
     </table>
 
@@ -138,7 +138,10 @@ where \(\Pi_n\) denotes all permutations on n objects.</p>
  best matching column for each row.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>TODO: details for the method</p>
+    <p>Solves a linear assignment using one of three methods. 
+ clue uses solve_lsap from the clue package.
+ lapjv uses the Jonker-Volgenaut approach implemented in this package.
+ lapmod use a version that exploits sparsity in the score matrix.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>12345</span><span class='op'>)</span>
