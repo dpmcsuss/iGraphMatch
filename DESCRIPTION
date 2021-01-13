@@ -1,6 +1,6 @@
 Package: iGraphMatch
 Type: Package
-Title: Tools for approximately solving graph matching problems
+Title: Tools Graph Matching
 Version: 1.0.0
 Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussman@bu.edu"),
              person("Zihuan", "Qiao", role = c("aut"), email = "zhqiao@bu.edu"),
