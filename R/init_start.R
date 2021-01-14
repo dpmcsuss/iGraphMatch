@@ -107,15 +107,18 @@ add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
     return(start)
 
   cs <- check_seeds(soft_seeds, nv = nns + ns)
-  seed_g1 <- cs$seeds$A - ns
-  seed_g2 <- cs$seeds$B - ns
+  seeds_g1 <- cs$seeds$A - ns
+  seeds_g2 <- cs$seeds$B - ns
   cs <- check_seeds(cs$seeds - ns, nv = nns)
-  nonseed_g1 <- cs$nonseeds$A
-  nonseed_g2 <- cs$nonseeds$B
+  nonseeds_g1 <- cs$nonseeds$A
+  nonseeds_g2 <- cs$nonseeds$B
+  nss <- nrow(cs$seeds)
 
-  new_start <- Matrix::Matrix(0, nns, nns)
-  new_start[cbind(seed_g1, seed_g2)] <- 1
-  new_start[nonseed_g1, nonseed_g2] <- start
+  reorderA <- order(c(nonseeds_g1, seeds_g1))
+  reorderB <- order(c(nonseeds_g2, seeds_g2))
+
+  new_start <- pad(start, nss)[reorderA, reorderB]
+  new_start[cbind(seeds_g1, seeds_g2)] <-1   
   new_start
 }
 

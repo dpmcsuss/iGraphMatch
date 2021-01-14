@@ -8,7 +8,7 @@ Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussma
              person("Lujia", "Wang", role = "ctb"),
              person("Vince", "Lyzinski", role = "ctb"))
 Description: Graph matching methods and analysis. The package
-  works for both igraph objects and matrix objects. You provide the adjacency
+  works for both 'igraph' objects and matrix objects. You provide the adjacency
   matrices of two graphs and some other information you might know, choose the
   graph matching method, and it returns the graph matching results. iGraphMatch
   also provides a bunch of useful functions you might need related to graph
@@ -17,17 +17,16 @@ Depends:
     R (>= 3.3.1)
 Imports:
     clue (>= 0.3-54),
-    Matrix (>= 1.2-18),
+    Matrix (>= 1.2-11),
     igraph (>= 1.1.2),
-    purrr (>= 0.2.2.2),
-    ramify (>= 0.3.3),
     irlba,
     methods,
-    Rcpp,
-    knitr
+    Rcpp
 Suggests:
     dplyr (>= 0.5.0),
-    testthat (>= 2.0.0)
+    testthat (>= 2.0.0),
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
