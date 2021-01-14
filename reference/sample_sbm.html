@@ -179,9 +179,9 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
     <pre class="examples"><div class='input'><span class='va'>pm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>cbind</a></span><span class='op'>(</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.1</span>, <span class='fl'>.001</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>.001</span>, <span class='fl'>.05</span><span class='op'>)</span> <span class='op'>)</span>
 <span class='fu'>sample_correlated_sbm_pair</span><span class='op'>(</span><span class='fl'>1000</span>, pref.matrix<span class='op'>=</span><span class='va'>pm</span>, block.sizes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>300</span>,<span class='fl'>700</span><span class='op'>)</span>, rho<span class='op'>=</span><span class='fl'>0.5</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 71eeb4e U--- 1000 17005 -- Stochastic block-model
+#&gt; IGRAPH 9fbeca3 U--- 1000 17005 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 71eeb4e:
+#&gt; + edges from 9fbeca3:
 #&gt;  [1]  1-- 5  7-- 8  6-- 9  1--10  2--10  5--10  2--13  2--15  5--15  8--16
 #&gt; [11] 14--16  3--17  7--17 11--17 13--17  4--18  5--18  9--18 14--18 18--19
 #&gt; [21] 16--20 17--20 14--22 17--23 23--24  3--25 12--25 23--25 24--25  9--26
@@ -193,10 +193,10 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH f27cf6b U--- 1000 16960 -- Stochastic block-model
+#&gt; IGRAPH 487a2b1 U--- 1000 16960 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from f27cf6b:
+#&gt; + edges from 487a2b1:
 #&gt;  [1] 992-- 998 992-- 997 992-- 994 989--1000 989-- 999 988-- 995 988-- 992
 #&gt;  [8] 988-- 989 987--1000 984-- 999 984-- 997 983-- 990 983-- 987 979-- 996
 #&gt; [15] 979-- 990 979-- 985 979-- 981 978-- 992 977-- 983 974-- 984 972-- 999
@@ -208,9 +208,9 @@ should be smaller than <code>block.sizes</code> and the vector length should be 
 #&gt; </div><div class='input'><span class='fu'>sample_correlated_sbm_pair_w_junk</span><span class='op'>(</span><span class='fl'>1000</span>, pref.matrix<span class='op'>=</span><span class='va'>pm</span>, block.sizes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>300</span>,<span class='fl'>700</span><span class='op'>)</span>, rho<span class='op'>=</span><span class='fl'>0.5</span>,
 core.block.sizes<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>200</span>,<span class='fl'>500</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $graph1
-#&gt; IGRAPH 3a7df15 U--- 1000 16847 -- Stochastic block-model
+#&gt; IGRAPH f5952b2 U--- 1000 16847 -- Stochastic block-model
 #&gt; + attr: name (g/c), loops (g/l)
-#&gt; + edges from 3a7df15:
+#&gt; + edges from f5952b2:
 #&gt;  [1]  1-- 3  4-- 7  6-- 7  4-- 8  1-- 9  4-- 9  3--11  4--11  7--12  1--14
 #&gt; [11]  7--14  5--15 12--15  2--16  6--17  7--17 12--17 17--18  9--19 16--19
 #&gt; [21]  5--20  2--21  4--21  5--21  7--21 13--21 16--22 17--22 11--23  3--24
@@ -222,10 +222,10 @@ core.block.sizes<span class='op'>=</span><span class='fu'><a href='https://rdrr.
 #&gt; + ... omitted several edges
 #&gt; 
 #&gt; $graph2
-#&gt; IGRAPH 927812a U--- 1000 16904 -- Stochastic block-model
+#&gt; IGRAPH 3102d76 U--- 1000 16904 -- Stochastic block-model
 #&gt; + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name
 #&gt; | (g/c), loops (g/l)
-#&gt; + edges from 927812a:
+#&gt; + edges from 3102d76:
 #&gt;  [1] 993--1000 991-- 992 990-- 998 990-- 993 989-- 997 988-- 990 984-- 987
 #&gt;  [8] 982-- 994 981-- 986 980-- 995 979-- 988 978-- 992 978-- 987 978-- 982
 #&gt; [15] 977-- 980 976-- 990 976-- 986 976-- 977 975-- 995 974-- 991 973-- 985
