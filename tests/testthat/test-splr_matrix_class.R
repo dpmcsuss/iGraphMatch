@@ -74,15 +74,15 @@ m <- as.matrix(s)
 
 ss <- splr_sparse_plus_constant(x, 1)
 dm <- as(s, "dMatrix")
-try({
-  sink("/dev/null")
-})
+# try({
+#   sink("/dev/null")
+# })
 print(s)
 show(s)
 as.character(s)
 
 str(s)
-sink()
+# sink()
 
 
 length(s)

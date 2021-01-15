@@ -35,7 +35,7 @@ test_that(
     expect_error({
       do_lap(cost, "other")
     },
-    "The LAP method other is not implemented.*")
+    "Unrecognized LAP method: other Please use one of: lapmod lapjv clue.*")
   }
 )
 
@@ -43,10 +43,6 @@ set.seed(123)
 cgnp_pair <- sample_correlated_gnp_pair(n=100, corr=0.8, p=0.5)
 A <- cgnp_pair$graph1
 B <- igraph::induced_subgraph(cgnp_pair$graph2, 1:10)
-
-graph_match_FW(A, B, start = "bari")
-graph_match_FW(igraph::induced_subgraph(A, 1:10), B, start = "bari")
-
 
 test_that(
   "error on other",
