@@ -150,18 +150,18 @@ the original graphs remain in the induced subgraph.</p>
 <span class='va'>lccs1</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, min_degree <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='co'># induced subgraph</span>
 <span class='va'>lccs1</span><span class='op'>$</span><span class='va'>g1</span>
-</div><div class='output co'>#&gt; IGRAPH 979cc0a D--- 10 22 -- 
-#&gt; + edges from 979cc0a:
+</div><div class='output co'>#&gt; IGRAPH db0ca22 D--- 10 22 -- 
+#&gt; + edges from db0ca22:
 #&gt;  [1]  1-&gt; 8  1-&gt;10  2-&gt; 5  2-&gt; 8  3-&gt; 9  3-&gt;10  4-&gt; 5  5-&gt; 2  5-&gt; 4  5-&gt; 7
 #&gt; [11]  6-&gt; 7  7-&gt; 5  7-&gt; 6  7-&gt; 9  8-&gt; 1  8-&gt; 2  9-&gt; 3  9-&gt; 7  9-&gt;10 10-&gt; 1
 #&gt; [21] 10-&gt; 3 10-&gt; 9</div><div class='input'><span class='va'>lccs1</span><span class='op'>$</span><span class='va'>g2</span>
-</div><div class='output co'>#&gt; IGRAPH 1067869 D--- 10 30 -- 
-#&gt; + edges from 1067869:
+</div><div class='output co'>#&gt; IGRAPH 886891a D--- 10 30 -- 
+#&gt; + edges from 886891a:
 #&gt;  [1]  1-&gt; 8  1-&gt; 9  1-&gt;10  2-&gt; 5  2-&gt; 8  3-&gt; 5  3-&gt; 9  3-&gt;10  4-&gt; 5  4-&gt; 9
 #&gt; [11]  5-&gt; 2  5-&gt; 3  5-&gt; 4  5-&gt; 7  6-&gt; 7  7-&gt; 5  7-&gt; 6  7-&gt; 9  7-&gt;10  8-&gt; 1
 #&gt; [21]  8-&gt; 2  9-&gt; 1  9-&gt; 3  9-&gt; 4  9-&gt; 7  9-&gt;10 10-&gt; 1 10-&gt; 3 10-&gt; 7 10-&gt; 9</div><div class='input'><span class='co'># label of vertices of the induced subgraph in the original graph</span>
 <span class='fu'>igraph</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/igraph/man/V.html'>V</a></span><span class='op'>(</span><span class='va'>g1</span><span class='op'>)</span><span class='op'>[</span><span class='va'>lccs1</span><span class='op'>$</span><span class='va'>keep</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; + 10/10 vertices, from 79281f3:
+</div><div class='output co'>#&gt; + 10/10 vertices, from 1752969:
 #&gt;  [1]  1  2  3  4  5  6  7  8  9 10</div><div class='input'>
 <span class='co'># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span>
 <span class='va'>lccs3</span> <span class='op'>&lt;-</span> <span class='fu'>largest_common_cc</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, min_degree <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
