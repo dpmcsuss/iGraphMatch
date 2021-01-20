@@ -195,7 +195,6 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nns</span> <span class="op">&lt;-</span> <span class="fl">7</span>
 <span class="va">ns</span> <span class="op">&lt;-</span> <span class="fl">3</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="op">(</span><span class="va">start_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span><span class="op">(</span>start <span class="op">=</span> <span class="st">"bari"</span>, nns <span class="op">=</span> <span class="va">nns</span>, ns <span class="op">=</span> <span class="va">ns</span>, soft_seeds <span class="op">=</span> <span class="va">bad_soft_seeds</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Sparse part</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
@@ -230,36 +229,50 @@
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 <span class="op">(</span><span class="va">start_rds</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span><span class="op">(</span>start <span class="op">=</span> <span class="st">"rds"</span>, nns <span class="op">=</span> <span class="va">nns</span>, ns <span class="op">=</span> <span class="va">ns</span>, soft_seeds <span class="op">=</span> <span class="va">bad_soft_seeds</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;                                           </span>
-<span class="co">#&gt; [1,] 1 .      . .      .      .      .    </span>
-<span class="co">#&gt; [2,] . 0.0822 . 0.0168 0.3238 0.3594 0.218</span>
-<span class="co">#&gt; [3,] . 0.2680 . 0.2313 0.1824 0.1168 0.202</span>
-<span class="co">#&gt; [4,] . 0.1378 . 0.3875 0.2702 0.0198 0.185</span>
-<span class="co">#&gt; [5,] . .      1 .      .      .      .    </span>
-<span class="co">#&gt; [6,] . 0.2467 . 0.1985 0.1893 0.1279 0.238</span>
-<span class="co">#&gt; [7,] . 0.2653 . 0.1660 0.0344 0.3761 0.158</span>
+<span class="co">#&gt;                                                               </span>
+<span class="co">#&gt; [1,] 1 .          . .          .          .          .        </span>
+<span class="co">#&gt; [2,] . 0.08224823 . 0.01678766 0.32382493 0.35940770 0.2177315</span>
+<span class="co">#&gt; [3,] . 0.26796914 . 0.23130193 0.18235230 0.11682563 0.2015510</span>
+<span class="co">#&gt; [4,] . 0.13781874 . 0.38747748 0.27018824 0.01979391 0.1847216</span>
+<span class="co">#&gt; [5,] . .          1 .          .          .          .        </span>
+<span class="co">#&gt; [6,] . 0.24665273 . 0.19846281 0.18927607 0.12792141 0.2376870</span>
+<span class="co">#&gt; [7,] . 0.26531116 . 0.16597012 0.03435846 0.37605135 0.1583089</span>
 <span class="op">(</span><span class="va">start_convex</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_start.html">init_start</a></span><span class="op">(</span>start <span class="op">=</span> <span class="st">"convex"</span>, nns <span class="op">=</span> <span class="va">nns</span>, ns <span class="op">=</span> <span class="va">ns</span>, soft_seeds <span class="op">=</span> <span class="va">bad_soft_seeds</span>, 
                            A <span class="op">=</span> <span class="va">g1</span>, B <span class="op">=</span> <span class="va">g2</span>, seeds <span class="op">=</span> <span class="va">seeds</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: rlapjv</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'rlapjv'</span>
+<span class="co">#&gt; The following objects are masked from 'package:iGraphMatch':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     lapjv, lapmod</span>
 <span class="co">#&gt; Sparse part</span>
 <span class="co">#&gt; 7 x 7 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;                                                     </span>
-<span class="co">#&gt; [1,] 0.2966 0.1674 .     0.1241 0.2022 0.0735 0.1362</span>
-<span class="co">#&gt; [2,] 0.0578 0.1430 .     .      0.0780 0.6394 0.0536</span>
-<span class="co">#&gt; [3,] 0.2316 0.4194 .     .      0.1247 0.1305 0.0656</span>
-<span class="co">#&gt; [4,] 0.0911 0.0573 0.250 0.4985 0.0536 .      0.0216</span>
-<span class="co">#&gt; [5,] .      0.0703 0.390 0.0536 0.3636 .      0.1225</span>
-<span class="co">#&gt; [6,] 0.2956 0.0652 0.133 0.2955 .      0.0934 0.0885</span>
-<span class="co">#&gt; [7,] 0.0274 0.0492 0.227 .      0.1497 0.0350 0.4836</span>
+<span class="co">#&gt;                                                                      </span>
+<span class="co">#&gt; [1,] 0.29659736 0.16740579 .         0.12411063 0.20217656 0.07348296</span>
+<span class="co">#&gt; [2,] 0.05777703 0.14300415 .         .          0.07796460 0.63939292</span>
+<span class="co">#&gt; [3,] 0.23157496 0.41937506 .         .          0.12471556 0.13051394</span>
+<span class="co">#&gt; [4,] 0.09105435 0.05728915 0.2497145 0.49848492 0.05364411 .         </span>
+<span class="co">#&gt; [5,] .          0.07032994 0.3898809 0.05364411 0.36359585 .         </span>
+<span class="co">#&gt; [6,] 0.29561797 0.06519647 0.1334635 0.29554317 .          0.09343773</span>
+<span class="co">#&gt; [7,] 0.02737833 0.04918226 0.2269410 .          0.14968614 0.03495526</span>
+<span class="co">#&gt;                </span>
+<span class="co">#&gt; [1,] 0.13622670</span>
+<span class="co">#&gt; [2,] 0.05364411</span>
+<span class="co">#&gt; [3,] 0.06560330</span>
+<span class="co">#&gt; [4,] 0.02159578</span>
+<span class="co">#&gt; [5,] 0.12254920</span>
+<span class="co">#&gt; [6,] 0.08852395</span>
+<span class="co">#&gt; [7,] 0.48363979</span>
 <span class="co">#&gt; plus left factor</span>
 <span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
-<span class="co">#&gt;            </span>
-<span class="co">#&gt; [1,] .     </span>
-<span class="co">#&gt; [2,] 0.0282</span>
-<span class="co">#&gt; [3,] 0.0282</span>
-<span class="co">#&gt; [4,] 0.0282</span>
-<span class="co">#&gt; [5,] .     </span>
-<span class="co">#&gt; [6,] 0.0282</span>
-<span class="co">#&gt; [7,] 0.0282</span>
+<span class="co">#&gt;                </span>
+<span class="co">#&gt; [1,] .         </span>
+<span class="co">#&gt; [2,] 0.02821718</span>
+<span class="co">#&gt; [3,] 0.02821718</span>
+<span class="co">#&gt; [4,] 0.02821718</span>
+<span class="co">#&gt; [5,] .         </span>
+<span class="co">#&gt; [6,] 0.02821718</span>
+<span class="co">#&gt; [7,] 0.02821718</span>
 <span class="co">#&gt; times right factor transpose</span>
 <span class="co">#&gt; 7 x 1 sparse Matrix of class "dgCMatrix"</span>
 <span class="co">#&gt;         </span>
@@ -299,21 +312,21 @@
 <tbody>
 <tr class="odd">
 <td align="left">good soft seeds</td>
-<td align="right">0.714</td>
-<td align="right">0.571</td>
-<td align="right">0.714</td>
+<td align="right">0.7142857</td>
+<td align="right">0.5714286</td>
+<td align="right">0.7142857</td>
 </tr>
 <tr class="even">
 <td align="left">bad soft seeds</td>
-<td align="right">0.714</td>
-<td align="right">0.714</td>
-<td align="right">0.714</td>
+<td align="right">0.7142857</td>
+<td align="right">0.7142857</td>
+<td align="right">0.7142857</td>
 </tr>
 <tr class="odd">
 <td align="left">non soft seeds</td>
-<td align="right">0.857</td>
-<td align="right">0.857</td>
-<td align="right">0.857</td>
+<td align="right">0.8571429</td>
+<td align="right">0.8571429</td>
+<td align="right">0.8571429</td>
 </tr>
 </tbody>
 </table>
@@ -394,8 +407,8 @@
 <td align="right">1</td>
 <td align="right">1</td>
 <td align="right">1</td>
-<td align="right">0.869</td>
-<td align="right">0.812</td>
+<td align="right">0.8687371</td>
+<td align="right">0.8125</td>
 </tr></tbody>
 </table>
 <table class="table">
@@ -459,9 +472,9 @@ seeds_adp <- best_matches(A = g1, B = g2, match = match,
                             measure = "row_perm_stat", num = 3)
 seeds_adp
 #>   A_best B_best measure_value
-#> 1     34     48         -4.20
-#> 2     26     26         -3.73
-#> 3     11     25         -3.73
+#> 1     34     48     -4.199783
+#> 2     26     26     -3.732369
+#> 3     11     25     -3.732369
 ```
 
 By using row permutation statistics, all of the three seeds selected are correct. Then we combine the adaptive seeds with the original seeds we have and redo the FW graph matching with the updated seeds:
