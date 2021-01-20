@@ -9,18 +9,12 @@
 #' seeds <- 1:10 <= 3
 #' graph_match_convex(g1, g2, seeds)
 #'
-#' hard_seeds <- matrix(c(4,6,5,4),2)
-#' seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
-#' \dontrun{
-#' # for some reason this fails in check
-#' graph_match_convex(g1, g2, seeds)
-#' }
 #'
 #' @export
 #'
 #'
-graph_match_convex <- function(A, B, seeds = NULL, 
-  similarity = NULL, start = "bari", max_iter = 100, 
+graph_match_convex <- function(A, B, seeds = NULL,
+  similarity = NULL, start = "bari", max_iter = 100,
   tol = 1e-5, lap_method = NULL) {
   graph_pair <- check_graph(A, B)
   A <- matrix_list(graph_pair[[1]])
@@ -40,7 +34,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   # make a random permutation
   rp <- sample(nn)
-  rpmat <- Matrix::Diagonal(nn)[rp, ] 
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   Asn <- A[seeds$A,nonseeds$A]
   Ann <- A[nonseeds$A,nonseeds$A]
@@ -49,7 +43,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
   Bsn <- B[seeds$B,nonseeds$B][,rp]
   Bnn <- B[nonseeds$B,nonseeds$B][rp,rp]
   Bns <- B[nonseeds$B,seeds$B][rp,]
-  
+
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
@@ -66,14 +60,14 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
 
   AtA <- ml_sum(t(Asn) %*% Asn + t(Ann) %*% Ann)
-  BBt <- ml_sum(Bns %*% t(Bns) + Bnn %*% t(Bnn))    
+  BBt <- ml_sum(Bns %*% t(Bns) + Bnn %*% t(Bnn))
 
   ABns_sn <- ml_sum(Ans %*% t(Bns) + t(Asn) %*% Bsn)
 
 
   f <- innerproduct(Ann %*% P - P%*% Bnn,
     Ann %*% P - P%*% Bnn)
-    
+
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
   alpha_seq <- NULL
@@ -85,7 +79,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
       AtA %*% P + P %*% BBt - ABns_sn +
       -t(Ann) %*% P %*% Bnn - Ann %*% P %*% t(Bnn) +
       similarity)
-   
+
 
     corr <- do_lap(Grad, lap_method)
     Pdir <- Matrix::Diagonal(nn)[corr,]
@@ -104,13 +98,13 @@ graph_match_convex <- function(A, B, seeds = NULL,
     } else {
       Dns <- Dsn <- Cns <- Csn <- 0
     }
-    aq <- innerproduct(Cnn, Cnn) +    
+    aq <- innerproduct(Cnn, Cnn) +
       innerproduct(Cns, Cns) +
       innerproduct(Csn, Csn)
     bq <- innerproduct(Cnn, Dnn) +
       innerproduct(Cns, Dns) +
       innerproduct(Csn, Dsn)
-    
+
     aopt <- ifelse(aq == 0 & bq == 0, 0,
       ifelse(-bq / aq > 1, 1, -bq / aq))
     alpha_seq <- c(alpha_seq, aopt)
@@ -145,11 +139,11 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
   if (is(D, "splrMatrix")) {
-    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
   } else {
     D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
   }
-  
+
 
   # get_f <- function(a){
   #   PP <- a * P + (1 - a) * Pdir
@@ -165,11 +159,11 @@ graph_match_convex <- function(A, B, seeds = NULL,
   z <- list(
     call = cl,
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
-    seeds = seeds, 
+    seeds = seeds,
     P = P,
     D = D,
     iter = iter
     # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
-  )  
+  )
   z
 }

@@ -48,11 +48,10 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 2
-\dontrun{
- init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
- # FW graph matching with incorrect seeds to start at convex start
- init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
-}
+init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
+
+# FW graph matching with incorrect seeds to start at convex start
+init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
 
 
 }

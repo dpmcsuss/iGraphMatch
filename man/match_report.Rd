@@ -12,9 +12,9 @@ edge_match_info(corr, A, B, directed = NULL)
 \arguments{
 \item{match}{Graph matching result see \link[=graph_match_FW]{graph match methods}.}
 
-\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
+\item{A}{A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.}
 
-\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
+\item{B}{A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.}
 
 \item{true_label}{A vector. NULL if the true correspondence
 between two graphs is unknown. A vector indicating the
@@ -24,7 +24,7 @@ correspondence is known.}
 \item{directed}{Whether the graphs should be treated as directed
 or undirected. NULL defaults to !isSymmetric(A).}
 
-\item{corr}{Correspondence data.frame as given by match$corr}
+\item{corr}{Correspondence data frame as given by match$corr}
 }
 \value{
 \code{match_report} returns the match object

@@ -6,12 +6,12 @@
 #' specified measure.
 #'
 #' @param cost A non-negative matrix-like object that can be coerced to a matrix
-#' @param maximize If FALSE (default) then costs are minimized and if TRUE the 
+#' @param maximize If FALSE (default) then costs are minimized and if TRUE the
 #' costs are maximized
 #'
 #' @details The C++ code for this method is modified from code in the
 #'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
-#' 
+#'
 #' @return The assignment of rows to columns as an integer vector
 #'
 #' @export
@@ -45,13 +45,13 @@ lapmod_index <- function(n, cc, ii, kk, maximize = FALSE) {
 #' @description Find a set of vertices pairs in the order of goodness of matching according to a
 #' specified measure.
 #'
-#' @param cost A non-negative CsparseMatrix object from the Matrix package
-#' @param maximize If FALSE (default) then costs are minimized and if TRUE the 
+#' @param cost A non-negative 'CsparseMatrix' object from the 'Matrix' package
+#' @param maximize If FALSE (default) then costs are minimized and if TRUE the
 #' costs are maximized
 #'
-#' @details The C++ code for this method is modified from code in the
+#' @details The 'C++' code for this method is modified from code in the
 #'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
-#' 
+#'
 #' @return The assignment of rows to columns as an integer vector
 #'
 #' @export

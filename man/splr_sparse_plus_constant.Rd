@@ -2,18 +2,18 @@
 % Please edit documentation in R/splr_matrix_class.R
 \name{splr_sparse_plus_constant}
 \alias{splr_sparse_plus_constant}
-\title{Add a constant to a splr object}
+\title{Add a constant to a 'splr' object}
 \usage{
 splr_sparse_plus_constant(x, a)
 }
 \arguments{
-\item{x}{splr object}
+\item{x}{'splr' object}
 
 \item{a}{scalar}
 }
 \value{
-new splr object x + a
+new 'splr' object x + a
 }
 \description{
-Add a constant to a splr object
+Add a constant to a 'splr' object
 }

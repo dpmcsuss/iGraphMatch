@@ -3,10 +3,10 @@
 #' @description Center the adjacency matrix, including center the adjacency matrix to entries
 #' equal to -1 or 1, center the adjacency matrix by using Universal Singular Value Thresholding.
 #'
-#' @param A A matrix or an igraph object. Adjacency matrix.
+#' @param A A matrix or an 'igraph' object. Adjacency matrix.
 #' @param scheme A character vector, number or pair of numbers. Default c(-1, 1). See Details.
-#' 
-#' @param use_splr A boolean indicating whether to use the splrMatrix object when storing the 
+#'
+#' @param use_splr A boolean indicating whether to use the 'splrMatrix' object when storing the
 #' centered graph.  Defaults to TRUE.
 #'
 #' @details  The options for scheme are
@@ -20,11 +20,11 @@
 #'    maximum is max(scheme).
 #'  \item "center": Same as scheme=c(-1,1)
 #' }
-#' 
-#' 
+#'
+#'
 #' @rdname center_graph
-#' @return centered adjacency matrix as a splrMatrix if
-#'  useSplr = TRUE, otherwise as a Matrix object.
+#' @return centered adjacency matrix as a 'splrMatrix' if
+#'  useSplr = TRUE, otherwise as a 'Matrix' object.
 #' @examples
 #' A <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)$graph1
 #' center_graph(A, scheme = "naive")
@@ -48,27 +48,27 @@ center_graph <- function(A, scheme = c(-1, 1), use_splr = TRUE){
   } else if (length(scheme) == 1 && is.numeric(scheme)) {
     r <- as.integer(scheme)
     if (use_splr) {
-      g <- splr(x = A[], a = -A[], 
+      g <- splr(x = A[], a = -A[],
         rank = r, factorize = TRUE)
     } else {
       g <- A[] - low_rank_approx(A[], r)
     }
-    
+
   } else if (is.numeric(scheme) && length(scheme) == 2) {
     nmx <- max(scheme)
     nmn <- min(scheme)
     mx <- max(A[])
     mn <- min(A[])
     s <- (nmx - nmn) / (mx - mn)
-    a <- - (mx + mn) / (mx - mn)  * (nmx - nmn) / 2 + 
+    a <- - (mx + mn) / (mx - mn)  * (nmx - nmn) / 2 +
         (nmx + nmn) / 2
     if (use_splr) {
-      g <- splr(x = s * A[], 
+      g <- splr(x = s * A[],
         a = rep(a, dim(A[])[1]),
         b = rep(1, dim(A[])[2]))
     } else {
       g <- s * A[] + a
-    } 
+    }
   } else {
     stop("scheme must be either 'center', 'naive', ",
       "a positive integer, or a pair of scalars.")
@@ -89,16 +89,16 @@ low_rank_approx <- function(A,ndim){
 
 
 #' Pad a matrix object with extra rows/columns of 0s.
-#' 
-#' Attempts are made to make this padding efficient 
+#'
+#' Attempts are made to make this padding efficient
 #' by employing sparse graphs
-#' 
+#'
 #' @param m matrix
 #' @param nr number of rows to add
 #' @param nc number of columns to add. (default = nr)
-#' 
+#'
 #' @returns m padded with nr rows and nc columns of zeros.
-#' 
+#'
 #' @export
 pad <- function(m, nr, nc = nr){
   if(is(m, "splrMatrix")){

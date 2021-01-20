@@ -7,22 +7,22 @@
 graph_match_Umeyama(A, B, seeds = NULL, similarity = NULL)
 }
 \arguments{
-\item{A}{A matrix, igraph object, or list of either.}
+\item{A}{A matrix, 'igraph' object, or list of either.}
 
-\item{B}{A matrix, igraph object, or list of either.}
+\item{B}{A matrix, 'igraph' object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
-vector. If not, seeds must be  a matrix.
+vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
 
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
 }
 \value{
-\code{graph_match_Umeyama} returns a list of graph matching 
-  results, including the graph matching formula, a data frame containing the 
-  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
+\code{graph_match_Umeyama} returns a list of graph matching
+  results, including the graph matching formula, a data frame containing the
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
   and \code{corr_B} and seeds.
 }
 \description{

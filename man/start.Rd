@@ -26,11 +26,11 @@ seeds, input in the form of a matrix or a data frame, with the first column bein
 indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}. Note
 that if there are seeds in graphs, seeds should be put before non-seeds.}
 
-\item{distribution}{A charactor. Specify the distribution from which the random doubly stochastic
+\item{distribution}{A character. Specify the distribution from which the random doubly stochastic
 matrix is sampled. Should input the name of the function for generating random deviates from that
 distribution.}
 
-\item{g}{A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
+\item{g}{A number. Specified in the range of [0, 1] to set weights to random permutation matrix and
 barycenter matrix.}
 
 \item{is_splr}{should we return a splr matrix? (default = TRUE)}
@@ -48,7 +48,7 @@ with 1's corresponding to adaptive seeds.
 with 1's corresponding to adaptive seeds.
 
 \code{rds_from_sim_start} returns a doubly
- stochastic Matrix given by sinkhorn algorithm applied to 
+ stochastic Matrix given by sinkhorn algorithm applied to
  a matrix of iid log-normal with mu=sim. Note,
  this ignores soft seeds.
 }

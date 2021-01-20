@@ -20,7 +20,7 @@
 #' @param ... Passed to \code{sample_correlated_rdpg_pair}.
 #'
 #' @rdname sample_ieg
-#' @return \code{sample_correlated_ieg_pair} returns two igraph objects named
+#' @return \code{sample_correlated_ieg_pair} returns two 'igraph' objects named
 #' \code{graph1} and \code{graph2}.
 #' @examples
 #' n <- 50
@@ -34,7 +34,7 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,p
   z0 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)),n)
   z1 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
   g2 <- z1*g1+z0*(1-g1)
-  
+
   if(directed){
     mode <- "directed"
   } else{
@@ -42,14 +42,14 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,p
     g2[row(g2)>=col(g2)] <- 0
     mode <- "undirected"
   }
-  list(graph1 = graph_from_adjacency_matrix(g1, 
+  list(graph1 = graph_from_adjacency_matrix(g1,
          mode = mode, diag = loops),
        graph2 = igraph::permute(graph_from_adjacency_matrix(g2,
          mode = mode, diag = loops),permutation))
 }
 
 #' @rdname sample_ieg
-#' @return \code{sample_correlated_rdpg} returns two igraph objects named
+#' @return \code{sample_correlated_rdpg} returns two 'igraph' objects named
 #' \code{graph1} and \code{graph2} that are sampled from random dot product
 #' graphs model.
 #' @examples

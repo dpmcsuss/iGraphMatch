@@ -9,7 +9,7 @@ lapjv(cost, maximize = FALSE)
 \arguments{
 \item{cost}{A non-negative matrix-like object that can be coerced to a matrix}
 
-\item{maximize}{If FALSE (default) then costs are minimized and if TRUE the 
+\item{maximize}{If FALSE (default) then costs are minimized and if TRUE the
 costs are maximized}
 }
 \value{

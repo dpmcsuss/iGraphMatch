@@ -17,6 +17,6 @@ pad(m, nr, nc = nr)
 m padded with nr rows and nc columns of zeros.
 }
 \description{
-Attempts are made to make this padding efficient 
+Attempts are made to make this padding efficient
 by employing sparse graphs
 }
