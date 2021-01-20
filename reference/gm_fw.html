@@ -162,19 +162,19 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>A</th>
-      <td><p>A matrix, igraph object, or list of either.</p></td>
+      <td><p>A matrix, 'igraph' object, or list of either.</p></td>
     </tr>
     <tr>
       <th>B</th>
-      <td><p>A matrix, igraph object, or list of either.</p></td>
+      <td><p>A matrix, 'igraph' object, or list of either.</p></td>
     </tr>
     <tr>
       <th>seeds</th>
       <td><p>A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
-vector. If not, seeds must be  a matrix
-or a data frame, with the first column being the indices of \(G_1\) and
-the second column being the corresponding indices of \(G_2\).</p></td>
+vector. If not, seeds must be  a matrix or a data frame, with the first
+column being the indices of \(G_1\) and the second column being the
+corresponding indices of \(G_2\).</p></td>
     </tr>
     <tr>
       <th>similarity</th>
@@ -207,10 +207,10 @@ max_iter times number of total vertices of \(G_1\).</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>graph_match_FW</code>, <code>graph_match_convex</code> and <code>graph_match
-  _PATH</code> return a list of graph matching results, including the graph matching 
-  formula, a data frame containing the matching correspondence between \(G_1\) 
-  and \(G_2\) named <code>corr_A</code> and <code>corr_B</code>, the doubly stochastic 
-  matrix from the last iteration and the permutation matrix after projection, 
+  _PATH</code> return a list of graph matching results, including the graph matching
+  formula, a data frame containing the matching correspondence between \(G_1\)
+  and \(G_2\) named <code>corr_A</code> and <code>corr_B</code>, the doubly stochastic
+  matrix from the last iteration and the permutation matrix after projection,
   seeds and number of iterations.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -367,12 +367,6 @@ pages 2227-2242.</p>
 #&gt; $iter
 #&gt; [1] 11
 #&gt; </div><div class='input'>
-<span class='va'>hard_seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>,<span class='fl'>6</span>,<span class='fl'>5</span>,<span class='fl'>4</span><span class='op'>)</span>,<span class='fl'>2</span><span class='op'>)</span>
-<span class='va'>seeds</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/cbind.html'>rbind</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='fu'><a href='check_seeds.html'>check_seeds</a></span><span class='op'>(</span><span class='va'>seeds</span>, <span class='fl'>10</span><span class='op'>)</span><span class='op'>$</span><span class='va'>seeds</span><span class='op'>)</span>,<span class='va'>hard_seeds</span><span class='op'>)</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># for some reason this fails in check</span>
-<span class='fu'>graph_match_convex</span><span class='op'>(</span><span class='va'>g1</span>, <span class='va'>g2</span>, <span class='va'>seeds</span><span class='op'>)</span>
-<span class='op'>}</span>
 
 
 <span class='co'># match G_1 &amp; G_2 with some known node pairs as seeds</span>

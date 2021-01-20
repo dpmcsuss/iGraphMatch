@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Sparse Plus Low-Rank Matrices — splrMatrix-class" />
-<meta property="og:description" content="An S4 class for efficient computation with sparse plus
+<meta property="og:description" content="An 'S4' class for efficient computation with sparse plus
 low-rank matrices. Stores sparse plus low-rank matrices
 (e.g. from matrix factorization or centering graphs)
 of the form x + a %*% t(b) for faster
@@ -112,7 +112,7 @@ computation." />
     </div>
 
     <div class="ref-description">
-    <p>An S4 class for efficient computation with sparse plus
+    <p>An 'S4' class for efficient computation with sparse plus
 low-rank matrices. Stores sparse plus low-rank matrices
 (e.g. from matrix factorization or centering graphs)
 of the form <code>x + a %*% t(b)</code> for faster
@@ -129,15 +129,15 @@ computation.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>As in Matrix</p></td>
+      <td><p>As in 'Matrix'</p></td>
     </tr>
     <tr>
       <th>a</th>
-      <td><p>As in Matrix</p></td>
+      <td><p>As in 'Matrix'</p></td>
     </tr>
     <tr>
       <th>b</th>
-      <td><p>As in Matrix</p></td>
+      <td><p>As in 'Matrix'</p></td>
     </tr>
     <tr>
       <th>rank</th>
@@ -149,7 +149,7 @@ computation.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>As in Matrix</p></td>
+      <td><p>As in 'Matrix'</p></td>
     </tr>
     </table>
 
@@ -162,7 +162,7 @@ computation.</p>
 
 <dt><code>a</code></dt><dd><p>a low-rank factor or a matrix</p></dd>
 
-<dt><code>b</code></dt><dd><p>optional. a low-rank factor for <code>a %*% t(b)</code>. if <code>b</code> is not provided, a will be factorized using 
+<dt><code>b</code></dt><dd><p>optional. a low-rank factor for <code>a %*% t(b)</code>. if <code>b</code> is not provided, a will be factorized using
 <code><a href='https://rdrr.io/pkg/irlba/man/irlba.html'>irlba</a></code> provided <code>factorize = TRUE</code></p></dd>
 
 </dl>
