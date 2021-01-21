@@ -45,7 +45,7 @@ lapmod_index <- function(n, cc, ii, kk, maximize = FALSE) {
 #' @description Find a set of vertices pairs in the order of goodness of matching according to a
 #' specified measure.
 #'
-#' @param cost A non-negative 'CsparseMatrix' object from the 'Matrix' package
+#' @param cost A non-negative CsparseMatrix object from the 'Matrix' package
 #' @param maximize If FALSE (default) then costs are minimized and if TRUE the
 #' costs are maximized
 #'

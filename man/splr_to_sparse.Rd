@@ -7,10 +7,10 @@
 splr_to_sparse(data)
 }
 \arguments{
-\item{data}{splr 'Matrix'}
+\item{data}{splrMatrix}
 }
 \value{
-sparse 'Matrix' equal to x + a %*% t(b)
+sparse Matrix equal to x + a %*% t(b)
 
 See \code{\link[Matrix]{Matrix}}.
 }

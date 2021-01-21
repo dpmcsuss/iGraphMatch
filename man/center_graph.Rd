@@ -16,7 +16,7 @@ centered graph.  Defaults to TRUE.}
 }
 \value{
 centered adjacency matrix as a 'splrMatrix' if
- useSplr = TRUE, otherwise as a 'Matrix' object.
+ useSplr = TRUE, otherwise as a Matrix object.
 }
 \description{
 Center the adjacency matrix, including center the adjacency matrix to entries

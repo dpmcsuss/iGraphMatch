@@ -24,7 +24,7 @@
 #'
 #' @rdname center_graph
 #' @return centered adjacency matrix as a 'splrMatrix' if
-#'  useSplr = TRUE, otherwise as a 'Matrix' object.
+#'  useSplr = TRUE, otherwise as a Matrix object.
 #' @examples
 #' A <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)$graph1
 #' center_graph(A, scheme = "naive")

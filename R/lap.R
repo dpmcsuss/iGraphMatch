@@ -73,9 +73,8 @@ set_lap_method <- function(lap_method, totv1, totv2){
       "Please use one of:", paste(methods, collapse = " ")))
   }
   if (is.null(lap_method)){
-    if(require("rlapjv") &&
-        totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5){
-        lap_method <- "lapmod"
+    if (totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5) {
+      lap_method <- "lapmod"
     } else {
       lap_method <- "clue"
     }

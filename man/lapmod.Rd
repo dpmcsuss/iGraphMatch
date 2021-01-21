@@ -7,7 +7,7 @@
 lapmod(cost, maximize = FALSE)
 }
 \arguments{
-\item{cost}{A non-negative 'CsparseMatrix' object from the 'Matrix' package}
+\item{cost}{A non-negative CsparseMatrix object from the 'Matrix' package}
 
 \item{maximize}{If FALSE (default) then costs are minimized and if TRUE the
 costs are maximized}

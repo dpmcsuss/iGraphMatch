@@ -272,12 +272,12 @@
 \item{value}{As in 'Matrix'}
 }
 \value{
-Results of matrix operations for 'splr' objects.
-The results are still in the form of 'splr' objects.
+Results of matrix operations for splrMatrix objects.
+The results are still in the form of splrMatrix objects.
 }
 \description{
-Methods for the 'splr' 'Matrix' class. Most behave like
-'Matrix' methods though things like output show the
+Methods for the splrMatrix class. Most behave like
+Matrix methods though things like output show the
 decomposition. Use as.matrix to see the computed
 dense matrix.
 }

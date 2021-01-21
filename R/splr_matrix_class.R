@@ -11,10 +11,12 @@
 #' @slot b optional. a low-rank factor for \code{a \%*\% t(b)}. if \code{b} is not provided, a will be factorized using
 #' \code{\link[irlba]{irlba}} provided \code{factorize = TRUE}
 #'
-#' @param x As in 'Matrix'
-#' @param a As in 'Matrix'
-#' @param b As in 'Matrix'
-#' @param ... As in 'Matrix'
+#' @param x as in 'Matrix'
+#' @param a as in 'Matrix'
+#' @param b as in 'Matrix'
+#' @param ... as in 'Matrix'
+#' 
+#' @return splrMatrix object
 #'
 #' @seealso Methods are documented in \code{\link{splr}}.
 #'
@@ -36,18 +38,18 @@ setClass("splrMatrix",
 setGeneric(
   name = "splr",
   def = function(x, a = NULL, b = NULL, rank = NULL,
-    dimnames = list(NULL, NULL), ...) {
+  dimnames = list(NULL, NULL), ...) {
   #
   # x+ab'
   # x is mxn
   # and is an mxr and b is a rxm matrix
-  dx = dim(x)
+  dx <- dim(x)
 
-  if(is.null(b)) {
+  if (is.null(b)) {
     if (is.null(rank)) {
       stop("please provide an already factorized low-rank matrix (or specify the rank parameter)")
     }
-    da = dim(a)
+    da <- dim(a)
     if (da[1] != dx[1] || da[2] != dx[2]) {
       stop('b is not provided and a is not the same dimension as x')
     }
@@ -95,9 +97,9 @@ setMethod(
 
 #' Convert splr 'Matrix' to Sparse
 #'
-#' @param data splr 'Matrix'
+#' @param data splrMatrix
 #'
-#' @return sparse 'Matrix' equal to x + a %*% t(b)
+#' @return sparse Matrix equal to x + a %*% t(b)
 #'
 #' See \code{\link[Matrix]{Matrix}}.
 #'
@@ -112,12 +114,12 @@ as.matrix.splrMatrix <- function(from,...)  {
 
 }
 
-#' Add a constant to a 'splr' object
+#' Add a constant to a splrMatrix object
 #'
-#' @param x 'splr' object
+#' @param x splrMatrix object
 #' @param a scalar
 #'
-#' @returns new 'splr' object x + a
+#' @return new splrMatrix object x + a
 #'
 #' @export
 splr_sparse_plus_constant <- function(x, a){
@@ -143,8 +145,8 @@ setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 
 #' @title 'SPLR' Methods
 #'
-#' @description Methods for the 'splr' 'Matrix' class. Most behave like
-#' 'Matrix' methods though things like output show the
+#' @description Methods for the splrMatrix class. Most behave like
+#' Matrix methods though things like output show the
 #' decomposition. Use as.matrix to see the computed
 #' dense matrix.
 #'
@@ -165,8 +167,8 @@ setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 #'
 #' @keywords internal
 #'
-#' @return Results of matrix operations for 'splr' objects.
-#' The results are still in the form of 'splr' objects.
+#' @return Results of matrix operations for splrMatrix objects.
+#' The results are still in the form of splrMatrix objects.
 #'
 #' @rdname splr
 setMethod("show", signature("splrMatrix"),

@@ -12,7 +12,7 @@ do_lap(score, method)
 \item{method}{One of "lapjv", "lapmod", or "clue"}
 }
 \value{
-\code{do_lap} returns a vector which indicates the 
+\code{do_lap} returns a vector which indicates the
  best matching column for each row.
 }
 \description{
@@ -22,7 +22,7 @@ using one of three methods. For an n x n score matrix it find
 where \eqn{\Pi_n} denotes all permutations on n objects.
 }
 \details{
-Solves a linear assignment using one of three methods. 
+Solves a linear assignment using one of three methods.
  clue uses solve_lsap from the clue package.
  lapjv uses the Jonker-Volgenaut approach implemented in this package.
  lapmod use a version that exploits sparsity in the score matrix.
