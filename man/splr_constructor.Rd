@@ -26,6 +26,8 @@ splr(x, a = NULL, b = NULL, rank = NULL, dimnames = list(NULL, NULL), ...)
 }
 \value{
 splrMatrix object
+
+splrMatrix object
 }
 \description{
 An 'S4' class for efficient computation with sparse plus

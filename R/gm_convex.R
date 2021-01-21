@@ -7,8 +7,9 @@
 #' # match G_1 & G_2 with no seeds
 #' graph_match_FW(g1, g2)
 #' seeds <- 1:10 <= 3
+#' \donttest{
 #' graph_match_convex(g1, g2, seeds)
-#'
+#' }
 #'
 #' @export
 #'

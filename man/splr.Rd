@@ -273,7 +273,8 @@
 }
 \value{
 Results of matrix operations for splrMatrix objects.
-The results are still in the form of splrMatrix objects.
+ Attempts are made such that the returned object is stored efficiently,
+ either as a splrMatrix or sparse Matrix.
 }
 \description{
 Methods for the splrMatrix class. Most behave like

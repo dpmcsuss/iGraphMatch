@@ -33,6 +33,8 @@ setClass("splrMatrix",
 #'
 #' @param rank rank of the matrix to be factorized.
 #' @param dimnames optional - the list of names for the matrix
+#' 
+#' @return splrMatrix object
 #'
 #' @export
 setGeneric(
@@ -168,7 +170,8 @@ setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 #' @keywords internal
 #'
 #' @return Results of matrix operations for splrMatrix objects.
-#' The results are still in the form of splrMatrix objects.
+#'  Attempts are made such that the returned object is stored efficiently,
+#'  either as a splrMatrix or sparse Matrix.
 #'
 #' @rdname splr
 setMethod("show", signature("splrMatrix"),
