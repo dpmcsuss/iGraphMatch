@@ -40,8 +40,8 @@
 
 
 <meta property="og:title" content="'SPLR' Methods — show,splrMatrix-method" />
-<meta property="og:description" content="Methods for the 'splr' 'Matrix' class. Most behave like
-'Matrix' methods though things like output show the
+<meta property="og:description" content="Methods for the splrMatrix class. Most behave like
+Matrix methods though things like output show the
 decomposition. Use as.matrix to see the computed
 dense matrix." />
 
@@ -111,8 +111,8 @@ dense matrix." />
     </div>
 
     <div class="ref-description">
-    <p>Methods for the 'splr' 'Matrix' class. Most behave like
-'Matrix' methods though things like output show the
+    <p>Methods for the splrMatrix class. Most behave like
+Matrix methods though things like output show the
 decomposition. Use as.matrix to see the computed
 dense matrix.</p>
     </div>
@@ -419,8 +419,9 @@ diag(x)</pre>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Results of matrix operations for 'splr' objects.
-The results are still in the form of 'splr' objects.</p>
+    <p>Results of matrix operations for splrMatrix objects.
+ Attempts are made such that the returned object is stored efficiently,
+ either as a splrMatrix or sparse Matrix.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
