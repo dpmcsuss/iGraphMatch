@@ -6,19 +6,19 @@
 
 /** Column-reduction and reduction transfer for a dense cost matrix.
  */
-int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
+int_t _ccrrt_dense(const int_t n, cost_t *cost[],
                      int_t *free_rows, int_t *x, int_t *y, cost_t *v)
 {
     int_t n_free_rows;
     boolean *unique;
 
-    for (uint_t i = 0; i < n; i++) {
+    for (int_t i = 0; i < n; i++) {
         x[i] = -1;
         v[i] = LARGE;
         y[i] = 0;
     }
-    for (uint_t i = 0; i < n; i++) {
-        for (uint_t j = 0; j < n; j++) {
+    for (int_t i = 0; i < n; i++) {
+        for (int_t j = 0; j < n; j++) {
             const cost_t c = cost[i][j];
             if (c < v[j]) {
                 v[j] = c;
@@ -45,14 +45,14 @@ int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
         } while (j > 0);
     }
     n_free_rows = 0;
-    for (uint_t i = 0; i < n; i++) {
+    for (int_t i = 0; i < n; i++) {
         if (x[i] < 0) {
             free_rows[n_free_rows++] = i;
         } else if (unique[i]) {
             const int_t j = x[i];
             cost_t min = LARGE;
-            for (uint_t j2 = 0; j2 < n; j2++) {
-                if (j2 == (uint_t)j) {
+            for (int_t j2 = 0; j2 < n; j2++) {
+                if (j2 == (int_t)j) {
                     continue;
                 }
                 const cost_t c = cost[i][j2] - v[j2];
@@ -73,11 +73,11 @@ int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
 /** Augmenting row reduction for a dense cost matrix.
  */
 int_t _carr_dense(
-    const uint_t n, cost_t *cost[],
-    const uint_t n_free_rows,
+    const int_t n, cost_t *cost[],
+    const int_t n_free_rows,
     int_t *free_rows, int_t *x, int_t *y, cost_t *v)
 {
-    uint_t current = 0;
+    int_t current = 0;
     int_t new_free_rows = 0;
     PRINT_INDEX_ARRAY(x, n);
     PRINT_INDEX_ARRAY(y, n);
@@ -96,7 +96,7 @@ int_t _carr_dense(
         j2 = -1;
         v2 = LARGE;
         PRINTF("free_i = %d\n", free_i);
-        for (uint_t j = 1; j < n; j++) {
+        for (int_t j = 1; j < n; j++) {
             PRINTF("%d = %f %d = %f\n", j1, v1, j2, v2);
             const cost_t c = cost[free_i][j] - v[j];
             if (c < v2) {
@@ -138,11 +138,11 @@ int_t _carr_dense(
 
 /** Find columns with minimum d[j] and put them on the SCAN list.
  */
-uint_t _find_dense(const uint_t n, uint_t lo, cost_t *d, int_t *cols, int_t *y)
+int_t _find_dense(const int_t n, int_t lo, cost_t *d, int_t *cols, int_t *y)
 {
-    uint_t hi = lo + 1;
+    int_t hi = lo + 1;
     cost_t mind = d[cols[lo]];
-    for (uint_t k = hi; k < n; k++) {
+    for (int_t k = hi; k < n; k++) {
         int_t j = cols[k];
         if (d[j] <= mind) {
             if (d[j] < mind) {
@@ -159,13 +159,13 @@ uint_t _find_dense(const uint_t n, uint_t lo, cost_t *d, int_t *cols, int_t *y)
 
 // Scan all columns in TODO starting from arbitrary column in SCAN
 // and try to decrease d of the TODO columns using the SCAN column.
-int_t _scan_dense(const uint_t n, cost_t *cost[],
-                    uint_t *plo, uint_t*phi,
+int_t _scan_dense(const int_t n, cost_t *cost[],
+                    int_t *plo, int_t*phi,
                     cost_t *d, int_t *cols, int_t *pred,
                     int_t *y, cost_t *v)
 {
-    uint_t lo = *plo;
-    uint_t hi = *phi;
+    int_t lo = *plo;
+    int_t hi = *phi;
     cost_t h, cred_ij;
 
     while (lo != hi) {
@@ -175,7 +175,7 @@ int_t _scan_dense(const uint_t n, cost_t *cost[],
         h = cost[i][j] - v[j] - mind;
         PRINTF("i=%d j=%d h=%f\n", i, j, h);
         // For all columns in TODO
-        for (uint_t k = hi; k < n; k++) {
+        for (int_t k = hi; k < n; k++) {
             j = cols[k];
             cred_ij = cost[i][j] - v[j] - h;
             if (cred_ij < d[j]) {
@@ -204,21 +204,21 @@ int_t _scan_dense(const uint_t n, cost_t *cost[],
  * \return The closest free column index.
  */
 int_t find_path_dense(
-    const uint_t n, cost_t *cost[],
+    const int_t n, cost_t *cost[],
     const int_t start_i,
     int_t *y, cost_t *v,
     int_t *pred)
 {
-    uint_t lo = 0, hi = 0;
+    int_t lo = 0, hi = 0;
     int_t final_j = -1;
-    uint_t n_ready = 0;
+    int_t n_ready = 0;
     int_t *cols;
     cost_t *d;
 
     NEW(cols, int_t, n);
     NEW(d, cost_t, n);
 
-    for (uint_t i = 0; i < n; i++) {
+    for (int_t i = 0; i < n; i++) {
         cols[i] = i;
         pred[i] = start_i;
         d[i] = cost[start_i][i] - v[i];
@@ -232,7 +232,7 @@ int_t find_path_dense(
             hi = _find_dense(n, lo, d, cols, y);
             PRINTF("check %d..%d\n", lo, hi);
             PRINT_INDEX_ARRAY(cols, n);
-            for (uint_t k = lo; k < hi; k++) {
+            for (int_t k = lo; k < hi; k++) {
                 const int_t j = cols[k];
                 if (y[j] < 0) {
                     final_j = j;
@@ -253,7 +253,7 @@ int_t find_path_dense(
     PRINT_INDEX_ARRAY(cols, n);
     {
         const cost_t mind = d[cols[lo]];
-        for (uint_t k = 0; k < n_ready; k++) {
+        for (int_t k = 0; k < n_ready; k++) {
             const int_t j = cols[k];
             v[j] += d[j] - mind;
         }
@@ -269,8 +269,8 @@ int_t find_path_dense(
 /** Augment for a dense cost matrix.
  */
 int_t _ca_dense(
-    const uint_t n, cost_t *cost[],
-    const uint_t n_free_rows,
+    const int_t n, cost_t *cost[],
+    const int_t n_free_rows,
     int_t *free_rows, int_t *x, int_t *y, cost_t *v)
 {
     int_t *pred;
@@ -279,7 +279,7 @@ int_t _ca_dense(
 
     for (int_t *pfree_i = free_rows; pfree_i < free_rows + n_free_rows; pfree_i++) {
         int_t i = -1, j;
-        uint_t k = 0;
+        int_t k = 0;
 
         PRINTF("looking at free_i=%d\n", *pfree_i);
         j = find_path_dense(n, cost, *pfree_i, y, v, pred);
@@ -307,7 +307,7 @@ int_t _ca_dense(
 /** Solve dense sparse LAP.
  */
 int lapjv_internal(
-    const uint_t n, cost_t *cost[],
+    const int_t n, cost_t *cost[],
     int_t *x, int_t *y)
 {
     int ret;

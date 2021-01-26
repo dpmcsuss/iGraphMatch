@@ -5,12 +5,12 @@ using namespace Rcpp;
 
 
 
-// int_t lapjv_internal(const uint_t n, cost_t *cost[],
+// int_t lapjv_internal(const int_t n, cost_t *cost[],
 //                                int_t *x, int_t *y);
 
 // [[Rcpp::export]]
 IntegerVector cpp_lapjv(NumericMatrix cost, bool maximize = false) {
-  const uint_t nc = cost.ncol(), nr = cost.nrow();
+  const int_t nc = cost.ncol(), nr = cost.nrow();
   IntegerVector x(nc);
   IntegerVector y(nr);
   double max_cost = max(cost);
@@ -35,7 +35,7 @@ IntegerVector cpp_lapjv(NumericMatrix cost, bool maximize = false) {
 }
 
 // int lapmod_internal(
-//     const uint_t n, cost_t *cc, uint_t *ii, uint_t *kk,
+//     const int_t n, cost_t *cc, int_t *ii, int_t *kk,
 //     int_t *x, int_t *y, fp_t fp_version)
 
 

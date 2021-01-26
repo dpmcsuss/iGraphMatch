@@ -1,7 +1,7 @@
 Package: iGraphMatch
 Type: Package
 Title: Tools Graph Matching
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussman@bu.edu"),
              person("Zihuan", "Qiao", role = c("aut"), email = "zhqiao@bu.edu"),
              person("Joshua", "Agterberg", role = "ctb"),
