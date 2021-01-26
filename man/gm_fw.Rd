@@ -50,15 +50,15 @@ graph_match_PATH(
 )
 }
 \arguments{
-\item{A}{A matrix, igraph object, or list of either.}
+\item{A}{A matrix, 'igraph' object, or list of either.}
 
-\item{B}{A matrix, igraph object, or list of either.}
+\item{B}{A matrix, 'igraph' object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
-vector. If not, seeds must be  a matrix
-or a data frame, with the first column being the indices of \eqn{G_1} and
-the second column being the corresponding indices of \eqn{G_2}.}
+vector. If not, seeds must be  a matrix or a data frame, with the first
+column being the indices of \eqn{G_1} and the second column being the
+corresponding indices of \eqn{G_2}.}
 
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
 
@@ -76,10 +76,10 @@ max_iter times number of total vertices of \eqn{G_1}.}
 }
 \value{
 \code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match
-  _PATH} return a list of graph matching results, including the graph matching 
-  formula, a data frame containing the matching correspondence between \eqn{G_1} 
-  and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic 
-  matrix from the last iteration and the permutation matrix after projection, 
+  _PATH} return a list of graph matching results, including the graph matching
+  formula, a data frame containing the matching correspondence between \eqn{G_1}
+  and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic
+  matrix from the last iteration and the permutation matrix after projection,
   seeds and number of iterations.
 }
 \description{
@@ -94,12 +94,7 @@ g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
 graph_match_FW(g1, g2)
 seeds <- 1:10 <= 3
-graph_match_convex(g1, g2, seeds)
-
-hard_seeds <- matrix(c(4,6,5,4),2)
-seeds <- rbind(as.matrix(check_seeds(seeds, 10)$seeds),hard_seeds)
-\dontrun{
-# for some reason this fails in check
+\donttest{
 graph_match_convex(g1, g2, seeds)
 }
 

@@ -1,6 +1,6 @@
-#' Sparse Plus Low-Rank Matrices
-#' 
-#' An S4 class for efficient computation with sparse plus
+#' @title Sparse Plus Low-Rank Matrices
+#'
+#' @description An 'S4' class for efficient computation with sparse plus
 #' low-rank matrices. Stores sparse plus low-rank matrices
 #' (e.g. from matrix factorization or centering graphs)
 #' of the form \code{x + a \%*\% t(b)} for faster
@@ -8,18 +8,20 @@
 #'
 #' @slot x a sparse matrix
 #' @slot a a low-rank factor or a matrix
-#' @slot b optional. a low-rank factor for \code{a \%*\% t(b)}. if \code{b} is not provided, a will be factorized using 
+#' @slot b optional. a low-rank factor for \code{a \%*\% t(b)}. if \code{b} is not provided, a will be factorized using
 #' \code{\link[irlba]{irlba}} provided \code{factorize = TRUE}
+#'
+#' @param x as in 'Matrix'
+#' @param a as in 'Matrix'
+#' @param b as in 'Matrix'
+#' @param ... as in 'Matrix'
 #' 
-#' @param x As in Matrix
-#' @param a As in Matrix
-#' @param b As in Matrix
-#' @param ... As in Matrix
-#' 
+#' @return splrMatrix object
+#'
 #' @seealso Methods are documented in \code{\link{splr}}.
-#' 
+#'
 #' @rdname splr_constructor
-#' 
+#'
 #' @import Matrix
 #' @import methods
 #' @importClassesFrom Matrix sparseMatrix
@@ -28,26 +30,28 @@ setClass("splrMatrix",
   contains = 'sparseMatrix')
 
 #' @rdname splr_constructor
-#' 
+#'
 #' @param rank rank of the matrix to be factorized.
 #' @param dimnames optional - the list of names for the matrix
 #' 
+#' @return splrMatrix object
+#'
 #' @export
 setGeneric(
   name = "splr",
   def = function(x, a = NULL, b = NULL, rank = NULL,
-    dimnames = list(NULL, NULL), ...) {
-  # 
-  # x+ab' 
+  dimnames = list(NULL, NULL), ...) {
+  #
+  # x+ab'
   # x is mxn
-  # and is an mxr and b is a rxm matrix  
-  dx = dim(x)
-  
-  if(is.null(b)) {
+  # and is an mxr and b is a rxm matrix
+  dx <- dim(x)
+
+  if (is.null(b)) {
     if (is.null(rank)) {
       stop("please provide an already factorized low-rank matrix (or specify the rank parameter)")
     }
-    da = dim(a)
+    da <- dim(a)
     if (da[1] != dx[1] || da[2] != dx[2]) {
       stop('b is not provided and a is not the same dimension as x')
     }
@@ -58,7 +62,7 @@ setGeneric(
     newA <- as.matrix(temp$u[, 1:rank]) %*% diag(temp$d)[1:rank, 1:rank]
     newB <- as.matrix(temp$v[, 1:rank])
     new("splrMatrix", x = x, a = as(newA,"Matrix"), b = as(newB,'Matrix'), Dim = dim(x), Dimnames = dimnames)
-   
+
   } else { #b is not null
     a <- as(a,'Matrix')
     b <- as(b,'Matrix')
@@ -80,10 +84,10 @@ setGeneric(
 
 
 #' @rdname splr_constructor
-#' 
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
 #' @export
 setMethod(
   f = "splr",
@@ -93,14 +97,14 @@ setMethod(
   }
 )
 
-#' Convert splr Matrix to Sparse
-#' 
-#' @param data splr Matrix
-#' 
+#' Convert splr 'Matrix' to Sparse
+#'
+#' @param data splrMatrix
+#'
 #' @return sparse Matrix equal to x + a %*% t(b)
-#' 
+#'
 #' See \code{\link[Matrix]{Matrix}}.
-#' 
+#'
 #' @export
 splr_to_sparse <- function(data){
     data@x + Matrix(data@a, sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
@@ -108,17 +112,17 @@ splr_to_sparse <- function(data){
 
 as.matrix.splrMatrix <- function(from,...)  {
   as.matrix(as.matrix(from@x,...)+from@a%*%t(from@b),...)
-  
-  
+
+
 }
 
-#' Add a constant to a splr object
-#' 
-#' @param x splr object
+#' Add a constant to a splrMatrix object
+#'
+#' @param x splrMatrix object
 #' @param a scalar
-#' 
-#' @returns new splr object x + a
-#' 
+#'
+#' @return new splrMatrix object x + a
+#'
 #' @export
 splr_sparse_plus_constant <- function(x, a){
   d <- dim(x)
@@ -141,30 +145,34 @@ setAs("splrMatrix", "character", as.character.splrMatrix)
 
 setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 
-#' SPLR Methods
-#' 
-#' Methods for the splr Matrix class. Most behave like
-#' Matrix methods though things like output show the 
+#' @title 'SPLR' Methods
+#'
+#' @description Methods for the splrMatrix class. Most behave like
+#' Matrix methods though things like output show the
 #' decomposition. Use as.matrix to see the computed
 #' dense matrix.
-#' 
-#' @param x As in Matrix
-#' @param ... As in Matrix
-#' @param object As in Matrix
-#' @param e1 As in Matrix
-#' @param y As in Matrix
-#' @param e2 As in Matrix
-#' @param type As in Matrix
-#' @param na.rm As in Matrix
-#' @param dims As in Matrix
-#' @param i As in Matrix
-#' @param j As in Matrix
-#' @param drop As in Matrix
-#' @param value As in Matrix
-#' 
-#' 
+#'
+#' @param x As in 'Matrix'
+#' @param ... As in 'Matrix'
+#' @param object As in 'Matrix'
+#' @param e1 As in 'Matrix'
+#' @param y As in 'Matrix'
+#' @param e2 As in 'Matrix'
+#' @param type As in 'Matrix'
+#' @param na.rm As in 'Matrix'
+#' @param dims As in 'Matrix'
+#' @param i As in 'Matrix'
+#' @param j As in 'Matrix'
+#' @param drop As in 'Matrix'
+#' @param value As in 'Matrix'
+#'
+#'
 #' @keywords internal
-#' 
+#'
+#' @return Results of matrix operations for splrMatrix objects.
+#'  Attempts are made such that the returned object is stored efficiently,
+#'  either as a splrMatrix or sparse Matrix.
+#'
 #' @rdname splr
 setMethod("show", signature("splrMatrix"),
   function(object){
@@ -214,7 +222,7 @@ setMethod("print", signature("splrMatrix"),
 
 .leftmult = function(x, y){
   #y is splr, x is a matrix
-  
+
   a <- y@a
   sx <- y@x
   b <- y@b
@@ -242,13 +250,13 @@ setMethod("%*%", signature(x = "splrMatrix", y = "splrMatrix"), function(x, y) {
 
 
 #' @rdname splr
-setMethod("%*%", signature(x = "splrMatrix", y = "matrix_list"), 
+setMethod("%*%", signature(x = "splrMatrix", y = "matrix_list"),
   function(x, y){
     matrix_list(lapply(seq_along(y), function(i) x %*% y[[i]]))
   })
 
 #' @rdname splr
-setMethod("%*%", signature(x = "matrix_list", y = "splrMatrix"), 
+setMethod("%*%", signature(x = "matrix_list", y = "splrMatrix"),
   function(x, y){
     matrix_list(lapply(seq_along(x), function(i) x[[i]] %*% y))
   })
@@ -273,7 +281,7 @@ setMethod("%*%", signature(x ="ANY", y ="splrMatrix"),.leftmult)
   a <- x@a
   b <- x@b
   sx <- x@x
-  
+
   if (is(y, "sparseMatrix")) {
     newx <- sx%*%y
     newx <- as(newx, "sparseMatrix")
@@ -281,16 +289,16 @@ setMethod("%*%", signature(x ="ANY", y ="splrMatrix"),.leftmult)
     newB <- as(newB,"Matrix")
     new("splrMatrix", x = newx, a = a, b = newB, Dim = dim(newx))
   } else {
-    
-  
-    
+
+
+
     part1 <- sx %*% y
     part2 <- t(b) %*% y
     part2 <- a %*% part2
     part1+part2
   }
-  
-  
+
+
 }
 #' @rdname splr
 setMethod("dim", signature(x = "splrMatrix"), function(x) { dim(x@x)})
@@ -407,7 +415,7 @@ setMethod("/",
 #' @rdname splr
 setMethod("/",
   signature (e1 = 'splrMatrix', e2 = 'ANY'), function(e1, e2) {
-  
+
   .multiply(e1, 1/e2)
 })
 
@@ -460,13 +468,13 @@ setMethod("-", signature(e1 = "splrMatrix", e2 = "missing"),
 
 
 #' @rdname splr
-setMethod("-", signature(e1 ="splrMatrix", e2 ="Matrix"), 
+setMethod("-", signature(e1 ="splrMatrix", e2 ="Matrix"),
   function(e1, e2) {
     .leftadd(e1 = e1, e2 = -e2)
   })
 
 #' @rdname splr
-setMethod("-", signature(e1 ="splrMatrix", e2 ="ddiMatrix"), 
+setMethod("-", signature(e1 ="splrMatrix", e2 ="ddiMatrix"),
   function(e1, e2) {
     .leftadd(e1 = e1, e2 = -e2)
   })
@@ -511,7 +519,7 @@ setMethod("-", signature("ANY","splrMatrix"), function(e1, e2) {
 
 #frobenius norm
 Frobsmlr = function(x, a, b){
- 
+
     #expansion due to trevor hastie
     xnorm <- norm(x, type = 'f')
     xab = as.matrix(x%*%b)
@@ -521,8 +529,8 @@ Frobsmlr = function(x, a, b){
     ab = sum(aa*bb)
     sqrt(pmax(0, xnorm^2+2*xab+ab))
 
-  
-  
+
+
 }
 
 
@@ -537,12 +545,12 @@ setMethod("norm", signature(x ="splrMatrix", type ="character"),
   }, valueClass ="numeric")
 
 #' Matrix inner products
-#' 
+#'
 #' @param x matrix like object
 #' @param y matrix like object
-#' 
+#'
 #' @returns inner product <x, y>
-#' 
+#'
 #' @rdname innerproduct
 #' @export
 setGeneric("innerproduct", function(x, y){
@@ -552,7 +560,7 @@ setGeneric("innerproduct", function(x, y){
 #' @rdname innerproduct
 setMethod("innerproduct", signature(x = "splrMatrix", y = "splrMatrix"),
   function(x, y){
-    sum(diag(t(y@a) %*% x@x %*% y@b)) + 
+    sum(diag(t(y@a) %*% x@x %*% y@b)) +
       sum(diag(t(x@b) %*% t(y@x) %*% x@a)) +
       sum(diag( (t(x@b) %*% y@b) %*% (t(y@a) %*% x@a) )) +
       sum(x@x * y@x)
@@ -588,12 +596,12 @@ setMethod(
 #complete
 .rsum <- function(x, ...){
   #x is splrMatrix matrix
-  
+
     rx = rowSums(x@x, ...)
     cb = colSums(x@b, ...)
-    drop(rx+x@a%*%cb) 
-  
- 
+    drop(rx+x@a%*%cb)
+
+
 }
 #' @rdname splr
 setMethod("rowSums",
@@ -604,11 +612,11 @@ setMethod("rowSums",
 
 .csum = function(x, ...){
   #x is splrMatrix matrix
-   
+
     cx <- colSums(x@x, ...)
     ca <- colSums(x@a, ...)
     drop( cx + x@b %*% ca)
-  
+
 }
 
 #' @rdname splr
@@ -620,11 +628,11 @@ setMethod("colSums",
 #toDo
 .rmean = function(x, ...){
   #x is splrMatrix matrix
- 
+
     rx = rowMeans(x@x, ...)
     cb = colMeans(x@b, ...)
     drop(rx+x@a%*%cb)
-  
+
 }
 
 #' @rdname splr
@@ -636,11 +644,11 @@ setMethod("rowMeans",
 #toDo
 .cmean = function(x, ...){
   #x is splrMatrix matrix
-  
+
     cx = colMeans(x@x, ...)
     ca = colMeans(x@a, ...)
     drop(cx+x@b%*%ca)
-  
+
 }
 
 #' @rdname splr
@@ -650,7 +658,7 @@ setMethod("colMeans",
 
 
 .sum <- function(x, ..., na.rm = FALSE){
-  sum(.csum(x), na.rm = na.rm) 
+  sum(.csum(x), na.rm = na.rm)
 }
 
 #' @rdname splr
@@ -663,14 +671,14 @@ setMethod("mean", signature(x = "splrMatrix"), function(x, ...){
 
 #' @rdname splr
 setMethod("[",
-  signature(x = "splrMatrix", 
+  signature(x = "splrMatrix",
     i = 'missing', j = 'missing', drop = 'missing') ,
   function(x, i = NULL, j = NULL, drop = NULL) {
           x
   })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop = 'logical') 
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'numeric', drop = 'logical')
           , function(x, i, j, ..., drop) {
             if (drop) {
               warning("drop = TRUE is ignored for the splrMatrix class. cast to another clas first")
@@ -697,8 +705,8 @@ col_index <- function(x, j, ..., drop) {
     b = x@b[j, , drop = FALSE],
     Dim = dim(x@x[i, j,..., drop = FALSE])
   ))
-  
-  
+
+
 }
 
 #' @rdname splr
@@ -725,13 +733,13 @@ row_index <- function(x, i, ..., drop) {
     j <- numeric()
   }
 
-  
+
   if (drop) {
    warning("drop = TRUE is ignored for the splrMatrix class. cast to another clas first")
   }
-  return( new("splrMatrix", 
+  return( new("splrMatrix",
     x = x@x[i, j,...],
-    a = x@a[i, , drop = FALSE], 
+    a = x@a[i, , drop = FALSE],
     b = x@b[j, , drop = FALSE],
     Dim = dim(x = x@x[i, j,...])))
 }
@@ -754,62 +762,62 @@ setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'missing', drop = '
 
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'ANY', drop ='logical') 
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'ANY', drop ='logical')
           , function(x, i, j, ..., drop) {
             return(splr(x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
                        , Dim = dim(x@x[i, j,..., drop = FALSE])))
-            
+
           })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'logical', drop ='logical') 
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'logical', drop ='logical')
           , function(x, i, j, ..., drop) {
             if (drop) {
               warning("drop = TRUE is ignored for the splrMatrix class. cast to another clas first")
             }
             return(splr(x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
                        , Dim = dim(x@x[i, j,..., drop = FALSE])))
-            
+
           })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'ANY', drop ='missing') 
+setMethod("[", signature(x ="splrMatrix", i = 'numeric', j = 'ANY', drop ='missing')
           , function(x, i, j, ..., drop = FALSE) {
             return(splr(x = x@x[i, j,..., drop = FALSE], a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE],
                        Dim = dim(x = x@x[i, j,..., drop = FALSE])))
   })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'ANY', drop = 'ANY') 
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'ANY', drop = 'ANY')
           , function(x, i, j, ..., drop) {
             new('splrMatrix', x = x@x[i, j, drop = FALSE]
                 , a = as(x@a[i,, drop = FALSE],'Matrix'), b = as(x@b[j,, drop = FALSE],'Matrix')
                 , Dim = dim(x = x@x[i, j,..., drop = FALSE]))
-              
-           
+
+
  })
 
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'ANY', drop = 'missing') 
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'ANY', drop = 'missing')
           , function(x, i, j, ...) {
-            
-            
+
+
             new('splrMatrix', x = as(x@x[i, j], "Matrix"), a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
                 , Dim = dim(as(x@x[i, j], "Matrix")))
     })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'numeric', drop = 'missing') 
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'numeric', drop = 'missing')
           , function(x, i, j, ...) {
-            
-            
+
+
             new('splrMatrix', x = as(x@x[i, j], "Matrix"), a = x@a[i,, drop = FALSE], b = x@b[j,, drop = FALSE]
                 , Dim = dim(as(x@x[i, j], "Matrix")))
     })
 
 #' @rdname splr
-setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'numeric', drop = 'logical') 
+setMethod("[", signature(x ="splrMatrix", i = 'logical', j = 'numeric', drop = 'logical')
           , function(x, i, j, ..., drop) {
             if (drop) {
               warning("drop = TRUE is ignored for the splrMatrix class. cast to another clas first")
@@ -857,7 +865,7 @@ setMethod("[<-",
       b[j,] <- 0
     }
     new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
-    
+
    })
 
 #' @rdname splr
@@ -888,7 +896,7 @@ setMethod("[<-",
     new("splrMatrix", x = y, a = a, b = b, Dim = dim(y))
  })
 
- 
+
 # Implementing this would be nice
 #' @rdname splr
 setMethod("[<-", signature(x ="Matrix", i = 'ANY', j = 'ANY', value = 'splrMatrix'),
@@ -919,7 +927,7 @@ setMethod('str', signature(object = "splrMatrix"), function(object){
 #' @rdname splr
 setMethod("t", signature = signature(x ="splrMatrix") , function(x) {
   #splr(t(x@x), x@b, x@a)
- 
+
   new("splrMatrix", x = t(x@x), a = x@b, b = x@a, Dim = dim(t(x@x)))
 })
 

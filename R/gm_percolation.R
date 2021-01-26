@@ -14,8 +14,8 @@ cal_mark <- function(x,y){
 #'
 #'
 #'
-#' @param A A matrix, igraph object, or list of either.
-#' @param B A matrix, igraph object, or list of either.
+#' @param A A matrix, 'igraph' object, or list of either.
+#' @param B A matrix, 'igraph' object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix

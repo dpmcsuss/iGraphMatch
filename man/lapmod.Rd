@@ -7,9 +7,9 @@
 lapmod(cost, maximize = FALSE)
 }
 \arguments{
-\item{cost}{A non-negative CsparseMatrix object from the Matrix package}
+\item{cost}{A non-negative CsparseMatrix object from the 'Matrix' package}
 
-\item{maximize}{If FALSE (default) then costs are minimized and if TRUE the 
+\item{maximize}{If FALSE (default) then costs are minimized and if TRUE the
 costs are maximized}
 }
 \value{
@@ -20,6 +20,6 @@ Find a set of vertices pairs in the order of goodness of matching according to a
 specified measure.
 }
 \details{
-The C++ code for this method is modified from code in the
+The 'C++' code for this method is modified from code in the
  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
 }

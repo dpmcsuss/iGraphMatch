@@ -4,13 +4,13 @@
 #'   results, including matching correspondence vector of \eqn{G_2} with respect
 #'   to \eqn{G_1}, doubly stochastic matrix and permutation matrix.
 #'
-#' @param A A matrix, igraph object, or list of either.
-#' @param B A matrix, igraph object, or list of either.
+#' @param A A matrix, 'igraph' object, or list of either.
+#' @param B A matrix, 'igraph' object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
-#'   vector. If not, seeds must be  a matrix
-#'   or a data frame, with the first column being the indices of \eqn{G_1} and
-#'   the second column being the corresponding indices of \eqn{G_2}.
+#'   vector. If not, seeds must be  a matrix or a data frame, with the first
+#'   column being the indices of \eqn{G_1} and the second column being the
+#'   corresponding indices of \eqn{G_2}.
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #'   character value like "bari" or "convex" to initialize the starting matrix.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
@@ -20,13 +20,13 @@
 #' @param lap_method Choice for lap method.
 #'
 #' @rdname gm_fw
-#'   
+#'
 #' @return \code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match
-#'   _PATH} return a list of graph matching results, including the graph matching 
-#'   formula, a data frame containing the matching correspondence between \eqn{G_1} 
-#'   and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic 
-#'   matrix from the last iteration and the permutation matrix after projection, 
-#'   seeds and number of iterations. 
+#'   _PATH} return a list of graph matching results, including the graph matching
+#'   formula, a data frame containing the matching correspondence between \eqn{G_1}
+#'   and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic
+#'   matrix from the last iteration and the permutation matrix after projection,
+#'   seeds and number of iterations.
 #'
 #' @examples
 #'
@@ -48,7 +48,7 @@
 #' @export
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
-  similarity = NULL, start = "bari", 
+  similarity = NULL, start = "bari",
   max_iter = 20, lap_method = NULL) {
 
 
@@ -118,7 +118,7 @@ graph_match_FW <- function(A, B, seeds = NULL,
     for(ch in 1:nc){
       ns_Pdir_ns <- ns_Pdir_ns +
         Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
-      
+
     }
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
@@ -164,13 +164,13 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
   if (is(D, "splrMatrix")) {
-    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
   } else {
     D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
   }
   cl <- match.call()
   list(
-    call = cl, 
+    call = cl,
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
     seeds = seeds,
     P = P,

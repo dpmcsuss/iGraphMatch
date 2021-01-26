@@ -6,13 +6,13 @@
 #' based on several evaluation metrics associated with nodes and edges of two graphs.
 #'
 #' @param match Graph matching result see \link[=graph_match_FW]{graph match methods}.
-#' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
+#' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
+#' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
 #' @param true_label A vector. NULL if the true correspondence
 #'  between two graphs is unknown. A vector indicating the
 #'  true correspondence in the second graph if the true
 #'  correspondence is known.
-#' @param corr Correspondence data.frame as given by match$corr
+#' @param corr Correspondence data frame as given by match$corr
 #' @param directed Whether the graphs should be treated as directed
 #'  or undirected. NULL defaults to !isSymmetric(A).
 #'
@@ -93,10 +93,13 @@ match_report <- function(match, A, B, true_label = NULL, directed = NULL){
 #'  a result of match method
 #'
 #' @param match Result from a a graph matching method.
-#' @param A A matrix, igraph object, or list of either.
+#' @param A A matrix, 'igraph' object, or list of either.
 #'  Likely used in the call for creating match.
-#' @param B A matrix, igraph object, or list of either.
+#' @param B A matrix, 'igraph' object, or list of either.
 #'  Likely used in the call for creating match.
+#'
+#' @return A list of aligned graphs named \code{A_m} and \code{B_m}.
+#'
 #' @export
 matched_adjs <- function(match, A, B){
   graph_pair <- check_graph(A, B)
@@ -178,15 +181,15 @@ edge_match_info <- function(corr, A, B,
 #' Plotting methods for visualizing matches
 #'
 #' Two functions are provided, \code{match_plot_igraph}
-#' which makes a ball and stick plot from igraph objects
+#' which makes a ball and stick plot from 'igraph' objects
 #' and \code{match_plot_matrix} which shows an adjacency
 #' matrix plot.
 #'
 #'
 #' @param A First graph. For \code{match_plot_igraph}
-#'  must be an igraph object.
+#'  must be an 'igraph' object.
 #' @param B First graph. For \code{match_plot_igraph}
-#'  must be an igraph object.
+#'  must be an 'igraph' object.
 #' @param match result from a match call. Requires element
 #'  \code{corr} as a data.frame with names corr_A, corr_B.
 #' @param color Whether to color edges according to which
@@ -194,11 +197,11 @@ edge_match_info <- function(corr, A, B,
 #' @param linetype Whether to set edge linetypes according
 #'  to which graph(s) they are in.
 #' @param ... additional parameters passed to either the
-#'  igraph plot function or the Matrix image function.
+#'  'igraph' plot function or the Matrix image function.
 #'
 #' @returns Both functions return values invisibly.
 #' \code{match_plot_igraph} returns the union of the
-#'  matched graphs as an igraph object with additional
+#'  matched graphs as an 'igraph' object with additional
 #'  edge attributes \code{edge_match, color, lty}.
 #'  \code{match_plot_matrix} returns the difference between
 #'  the matched graphs.
@@ -260,12 +263,12 @@ match_plot_igraph <- function(A, B, match,
   igraph::E(g)$color <- pal[1]
   igraph::E(g)$lty <- 1
   if (color) {
-    igraph::E(g)$color <- 
+    igraph::E(g)$color <-
       pal[as.numeric(factor(igraph::E(g)$edge_match,
         levels = c("Both", "Only A", "Only B")))]
   }
   if (linetype) {
-    igraph::E(g)$lty <- 
+    igraph::E(g)$lty <-
       as.numeric(factor(igraph::E(g)$edge_match,
         levels = c("Both", "Only A", "Only B")))
   }

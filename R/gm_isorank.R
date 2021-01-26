@@ -1,8 +1,8 @@
 #' @title Spectral Graph Matching Methods: IsoRank Algorithm
 #' @rdname gm_isorank
-#' 
-#' @param A A matrix, igraph object, or list of either.
-#' @param B A matrix, igraph object, or list of either. 
+#'
+#' @param A A matrix, 'igraph' object, or list of either.
+#' @param B A matrix, 'igraph' object, or list of either.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
@@ -13,11 +13,11 @@
 #'   max_iter times number of total vertices of \eqn{G_1}.
 #' @param method A character. Choice of method to extract mapping from score matrix,
 #'   including greedy method and the Hungarian algorithm.
-#' 
-#' @return \code{graph_match_IsoRank} returns a list of graph matching 
-#'   results, including the graph matching formula, a data frame containing the 
-#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-#'   and \code{corr_B} and seeds. If choose the greedy method to extract mapping, 
+#'
+#' @return \code{graph_match_IsoRank} returns a list of graph matching
+#'   results, including the graph matching formula, a data frame containing the
+#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
+#'   and \code{corr_B} and seeds. If choose the greedy method to extract mapping,
 #'   the order of nodes getting matched will also be returned.
 #'
 #' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
@@ -35,16 +35,16 @@
 #'
 #' @export
 #'
-graph_match_IsoRank <- function(A, B, seeds = NULL, similarity, 
+graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
                                 max_iter = 50, method = "greedy"){
-  
+
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
   nc <- length(A)
-  
+
   seeds <- check_seeds(seeds, nv = max(totv1, totv2))
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
@@ -55,21 +55,21 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
   R <- E <- similarity / sum(abs(similarity))
   tol <- 1e-2
   R_tot <- Matrix(0, nrow(R), ncol(R))
-  
+
   for( ch in 1:nc ){
-    
+
     iter <- 1
     diff <- 1
-    
+
     # computing transition matrix A
     colS_A <- Matrix::colSums(A[[ch]])
     colS_B <- Matrix::colSums(B[[ch]])
     A[[ch]] <- A[[ch]] %*% Matrix::Diagonal(nrow(A[[ch]]), ifelse(colS_A == 0, 0, 1/colS_A))
     B[[ch]] <- B[[ch]] %*% Matrix::Diagonal(nrow(B[[ch]]), ifelse(colS_B == 0, 0, 1/colS_B))
-    
+
     # computing R by power method
     while(diff > tol & iter <= max_iter){
-      
+
       AR <- A[[ch]] %*% R %*% Matrix::t(B[[ch]])
       AR <- AR + E
       R_new <- AR / sum(abs(AR))
@@ -77,10 +77,10 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
       iter <- iter + 1
       R <- R_new
     }
-    
+
     R_tot <- R_tot + R
   }
-  
+
   # find GNA
   R <- R_tot[nonseeds$A, nonseeds$B]
   if(method == "greedy"){
@@ -92,7 +92,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
       R[max_ind[1],] <- -1
       R[,max_ind[2]] <- -1
     }
-    corr <- data.frame(corr_A = c(seeds$A, nonseeds$A[corr[,1]]), 
+    corr <- data.frame(corr_A = c(seeds$A, nonseeds$A[corr[,1]]),
                        corr_B = c(seeds$B, nonseeds$B[corr[,2]]))
     order <- order(corr$corr_A)
     corr <- corr[order,]
@@ -100,9 +100,9 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
     z <- list(
-      call = cl, 
-      corr = corr, 
-      seeds = seeds, 
+      call = cl,
+      corr = corr,
+      seeds = seeds,
       order = order)
     z
   } else if(method == "LAP"){
@@ -117,13 +117,13 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     # undo rand perm here
     corr <- rp[corr]
     corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[corr]))
-    corr <- corr[order(corr$corr_A),] 
+    corr <- corr[order(corr$corr_A),]
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
     z <- list(
-      call = cl, 
-      corr = corr, 
+      call = cl,
+      corr = corr,
       seeds = seeds)
     z
   }

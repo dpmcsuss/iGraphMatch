@@ -9,11 +9,14 @@ matched_adjs(match, A, B)
 \arguments{
 \item{match}{Result from a a graph matching method.}
 
-\item{A}{A matrix, igraph object, or list of either.
+\item{A}{A matrix, 'igraph' object, or list of either.
 Likely used in the call for creating match.}
 
-\item{B}{A matrix, igraph object, or list of either.
+\item{B}{A matrix, 'igraph' object, or list of either.
 Likely used in the call for creating match.}
+}
+\value{
+A list of aligned graphs named \code{A_m} and \code{B_m}.
 }
 \description{
 Return aligned versions of A and B according to

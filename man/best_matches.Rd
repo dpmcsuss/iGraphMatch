@@ -7,9 +7,9 @@
 best_matches(A, B, match, measure, num)
 }
 \arguments{
-\item{A}{A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_1}.}
+\item{A}{A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_1}.}
 
-\item{B}{A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_2}.}
+\item{B}{A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_2}.}
 
 \item{match}{Graph matching result see graph match methods.}
 

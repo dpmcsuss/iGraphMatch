@@ -12,7 +12,7 @@
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 #' Note that if there are seeds in graphs, seeds should be put before non-seeds.
 #' @param ... Arguments passed to other start functions
-#' 
+#'
 #' @rdname init_start
 #' @return \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
 #' matrix in the graph matching iteration. If conduct a soft seeding graph matching, returns a
@@ -36,12 +36,12 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 2
-#' \dontrun{
-#'  init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
-#'  # FW graph matching with incorrect seeds to start at convex start
-#'  init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
-#' }
+#' init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
 #'
+#' \donttest{
+#' # FW graph matching with incorrect seeds to start at convex start
+#' init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
+#' }
 #'
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
@@ -118,7 +118,7 @@ add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
-  new_start[cbind(seeds_g1, seeds_g2)] <-1   
+  new_start[cbind(seeds_g1, seeds_g2)] <-1
   new_start
 }
 
