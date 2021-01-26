@@ -17,7 +17,7 @@ vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
 
-\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
+\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 }
 \value{
 \code{graph_match_Umeyama} returns a list of graph matching

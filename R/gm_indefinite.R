@@ -13,7 +13,7 @@
 #'   corresponding indices of \eqn{G_2}.
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
 #'   character value like "bari" or "convex" to initialize the starting matrix.
-#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similaities.
+#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param max_iter A number. Maximum number of replacing matches equals to
 #'   max_iter times number of total vertices of \eqn{G_1}.
