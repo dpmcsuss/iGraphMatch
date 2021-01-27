@@ -273,7 +273,7 @@ match_plot_igraph <- function(A, B, match,
         levels = c("Both", "Only A", "Only B")))
   }
 
-  plot(g, ...)
+  graphics::plot(g, ...)
   invisible(g)
 }
 

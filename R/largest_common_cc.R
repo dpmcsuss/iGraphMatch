@@ -6,9 +6,9 @@
 #'
 #' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
 #' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
-#' @param min_degree A number. Defines the level of connectness of the obtained largest common
-#' connected subgraph. The induced subgraph is an graph with a minimum degree of vertices equal
-#' to min_degree.
+#' @param min_degree A number. Defines the level of connectedness of the 
+#' obtained largest common connected subgraph. The induced subgraph is 
+#' a graph with a minimum degree of vertices more than min_degree.
 #'
 #' @rdname largest_common_cc
 #'

@@ -7,10 +7,10 @@
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
+This small update is to address an issue on Solaris with using uint_t.
 
 ## Thanks
 
 Thanks for considering our package submission.
 
-The package is currently being hosted on github https://github.com/dpmcsuss/iGraphMatch and has been passing checks using Github actions https://github.com/dpmcsuss/iGraphMatch/actions/runs/478117981.
+The package is currently being hosted on github https://github.com/dpmcsuss/iGraphMatch. 

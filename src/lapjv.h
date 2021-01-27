@@ -23,7 +23,7 @@
         printf(#a" = ["); \
         if ((n) > 0) { \
             printf("%f", (a)[0]); \
-            for (uint_t j = 1; j < n; j++) { \
+            for (int_t j = 1; j < n; j++) { \
                 printf(", %f", (a)[j]); \
             } \
         } \
@@ -35,7 +35,7 @@
         printf(#a" = ["); \
         if ((n) > 0) { \
             printf("%d", (a)[0]); \
-            for (uint_t j = 1; j < n; j++) { \
+            for (int_t j = 1; j < n; j++) { \
                 printf(", %d", (a)[j]); \
             } \
         } \
@@ -51,17 +51,16 @@
 
 
 typedef signed int int_t;
-typedef signed int uint_t;
 typedef double cost_t;
 typedef char boolean;
 typedef enum fp_t { FP_1 = 1, FP_2 = 2, FP_DYNAMIC = 3 } fp_t;
 
 extern int_t lapjv_internal(
-    const uint_t n, cost_t *cost[],
+    const int_t n, cost_t *cost[],
     int_t *x, int_t *y);
 
 extern int_t lapmod_internal(
-    const uint_t n, cost_t *cc, uint_t *ii, uint_t *kk,
+    const int_t n, cost_t *cc, int_t *ii, int_t *kk,
     int_t *x, int_t *y, fp_t fp_version, cost_t large);
 
 #endif // LAPJV_H
