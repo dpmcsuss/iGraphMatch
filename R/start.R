@@ -28,7 +28,6 @@
 #' ## Case with erroneous soft seeds and the input is a matrix
 #' bari_start(nns=5, soft_seeds=matrix(c(2, 4, 2, 3), nrow=2))
 #'
-#' @export
 #'
 bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
@@ -54,7 +53,6 @@ bari_splr <- function(nns){
 #'    soft_seeds = as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)),
 #'    distribution = "rnorm")
 #'
-#' @export
 #'
 rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif"){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
@@ -92,7 +90,6 @@ rds_sinkhorn <- function(n, distribution="runif"){
 #' ## Case with soft seeds and the input is a data frame
 #' rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
 #'
-#' @export
 #'
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
@@ -123,7 +120,6 @@ rds_perm_bari <- function(nns, g){
 #' start_sparse <- rds_from_sim_start(10, sim = sim)
 #' start_dense <- rds_from_sim_start(10, sim = as.matrix(sim))
 #'
-#' @export
 rds_from_sim_start <- function(nns, ns = 0,
     soft_seeds = NULL, sim) {
 
@@ -147,6 +143,7 @@ rds_from_sim <- function(nns, sim) {
   }
   diff <- max(dim(sim)) - dim(sim)
   sim <- pad(sim, diff[1], diff[2])
+  sim
 }
 
 

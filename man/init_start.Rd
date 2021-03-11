@@ -20,13 +20,26 @@ input should be in the form of a matrix or a data frame, with the first column b
 indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 Note that if there are seeds in graphs, seeds should be put before non-seeds.}
 
-\item{...}{Arguments passed to other start functions}
+\item{...}{Arguments passed to other start functions. See details in Values section.}
 }
 \value{
 \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
 matrix in the graph matching iteration. If conduct a soft seeding graph matching, returns a
 \code{nns-by-nns} doubly stochastic matrix with 1's corresponding to the soft seeds and values
 at the other places are derived by different start method.
+
+There are five options for the start method. \code{bari} initializes at the barycenter.
+\code{rds_perm_bari} gives a linear combination of barycenter and a random permutation matrix.
+
+\code{rds} gives a random doubly stochastic matrix. Users can specify a random
+deviates generator to the \code{distribution} argument, and the default is \code{runif}.
+
+\code{rds_from_sim} gives a random doubly stochastic matrix derived from similarity scores. One
+needs to input a similarity score matrix to the \code{sim} argument for this method.
+
+\code{convex} returns the doubly stochastic matrix from the last iteration of running the Frank-
+Wolfe algorithm with convex relaxation initialized at the barycenter. For this method, one needs to
+input two graphs \code{A} and \code{B}, as well as \code{seeds} if applicable.
 }
 \description{
 Initialize the start matrix for graph matching iteration.
@@ -37,6 +50,7 @@ ss <- matrix(c(5, 4, 4, 3), nrow = 2)
 init_start(start = "bari", nns = 5)
 init_start(start = "rds", nns = 3)
 init_start(start = "rds_perm_bari", nns = 5)
+init_start(start = "rds_from_sim", nns = 3, sim = matrix(runif(9), 3))
 
 # initialize start matrix with soft seeds
 init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))

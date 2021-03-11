@@ -65,6 +65,7 @@ bari_start(nns=5, ns=3, soft_seeds=c(5, 7, 8))
 ## Case with erroneous soft seeds and the input is a matrix
 bari_start(nns=5, soft_seeds=matrix(c(2, 4, 2, 3), nrow=2))
 
+
 ## Case without soft seeds
 rds_sinkhorn_start(5)
 
@@ -73,11 +74,13 @@ rds_sinkhorn_start(nns=5,
    soft_seeds = as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)),
    distribution = "rnorm")
 
+
 ## Case without soft seeds
 rds_perm_bari_start(nns=5)
 
 ## Case with soft seeds and the input is a data frame
 rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
+
 
 sim <- Matrix::rsparsematrix(10, 10, .4,
  rand.x = function(n) rep(1,n))
