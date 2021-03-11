@@ -2,19 +2,20 @@
 % Please edit documentation in R/sample_ieg.R
 \name{sample_correlated_ieg_pair}
 \alias{sample_correlated_ieg_pair}
-\alias{sample_correlated_rdpg}
+\alias{sample_correlated_rdpg_pair}
 \title{Sample graphs from edge probability matrix and correlation matrix}
 \usage{
 sample_correlated_ieg_pair(
   n,
   p_mat,
   c_mat,
+  ncore = n,
   directed = FALSE,
   loops = FALSE,
   permutation = 1:n
 )
 
-sample_correlated_rdpg(X, rho, nc = nrow(X), ...)
+sample_correlated_rdpg_pair(X, rho, ncore = nrow(X), ...)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
@@ -24,6 +25,8 @@ should be in the open (0,1) interval.}
 
 \item{c_mat}{An \code{n-by-n} matrix. The target Pearson correlation matrix,
 each entry should be in the open (0,1) interval.}
+
+\item{ncore}{An integer. Number of core vertices.}
 
 \item{directed}{Logical scalar, whether to generate directed graphs.}
 
@@ -37,17 +40,17 @@ interval.}
 \item{rho}{A number. The target Pearson correlation between the adjacency
 matrices of the generated graphs. It must be in open (0,1) interval.}
 
-\item{nc}{An integer. Number of core vertices.}
-
 \item{...}{Passed to \code{sample_correlated_rdpg_pair}.}
 }
 \value{
 \code{sample_correlated_ieg_pair} returns two 'igraph' objects named
-\code{graph1} and \code{graph2}.
+\code{graph1} and \code{graph2}. If sample two graphs with junk vertices, the first
+\code{ncore} vertices are core vertices and the rest are junk vertices.
 
-\code{sample_correlated_rdpg} returns two 'igraph' objects named
+\code{sample_correlated_rdpg_pair} returns two 'igraph' objects named
 \code{graph1} and \code{graph2} that are sampled from random dot product
-graphs model.
+graphs model. If sample two graphs with junk vertices, the first
+\code{ncore} vertices are core vertices and the rest are junk vertices.
 }
 \description{
 Sample a pair of graphs with specified edge probability and
@@ -57,7 +60,7 @@ correlation between each pair of vertices.
 n <- 50
 p_mat <- matrix(runif(n^2),n)
 c_mat <- matrix(runif(n^2),n)
-sample_correlated_ieg_pair(n,p_mat,c_mat)
+sample_correlated_ieg_pair(n,p_mat,c_mat,ncore=40)
 
 ## sample a pair of igraph objects from random dot
 ## product graphs model with dimension 3 and scale 8
@@ -67,6 +70,6 @@ scale <- 8
 X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 X <- X/rowSums(X)
 X <- X[,1:xdim]
-sample_correlated_rdpg(X,rho=0.5)
+sample_correlated_rdpg_pair(X,rho=0.5)
 
 }

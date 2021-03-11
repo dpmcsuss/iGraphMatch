@@ -12,17 +12,29 @@
 #' (0,1) interval.
 #' @param ncore An integer. Number of core vertices.
 #' @param permutation A numeric vector,permute second graph.
-#' @param ... Passed to \code{sample_correlated_gnp_pair} and \code{sample_correlated_gnp_pair_w_junk}.
+#' @param ... Passed to \code{sample_gnp}.
 #'
 #' @rdname sample_gnp
 #' @return \code{sample_correlated_gnp_pair} returns a list of two 'igraph' object, named
-#' \code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
-#' correlated with \code{rho}.
+#' \code{graph1} and \code{graph2}, whose adjacency matrix entries
+#' are correlated with \code{corr}. If sample two graphs with junk vertices, the first
+#' \code{ncore} vertices are core vertices and the rest are junk vertices.
 #' @examples
-#' sample_correlated_gnp_pair(50, 0.3, 0.5)
+#' sample_correlated_gnp_pair(n=50, corr=0.3, p=0.5, ncore=40)
+#' sample_correlated_gnp_pair(n=5, corr=0.3, p=0.5, permutation=c(1,3,2,4,5))
 #' @export
 #'
-sample_correlated_gnp_pair <- function(n, corr, p, permutation=1:n, ...){
+
+sample_correlated_gnp_pair <- function(n, corr, p, ncore = n, permutation = 1:n, ...){
+  if(ncore == n){
+    sample_correlated_gnp_pair_no_junk(n, corr, p, permutation, ...)
+  } else{
+    sample_correlated_gnp_pair_w_junk(n, corr, p, ncore, permutation, ...)
+  }
+}
+
+
+sample_correlated_gnp_pair_no_junk <- function(n, corr, p, permutation=1:n, ...){
 
   # Make the first graph
   graph1 <- sample_gnp(n,p,...)
@@ -37,21 +49,12 @@ sample_correlated_gnp_pair <- function(n, corr, p, permutation=1:n, ...){
   list(graph1=graph1,graph2=igraph::permute(graph2,permutation))
 }
 
-#' @export
-#' @rdname sample_gnp
-#' @return \code{sample_correlated_gnp_pair_w_junk} returns a list of two 'igraph' object, named
-#' \code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
-#' correlated with \code{rho} and with first ncore vertices being core vertices and the rest being
-#' junk vertices.
-#' @examples
-#' sample_correlated_gnp_pair_w_junk(50, 0.3, 0.5, 40)
-#'
-#'
-sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n,permutation=1:n,...){
+
+sample_correlated_gnp_pair_w_junk <- function(n, corr, p, ncore=n, permutation=1:n,...){
   core <- 1:ncore
   junk <- (ncore+1):n
 
-  cgnp_pair <- sample_correlated_gnp_pair(ncore,corr,p,...)
+  cgnp_pair <- sample_correlated_gnp_pair_no_junk(ncore,corr,p,...)
 
   if(ncore != n){
     pref_junk <- matrix(c(0,p,p,p),2,2)
