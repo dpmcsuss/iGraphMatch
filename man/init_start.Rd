@@ -53,7 +53,7 @@ init_start(start = "rds_perm_bari", nns = 5)
 init_start(start = "rds_from_sim", nns = 3, sim = matrix(runif(9), 3))
 
 # initialize start matrix with soft seeds
-init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))
+init_start(start = "bari", nns = 5, ns = 1, soft_seeds = ss)
 init_start(start = "rds", nns = 5, soft_seeds = ss)
 init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 

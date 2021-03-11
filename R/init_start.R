@@ -41,7 +41,7 @@
 #' init_start(start = "rds_from_sim", nns = 3, sim = matrix(runif(9), 3))
 #'
 #' # initialize start matrix with soft seeds
-#' init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))
+#' init_start(start = "bari", nns = 5, ns = 1, soft_seeds = ss)
 #' init_start(start = "rds", nns = 5, soft_seeds = ss)
 #' init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 #'
@@ -85,13 +85,13 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
         " or", nns - nss)
     }
   } else if (start == "bari"){
-    start <- bari_start(nns - nss, ns, soft_seeds)
+    start <- bari_start(nns, ns, soft_seeds)
   } else if (start == "rds") {
-    start <- rds_sinkhorn_start(nns - nss, ns, soft_seeds, ...)
+    start <- rds_sinkhorn_start(nns, ns, soft_seeds, ...)
   } else if (start == "rds_perm_bari") {
-    start <- rds_perm_bari_start(nns - nss, ns, ...)
+    start <- rds_perm_bari_start(nns, ns, ...)
   } else if (start == "rds_from_sim"){
-    start <- rds_from_sim_start(nns - nss, ns, soft_seeds, ...)
+    start <- rds_from_sim_start(nns, ns, soft_seeds, ...)
   } else if (start == "convex") {
     # start at bari with soft seeds
     start <- init_start("bari", nns, ns, soft_seeds)
