@@ -70,6 +70,6 @@ scale <- 8
 X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 X <- X/rowSums(X)
 X <- X[,1:xdim]
-sample_correlated_rdpg_pair(X,rho=0.5)
+sample_correlated_rdpg_pair(X,rho=0.5,ncore=40)
 
 }
