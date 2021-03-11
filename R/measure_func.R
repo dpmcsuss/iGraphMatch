@@ -22,7 +22,6 @@
 #' g2m <- g2[match$corr$corr_B, match$corr$corr_B]
 #' g1 <- g1[]
 #' row_cor(g1, g2m)
-#' @export
 row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -37,7 +36,6 @@ row_cor <- function(g1,g2){
 #' the corresponding vertex.
 #' @examples
 #' row_diff(g1, g2m)
-#' @export
 row_diff <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -51,7 +49,6 @@ row_diff <- function(g1,g2){
 #' value for the corresponding vertex.
 #' @examples
 #' row_perm_stat(g1, g2m)
-#' @export
 row_perm_stat <- function(g1,g2,exact=TRUE){
   g1 <- g1[]
   g2 <- g2[]
