@@ -11,17 +11,6 @@
 #' if \code{g1} and \code{g2} are weighted graphs, then set \code{exact=FALSE}.
 #'
 #'
-#' @rdname measure_func
-#' @return \code{row_cor} returns a vector, each element is 1 minus the row correlation value for
-#' the corresponding vertex.
-#' @examples
-#' cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3,p =  0.5)
-#' g1 <- cgnp_pair$graph1
-#' g2 <- cgnp_pair$graph2
-#' match <- graph_match_FW(g1, g2)
-#' g2m <- g2[match$corr$corr_B, match$corr$corr_B]
-#' g1 <- g1[]
-#' row_cor(g1, g2m)
 row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -31,11 +20,6 @@ row_cor <- function(g1,g2){
     function(v) suppressWarnings(1-cor(g1[v,],g2[v,])))
 }
 
-#' @rdname measure_func
-#' @return \code{row_diff} returns a vector, each element is the row difference value for
-#' the corresponding vertex.
-#' @examples
-#' row_diff(g1, g2m)
 row_diff <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]
@@ -44,11 +28,6 @@ row_diff <- function(g1,g2){
   rowSums(abs(g1-g2))
 }
 
-#' @rdname measure_func
-#' @return \code{row_perm_stat} returns a vector, each element is the row permutation statistics
-#' value for the corresponding vertex.
-#' @examples
-#' row_perm_stat(g1, g2m)
 row_perm_stat <- function(g1,g2,exact=TRUE){
   g1 <- g1[]
   g2 <- g2[]
