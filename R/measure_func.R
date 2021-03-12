@@ -1,16 +1,6 @@
 #' @importFrom stats cor
+# Measures for computing the goodness of matching for each vertex.
 
-#' @title Measure functions
-#'
-#' @description Measures for computing the goodness of matching for each vertex.
-#'
-#' @param g1 A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
-#' @param g2 A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2} after adjusting rows and columns
-#' according to the correlation of matching between two graphs.
-#' @param exact A logical. If \code{g1} and \code{g2} are binary, then set \code{exact=TRUE},
-#' if \code{g1} and \code{g2} are weighted graphs, then set \code{exact=FALSE}.
-#'
-#'
 row_cor <- function(g1,g2){
   g1 <- g1[]
   g2 <- g2[]

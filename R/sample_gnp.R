@@ -24,7 +24,6 @@
 #' sample_correlated_gnp_pair(n=5, corr=0.3, p=0.5, permutation=c(1,3,2,4,5))
 #' @export
 #'
-
 sample_correlated_gnp_pair <- function(n, corr, p, ncore = n, permutation = 1:n, ...){
   if(ncore == n){
     sample_correlated_gnp_pair_no_junk(n, corr, p, permutation, ...)
