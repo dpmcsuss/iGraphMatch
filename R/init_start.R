@@ -87,7 +87,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
   } else if (start == "bari"){
     start <- bari_start(nns, ns, soft_seeds)
   } else if (start == "rds") {
-    start <- rds_sinkhorn_start(nns, ns, soft_seeds)
+    start <- rds_sinkhorn_start(nns, ns, soft_seeds, ...)
   } else if (start == "rds_perm_bari") {
     start <- rds_perm_bari_start(nns, ns, ...)
   } else if (start == "rds_from_sim"){

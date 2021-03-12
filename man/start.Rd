@@ -9,7 +9,7 @@
 \usage{
 bari_start(nns, ns = 0, soft_seeds = NULL)
 
-rds_sinkhorn_start(nns, ns = 0, soft_seeds = NULL, distribution = "runif")
+rds_sinkhorn_start(nns, ns = 0, soft_seeds = NULL, distribution = "runif", ...)
 
 rds_perm_bari_start(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE)
 

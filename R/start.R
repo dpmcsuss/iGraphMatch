@@ -14,6 +14,7 @@
 #' distribution.
 #' @param g A number. Specified in the range of [0, 1] to set weights to random permutation matrix and
 #' barycenter matrix.
+#' @param ... Passed to \code{rds_sinkhorn_start}.
 #'
 #' @rdname start
 #' @return \code{bari_start} returns a \code{nns-by-nns} matrix with 1's corresponding to the
@@ -35,7 +36,7 @@ bari_splr <- function(nns){
 #' @return \code{rds_sinkhorn_start} returns a \code{nns-by-nns} doubly stochastic matrix
 #' with 1's corresponding to adaptive seeds.
 #'
-rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif"){
+rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif", ...){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   rds <- rds_sinkhorn(nns - nss,
     distribution = distribution)
