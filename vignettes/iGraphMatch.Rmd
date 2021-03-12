@@ -100,7 +100,7 @@ Correlated Erdős-Rényi random graphs model is specified by parameters includin
 
 Random dot product graphs (RDPG) model is another frequently used random graphs model, which can be regarded as an extension of correlated Erdős-Rényi Random Graphs model. For the RDPG model, for each pair of vertices $\{v,v'\}\in {{V}\choose {2}}$, the edge probability $p$ between them is specified by the dot product of two vectors in $\mathds{R}^d$ drawn from distribution $\mathds{F}^d$, representing latent positions. Given this, the probability of an edge occuring between $\{v,v'\}$ is determined by the Bernoulli trail with probability given by the dot product of two latent positions vectors.
 
-In `iGraphMatch` package, `sample_correlated_gnp_pair` and `sample_correlated_gnp_pair_w_junk` are two useful functions to generate graph pairs from Correlated Erdős-Rényi Random Graphs model. `sample_correlated_rdpg` function is for sampling a pair of graphs from random dot product graphs model.
+In `iGraphMatch` package, `sample_correlated_gnp_pair` is a useful function to generate graph pairs from Correlated Erdős-Rényi Random Graphs model. `sample_correlated_rdpg_pair` function is for sampling a pair of graphs from random dot product graphs model.
 
 ## Initialization Methods For Soft Seeding
 
@@ -283,12 +283,15 @@ If $v$ is correctly matched, then the correlation between the neighborhoods of $
 We next develop an approach to identify core vertices correctly. The main tool that we utilize is a graph matching variant of permutation test. We will use the test statistic $T(\bullet)$ to rank vertices based on the likelihood they are core vertices. Suppose $A,B\in\{0,1\}^{(n_c+n_j)\times (n_c+n_j)}$ are the adjacency matrices corresponding to graphs $G1$ and $G2$, where $n_c$ denotes the number of core vertices and $n_j$ denotes the number of junk vertices. Denote the available seeded vertices as $S$. Algorithm of finding core vertices consists of the following steps. First, use the available seeded vertices $S$ to match $A$ and $B$ yielding the optimal permutation $P^*$. Based on the matching result, then plug in $P^*$ to compute the value of $T(v,P^*)$ for each vertex $v$. Finally rank all the vertices via the decreasing value of $T(v,P^*)$ with increasing likelihood of being core vertices, that is the first $n_j$ vertices are identified as junk vertices with decreasing likelihood. 
 
 ### Simulations
-Now implement algorithm of finding core vertices in R with `iGraphMatch` package. First we sample a pair of graphs with 50 vertices from the correlated Erdős-Rényi graph model and let 5 out of the total vertices to be junk vertices using function `sample_correlated_gnp_pair_w_junk`. We also assume the first 10 vertices to be seeds. Then apply the FAQ algorithm to match two graphs.
+Now implement algorithm of finding core vertices in R with `iGraphMatch` package. First we sample a pair of graphs with 50 vertices from the correlated stochastic block model and let 5 out of the total vertices to be junk vertices using function `sample_correlated_sbm_pair`. We also assume the first 10 vertices to be seeds. Then apply the FAQ algorithm to match two graphs.
 ```{r}
 set.seed(5)
-cgnp_pair <- sample_correlated_gnp_pair_w_junk(n = 50, corr = .5, p = .5, ncore = 45)
-g1 <- cgnp_pair$graph1
-g2 <- cgnp_pair$graph2
+pm <- cbind( c(.3, .5), c(.5, .7) )
+sbm_pair <- sample_correlated_sbm_pair(n = 50, pref.matrix = pm, rho = 0.5,
+                                              block.sizes = c(15,35), 
+                                              core.block.sizes = c(15,30))
+g1 <- sbm_pair$graph1
+g2 <- sbm_pair$graph2
 
 seeds <- 1 : 50 <= 10
 core <- 1 : 50 <= 45
@@ -361,11 +364,11 @@ The inputs are the adjacency matrices of two graphs A and B. Both graphs are com
 \end{algorithm}
 <!-- 
 ### Simulations
-Now implement the algorithm in R with `iGraphMatch` package on the correlated stochastic block  model. First use function `sample_correlated_sbm_pair_w_junk` to sample a pair of graphs from the correlated stochastic block model with 50 nodes in each graph and the correlation between two graphs is 0.5. We set the number of blocks in each graph to be 2 of sizes 15 and 35 and specify the edge probabilities between vertices within the smaller block, the bigger block and across blocks to be 0.3, 0.5 and 0.7 respectively. In this example, we consider a core-junk setting by setting the first 10 and 30 vertices in each block to be core vertices, while the rest being junk vertices. Finally let the first 5 core vertices in block be known seeds.
+Now implement the algorithm in R with `iGraphMatch` package on the correlated stochastic block  model. First use function `sample_correlated_sbm_pair` to sample a pair of graphs from the correlated stochastic block model with 50 nodes in each graph and the correlation between two graphs is 0.5. We set the number of blocks in each graph to be 2 of sizes 15 and 35 and specify the edge probabilities between vertices within the smaller block, the bigger block and across blocks to be 0.3, 0.5 and 0.7 respectively. In this example, we consider a core-junk setting by setting the first 10 and 30 vertices in each block to be core vertices, while the rest being junk vertices. Finally let the first 5 core vertices in block be known seeds.
 ```{r, warning=FALSE, message=FALSE}
 set.seed(6)
 pm <- cbind( c(.3, .5), c(.5, .7) )
-sbm_pair <- sample_correlated_sbm_pair_w_junk(n = 50, pref.matrix = pm, rho = 0.5,
+sbm_pair <- sample_correlated_sbm_pair(n = 50, pref.matrix = pm, rho = 0.5,
                                               block.sizes = c(15,35), 
                                               core.block.sizes = c(10,30))
 g1 <- sbm_pair$graph1
