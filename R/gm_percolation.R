@@ -128,10 +128,13 @@ graph_match_percolation <- function (A, B, seeds,
   rownames(corr) <- paste0(as.character(1:nrow(corr)))
 
   cl <- match.call()
-  z <- list(
-    call = cl,
+  graphMatch(
     corr = corr,
-    seeds = seeds,
-    order = order)
-  z
+    dim = c(totv1, totv2),
+    call = cl,
+    detail = list(
+      match_order = order,
+      seeds = seeds
+    )
+  )
 }

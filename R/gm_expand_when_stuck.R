@@ -180,10 +180,13 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
   rownames(corr) <- paste0(as.character(1:nrow(corr)))
 
   cl <- match.call()
-  z <- list(
-    call = cl,
+  graphMatch(
     corr = corr,
-    seeds = seeds_ori,
-    order = order)
-  z
+    dim = c(totv1, totv2),
+    call = cl,
+    detail = list(
+      match_order = order,
+      seeds = seeds
+    )
+  )
 }

@@ -99,13 +99,18 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(
-      call = cl,
+    graphMatch(
       corr = corr,
-      seeds = seeds,
-      order = order)
-    z
-  } else if(method == "LAP"){
+      dim = c(totv1, totv2),
+      call = cl,
+      detail = list(
+        method = method,
+        match_order = order,
+        seeds = seeds,
+        soft = R_tot
+      )
+    )
+  } else if(method == "LAP") {
     # make a random permutation
     nn <- nrow(A[[1]]) - nrow(seeds)
     rp <- sample(nn)
@@ -121,10 +126,15 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(
-      call = cl,
+    graphMatch(
       corr = corr,
-      seeds = seeds)
-    z
+      dim = c(totv1, totv2),
+      call = cl,
+      detail = list(
+        method = method,
+        seeds = seeds,
+        soft = R_tot
+      )
+    )
   }
 }

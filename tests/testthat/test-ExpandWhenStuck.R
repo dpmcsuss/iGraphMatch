@@ -7,19 +7,27 @@ B <- G$graph2
 seeds <- 1:4
 
 test_that("matching correspondence between graph1 and graph2", {
-  expect_equal(graph_match_ExpandWhenStuck(A, B, seeds, r = 2)$corr,
-               data.frame(corr_A = c(1:7, 9:10), corr_B = c(1:4, 9, 6, 7, 5, 10),row.names=as.character(1:9)))
+  expect_equal(
+    as.data.frame(graph_match_ExpandWhenStuck(A, B, seeds, r = 2)$corr),
+    data.frame(
+      corr_A = c(1:7, 9:10),
+      corr_B = c(1:4, 9, 6, 7, 5, 10),
+      row.names=as.character(1:9))
+  )
 })
 
 test_that("test number of seeds", {
-  expect_equal(graph_match_ExpandWhenStuck(A, B,seeds, r = 2)$seeds,
-               data.frame(A = 1:4, B = 1:4))
+  expect_equal(
+    graph_match_ExpandWhenStuck(A, B,seeds, r = 2)$seeds,
+    data.frame(A = 1:4, B = 1:4)
+  )
 })
 
 # with similarity score
 sim <- matrix(rnorm(100), 10)
 test_that("exp w. similarity score", {
-  expect_equal(graph_match_ExpandWhenStuck(A, B, seeds = seeds, similarity = sim)$seeds,
+  expect_equal(
+    graph_match_ExpandWhenStuck(A, B, seeds = seeds, similarity = sim)$seeds,
                data.frame(A = 1:4, B = 1:4))
 })
 

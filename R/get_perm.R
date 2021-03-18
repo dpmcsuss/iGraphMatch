@@ -24,7 +24,7 @@
 #'
 #' @export
 #'
-get_perm <- function(m, n, corr){
+make_perm <- function(m, n, corr){
   corr <- as.matrix(corr)
   perm <- Matrix::Matrix(0, m, n)
   perm[corr] <- 1

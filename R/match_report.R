@@ -153,6 +153,7 @@ edge_match_info <- function(corr, A, B,
     res <- list()
     nzA <- which(A_m > 0)
     nzB <- which(B_m > 0)
+
     # non-zeros in both A and B
     res$common_edges <- length(intersect(nzA, nzB))
     # non-zero in A but not B
@@ -175,64 +176,6 @@ edge_match_info <- function(corr, A, B,
 
 }
 
-
-
-
-#' Plotting methods for visualizing matches
-#'
-#' Two functions are provided, \code{match_plot_igraph}
-#' which makes a ball and stick plot from 'igraph' objects
-#' and \code{match_plot_matrix} which shows an adjacency
-#' matrix plot.
-#'
-#'
-#' @param A First graph. For \code{match_plot_igraph}
-#'  must be an 'igraph' object.
-#' @param B First graph. For \code{match_plot_igraph}
-#'  must be an 'igraph' object.
-#' @param match result from a match call. Requires element
-#'  \code{corr} as a data.frame with names corr_A, corr_B.
-#' @param color Whether to color edges according to which
-#'  graph(s) they are in.
-#' @param linetype Whether to set edge linetypes according
-#'  to which graph(s) they are in.
-#' @param ... additional parameters passed to either the
-#'  'igraph' plot function or the Matrix image function.
-#'
-#' @returns Both functions return values invisibly.
-#' \code{match_plot_igraph} returns the union of the
-#'  matched graphs as an 'igraph' object with additional
-#'  edge attributes \code{edge_match, color, lty}.
-#'  \code{match_plot_matrix} returns the difference between
-#'  the matched graphs.
-#'
-#' @details
-#' Grey edges/pixels indicate common edges, red
-#' indicates edges only in graph A and green
-#' represents edges only graph B. The corresponding
-#' linetypes are solid, short dash, and long dash.
-#'
-#' The plots can be recreated from the output with the code \cr
-#' \code{plot(g)} \cr
-#' for \code{g <- match_plot_igraph(...)} and  \cr
-#' \code{col <- colorRampPalette(c("#AA4444", "#888888", "#44AA44"))} \cr
-#' \code{image(m, col.regions = col(256))} \cr
-#' for \code{m <- match_plot_match(...)}.
-#'
-#' This only plots and returns the matched vertices.
-#'
-#' @rdname plot_methods
-#'
-#' @examples
-#' set.seed(123)
-#' graphs <- sample_correlated_gnp_pair(20, .5, .3)
-#' A <- graphs$graph1
-#' B <- graphs$graph2
-#' res <- graph_match_percolation(A, B, 1:4)
-#'
-#' match_plot_igraph(A, B, res)
-#' match_plot_matrix(A, B, res)
-#' @export
 match_plot_igraph <- function(A, B, match,
   color = TRUE, linetype = TRUE, ...) {
 
@@ -241,11 +184,20 @@ match_plot_igraph <- function(A, B, match,
   nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
 
 
-  corr_A <- match$corr$corr_A[seq(nv)]
-  corr_B <- match$corr$corr_B[seq(nv)]
+  corr_A <- match@corr$corr_A[seq(nv)]
+  corr_B <- match@corr$corr_B[seq(nv)]
+  if(is.null(igraph::V(A)$name)){
+    igraph::set.vertex.attribute(A, "name", corr_A, corr_A)
+  }
 
-  A <- igraph::induced_subgraph(A, corr_A)
-  B <- igraph::induced_subgraph(B, corr_B)
+  A <- igraph::permute.vertices(
+    igraph::induced_subgraph(A, corr_A),
+    rank(corr_A)
+  )
+  B <- igraph::permute.vertices(
+    igraph::induced_subgraph(B, corr_B),
+    rank(corr_B)
+  )
 
 
 
@@ -277,18 +229,13 @@ match_plot_igraph <- function(A, B, match,
   invisible(g)
 }
 
-#' @rdname plot_methods
-#' @param col.regions NULL for default colors, otherwise see \link[Matrix]{image-methods}
-#' @param at NULL for default at values for at (ensures zero is grey), otherwise see \link[Matrix]{image-methods}
-#' @param colorkey NULL for default colorkey, otherwise see \link[Matrix]{image-methods}
-#'
-#' @export
+
 match_plot_matrix <- function(A, B, match, col.regions = NULL, at = NULL, colorkey = NULL, ...) {
   ch <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
   nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
 
-  corr_A <- match$corr$corr_A[seq(nv)]
-  corr_B <- match$corr$corr_B[seq(nv)]
+  corr_A <- match@corr$corr_A[seq(nv)]
+  corr_B <- match@corr$corr_B[seq(nv)]
 
   A <- ch$g1[corr_A, corr_A]
   B <- ch$g2[corr_B, corr_B]

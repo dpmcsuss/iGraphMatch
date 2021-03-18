@@ -123,8 +123,6 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
 
 
-  D_ns <- P
-
   corr_ns <- do_lap(P, lap_method)
   # undo rand perm here
   corr_ns <- rp[corr_ns]
@@ -132,17 +130,18 @@ graph_match_convex <- function(A, B, seeds = NULL,
   corr <- 1:nv
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
-  P <- Matrix::Diagonal(nv)[corr, ]
-  # D <- P
-  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  # P <- Matrix::Diagonal(nv)[corr, ]
+
   reorderA <- order(c(nonseeds$A, seeds$A))
   reorderB <- order(c(nonseeds$B, seeds$B))
 
-  D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
+  D <- pad(P %*% rpmat, ns)[reorderA, reorderB]
   if (is(D, "splrMatrix")) {
-    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+    D@x[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+      # P[seeds$A, seeds$B]
   } else {
-    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+    D[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+     # P[seeds$A, seeds$B]
   }
 
 
@@ -157,14 +156,17 @@ graph_match_convex <- function(A, B, seeds = NULL,
   #   geom_vline(xintercept = aopt)
 
   cl <- match.call()
-  z <- list(
-    call = cl,
+
+  graphMatch(
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
-    seeds = seeds,
-    P = P,
-    D = D,
-    iter = iter
-    # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
+    dim = c(totv1, totv2),
+    call = cl,
+    detail = list(
+      iter = iter,
+      max_iter = max_iter,
+      lap_method = lap_method,
+      seeds = seeds,
+      soft = D
+    )
   )
-  z
 }
