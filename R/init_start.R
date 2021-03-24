@@ -80,7 +80,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     # start at bari with soft seeds
     start <- init_start("bari", nns, ns, soft_seeds)
     # match and pull out doubly stochastic
-    start <- graph_match_convex(..., start = start)$D
+    start <- graph_match_convex(..., start = start)$soft
 
     # don't add back in soft seeds b/c we've used them for convex
     # maybe message/warning about this being a silly thing

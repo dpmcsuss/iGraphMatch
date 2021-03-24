@@ -6,12 +6,12 @@
 \alias{graphMatch}
 \title{Graph matching results class}
 \usage{
-graphMatch(corr, dim, call = NULL, detail = list())
+graphMatch(corr, nnodes, call = NULL, detail = list())
 }
 \arguments{
 \item{corr}{data.frame indicating the correspondence between two graphs}
 
-\item{dim}{dimensions of the original two graphs}
+\item{nnodes}{dimensions of the original two graphs}
 
 \item{call}{The call to the graph matching function}
 
@@ -28,7 +28,7 @@ An 'S4' class for the results of a graph matching function
 \describe{
 \item{\code{corr}}{data.frame indicating the correspondence between two graphs}
 
-\item{\code{dim}}{dimensions of the original two graphs}
+\item{\code{dimensions}}{of the original two graphs}
 
 \item{\code{call}}{The call to the graph matching function}
 

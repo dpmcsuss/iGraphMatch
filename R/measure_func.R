@@ -19,7 +19,7 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' match <- graph_match_FW(g1, g2)
-#' g2m <- g2[match$corr$corr_B, match$corr$corr_B]
+#' g2m <- match %*% g2[]
 #' g1 <- g1[]
 #' row_cor(g1, g2m)
 #' @export

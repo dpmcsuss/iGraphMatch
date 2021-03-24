@@ -35,7 +35,7 @@ best_matches <- function(A, B, match, measure, num){
   B <- graph_pair[[2]]
   nv <- nrow(A[[1]])
   nc <- length(A)
-  x <- !check_seeds(match@detail$seeds, nv, logical = TRUE)
+  x <- !check_seeds(match$seeds, nv, logical = TRUE)
   match_corr <- match@corr
   x <- x[match_corr[,1]]
   match_corr <- match_corr[x,]

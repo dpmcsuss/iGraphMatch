@@ -101,7 +101,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     cl <- match.call()
     graphMatch(
       corr = corr,
-      dim = c(totv1, totv2),
+      nnodes = c(totv1, totv2),
       call = cl,
       detail = list(
         method = method,
@@ -128,7 +128,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     cl <- match.call()
     graphMatch(
       corr = corr,
-      dim = c(totv1, totv2),
+      nnodes = c(totv1, totv2),
       call = cl,
       detail = list(
         method = method,

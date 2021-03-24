@@ -1,4 +1,4 @@
-context("hard-seeding Frank Wolfe with incorrect seeds")
+
 
 # sample pair of graphs w. 10 vertices
 set.seed(123)

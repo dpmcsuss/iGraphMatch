@@ -159,7 +159,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
   graphMatch(
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
-    dim = c(totv1, totv2),
+    nnodes = c(totv1, totv2),
     call = cl,
     detail = list(
       iter = iter,

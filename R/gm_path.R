@@ -38,7 +38,7 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   # lambda=0, convex relaxation
   convex_m <- graph_match_convex(A, B, similarity = similarity, seeds = seeds, 
                                  tol = tol, max_iter = max_iter)
-  P <- convex_m$P[nonseeds$A, nonseeds$B]
+  P <- convex_m[][nonseeds$A, nonseeds$B]
   
   lambda <- 0
   dlambda <- dlambda_min <-  1e-2
@@ -193,13 +193,12 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
       } 
     } else{
       alpha <- 1
-    }  
+    }
     P <- alpha * P + (1 - alpha) * Pdir
     
   }
-  
-  
-  D_ns <- P
+
+
   corr_ns <- do_lap(P, lap_method)
   # undo rand perm here
   corr_ns <- rp[corr_ns]
@@ -207,25 +206,30 @@ graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
   corr <- 1:n
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
-  P <- Matrix::Diagonal(n)[corr, ]
   # D <- P
   # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
   reorderA <- order(c(nonseeds$A, seeds$A))
   reorderB <- order(c(nonseeds$B, seeds$B))
   
-  D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
+  D <- pad(P %*% rpmat, ns)[reorderA, reorderB]
   if (is(D, "splrMatrix")) {
-    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]  
+    D@x[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+     # <- P[seeds$A, seeds$B]
   } else {
-    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+    D[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+     # <- P[seeds$A, seeds$B]
   }
+
   cl <- match.call()
-  z <- list(
+  
+  graphMatch(
     call = cl, 
-    corr = data.frame(corr_A = 1:n, corr_B = corr), 
-    seeds = seeds, 
-    P = P, 
-    D = D, 
-    iter = iter)
-  z
+    corr = data.frame(corr_A = seq(n), corr_B = corr),
+    nnodes = c(totv1, totv2),
+    detail = list(
+      seeds = seeds,
+      soft = D, 
+      iter = iter
+    )
+  )
 }

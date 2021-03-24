@@ -1,4 +1,4 @@
-context("sbm & sbm with junk vertices")
+
 
 
 #Sample graphs pair from stochastic block model

@@ -6,7 +6,7 @@ setOldClass("igraph")
 #' @description An 'S4' class for the results of a graph matching function
 #'
 #' @slot corr data.frame indicating the correspondence between two graphs
-#' @slot dim dimensions of the original two graphs
+#' @slot  dimensions of the original two graphs
 #' @slot call The call to the graph matching function
 #' @slot detail List with other more detailed information
 #' 
@@ -17,16 +17,15 @@ setOldClass("igraph")
 setClass("graphMatch",
   slots = c(
     corr = "data.frame",
-    dim = "integer",
-    call = "call",
-    detail = "list"
+    nnodes = "integer",
+    call = "call"
   ),
   contains = 'list')
 
 #' @rdname gm_constructor
 #'
 #' @param corr data.frame indicating the correspondence between two graphs
-#' @param dim dimensions of the original two graphs
+#' @param nnodes dimensions of the original two graphs
 #' @param call The call to the graph matching function
 #' @param detail List with other more detailed information
 #' 
@@ -37,26 +36,29 @@ setGeneric(
   name = "graphMatch",
   def = function(
     corr,
-    dim,
+    nnodes,
     call = NULL,
     detail = list()
   ) {
-    standardGeneric("graphMatch")
+
     # check args ....
     gm <- new(
       "graphMatch",
       corr = corr,
-      dim = dim,
-      detail = detail
+      nnodes = nnodes
     )
     gm@call <- call
+    for (n in names(detail)) {
+      gm[[n]] <- detail[[n]]
+    }
+    # gm@.Data <- detail
     gm
   }
 )
 
 
 get_perm <- function(match){
-  make_perm(match@dim[1], match@dim[2], match@corr)
+  make_perm(match@nnodes[1], match@nnodes[2], match@corr)
 }
 
 
@@ -64,7 +66,7 @@ as.character.graphMatch <- function(from) {
   paste0(
     "Call:", as.character(from@call), "\n",
     "Match (", 
-    paste(as.character(from@dim), collapse = " x "),
+    paste(as.character(from@nnodes), collapse = " x "),
     "):\n",
     as.character(from@corr)
   )
@@ -104,9 +106,9 @@ setMethod("as.data.frame", signature("graphMatch"),
 )
 
 show.graphMatch <- function(object){
-    show(object@call)
-    show(paste0("Match (", 
-      paste(as.character(object@dim), collapse = " x "),
+    print(object@call)
+    cat(paste0("\nMatch (", 
+      paste(as.character(object@nnodes), collapse = " x "),
       "):\n"
     ))
     show(object@corr)
@@ -157,7 +159,7 @@ setMethod("%*%", signature(x = "ANY", y = "graphMatch"),
   })
 
 #' @rdname graphMatch_methods
-setMethod("dim", signature(x = "graphMatch"), function(x) { x@dim })
+setMethod("dim", signature(x = "graphMatch"), function(x) { x@nnodes })
 
 #' @rdname graphMatch_methods
 setMethod("length", signature(x = "graphMatch"), function(x) { nrow(x@corr)})
@@ -183,12 +185,16 @@ setMethod('str', signature(object = "graphMatch"), function(object){
 
 
 identity_match <- function(x, y) {
-  nmin <- min(igraph::vcount(x), igraph::vcount(y))
+  if(is.igraph(x)) {
+    nmin <- min(igraph::vcount(x), igraph::vcount(y))
+  } else {
+    nmin <- min(nrow(x), nrow(y))
+  }
+  
   graphMatch(
     corr = data.frame(corr_A = 1:nmin, corr_B = 1:nmin),
-    dim = c(nmin, nmin),
-    call = match.call(),
-    detail = list()
+    nnodes = c(nmin, nmin),
+    call = match.call()
   )
 }
 
@@ -242,13 +248,13 @@ identity_match <- function(x, y) {
 #'
 #' @examples
 #' set.seed(123)
-#' graphs <- sample_correlated_gnp_pair(20, .5, .3)
+#' graphs <- sample_correlated_gnp_pair(20, .9, .3)
 #' A <- graphs$graph1
 #' B <- graphs$graph2
 #' res <- graph_match_percolation(A, B, 1:4)
 #'
-#' match_plot_igraph(A, B, res)
-#' match_plot_matrix(A, B, res)
+#' plot(A, B, res)
+#' plot(A[], B[], res)
 setMethod("plot", signature(x = "igraph", y = "igraph"),
   function(x,y, match = NULL, 
     color = TRUE, linetype = TRUE,...) {
@@ -279,12 +285,12 @@ setMethod("plot", signature(x = "Matrix", y = "Matrix"),
 
 permuted_subgraph <- function(g, corr_g) {
   if(is.null(igraph::V(A)$name)){
-    igraph::set.vertex.attribute(A, "name", corr_A, corr_A)
+    igraph::set.vertex.attribute(A, "name", corr_g, corr_g)
   }
 
   A <- igraph::permute.vertices(
-    igraph::induced_subgraph(A, corr_A),
-    rank(corr_A)
+    igraph::induced_subgraph(A, corr_g),
+    rank(corr_g)
   )
 }
 
@@ -294,28 +300,30 @@ permuted_subgraph <- function(g, corr_g) {
 #' @rdname graphMatch_summary
 setMethod("summary", signature("graphMatch"),
   function(object, A = NULL, B = NULL, true_label = NULL, directed = NULL, ...) {
-    browser()
-    graph_pair <- check_graph(A, B)
-    A <- graph_pair[[1]]
-    B <- graph_pair[[2]]
 
     # Matched nodes
     corr <- object@corr
-    object@detail$n.match <- nrow(corr) - nrow(object@detail$seeds)
+    object$n_match <- nrow(corr) - nrow(object$seeds)
     if(!is.null(true_label)){
-      object@detail$n.true.match <-
-        sum(true_label[corr$corr_A] == corr$corr_B) - nrow(object@detail$seeds)
+      object$n_true_match <-
+        sum(true_label[corr$corr_A] == corr$corr_B) - nrow(object$seeds)
 
     }
+    if(!is.null(A) & !is.null(B)){
+      graph_pair <- check_graph(A, B)
+      A <- graph_pair[[1]]
+      B <- graph_pair[[2]]
 
-    # Matched edges
-    object@detail$edge_match_info <-
-      edge_match_info(corr, A, B, directed)
+
+      # Matched edges
+      object$edge_match_info <-
+        edge_match_info(corr, A, B, directed)
+    }
 
 
     # objective value: ||A-PBP^T||_F
-    # object@detail$Permutation <- get_perm(nrow(A[[1]]), nrow(B[[1]]), corr)
-    class(object) <- "summary.graphMatch"
+    # object@.Data$Permutation <- get_perm(nrow(A[[1]]), nrow(B[[1]]), corr)
+    class(object) <- c("summary.graphMatch")
     object
   }
 )
@@ -323,20 +331,25 @@ setMethod("summary", signature("graphMatch"),
 show.summary.graphMatch <- function(match) {
     cat("Call: \n")
     print(match@call)
-    cat("\n# Matches:", match@detail$n.match)
-    if(!is.null(match@detail$n.true.match)){
-      cat("\n# True Matches: ", match@detail$n.true.match)
+    cat("\n# Matches:", match$n_match)
+    if(!is.null(match$n_true_match)){
+      cat("\n# True Matches: ", match$n_true_match)
+    }
+    if(!is.null(match$seeds)) { 
+      cat(", # Seeds: ", nrow(match$seeds0))
     }
     cat("\n")
-    ep <- as.data.frame(t(match@detail$edge_match_info))
-    colnames(ep) <- NULL
-    print(ep)
+    if(!is.null(match$edge_match_info)) {
+      ep <- as.data.frame(t(match$edge_match_info))
+      colnames(ep) <- NULL
+      print(ep)
+    }
 }
 
 setClass("summary.graphMatch",
   # slots = c(
   #   corr = "data.frame",
-  #   dim = "integer",
+  #    = "integer",
   #   call = "call",
   #   detail = "list"
   # ),

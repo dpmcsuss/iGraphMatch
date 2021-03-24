@@ -182,11 +182,11 @@ graph_match_ExpandWhenStuck <- function(A, B, seeds,
   cl <- match.call()
   graphMatch(
     corr = corr,
-    dim = c(totv1, totv2),
+    nnodes = c(totv1, totv2),
     call = cl,
     detail = list(
       match_order = order,
-      seeds = seeds
+      seeds = seeds_ori
     )
   )
 }

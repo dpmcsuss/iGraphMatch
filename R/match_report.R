@@ -1,122 +1,121 @@
 
 
-#' @title Matching performance summary
-#'
-#' @description Get a summary of the matching result and measures of the matching performance
-#' based on several evaluation metrics associated with nodes and edges of two graphs.
-#'
-#' @param match Graph matching result see \link[=graph_match_FW]{graph match methods}.
-#' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
-#' @param true_label A vector. NULL if the true correspondence
-#'  between two graphs is unknown. A vector indicating the
-#'  true correspondence in the second graph if the true
-#'  correspondence is known.
-#' @param corr Correspondence data frame as given by match$corr
-#' @param directed Whether the graphs should be treated as directed
-#'  or undirected. NULL defaults to !isSymmetric(A).
-#'
-#' @rdname match_report
-#'
-#' @return \code{match_report} returns the match object
-#'  evaluation metrics including number of matches, true matches,
-#'  and a data frame with edge correctness information.
-#'  \code{edge_match_info} returns this data frame with columns
-#'  for number of common edges, missing edges, extra edges, and
-#'  common non-edges, and Frobenius norm.
-#'
-#'
-#' @details For multilayered graphs information is given per layer.
-#'  For weighted graphs the counts are based on non-zero entries.
-#'  Equality of weights is not tested.
-#'  If you want to ignore seeds in the edge match info you must
-#'  remove them from corr/match$corr.
-#'
-#' @examples
-#' graphs <- sample_correlated_gnp_pair(10, .5, .3)
-#' A <- graphs$graph1
-#' B <- graphs$graph2
-#' res <- graph_match_percolation(A, B, 1:4)
-#' match_report(res, A, B)
-#'
-#' gp_list <- replicate(3,
-#'    sample_correlated_gnp_pair(100, .8, .3),
-#'    simplify = FALSE)
-#' A <- lapply(gp_list, function(gp)gp[[1]])
-#' B <- lapply(gp_list, function(gp)gp[[2]])
-#' corr <- data.frame(corr_A = 1:100, corr_B = 1:100)
-#' edge_match_info(corr, A, B)
-#' @export
-#'
-match_report <- function(match, A, B, true_label = NULL, directed = NULL){
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
+# #' @title Matching performance summary
+# #'
+# #' @description Get a summary of the matching result and measures of the matching performance
+# #' based on several evaluation metrics associated with nodes and edges of two graphs.
+# #'
+# #' @param match Graph matching result see \link[=graph_match_FW]{graph match methods}.
+# #' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
+# #' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
+# #' @param true_label A vector. NULL if the true correspondence
+# #'  between two graphs is unknown. A vector indicating the
+# #'  true correspondence in the second graph if the true
+# #'  correspondence is known.
+# #' @param corr Correspondence data frame as given by match$corr
+# #' @param directed Whether the graphs should be treated as directed
+# #'  or undirected. NULL defaults to !isSymmetric(A).
+# #'
+# #' @rdname match_report
+# #'
+# #' @return \code{match_report} returns the match object
+# #'  evaluation metrics including number of matches, true matches,
+# #'  and a data frame with edge correctness information.
+# #'  \code{edge_match_info} returns this data frame with columns
+# #'  for number of common edges, missing edges, extra edges, and
+# #'  common non-edges, and Frobenius norm.
+# #'
+# #'
+# #' @details For multilayered graphs information is given per layer.
+# #'  For weighted graphs the counts are based on non-zero entries.
+# #'  Equality of weights is not tested.
+# #'  If you want to ignore seeds in the edge match info you must
+# #'  remove them from corr/match$corr.
+# #'
+# #' @examples
+# #' graphs <- sample_correlated_gnp_pair(10, .5, .3)
+# #' A <- graphs$graph1
+# #' B <- graphs$graph2
+# #' res <- graph_match_percolation(A, B, 1:4)
+# #' match_report(res, A, B)
+# #'
+# #' gp_list <- replicate(3,
+# #'    sample_correlated_gnp_pair(100, .8, .3),
+# #'    simplify = FALSE)
+# #' A <- lapply(gp_list, function(gp)gp[[1]])
+# #' B <- lapply(gp_list, function(gp)gp[[2]])
+# #' corr <- data.frame(corr_A = 1:100, corr_B = 1:100)
+# #' edge_match_info(corr, A, B)
+# #' @export
+# #'
+# match_report <- function(match, A, B, true_label = NULL, directed = NULL){
+#   graph_pair <- check_graph(A, B)
+#   A <- graph_pair[[1]]
+#   B <- graph_pair[[2]]
 
 
-  # if(max(A)>1 || max(B)>1){
-  #   warning("Common egdes have positive weights but not necessarily have same weights.")
-  # }
+#   # if(max(A)>1 || max(B)>1){
+#   #   warning("Common egdes have positive weights but not necessarily have same weights.")
+#   # }
 
 
-  cat("Call: \n")
-  print(match$call)
+#   cat("Call: \n")
+#   print(match$call)
 
-  # Matched nodes
-  corr <- match$corr
-  match$n.match <- nrow(corr) - nrow(match$seeds)
-  cat("\n# Matches:", match$n.match)
-  if(!is.null(true_label)){
-    match$n.true.match <-
-      sum(true_label[corr$corr_A] == corr$corr_B) - nrow(match$seeds)
-    cat("\n# True Matches: ", match$n.true.match)
-  }
-  cat("\n")
+#   # Matched nodes
+#   corr <- match$corr
+#   match$n.match <- nrow(corr) - nrow(match$seeds)
+#   cat("\n# Matches:", match$n.match)
+#   if(!is.null(true_label)){
+#     match$n.true.match <-
+#       sum(true_label[corr$corr_A] == corr$corr_B) - nrow(match$seeds)
+#     cat("\n# True Matches: ", match$n.true.match)
+#   }
+#   cat("\n")
 
-  # Matched edges
-  match$edge_match_info <-
-    edge_match_info(corr, A, B, directed)
+#   # Matched edges
+#   match$edge_match_info <-
+#     edge_match_info(corr, A, B, directed)
 
-  ep <- as.data.frame(t(match$edge_match_info))
-  colnames(ep) <- NULL
-  print(ep)
+#   ep <- as.data.frame(t(match$edge_match_info))
+#   colnames(ep) <- NULL
+#   print(ep)
 
-  # objective value: ||A-PBP^T||_F
-  match$Permutation <- get_perm(nrow(A[[1]]), nrow(B[[1]]), corr)
-  cat("\n")
-  invisible(match)
-}
-
-
-#' @title document
-#' @description Return aligned versions of A and B according to
-#'  a result of match method
-#'
-#' @param match Result from a a graph matching method.
-#' @param A A matrix, 'igraph' object, or list of either.
-#'  Likely used in the call for creating match.
-#' @param B A matrix, 'igraph' object, or list of either.
-#'  Likely used in the call for creating match.
-#'
-#' @return A list of aligned graphs named \code{A_m} and \code{B_m}.
-#'
-#' @export
-matched_adjs <- function(match, A, B){
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
-
-  list(A_m = A[match$corr$corr_A, match$corr$corr_A],
-    B_m = B[match$corr$corr_B, match$corr$corr_B])
-}
+#   # objective value: ||A-PBP^T||_F
+#   cat("\n")
+#   invisible(match)
+# }
 
 
+# #' @title document
+# #' @description Return aligned versions of A and B according to
+# #'  a result of match method
+# #'
+# #' @param match Result from a a graph matching method.
+# #' @param A A matrix, 'igraph' object, or list of either.
+# #'  Likely used in the call for creating match.
+# #' @param B A matrix, 'igraph' object, or list of either.
+# #'  Likely used in the call for creating match.
+# #'
+# #' @return A list of aligned graphs named \code{A_m} and \code{B_m}.
+# #'
+# #' @export
+# matched_adjs <- function(match, A, B){
+#   graph_pair <- check_graph(A, B)
+#   A <- graph_pair[[1]]
+#   B <- graph_pair[[2]]
 
-#' @rdname match_report
-#'
-#' @section TODO: support weighted? loops? ...?
-#'
-#' @export
+#   list(A_m = A[match$corr$corr_A, match$corr$corr_A],
+#     B_m = B[match$corr$corr_B, match$corr$corr_B])
+# }
+
+
+
+# #' @rdname match_report
+# #'
+# #' @section TODO: support weighted? loops? ...?
+# #'
+# #' @export
 edge_match_info <- function(corr, A, B,
     directed = NULL) {
   graph_pair <- check_graph(A, B)
@@ -181,13 +180,14 @@ match_plot_igraph <- function(A, B, match,
 
   ch <- check_graph(A, B, same_order = FALSE, as_igraph = TRUE)
 
-  nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
+  nv <- min(ch$totv1, ch$totv2, nrow(match@corr))
 
 
   corr_A <- match@corr$corr_A[seq(nv)]
   corr_B <- match@corr$corr_B[seq(nv)]
+
   if(is.null(igraph::V(A)$name)){
-    igraph::set.vertex.attribute(A, "name", corr_A, corr_A)
+    A <- igraph::set.vertex.attribute(A, "name", corr_A, corr_A)
   }
 
   A <- igraph::permute.vertices(
@@ -232,7 +232,7 @@ match_plot_igraph <- function(A, B, match,
 
 match_plot_matrix <- function(A, B, match, col.regions = NULL, at = NULL, colorkey = NULL, ...) {
   ch <- check_graph(A, B, same_order = FALSE, as_list = FALSE)
-  nv <- min(ch$totv1, ch$totv2, nrow(match$corr))
+  nv <- min(ch$totv1, ch$totv2, nrow(match@corr))
 
   corr_A <- match@corr$corr_A[seq(nv)]
   corr_B <- match@corr$corr_B[seq(nv)]

@@ -1,4 +1,4 @@
-context("largest cc")
+
 
 set.seed(123)
 n <- 10

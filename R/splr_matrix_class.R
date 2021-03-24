@@ -42,7 +42,6 @@ setGeneric(
   def = function(x, a = NULL, b = NULL, rank = NULL,
   dimnames = list(NULL, NULL), ...) {
 
-  standardGeneric("splr")
   #
   # x+ab'
   # x is mxn
@@ -556,7 +555,6 @@ setMethod("norm", signature(x ="splrMatrix", type ="character"),
 #' @rdname innerproduct
 #' @export
 setGeneric("innerproduct", function(x, y){
-  standardGeneric("innerproduct")
   sum(x * y)
 })
 

@@ -1,4 +1,4 @@
-context("best matches ranking")
+
 
 # sample pair of graphs w. 10 vertices
 set.seed(123)

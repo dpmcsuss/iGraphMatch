@@ -1,4 +1,4 @@
-context("lap")
+
 
 set.seed(12345)
 cost <- Matrix::rsparsematrix(10, 10, .5)
@@ -11,21 +11,21 @@ sol <- c(1, 7, 9, 8, 3, 5, 6, 4, 10, 2)
 test_that(
   "lapjv works",
   {
-    expect_equivalent(a1, sol)
+    expect_equal(a1, sol)
   }
 )
 
 test_that(
   "lapmod works",
   {
-    expect_equivalent(a2, sol)
+    expect_equal(a2, sol)
   }
 )
 
 test_that(
   "clue works",
   {
-    expect_equivalent(a3, sol)
+    expect_equal(a3, sol)
   }
 )
 

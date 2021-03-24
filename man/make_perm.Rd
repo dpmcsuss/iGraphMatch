@@ -15,7 +15,7 @@ make_perm(m, n, corr)
 and second columns correspond to indices in \eqn{G_1} and \eqn{G_2} respectively.}
 }
 \value{
-\code{get_perm} returns an \code{m-by-n} sparse permutation matrix or whose
+\code{make_perm} returns an \code{m-by-n} sparse permutation matrix or whose
   submatrix is a permutation matrix if only parts of nodes from both graphs get
   matched or in the case of matching graphs of different order.
 }
@@ -26,9 +26,9 @@ Get an \code{m-by-n} permutation matrix according to the mapping
 \examples{
 # returns a permutation matrix: m=n, all the nodes get matched
 corr <- data.frame(corr_A = c(1,2,3,4), corr_B = c(1,4,2,3))
-get_perm(4, 4, corr)
+make_perm(4, 4, corr)
 
 # submatrix is a permutation matrix: parts of graphs get matched
-get_perm(5, 6, corr)
+make_perm(5, 6, corr)
 
 }

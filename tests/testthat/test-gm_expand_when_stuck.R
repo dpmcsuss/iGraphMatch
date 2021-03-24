@@ -1,18 +1,15 @@
-context("ExpandWhenStuck")
+
 
 set.seed(12)
 G <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)
 A <- G$graph1
 B <- G$graph2
-seeds <- 1:4
+seeds <- seq(4)
 
 test_that("matching correspondence between graph1 and graph2", {
-  expect_equal(
-    as.data.frame(graph_match_ExpandWhenStuck(A, B, seeds, r = 2)$corr),
-    data.frame(
-      corr_A = c(1:7, 9:10),
-      corr_B = c(1:4, 9, 6, 7, 5, 10),
-      row.names=as.character(1:9))
+  expect_snapshot_value(
+    graph_match_ExpandWhenStuck(A, B, seeds, r = 2),
+    style = "serialize"
   )
 })
 

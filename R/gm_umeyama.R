@@ -76,9 +76,15 @@ graph_match_Umeyama <- function(A, B, seeds = NULL,
   corr <- data.frame(corr_A = c(seeds$A, nonseeds$A), corr_B = c(seeds$B, nonseeds$B[ind]))
   corr <- corr[order(corr$corr_A),]
   cl <- match.call()
-  z <- list(
-    call = cl,
+
+  graphMatch(
     corr = corr,
-    seeds = seeds)
-  z
+    nnodes = c(totv1, totv2),
+    call = cl,
+    detail = list(
+      lap_method = lap_method,
+      seeds = seeds,
+      soft = Grad
+    )
+  )
 }
