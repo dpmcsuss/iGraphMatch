@@ -6,12 +6,17 @@
 #' @param A A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_1}.
 #' @param B A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_2}.
 #' @param match Graph matching result see graph match methods.
-#' @param measure A character. Measure for computing goodness of matching.
+#' @param measure One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
+#' goodness of matching.
 #' @param num An integer. Number of pairs of best matched vertices needed.
 #'
 #' @return \code{best_matches} returns a data frame with the indices of best matched vertices
 #' in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
 #' \code{B_best} and the values of measure for best matches.
+#'
+#' \code{row_cor} takes 1 minus the row correlation value for the corresponding vertex.
+#' \code{row_diff} takes the row difference value for each corresponding vertex.
+#' \code{row_perm_stat} uses the row permutation statistics value.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3, p =  0.5)

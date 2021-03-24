@@ -16,7 +16,7 @@ test_that("random doubly stochastic start w/o soft seeds", {
     matrix(c(0.47,0.53,0.53,0.47),nrow=2))
 })
 set.seed(123)
-test_that("doubly stochastic matrix start w/o soft seeds", 
+test_that("doubly stochastic matrix start w/o soft seeds",
   {
     expect_equivalent(
       round(as.matrix(init_start(start = "rds_perm_bari", nns = 2)),2),
@@ -35,7 +35,7 @@ set.seed(123)
 test_that("bari start w. soft seeds", {
   start <- init_start(start = "bari", nns = 3,ns=2,soft_seeds=ss)
   expect_equivalent(as.matrix(start),
-               matrix(c(0,0.5,0.5,1,0,0,0,0.5,0.5)))
+               matrix(c(0,1,0,0,0,1,0.5,0,0),nrow=3, byrow = TRUE))
   expect_s4_class(start, "splrMatrix")
 })
 
@@ -43,18 +43,18 @@ set.seed(123)
 test_that("random doubly stochastic start w. soft seeds", {
   start <- init_start(start = "rds", nns = 3,ns=2,soft_seeds=ss)
   expect_equivalent(round(as.matrix(start), 2),
-               matrix(c(0,0.47,0.53,1,0,0,0,0.53,0.47)))
+               matrix(c(0.53,1,0,0,0,1,0.47,0.53,0), nrow=3, byrow = TRUE))
 })
 
 set.seed(123)
-test_that("doubly stochastic matrix start w. soft seeds", 
+test_that("doubly stochastic matrix start w. soft seeds",
   {
     expect_equivalent(
       round(as.matrix(
         init_start(start = "rds_perm_bari", nns = 3,ns=2,soft_seeds=ss)
       ),2),
       structure(
-        c(0, 0.64, 0.36, 1, 0, 0, 0, 0.36, 0.64),
+        c(0, 0.24, 0.53, 1, 0.29, 0, 0.29, 0.24, 0.24),
         .Dim = c(3L, 3L), .Dimnames = list(NULL, NULL)
       )
     )
@@ -72,19 +72,17 @@ g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 hs <- 1:5 <= 2
 ss <- t(matrix(c(3, 4)))
-res <- init_start(start = "convex", nns = 3, ns=2, 
+res <- init_start(start = "convex", nns = 3, ns=2,
       soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
 
 expected <- structure(
-  c(
-    0.668324233550846, 0.100637887848042, 0.231037878601112, 
-    0.135904634471242, 0.806794628456265, 0.0573007370724925,
-    0.195771131977911, 0.0925674836956933, 0.711661384326395
-  ),
+  c(0.786, 0.053, 0.081,
+    0.161, 0.786, 0.053,
+    0.053, 0.161, 0.786),
   .Dim = c(3L, 3L), .Dimnames = list(NULL, NULL))
 test_that("convex start w. soft seeds", {
   expect_equivalent(
-    as.matrix(res),
+    round(as.matrix(res),3),
     expected
   )
 })
@@ -153,3 +151,4 @@ test_that(
     "Start must be either a matrix, function, or one of.*"
   )
 )
+

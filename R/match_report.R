@@ -100,7 +100,6 @@ match_report <- function(match, A, B, true_label = NULL, directed = NULL){
 #'
 #' @return A list of aligned graphs named \code{A_m} and \code{B_m}.
 #'
-#' @export
 matched_adjs <- function(match, A, B){
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]

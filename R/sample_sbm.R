@@ -15,16 +15,30 @@
 #' @param permutation A numeric vector, permute second graph.
 #' @param core.block.sizes A numeric vector. Give the number of core vertices in each group. Entries
 #' should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.
-#' @param ... Passed to \code{sample_correlated_sbm_pair} and \code{sample_correlated_sbm_pair_w_junk}.
+#' @param ... Passed to \code{sample_sbm}.
 #'
 #' @rdname sample_sbm
-#' @return A list of two 'igraph' object, named \code{graph1} and \code{graph2}.
+#' @return Returns a list of two 'igraph' object, named \code{graph1} and \code{graph2}. If sample two
+#' graphs with junk vertices, in each corresponding block the first \code{core.block.sizes} vertices
+#' are core vertices and the rest are junk vertices.
 #' @examples
 #' pm <- cbind( c(.1, .001), c(.001, .05) )
-#' sample_correlated_sbm_pair(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
+#' sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
+#' sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5,
+#' core.block.sizes=c(200,500))
 #' @export
 #'
-sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permutation=1:n, ...){
+
+sample_correlated_sbm_pair <- function(
+  n, pref.matrix, block.sizes, rho, core.block.sizes=NULL, permutation=1:n, ...){
+  if(is.null(core.block.sizes)){
+    sample_correlated_sbm_pair_no_junk(n, pref.matrix, block.sizes, rho, permutation, ...)
+  } else{
+    sample_correlated_sbm_pair_w_junk(n, pref.matrix, block.sizes, rho, core.block.sizes, permutation, ...)
+  }
+}
+
+sample_correlated_sbm_pair_no_junk <- function(n, pref.matrix, block.sizes, rho, permutation=1:n, ...){
 
   K <- length(block.sizes)
   # Make the first graph
@@ -41,12 +55,7 @@ sample_correlated_sbm_pair <- function(n, pref.matrix, block.sizes, rho, permuta
   list(graph1=graph1,graph2=igraph::permute(graph2,permutation))
 }
 
-#' @rdname sample_sbm
-#' @examples
-#' sample_correlated_sbm_pair_w_junk(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5,
-#' core.block.sizes=c(200,500))
-#' @export
-#'
+
 sample_correlated_sbm_pair_w_junk <- function(
   n, pref.matrix, block.sizes, rho, core.block.sizes, permutation=1:n, ...){
 
