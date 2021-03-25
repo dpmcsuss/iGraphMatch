@@ -224,7 +224,7 @@ identity_match <- function(x, y) {
 #'  \code{corr} as a data.frame with names corr_A, corr_B.
 #' @param color Whether to color edges according to which
 #'  graph(s) they are in.
-#' @param linetype Whether to set edge linetypes according
+#' @param linetype Whether to set edge line types according
 #'  to which graph(s) they are in.
 #' @param ... additional parameters passed to either the
 #'  'igraph' plot function or the Matrix image function.
@@ -313,7 +313,7 @@ permuted_subgraph <- function(g, corr_g) {
 #' @param directed whether to treat the graphs 
 #'  as directed (TRUE) or not directed (FALSE) default is NULL
 #'  which will treat the graphs as directed if either adjacency
-#'  matrix is not symetric.
+#'  matrix is not symmetric.
 #' @rdname graphMatch_summary
 setMethod("summary", signature("graphMatch"),
   function(object, A = NULL, B = NULL, true_label = NULL, directed = NULL) {

@@ -2,7 +2,7 @@
 #' 
 #' Basically a list that has matrices that are all 
 #' the same size. It doesn't do much checking though.
-#' It can do various things like arethmatic and
+#' It can do various things like arithmatic and
 #' indexing, all of which are done element-wise.
 #'
 #' @param x As in Matrix

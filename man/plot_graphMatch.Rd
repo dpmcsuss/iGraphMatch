@@ -20,7 +20,7 @@
 \item{color}{Whether to color edges according to which
 graph(s) they are in.}
 
-\item{linetype}{Whether to set edge linetypes according
+\item{linetype}{Whether to set edge line types according
 to which graph(s) they are in.}
 
 \item{...}{additional parameters passed to either the

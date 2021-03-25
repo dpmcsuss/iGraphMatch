@@ -79,6 +79,7 @@ rds_perm_bari <- function(nns, g){
 #' @rdname start
 #'
 #' @param sim nns x nns non-negative matrix.
+
 #'
 #'
 #' @return \code{rds_from_sim_start} returns a doubly
