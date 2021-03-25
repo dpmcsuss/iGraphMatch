@@ -4,7 +4,21 @@
 \alias{summary,graphMatch-method}
 \title{Summary methods for graphMatch objects}
 \usage{
-\S4method{summary}{graphMatch}(object, A = NULL, B = NULL, true_label = NULL, directed = NULL, ...)
+\S4method{summary}{graphMatch}(object, A = NULL, B = NULL, true_label = NULL, directed = NULL)
+}
+\arguments{
+\item{object}{graphMatch object}
+
+\item{A}{igraph or matrix-like object}
+
+\item{B}{igraph or matrix-like object}
+
+\item{true_label}{the true correspondence (if available)}
+
+\item{directed}{whether to treat the graphs 
+as directed (TRUE) or not directed (FALSE) default is NULL
+which will treat the graphs as directed if either adjacency
+matrix is not symetric.}
 }
 \description{
 Summary methods for graphMatch objects

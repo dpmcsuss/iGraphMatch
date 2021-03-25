@@ -16,20 +16,27 @@
 #' @param directed Logical scalar, whether to generate directed graphs.
 #' @param loops Logical scalar, whether self-loops are allowed in the graph.
 #' @param permutation A numeric vector,permute second graph.
-#' @param nc An integer. Number of core vertices.
+#' @param ncore An integer. Number of core vertices.
 #' @param ... Passed to \code{sample_correlated_rdpg_pair}.
 #'
 #' @rdname sample_ieg
 #' @return \code{sample_correlated_ieg_pair} returns two 'igraph' objects named
-#' \code{graph1} and \code{graph2}.
+#' \code{graph1} and \code{graph2}. If sample two graphs with junk vertices, the first
+#' \code{ncore} vertices are core vertices and the rest are junk vertices.
+#'
 #' @examples
 #' n <- 50
 #' p_mat <- matrix(runif(n^2),n)
 #' c_mat <- matrix(runif(n^2),n)
-#' sample_correlated_ieg_pair(n,p_mat,c_mat)
+#' sample_correlated_ieg_pair(n,p_mat,c_mat,ncore=40)
 #'
 #' @export
-sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,permutation=1:n){
+sample_correlated_ieg_pair<- function(n,p_mat,c_mat,ncore=n,directed=FALSE,loops=FALSE,permutation=1:n){
+
+  if(ncore != n){
+    c_mat[((ncore+1):n),((ncore+1):n)] <- 0
+  }
+
   g1 <- matrix(stats::rbinom(n^2,1,p_mat),n)
   z0 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)),n)
   z1 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)
@@ -49,9 +56,11 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,p
 }
 
 #' @rdname sample_ieg
-#' @return \code{sample_correlated_rdpg} returns two 'igraph' objects named
+#' @return \code{sample_correlated_rdpg_pair} returns two 'igraph' objects named
 #' \code{graph1} and \code{graph2} that are sampled from random dot product
-#' graphs model.
+#' graphs model. If sample two graphs with junk vertices, the first
+#' \code{ncore} vertices are core vertices and the rest are junk vertices.
+#'
 #' @examples
 #' ## sample a pair of igraph objects from random dot
 #' ## product graphs model with dimension 3 and scale 8
@@ -61,17 +70,17 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,directed=FALSE,loops=FALSE,p
 #' X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 #' X <- X/rowSums(X)
 #' X <- X[,1:xdim]
-#' sample_correlated_rdpg(X,rho=0.5)
+#' sample_correlated_rdpg_pair(X,rho=0.5,ncore=40)
 #'
 #' @export
-sample_correlated_rdpg <- function(X,rho,nc=nrow(X),...){
+sample_correlated_rdpg_pair <- function(X,rho,ncore=nrow(X),...){
   p_mat <- X%*%t(X)
   n <- nrow(X)
   if(length(rho)==1){
     c_mat <- matrix(0,n,n)
-    c_mat[1:nc,1:nc] <- rho
+    c_mat[1:ncore,1:ncore] <- rho
   }else{
     c_mat <- rho
   }
-  sample_correlated_ieg_pair(n,p_mat,c_mat,...)
+  sample_correlated_ieg_pair(n,p_mat,c_mat,ncore, ...)
 }

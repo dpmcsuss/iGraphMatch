@@ -2,7 +2,6 @@
 % Please edit documentation in R/sample_sbm.R
 \name{sample_correlated_sbm_pair}
 \alias{sample_correlated_sbm_pair}
-\alias{sample_correlated_sbm_pair_w_junk}
 \title{Sample graphs pair from stochastic block model}
 \usage{
 sample_correlated_sbm_pair(
@@ -10,16 +9,7 @@ sample_correlated_sbm_pair(
   pref.matrix,
   block.sizes,
   rho,
-  permutation = 1:n,
-  ...
-)
-
-sample_correlated_sbm_pair_w_junk(
-  n,
-  pref.matrix,
-  block.sizes,
-  rho,
-  core.block.sizes,
+  core.block.sizes = NULL,
   permutation = 1:n,
   ...
 )
@@ -38,15 +28,17 @@ vector must match the number of vertices.}
 \item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated
 graphs. It must be in open (0,1) interval.}
 
-\item{permutation}{A numeric vector, permute second graph.}
-
-\item{...}{Passed to \code{sample_correlated_sbm_pair} and \code{sample_correlated_sbm_pair_w_junk}.}
-
 \item{core.block.sizes}{A numeric vector. Give the number of core vertices in each group. Entries
 should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.}
+
+\item{permutation}{A numeric vector, permute second graph.}
+
+\item{...}{Passed to \code{sample_sbm}.}
 }
 \value{
-A list of two 'igraph' object, named \code{graph1} and \code{graph2}.
+Returns a list of two 'igraph' object, named \code{graph1} and \code{graph2}. If sample two
+graphs with junk vertices, in each corresponding block the first \code{core.block.sizes} vertices
+are core vertices and the rest are junk vertices.
 }
 \description{
 Sample a pair of random graphs from stochastic block model with correlation between
@@ -54,7 +46,7 @@ two graphs being \code{rho} and edge probability being \code{p}.
 }
 \examples{
 pm <- cbind( c(.1, .001), c(.001, .05) )
-sample_correlated_sbm_pair(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
-sample_correlated_sbm_pair_w_junk(1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5,
+sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
+sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5,
 core.block.sizes=c(200,500))
 }

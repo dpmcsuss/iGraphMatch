@@ -10,6 +10,10 @@
 \S4method{plot}{Matrix,Matrix}(x, y, match = NULL, col.regions = NULL, at = NULL, colorkey = NULL, ...)
 }
 \arguments{
+\item{x}{First graph, either an igraph object or a Matrix}
+
+\item{y}{second graph, either an igraph object or a Matrix}
+
 \item{match}{result from a match call. Requires element
 \code{corr} as a data.frame with names corr_A, corr_B.}
 
@@ -27,12 +31,6 @@ to which graph(s) they are in.}
 \item{at}{NULL for default at values for at (ensures zero is grey), otherwise see \link[Matrix]{image-methods}}
 
 \item{colorkey}{NULL for default colorkey, otherwise see \link[Matrix]{image-methods}}
-
-\item{A}{First graph. For \code{match_plot_igraph}
-must be an 'igraph' object.}
-
-\item{B}{First graph. For \code{match_plot_igraph}
-must be an 'igraph' object.}
 }
 \value{
 Both functions return values invisibly.

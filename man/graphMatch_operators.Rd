@@ -2,9 +2,17 @@
 % Please edit documentation in R/graph_match_class.R
 \name{\%*\%,graphMatch,ANY-method}
 \alias{\%*\%,graphMatch,ANY-method}
+\alias{\%*\%,ANY,graphMatch-method}
 \title{Operator methods for graphMatch objects}
 \usage{
 \S4method{\%*\%}{graphMatch,ANY}(x, y)
+
+\S4method{\%*\%}{ANY,graphMatch}(x, y)
+}
+\arguments{
+\item{x}{Either graphMatch object or a matrix-like object}
+
+\item{y}{Either graphMatch object or a matrix-like object}
 }
 \description{
 Methods to use graphMatch objects as operators on 

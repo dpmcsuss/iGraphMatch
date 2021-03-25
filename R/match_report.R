@@ -1,5 +1,6 @@
 
 
+
 # #' @title Matching performance summary
 # #'
 # #' @description Get a summary of the matching result and measures of the matching performance
@@ -116,6 +117,7 @@
 # #' @section TODO: support weighted? loops? ...?
 # #'
 # #' @export
+
 edge_match_info <- function(corr, A, B,
     directed = NULL) {
   graph_pair <- check_graph(A, B)
@@ -126,7 +128,7 @@ edge_match_info <- function(corr, A, B,
 
 
   if (is.null(directed)) {
-    directed <- !(Matrix::isSymmetric(A[[1]]))
+    directed <- !(Matrix::isSymmetric(A[[1]])) & !(Matrix::isSymmetric(B[[1]]))
   }
 
   nA <- nrow(A[[1]])

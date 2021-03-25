@@ -80,6 +80,7 @@ as.character.graphMatch <- function(from) {
 #' @description These methods provide functionality to plot,
 #'  view, inspect, and convert graphMatch objects.
 #' 
+#' 
 #' @rdname graphMatch_methods
 setAs("graphMatch", "character", as.character.graphMatch)
 
@@ -99,6 +100,8 @@ setAs("graphMatch", "data.frame", function(from) {
 
 
 #' @rdname graphMatch_methods
+#' 
+#' @param x graphMatch object
 setMethod("as.data.frame", signature("graphMatch"),
   function(x) {
     x@corr
@@ -119,6 +122,7 @@ show.graphMatch <- function(object){
 ######################################################################
 
 #' @rdname graphMatch_methods
+#' @param object graphMatch object
 setMethod("show", signature("graphMatch"), show.graphMatch)
 
 
@@ -134,6 +138,10 @@ setMethod("print", signature("graphMatch"),
 
 
 #' @rdname graphMatch_methods
+#' 
+#' @param i row index for the correspondence data.frame
+#' @param j col index for the correspondence data.frame
+#' @param drop ignored
 setMethod("[",
   signature(x = "graphMatch",
     i = 'missing', j = 'missing', drop = 'missing') ,
@@ -147,12 +155,15 @@ setMethod("[",
 #' 
 #' @description Methods to use graphMatch objects as operators on 
 #'  igraph and matrix-like objects.
+#' 
+#' @param x Either graphMatch object or a matrix-like object
+#' @param y Either graphMatch object or a matrix-like object
 setMethod("%*%", signature(x = "graphMatch", y = "ANY"), function(x, y) {
   x[] %*% y
 })
 
 
-#' @rdname splr
+#' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "ANY", y = "graphMatch"),
   function(x, y){
     x %*% y[]
@@ -170,7 +181,7 @@ setMethod("[",
   signature(x = "graphMatch",
     i = 'ANY', j = 'ANY', drop = 'ANY') ,
   function(x, i = NULL, j = NULL, drop = NULL) {
-          x@corr[i, j, drop = drop]
+          x@corr[i, j]
   })
 
 
@@ -207,10 +218,8 @@ identity_match <- function(x, y) {
 #' matrix plot.
 #'
 #'
-#' @param A First graph. For \code{match_plot_igraph}
-#'  must be an 'igraph' object.
-#' @param B First graph. For \code{match_plot_igraph}
-#'  must be an 'igraph' object.
+#' @param x First graph, either an igraph object or a Matrix
+#' @param y second graph, either an igraph object or a Matrix
 #' @param match result from a match call. Requires element
 #'  \code{corr} as a data.frame with names corr_A, corr_B.
 #' @param color Whether to color edges according to which
@@ -297,9 +306,17 @@ permuted_subgraph <- function(g, corr_g) {
 
 #' @title Summary methods for graphMatch objects
 #' 
+#' @param object graphMatch object
+#' @param A igraph or matrix-like object
+#' @param B igraph or matrix-like object
+#' @param true_label the true correspondence (if available)
+#' @param directed whether to treat the graphs 
+#'  as directed (TRUE) or not directed (FALSE) default is NULL
+#'  which will treat the graphs as directed if either adjacency
+#'  matrix is not symetric.
 #' @rdname graphMatch_summary
 setMethod("summary", signature("graphMatch"),
-  function(object, A = NULL, B = NULL, true_label = NULL, directed = NULL, ...) {
+  function(object, A = NULL, B = NULL, true_label = NULL, directed = NULL) {
 
     # Matched nodes
     corr <- object@corr

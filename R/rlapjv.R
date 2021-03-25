@@ -14,7 +14,6 @@
 #'
 #' @return The assignment of rows to columns as an integer vector
 #'
-#' @export
 lapjv <- function(cost, maximize = FALSE) {
     m <- max(cost, 10)
     n <- nrow(cost)
@@ -54,7 +53,6 @@ lapmod_index <- function(n, cc, ii, kk, maximize = FALSE) {
 #'
 #' @return The assignment of rows to columns as an integer vector
 #'
-#' @export
 lapmod <- function(cost, maximize = FALSE){
     cost <- Matrix::Matrix(cost, sparse = TRUE)
     n <- nrow(cost)

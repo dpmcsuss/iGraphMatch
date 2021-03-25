@@ -11,7 +11,7 @@
 #' input should be in the form of a matrix or a data frame, with the first column being the
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 #' Note that if there are seeds in graphs, seeds should be put before non-seeds.
-#' @param ... Arguments passed to other start functions
+#' @param ... Arguments passed to other start functions. See details in Values section.
 #'
 #' @rdname init_start
 #' @return \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
@@ -19,15 +19,29 @@
 #' \code{nns-by-nns} doubly stochastic matrix with 1's corresponding to the soft seeds and values
 #' at the other places are derived by different start method.
 #'
+#' There are five options for the start method. \code{bari} initializes at the barycenter.
+#' \code{rds_perm_bari} gives a linear combination of barycenter and a random permutation matrix.
+#'
+#' \code{rds} gives a random doubly stochastic matrix. Users can specify a random
+#' deviates generator to the \code{distribution} argument, and the default is \code{runif}.
+#'
+#' \code{rds_from_sim} gives a random doubly stochastic matrix derived from similarity scores. One
+#' needs to input a similarity score matrix to the \code{sim} argument for this method.
+#'
+#' \code{convex} returns the doubly stochastic matrix from the last iteration of running the Frank-
+#' Wolfe algorithm with convex relaxation initialized at the barycenter. For this method, one needs to
+#' input two graphs \code{A} and \code{B}, as well as \code{seeds} if applicable.
+#'
 #' @examples
 #' ss <- matrix(c(5, 4, 4, 3), nrow = 2)
 #' # initialize start matrix without soft seeds
 #' init_start(start = "bari", nns = 5)
 #' init_start(start = "rds", nns = 3)
 #' init_start(start = "rds_perm_bari", nns = 5)
+#' init_start(start = "rds_from_sim", nns = 3, sim = matrix(runif(9), 3))
 #'
 #' # initialize start matrix with soft seeds
-#' init_start(start = "bari", nns = 5, ns = 3, soft_seeds = c(5, 7, 8))
+#' init_start(start = "bari", nns = 5, ns = 1, soft_seeds = ss)
 #' init_start(start = "rds", nns = 5, soft_seeds = ss)
 #' init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 #'
@@ -64,18 +78,20 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     if (all(dim(start) == nns)) {
       return(start)
     }
-    # otherwise add in seeds below
+    # otherwise add in soft seeds below after checking size
     if (all(dim(start) != nns - nss)) {
       stop("Functions passed to init start must return",
         " a square matrix-like object with dimension ", nns,
         " or", nns - nss)
     }
   } else if (start == "bari"){
-    start <- bari_start(nns - nss, ns)
+    start <- bari_start(nns, ns, soft_seeds)
   } else if (start == "rds") {
-    start <- rds_sinkhorn_start(nns - nss, ns)
+    start <- rds_sinkhorn_start(nns, ns, soft_seeds, ...)
   } else if (start == "rds_perm_bari") {
-    start <- rds_perm_bari_start(nns - nss, ns, ...)
+    start <- rds_perm_bari_start(nns, ns, soft_seeds, ...)
+  } else if (start == "rds_from_sim"){
+    start <- rds_from_sim_start(nns, ns, soft_seeds, ...)
   } else if (start == "convex") {
     # start at bari with soft seeds
     start <- init_start("bari", nns, ns, soft_seeds)

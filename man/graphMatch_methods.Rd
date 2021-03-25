@@ -28,6 +28,17 @@
 
 \S4method{str}{graphMatch}(object)
 }
+\arguments{
+\item{x}{graphMatch object}
+
+\item{object}{graphMatch object}
+
+\item{i}{row index for the correspondence data.frame}
+
+\item{j}{col index for the correspondence data.frame}
+
+\item{drop}{ignored}
+}
 \description{
 These methods provide functionality to plot,
  view, inspect, and convert graphMatch objects.
