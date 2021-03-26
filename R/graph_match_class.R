@@ -1,17 +1,22 @@
 
 setOldClass("igraph")
 
-#' @title Graph matching results class
 #'
+#' @title Graph matching results class
 #' @description An 'S4' class for the results of a graph matching function
 #'
 #' @slot corr data.frame indicating the correspondence between two graphs
-#' @slot  dimensions of the original two graphs
+#' @slot nnodes of the original two graphs
 #' @slot call The call to the graph matching function
-#' @slot detail List with other more detailed information
 #' 
+#' @details graphMatch objects are returned by any of the graph 
+#' matching methods implemented in the iGraphMatch package. These
+#' objects are primarily to represent the found correspondence between 
+#' the two vertex sets. This is represented by a data.frame with two columns
+#' indicating the aligned vertex-pairs across the two graphs.
 #'
 #' @seealso graphMatch_methods
+#' @seealso graphMatch_operators
 #'
 #' @rdname gm_constructor
 setClass("graphMatch",
@@ -20,7 +25,8 @@ setClass("graphMatch",
     nnodes = "integer",
     call = "call"
   ),
-  contains = 'list')
+  contains = 'list'
+)
 
 #' @rdname gm_constructor
 #'
@@ -57,8 +63,16 @@ setGeneric(
 )
 
 
-get_perm <- function(match){
-  make_perm(match@nnodes[1], match@nnodes[2], match@corr)
+get_perm <- function(match, padded = FALSE, seeds = TRUE, dim = NULL){
+  n <- min(dim(match)[1], dim(match)[2], nrow(match@corr))
+  if (n == dim(match)[1]) {
+    corr <- match[match[,1] %in% 1:n, ]
+  } else if (n == dim(match)[1]) {
+    corr <- match[match[,2] %in% 1:n, ]
+  } else {
+    corr <- match@corr
+  }
+  make_perm(dim(match)[1], dim(match)[2], corr)
 }
 
 
@@ -74,34 +88,48 @@ as.character.graphMatch <- function(from) {
 
 
 
-#' @name as
-#' @title Methods for the graphMatch class
 #' 
-#' @description These methods provide functionality to plot,
-#'  view, inspect, and convert graphMatch objects.
-#' 
-#' 
-#' @rdname graphMatch_methods
+# #' @rdname graphMatch_methods
 setAs("graphMatch", "character", as.character.graphMatch)
 
 
-#' @name as
-#' @rdname graphMatch_methods
+# #' @rdname graphMatch_methods
 setAs("graphMatch", "Matrix", function(from) {
   from[]
 })
 
 
-#' @name as
-#' @rdname graphMatch_methods
+# #' @rdname graphMatch_methods
 setAs("graphMatch", "data.frame", function(from) {
   from@corr
 })
 
 
-#' @rdname graphMatch_methods
+
+#' @title Methods for the graphMatch class
+#' 
+#' @description These methods provide functionality to plot,
+#'  view, inspect, and convert graphMatch objects.
+#' 
+#' @details Methods for the graphmatch
+#' 
+#' @return dim returns a vector of length two 
+#' indicating the number of vertices in each original graph.
+#' length returns the number of found vertex-pair matches.
+#' m[i,j] will index the 2xlength data.frame of vertex-pair matches.
+#' This is true for any i,j unless both are missing.
+#' In that case, m[] returns a sparse matrix of dimension dim(m)
+#' where m[][i,j] is 0 unless m matches node i with node j.
+#' (Note this is not guaranteed to be a permutation matrix unless
+#' dim(m)[1] = dim(m)[2] = length(m).
+#' 
 #' 
 #' @param x graphMatch object
+#' 
+#' @seealso graphMatch_operators
+#' @seealso graphMatch_constructor
+#' 
+#' @rdname graphMatch_methods
 setMethod("as.data.frame", signature("graphMatch"),
   function(x) {
     x@corr
@@ -118,23 +146,19 @@ show.graphMatch <- function(object){
 }
 
 
-
-######################################################################
-
 #' @rdname graphMatch_methods
+#' 
 #' @param object graphMatch object
+#' 
 setMethod("show", signature("graphMatch"), show.graphMatch)
 
 
 #' @rdname graphMatch_methods
-setMethod("print", signature("graphMatch"), 
-  function(x) show.graphMatch(x))
-
-
-.leftmult = function(x, y){
-  #x is graphMatch, y is a matrix
-  
-}
+setMethod(
+  "print", 
+  signature("graphMatch"), 
+  function(x) show.graphMatch(x)
+)
 
 
 #' @rdname graphMatch_methods
@@ -147,7 +171,8 @@ setMethod("[",
     i = 'missing', j = 'missing', drop = 'missing') ,
   function(x, i = NULL, j = NULL, drop = NULL) {
           get_perm(x)
-  })
+  }
+)
 
 #' @rdname graphMatch_operators
 #' 
@@ -156,18 +181,40 @@ setMethod("[",
 #' @description Methods to use graphMatch objects as operators on 
 #'  igraph and matrix-like objects.
 #' 
+#' 
 #' @param x Either graphMatch object or a matrix-like object
 #' @param y Either graphMatch object or a matrix-like object
-setMethod("%*%", signature(x = "graphMatch", y = "ANY"), function(x, y) {
-  x[] %*% y
-})
-
+#' 
+#' @return These methods return an object of the same type
+#'  as the non-graphMatch object. If m is the match of g1
+#'  to g2, then m %*% g2 return the version 
+#' 
+setMethod("%*%", signature(x = "graphMatch", y = "ANY"),
+  function(x, y) {
+    t(x[]) %*% y %*% x[]
+  }
+)
 
 #' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "ANY", y = "graphMatch"),
   function(x, y){
-    x %*% y[]
-  })
+    y[] %*% x %*% t(y[])
+  }
+)
+
+#' @rdname graphMatch_operators
+setMethod("%*%", signature(x = "graphMatch", y = "igraph"),
+  function(x, y) {
+    permuted_subgraph(y, x@corr$corr_B)
+  }
+)
+
+#' @rdname graphMatch_operators
+setMethod("%*%", signature(x = "igraph", y = "graphMatch"),
+  function(x, y){
+    permuted_subgraph(x, y@corr$corr_A)
+  }
+)
 
 #' @rdname graphMatch_methods
 setMethod("dim", signature(x = "graphMatch"), function(x) { x@nnodes })
@@ -293,12 +340,12 @@ setMethod("plot", signature(x = "Matrix", y = "Matrix"),
   })
 
 permuted_subgraph <- function(g, corr_g) {
-  if(is.null(igraph::V(A)$name)){
-    igraph::set.vertex.attribute(A, "name", corr_g, corr_g)
+  if(is.null(igraph::V(g)$name)){
+    igraph::set.vertex.attribute(g, "name", corr_g, corr_g)
   }
 
-  A <- igraph::permute.vertices(
-    igraph::induced_subgraph(A, corr_g),
+  g <- igraph::permute.vertices(
+    igraph::induced_subgraph(g, corr_g),
     rank(corr_g)
   )
 }
@@ -364,12 +411,6 @@ show.summary.graphMatch <- function(match) {
 }
 
 setClass("summary.graphMatch",
-  # slots = c(
-  #   corr = "data.frame",
-  #    = "integer",
-  #   call = "call",
-  #   detail = "list"
-  # ),
   contains = 'graphMatch'
 )
 

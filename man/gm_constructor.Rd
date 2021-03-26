@@ -23,16 +23,21 @@ graphMatch object
 \description{
 An 'S4' class for the results of a graph matching function
 }
+\details{
+graphMatch objects are returned by any of the graph 
+matching methods implemented in the iGraphMatch package. These
+objects are primarily to represent the found correspondence between 
+the two vertex sets. This is represented by a data.frame with two columns
+indicating the aligned vertex-pairs across the two graphs.
+}
 \section{Slots}{
 
 \describe{
 \item{\code{corr}}{data.frame indicating the correspondence between two graphs}
 
-\item{\code{dimensions}}{of the original two graphs}
+\item{\code{nnodes}}{of the original two graphs}
 
 \item{\code{call}}{The call to the graph matching function}
-
-\item{\code{detail}}{List with other more detailed information}
 }}
 
 \seealso{
