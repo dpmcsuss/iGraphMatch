@@ -11,8 +11,8 @@
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #' @param max_iter A number. Maximum number of replacing matches equals to
 #'   max_iter times number of total vertices of \eqn{G_1}.
-#' @param method A character. Choice of method to extract mapping from score matrix,
-#'   including greedy method and the Hungarian algorithm.
+#' @param method A character. Choice of method to extract mapping from score matrix.
+#'   One of "greedy" or "LAP".
 #'
 #' @return \code{graph_match_IsoRank} returns a list of graph matching
 #'   results, including the graph matching formula, a data frame containing the
@@ -99,6 +99,11 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
+    
+    D <- Matrix(0, nrow(R_tot), ncol(R_tot))
+    D[seeds$A, seeds$B] <- diag(nrow(seeds))
+    D[nonseeds$A, nonseeds$B] <- R_tot[nonseeds$A, nonseeds$B]
+
     graphMatch(
       corr = corr,
       nnodes = c(totv1, totv2),
@@ -107,7 +112,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
         method = method,
         match_order = order,
         seeds = seeds,
-        soft = R_tot
+        soft = D
       )
     )
   } else if(method == "LAP") {
@@ -126,6 +131,10 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
+    D <- Matrix(0, nrow(R_tot), ncol(R_tot))
+    D[seeds$A, seeds$B] <- diag(nrow(seeds))
+    D[nonseeds$A, nonseeds$B] <- R_tot[nonseeds$A, nonseeds$B]
+
     graphMatch(
       corr = corr,
       nnodes = c(totv1, totv2),

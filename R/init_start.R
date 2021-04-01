@@ -110,7 +110,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     return(start)
   } else {
     stop('Start must be either a matrix, function, or one of "bari", "rds",
-      "rds_perm_bari", "convex"')
+      "rds_perm_bari", "rds_from_sim", "convex"')
   }
   add_soft_seeds(start, nns, ns, soft_seeds)
 }

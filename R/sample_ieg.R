@@ -33,10 +33,16 @@
 #' @export
 sample_correlated_ieg_pair<- function(n,p_mat,c_mat,ncore=n,directed=FALSE,loops=FALSE,permutation=1:n){
 
+  if(ncore > n){
+    stop("ncore must be at most n.")
+  }
   if(ncore != n){
     c_mat[((ncore+1):n),((ncore+1):n)] <- 0
   }
 
+  if(nrow(p_mat) != n | ncol(p_mat) != n | nrow(c_mat) != n | ncol(c_mat) != n){
+    stop("Edge probability matrix and Pearson correlation matrix should be square matrices of size n.")
+  }
   g1 <- matrix(stats::rbinom(n^2,1,p_mat),n)
   z0 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)),n)
   z1 <- matrix(stats::rbinom(n^2,1,p_mat*(1-c_mat)+c_mat),n)

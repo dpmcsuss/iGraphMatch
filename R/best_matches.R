@@ -60,7 +60,12 @@ best_matches <- function(A, B, match, measure, num){
   }
   rperm <- sample(length(stat))
   stat <- stat[rperm]
-  topindex <- order(stat, decreasing = TRUE)[1:num]
+  if(num <= nv){
+    topindex <- order(stat, decreasing = TRUE)[1:num]
+  } else{
+    stop("num can't exceed the total number of vertices.")
+  }
+
   if(measure != "row_cor"){
     measure_value <- -stat[topindex]
   } else{
