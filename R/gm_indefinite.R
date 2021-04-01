@@ -17,7 +17,7 @@
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param max_iter A number. Maximum number of replacing matches equals to
 #'   max_iter times number of total vertices of \eqn{G_1}.
-#' @param lap_method Choice for lap method.
+#' @param lap_method Choice for lap method. One of "lapjv", "lapmod", or "clue".
 #'
 #' @rdname gm_fw
 #'
@@ -143,6 +143,10 @@ graph_match_FW <- function(A, B, seeds = NULL,
     } else {
       toggle <- F
     }
+  }
+
+  if(iter == max_iter){
+    warning("Frank-Wolfe iterations reach the maximum iteration, the algorithm doesn't converge.")
   }
 
   D_ns <- P

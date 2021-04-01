@@ -121,6 +121,9 @@ graph_match_convex <- function(A, B, seeds = NULL,
     toggle <- f_diff > tol && f > tol && P_diff > tol
   }
 
+  if(iter == max_iter){
+    warning("Frank-Wolfe iterations reach the maximum iteration, the algorithm doesn't converge.")
+  }
 
 
   D_ns <- P

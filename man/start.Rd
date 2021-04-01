@@ -30,6 +30,8 @@ that if there are seeds in graphs, seeds should be put before non-seeds.}
 matrix is sampled. Should input the name of the function for generating random deviates from that
 distribution.}
 
+\item{...}{Passed to \code{rds_sinkhorn_start}.}
+
 \item{g}{A number. Specified in the range of [0, 1] to set weights to random permutation matrix and
 barycenter matrix.}
 

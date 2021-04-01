@@ -70,7 +70,7 @@ max_iter times number of total vertices of \eqn{G_1}.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 
-\item{lap_method}{Choice for lap method.}
+\item{lap_method}{Choice for lap method. One of "lapjv", "lapmod", or "clue".}
 
 \item{epsilon}{A small number}
 }

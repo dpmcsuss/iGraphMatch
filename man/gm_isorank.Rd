@@ -29,8 +29,8 @@ the second column being the corresponding indices of \eqn{G_2}.}
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
 
-\item{method}{A character. Choice of method to extract mapping from score matrix,
-including greedy method and the Hungarian algorithm.}
+\item{method}{A character. Choice of method to extract mapping from score matrix.
+One of "greedy" or "LAP".}
 }
 \value{
 \code{graph_match_IsoRank} returns a list of graph matching
