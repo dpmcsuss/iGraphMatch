@@ -234,10 +234,10 @@ reverse_match <- function(x) {
     if (is.matrix(x[[n]]) || is(x[[n]], "Matrix")) {
       x[[n]] <- t(x[[n]])
     }
-    if (n == "seeds") {
-      x$seeds <- x$seeds[, c(2,1)]
-      names(x$seeds) <- rev(names(x$seeds))
-    }
+    # if (n == "seeds") {
+    #   x$seeds <- x$seeds[, c(2,1)]
+    #   names(x$seeds) <- rev(names(x$seeds))
+    # }
   }
   x
 }
@@ -284,8 +284,10 @@ setMethod("$", signature(x = "graphMatch"),
     if (name == "corr_B")
       return(x@corr$corr_B)
 
-
-    x@.Data[[which(names(x) == name)]]
+    i <- which(names(x) == name)
+    if (length(i) == 0)
+      return(NULL)
+    x@.Data[[i]]
   }
 )
 
@@ -414,7 +416,7 @@ setMethod("summary", signature("graphMatch"),
 
     # Matched nodes
     corr <- object@corr
-    object$n_match <- nrow(corr) - nrow(object$seeds)
+    object$n_match <- nrow(corr) - sum(object$seeds)
     if(!is.null(true_label)){
       object$n_true_match <-
         sum(true_label[corr$corr_A] == corr$corr_B) - nrow(object$seeds)
@@ -440,15 +442,16 @@ setMethod("summary", signature("graphMatch"),
 )
 
 show.summary.graphMatch <- function(match) {
-    cat("Call: \n")
+    cat("Call: ")
     print(match@call)
     cat("\n# Matches:", match$n_match)
     if(!is.null(match$n_true_match)){
       cat("\n# True Matches: ", match$n_true_match)
     }
     if(!is.null(match$seeds)) { 
-      cat(", # Seeds: ", nrow(match$seeds0))
+      cat(", # Seeds: ", sum(match$seeds0))
     }
+    cat(", # Vertices: ", paste(dim(match), sep = ","))
     cat("\n")
     if(!is.null(match$edge_match_info)) {
       ep <- as.data.frame(t(match$edge_match_info))
