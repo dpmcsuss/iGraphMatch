@@ -49,6 +49,9 @@ graph_match_percolation <- function (A, B, seeds,
   nonseeds <- seeds$nonseeds
   seeds <- seeds$seeds
   ns <- nrow(seeds)
+  if(ns == 0 & is.null(similarity)){
+    stop("at least one of seeds and similarity score should be known for this method.")
+  }
   Z <- seeds #matched nodes
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   M <- Matrix(0, n, n) #marks matrix

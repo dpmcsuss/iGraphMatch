@@ -27,8 +27,10 @@
 sample_correlated_gnp_pair <- function(n, corr, p, ncore = n, permutation = 1:n, ...){
   if(ncore == n){
     sample_correlated_gnp_pair_no_junk(n, corr, p, permutation, ...)
-  } else{
+  } else if(ncore < n){
     sample_correlated_gnp_pair_w_junk(n, corr, p, ncore, permutation, ...)
+  } else{
+    stop("ncore must be at most n.")
   }
 }
 

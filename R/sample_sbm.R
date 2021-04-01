@@ -33,8 +33,10 @@ sample_correlated_sbm_pair <- function(
   n, pref.matrix, block.sizes, rho, core.block.sizes=NULL, permutation=1:n, ...){
   if(is.null(core.block.sizes)){
     sample_correlated_sbm_pair_no_junk(n, pref.matrix, block.sizes, rho, permutation, ...)
-  } else{
+  } else if(sum(block.sizes >= core.block.sizes) == length(block.sizes)){
     sample_correlated_sbm_pair_w_junk(n, pref.matrix, block.sizes, rho, core.block.sizes, permutation, ...)
+  } else{
+    stop("Number of core vertices must be at most block size in each block.")
   }
 }
 
