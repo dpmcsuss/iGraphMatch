@@ -26,7 +26,7 @@ test_that("doubly stochastic", {
   expect_lt(sum(abs(colSums(actual$soft) - 1)), 10e-6)
 })
 test_that("number of seeds", {
-  expect_equal(nrow(actual$seeds),0)
+  expect_equal(sum(actual$seeds), 0)
 })
 
 

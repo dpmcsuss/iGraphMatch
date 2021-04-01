@@ -57,23 +57,17 @@ setGeneric(
     for (n in names(detail)) {
       gm[[n]] <- detail[[n]]
     }
+    if ("seeds" %in% names(detail)) {
+      gm$seeds <- check_seeds(
+        gm$seeds,
+        max(nnodes),
+        logical = TRUE
+      )[corr$corr_A]
+    }
     # gm@.Data <- detail
     gm
   }
 )
-
-
-get_perm <- function(match, padded = FALSE, seeds = TRUE, dim = NULL){
-  n <- min(dim(match)[1], dim(match)[2], nrow(match@corr))
-  if (n == dim(match)[1]) {
-    corr <- match[match[,1] %in% 1:n, ]
-  } else if (n == dim(match)[1]) {
-    corr <- match[match[,2] %in% 1:n, ]
-  } else {
-    corr <- match@corr
-  }
-  make_perm(dim(match)[1], dim(match)[2], corr)
-}
 
 
 as.character.graphMatch <- function(from) {
@@ -170,7 +164,7 @@ setMethod("[",
   signature(x = "graphMatch",
     i = 'missing', j = 'missing', drop = 'missing') ,
   function(x, i = NULL, j = NULL, drop = NULL) {
-          get_perm(x)
+          get_perm_mat(x)
   }
 )
 
@@ -187,32 +181,41 @@ setMethod("[",
 #' 
 #' @return These methods return an object of the same type
 #'  as the non-graphMatch object. If m is the match of g1
-#'  to g2, then m %*% g2 return the version 
+#'  to g2 (both igraph objects), then m %*% g2 returns g2
+#'  permuted so as to match with g1. Conversely, g1 %*% m
+#'  returns g1 permuted so as to match with g2.
 #' 
 setMethod("%*%", signature(x = "graphMatch", y = "ANY"),
   function(x, y) {
-    t(x[]) %*% y %*% x[]
+    x[] %*% y %*% t(x[])
   }
 )
 
 #' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "ANY", y = "graphMatch"),
   function(x, y){
-    y[] %*% x %*% t(y[])
+    t(y[]) %*% x %*% y[]
   }
 )
 
 #' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "graphMatch", y = "igraph"),
   function(x, y) {
-    permuted_subgraph(y, x@corr$corr_B)
+    m <- min(dim(x))
+    cA <- x[,1]
+    cB <- x[,2]
+    permuted_subgraph(y, cB[cA[cA <= m]])
   }
 )
 
 #' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "igraph", y = "graphMatch"),
-  function(x, y){
-    permuted_subgraph(x, y@corr$corr_A)
+  function(x, y) {
+
+    m <- min(dim(y))
+    cA <- y[,1]
+    cB <- y[,2]
+    permuted_subgraph(x, cA[order(cB[cB <= m])])
   }
 )
 
@@ -221,6 +224,31 @@ setMethod("dim", signature(x = "graphMatch"), function(x) { x@nnodes })
 
 #' @rdname graphMatch_methods
 setMethod("length", signature(x = "graphMatch"), function(x) { nrow(x@corr)})
+
+
+reverse_match <- function(x) {
+  x@corr[,c(1,2)] <- x@corr[,c(2,1)]
+  names(x@corr) <- rev(names(x@corr))
+  x@nnodes <- rev(x@nnodes)
+  for (n in names(x)) {
+    if (is.matrix(x[[n]]) || is(x[[n]], "Matrix")) {
+      x[[n]] <- t(x[[n]])
+    }
+    if (n == "seeds") {
+      x$seeds <- x$seeds[, c(2,1)]
+      names(x$seeds) <- rev(names(x$seeds))
+    }
+  }
+  x
+}
+
+#' @rdname graphMatch_methods
+setMethod("t", signature(x = "graphMatch"), reverse_match)
+
+
+#' @rdname graphMatch_methods
+setMethod("rev", signature(x = "graphMatch"), reverse_match)
+
 
 
 #' @rdname graphMatch_methods
@@ -241,6 +269,25 @@ setMethod('str', signature(object = "graphMatch"), function(object){
 
 # @todo function to get seeds, nonseeds, match/w seeds match w/o seeds
 
+#' 
+#' @param name name of element in the list
+#' 
+#' @rdname graphMatch_methods
+setMethod("$", signature(x = "graphMatch"),
+  function(x, name) {
+    if (name == "corr")
+      return(x@corr)
+
+    if (name == "corr_A")
+      return(x@corr$corr_A)
+
+    if (name == "corr_B")
+      return(x@corr$corr_B)
+
+
+    x@.Data[[which(names(x) == name)]]
+  }
+)
 
 identity_match <- function(x, y) {
   if(is.igraph(x)) {
@@ -341,7 +388,7 @@ setMethod("plot", signature(x = "Matrix", y = "Matrix"),
 
 permuted_subgraph <- function(g, corr_g) {
   if(is.null(igraph::V(g)$name)){
-    igraph::set.vertex.attribute(g, "name", corr_g, corr_g)
+    g <- igraph::set.vertex.attribute(g, "name", corr_g, corr_g)
   }
 
   g <- igraph::permute.vertices(

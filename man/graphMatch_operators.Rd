@@ -3,16 +3,29 @@
 \name{\%*\%,graphMatch,ANY-method}
 \alias{\%*\%,graphMatch,ANY-method}
 \alias{\%*\%,ANY,graphMatch-method}
+\alias{\%*\%,graphMatch,igraph-method}
+\alias{\%*\%,igraph,graphMatch-method}
 \title{Operator methods for graphMatch objects}
 \usage{
 \S4method{\%*\%}{graphMatch,ANY}(x, y)
 
 \S4method{\%*\%}{ANY,graphMatch}(x, y)
+
+\S4method{\%*\%}{graphMatch,igraph}(x, y)
+
+\S4method{\%*\%}{igraph,graphMatch}(x, y)
 }
 \arguments{
 \item{x}{Either graphMatch object or a matrix-like object}
 
 \item{y}{Either graphMatch object or a matrix-like object}
+}
+\value{
+These methods return an object of the same type
+ as the non-graphMatch object. If m is the match of g1
+ to g2 (both igraph objects), then m %*% g2 returns g2
+ permuted so as to match with g1. Conversely, g1 %*% m
+ returns g1 permuted so as to match with g2.
 }
 \description{
 Methods to use graphMatch objects as operators on 

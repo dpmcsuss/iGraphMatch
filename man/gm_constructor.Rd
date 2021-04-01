@@ -42,4 +42,6 @@ indicating the aligned vertex-pairs across the two graphs.
 
 \seealso{
 graphMatch_methods
+
+graphMatch_operators
 }
