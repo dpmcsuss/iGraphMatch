@@ -122,7 +122,7 @@ graph_match_convex <- function(A, B, seeds = NULL,
   }
 
   if(iter == max_iter){
-    warning("Frank-Wolfe iterations reach the maximum iteration, the algorithm doesn't converge.")
+    warning("Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.")
   }
 
 

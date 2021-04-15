@@ -10,10 +10,17 @@
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #'
-#' @return \code{graph_match_Umeyama} returns a list of graph matching
-#'   results, including the graph matching formula, a data frame containing the
-#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
-#'   and \code{corr_B} and seeds.
+#' @return \code{graph_match_Umeyama} returns an object of class "gm" which is a list
+#'   containing the following components:
+#'
+#'   \describe{
+#'     \item{corr_A}{matching correspondence in \eqn{G_1}}
+#'     \item{corr_B}{matching correspondence in \eqn{G_2}}
+#'     \item{soft}{the functional similarity score matrix with which one can extract
+#'       more than one matching candidates}
+#'     \item{lap_method}{Choice for solving the LAP}
+#'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+#'   }
 #'
 #' @references S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
 #'   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
@@ -25,7 +32,16 @@
 #' g2 <- G$graph2
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
-#' graph_match_Umeyama(g1, g2, similarity = startm)
+#'
+#' GM_Umeyama <- graph_match_Umeyama(g1, g2, similarity = startm)
+#' GM_Umeyama
+#' # generate the corresponding permutation matrix
+#' get_perm_mat(GM_Umeyama)
+#'
+#' summary(GM_Umeyama, g1, g2)
+#' # visualize the edge-wise matching performance
+#' plot(g1, g2, GM_Umeyama)
+#' plot(g1[], g2[], GM_Umeyama)
 #'
 #' @export
 #'

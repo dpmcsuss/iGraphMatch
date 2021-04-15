@@ -75,12 +75,20 @@ max_iter times number of total vertices of \eqn{G_1}.}
 \item{epsilon}{A small number}
 }
 \value{
-\code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match
-  _PATH} return a list of graph matching results, including the graph matching
-  formula, a data frame containing the matching correspondence between \eqn{G_1}
-  and \eqn{G_2} named \code{corr_A} and \code{corr_B}, the doubly stochastic
-  matrix from the last iteration and the permutation matrix after projection,
-  seeds and number of iterations.
+\code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match_PATH}
+  return an object of class "gm" which is a list containing the following
+  components:
+
+  \describe{
+    \item{corr_A}{matching correspondence in \eqn{G_1}}
+    \item{corr_B}{matching correspondence in \eqn{G_2}}
+    \item{soft}{the doubly stochastic matrix from the last iteration with which one can
+          extract more than one matching candidates}
+    \item{iter}{number of iterations until convergence or reaches the \code{max_iter}}
+    \item{max_iter}{Maximum number of replacing matches}
+    \item{lap_method}{Choice for solving the LAP}
+    \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+  }
 }
 \description{
 Match two given graphs, returns a list of graph matching
@@ -100,19 +108,35 @@ graph_match_convex(g1, g2, seeds)
 
 
 # match G_1 & G_2 with some known node pairs as seeds
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+g1 <- cgnp_pair$graph1
+g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
-graph_match_FW(g1, g2, seeds, start = "bari")
+GM_bari <- graph_match_FW(g1, g2, seeds, start = "bari")
+GM_bari
+GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
+
+summary(GM_bari, g1, g2)
 
 # match G_1 & G_2 with some incorrect seeds
 hard_seeds <- matrix(c(4,6,5,4),2)
 seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
-graph_match_FW(g1, g2, seeds, start = "convex")
+GM_convex <- graph_match_FW(g1, g2, seeds, start = "convex")
 
- gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
- A <- lapply(gp_list, function(gp)gp[[1]])
- B <- lapply(gp_list, function(gp)gp[[2]])
- match <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
- match$corr
+get_perm_mat(GM_convex) # get the corresponding permutation matrix
+GM_convex \%*\% g2 # permute the second graph according to match result: PBP^T
+GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
+GM_convex$iter # number of iterations: 2
+GM_convex$max_iter # preset maximum number of iterations: 20 > 2.
+                   # The Frank-Wolfe procedure converges
+
+# match two multi-layer graphs
+gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
+A <- lapply(gp_list, function(gp)gp[[1]])
+B <- lapply(gp_list, function(gp)gp[[2]])
+
+match_multi_layer <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+summary(match_multi_layer, A, B)
 
 # match G_1 & G_2 using PATH algorithm
 graph_match_PATH(g1, g2)

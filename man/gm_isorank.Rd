@@ -33,11 +33,17 @@ max_iter times number of total vertices of \eqn{G_1}.}
 One of "greedy" or "LAP".}
 }
 \value{
-\code{graph_match_IsoRank} returns a list of graph matching
-  results, including the graph matching formula, a data frame containing the
-  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
-  and \code{corr_B} and seeds. If choose the greedy method to extract mapping,
-  the order of nodes getting matched will also be returned.
+\code{graph_match_IsoRank} returns an object of class "gm" which is a list
+  containing the following components:
+
+  \describe{
+    \item{corr_A}{matching correspondence in \eqn{G_1}}
+    \item{corr_B}{matching correspondence in \eqn{G_2}}
+    \item{soft}{the functional similarity score matrix obtained from the power method
+      with which one can extract more than one matching candidates}
+    \item{method}{Method for extracting node mapping}
+    \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+  }
 }
 \description{
 Spectral Graph Matching Methods: IsoRank Algorithm
@@ -49,7 +55,19 @@ g2 <- cgnp_pair$graph2
 # match G_1 & G_2 using IsoRank algorithm
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
+
 GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
+GM_IsoRank
+summary(GM_IsoRank, g1, g2)
+
+get_perm_mat(GM_IsoRank) # get the corresponding permutation matrix
+GM_IsoRank \%*\% g2 # permute the second graph according to match result: PBP^T
+
+# Visualize the edge-wise matching performance
+plot(g1, g2, GM_IsoRank)
+plot(g1[], g2[], GM_IsoRank)
+
+
 
 }
 \references{
