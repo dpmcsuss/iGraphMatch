@@ -1,4 +1,4 @@
-context("rdpg")
+
 
 #Sample graphs from edge probability matrix and correlation matrix
 set.seed(123)

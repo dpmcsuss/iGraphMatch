@@ -41,6 +41,7 @@ setGeneric(
   name = "splr",
   def = function(x, a = NULL, b = NULL, rank = NULL,
   dimnames = list(NULL, NULL), ...) {
+
   #
   # x+ab'
   # x is mxn

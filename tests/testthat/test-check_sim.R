@@ -1,4 +1,4 @@
-context("check_sim")
+
 
 set.seed(123)
 n <- 20

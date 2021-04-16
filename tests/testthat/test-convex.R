@@ -1,4 +1,4 @@
-context("Convex")
+
 
 # sample pair of graphs w. 10 vertices
 set.seed(123)
@@ -11,21 +11,28 @@ B <- cgnp_pair$graph2
 
 actual <- graph_match_convex(A, B)
 
+test_that("correct matching result",
+  {
+
+    expect_snapshot_value(actual@corr, style = "serialize")
+  })
+
 test_that("matching correspondence between graph1 and graph2",
   {
-    expect_equal(length(actual), 6)
+    expect_equal(dim(actual), c(igraph::vcount(A), igraph::vcount(B)))
   })
 test_that("doubly stochastic", {
-  expect_lt(sum(abs(rowSums(actual$D) - 1)), 10e-6)
-  expect_lt(sum(abs(colSums(actual$D) - 1)), 10e-6)
+  expect_lt(sum(abs(rowSums(actual$soft) - 1)), 10e-6)
+  expect_lt(sum(abs(colSums(actual$soft) - 1)), 10e-6)
 })
 test_that("number of seeds", {
-  expect_equal(nrow(actual$seeds),0)
+  expect_equal(sum(actual$seeds), 0)
 })
 
 
 # test output error when given start = "convex"
 test_that("doubly stochastic", {
-  expect_error(graph_match_convex(A, B, start = "convex"), 
-               "Cannot start convex with convex. Try \"bari\" or another option.")
+  expect_error(
+    graph_match_convex(A, B, start = "convex"), 
+    "Cannot start convex with convex. Try \"bari\" or another option.")
 })

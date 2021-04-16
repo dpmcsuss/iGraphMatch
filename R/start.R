@@ -23,7 +23,6 @@
 bari_start <- function(nns, ns = 0, soft_seeds = NULL){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   start <- bari_splr(nns - nss)
-  add_soft_seeds(start, nns, ns, soft_seeds)
 }
 
 bari_splr <- function(nns){
@@ -40,7 +39,6 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   rds <- rds_sinkhorn(nns - nss,
     distribution = distribution)
-  add_soft_seeds(rds, nns, ns, soft_seeds)
 }
 
 sinkhorn <- function(m, niter=20){
@@ -69,7 +67,6 @@ rds_sinkhorn <- function(n, distribution="runif"){
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   rds <- rds_perm_bari(nns - nss, g)
-  add_soft_seeds(rds, nns, ns, soft_seeds)
 }
 
 
@@ -82,6 +79,7 @@ rds_perm_bari <- function(nns, g){
 #' @rdname start
 #'
 #' @param sim nns x nns non-negative matrix.
+
 #'
 #'
 #' @return \code{rds_from_sim_start} returns a doubly
@@ -94,6 +92,14 @@ rds_from_sim_start <- function(nns, ns = 0,
 
   if (!is.null(soft_seeds)) {
     warning("Ignoring soft_seeds in rds_from_sim_start")
+  }
+  if (!is(sim, "matrix") && !is(sim, "Matrix")) {
+    stop(
+      paste0(
+        "Error: sim must be a matrix-like object, not a ",
+        class(sim)
+      )
+    )
   }
   rds_from_sim(nns, sim)
 }

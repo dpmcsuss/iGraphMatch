@@ -41,7 +41,7 @@ best_matches <- function(A, B, match, measure, num){
   nv <- nrow(A[[1]])
   nc <- length(A)
   x <- !check_seeds(match$seeds, nv, logical = TRUE)
-  match_corr <- match$corr
+  match_corr <- match@corr
   x <- x[match_corr[,1]]
   match_corr <- match_corr[x,]
   stat <- rep(0, sum(x))

@@ -26,10 +26,15 @@ the second column being the corresponding indices of \eqn{G_2}.}
 }
 \value{
 \code{graph_match_percolation} and \code{graph_match_ExpandWhenStuck}
-  returns a list of graph matching results, including the graph matching formula,
-  a data frame containing the matching correspondence between \eqn{G_1} and
-  \eqn{G_2} named \code{corr_A} and \code{corr_B}, seeds and the order of nodes
-  getting matched.
+  return an object of class "gm" which is a list containing the following
+  components:
+
+  \describe{
+    \item{corr_A}{matching correspondence in \eqn{G_1}}
+    \item{corr_B}{matching correspondence in \eqn{G_2}}
+    \item{match_order}{the order of vertices getting matched}
+    \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+  }
 }
 \description{
 Percolation Graph Matching Methods
@@ -43,7 +48,19 @@ seeds <- 1:5
 graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 
 # match G_1 & G_2 using percolation graph matching method
-graph_match_percolation(g1, g2, seeds, r = 2)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+g1 <- cgnp_pair$graph1
+g2 <- cgnp_pair$graph2
+seeds <- 1:10 <= 3
+GM_perco <- graph_match_percolation(g1, g2, seeds, r = 2)
+GM_perco
+
+# matching accuracy with the true alignment being the identity
+mean(GM_perco$corr_A == GM_perco$corr_B)
+GM_perco$match_order
+
+summary(GM_perco, g1, g2)
+plot(g1[], g2[], GM_perco)
 
 }
 \references{

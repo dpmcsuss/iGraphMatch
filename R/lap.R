@@ -55,14 +55,15 @@ do_lap <- function(score, method){
       score <- score - min(score)
       as.vector(clue::solve_LSAP(score,
         maximum = TRUE))
-    },
+    }
+    # ,
     # sinkhorn = {
     #   lambda <- 10
     #   n_iter <- 20
     #   sinkhorn(exp(lambda * score), n_iter)
     # },
-    stop(paste0("The LAP method ", method,
-        " is not implemented. Please use one of lapjv, lapmod, or clue."))
+    # stop(paste0("The LAP method ", method,
+    #     " is not implemented. Please use one of lapjv, lapmod, or clue."))
   )
 }
 
