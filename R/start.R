@@ -93,6 +93,14 @@ rds_from_sim_start <- function(nns, ns = 0,
   if (!is.null(soft_seeds)) {
     warning("Ignoring soft_seeds in rds_from_sim_start")
   }
+  if (!is(sim, "matrix") && !is(sim, "Matrix")) {
+    stop(
+      paste0(
+        "Error: sim must be a matrix-like object, not a ",
+        class(sim)
+      )
+    )
+  }
   rds_from_sim(nns, sim)
 }
 

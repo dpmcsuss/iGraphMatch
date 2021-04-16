@@ -148,3 +148,23 @@ test_that(
   }
 )
 
+
+test_that(
+  "RDS from sim start",
+  {
+    sim <- matrix(runif(9), 3)
+    m <- init_start(start = "rds_from_sim", nns = 3, sim = sim)
+    expect_snapshot_output(print(round(m, 4)))
+
+
+    sim <- Matrix::rsparsematrix(10, 10, .4, rand.x = function(n) rep(1,n))
+    m <- init_start(start = "rds_from_sim", nns = 3, sim = sim)
+    expect_snapshot_output(print(round(m, 4)))
+
+    expect_error(
+      init_start(start = "rds_from_sim", nns = 3, sim = "asdf"),
+      "Error: sim must be a matrix-like object.*"
+    )
+
+  }
+)
