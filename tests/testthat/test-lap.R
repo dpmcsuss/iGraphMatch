@@ -53,3 +53,17 @@ test_that(
     "Unrecognized LAP method: other.*")
   }
 )
+
+
+test_that(
+  "harder lap",
+  {
+    expect_snapshot_output({
+      hard <- 
+        matrix(sample(1000, 10000, replace = TRUE), 100) +
+        sample(1000, 100, replace = TRUE)
+      print(lapmod(hard))
+    })
+  }
+)
+

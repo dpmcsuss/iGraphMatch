@@ -69,7 +69,8 @@ setGeneric(
   }
 )
 
-
+#' @method as.character graphMatch
+#' @export
 as.character.graphMatch <- function(from) {
   paste0(
     "Call:", as.character(from@call), "\n",

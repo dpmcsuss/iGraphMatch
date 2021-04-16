@@ -1,41 +1,59 @@
 
 
-set.seed(123)
 
-g1 <- igraph::make_lattice(10)
-g2 <- igraph::sample_gnm(20, 40)
+test_that("graphMatch class functions",
+  {
+  set.seed(123)
 
-
-suppressWarnings(m <- gm_indefinite(g1, g2, start = "bari"))
-
-
-m
-
-summary(m, g1, g2)
-
-m %*% g2
-m %*% g2[]
+  g1 <- igraph::make_lattice(10)
+  g2 <- igraph::sample_gnm(200, 40)
 
 
-norm(g1[] - m %*% g2[], "f")
+  suppressWarnings(m <- gm_indefinite(g1, g2, start = "bari"))
 
-g1 %*% m
-g1[] %*% m
+  as.character(m)
+  str(m)
 
+  m
 
-m[1:3]
-m[,1]
-m[,2]
+  as(m, "Matrix")
+  as(m, "data.frame")
 
-m$seeds
+  expect_snapshot_output(print(summary(m, g1, g2, true_label = 1:10)))
 
-m$corr
-m$corr_A
-
-m[]
-
-as.data.frame(m)
+  m %*% g2
+  m %*% g2[]
 
 
-plot(g1, g2, m)
-plot(g1[], g2[], m)
+  norm(g1[] - m %*% g2[], "f")
+
+  g1 %*% m
+  g1[] %*% m
+
+
+  m[1:3]
+  m[,1]
+  m[,2]
+
+  m$seeds
+
+  m$corr
+  m$corr_A
+
+  m[]
+
+  as.data.frame(m)
+
+  plot(g1, g2)
+  plot(g1[], g2[])
+
+  plot(g1, g2, m)
+  plot(g1[], g2[], m)
+
+  t(m)
+
+  m$corr_A
+  m$corr_B
+  m$not_in_there
+})
+
