@@ -17,7 +17,7 @@ test_that("matching correspondence between graph1 and graph2", {
   seeds <- 1:4
   tt <- graph_match_PATH(A, B, seeds)
   expect_snapshot_output(print(tt))
-  expect_snapshot_value(tt, "serialize")
+  expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
   
 })
 
