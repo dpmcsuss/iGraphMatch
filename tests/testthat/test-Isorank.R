@@ -14,14 +14,14 @@ seeds<-1:4
 test_that("isorank match with greedy LAP", {
   tt <- graph_match_IsoRank(A, B, seeds, startm, method = "greedy")
   expect_snapshot_output(print(tt))
-  expect_snapshot_value(tt, "serialize")
+  expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
   
 })
 
 test_that("isorank match with hungarian lap", {
-  tt <- graph_match_IsoRank(A, B, seeds, startm, method = "lap")
+  tt <- graph_match_IsoRank(A, B, seeds, startm, method = "LAP")
   expect_snapshot_output(print(tt))
-  expect_snapshot_value(tt, "serialize")
+  expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
 })
 
 
@@ -40,7 +40,7 @@ startm <- startm[1:8,]
 test_that("test padding for similarity scores", {
   tt <- graph_match_IsoRank(A, B, similarity = startm, method = "LAP")
   expect_snapshot_output(print(tt))
-  expect_snapshot_value(tt, "serialize")
+  expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
 })
 
 set.seed(12)
@@ -50,7 +50,7 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 seeds <- 1:3
 
 test_that("IsoRank multi-layer", {
-  tt <- graph_match_IsoRank(A, B, seeds, startm, method = "lap")
+  tt <- graph_match_IsoRank(A, B, seeds, startm, method = "LAP")
   expect_snapshot_output(print(tt))
-  expect_snapshot_value(tt, "serialize")
+  expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
 })

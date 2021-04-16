@@ -15,7 +15,8 @@ seeds<-1:4
 test_that("matching correspondence between graph1 and graph2", {
   tt <- graph_match_Umeyama(A, B, seeds, startm)
   expect_snapshot_output(print(tt))
-  expect_snapshot_value(tt, "serialize")
+  expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
+  # expect_snapshot_value(tt, "serialize")
 
 })
 # test_that("number of seeds", {

@@ -400,6 +400,43 @@ permuted_subgraph <- function(g, corr_g) {
 }
 
 
+summary_graphMatch <- function(object, A = NULL, B = NULL, true_label = NULL, directed = NULL) {
+
+  # Matched nodes
+  corr <- object@corr
+  object$n_match <- nrow(corr) - sum(object$seeds)
+  if(!is.null(true_label)){
+    object$n_true_match <-
+      sum(true_label[corr$corr_A] == corr$corr_B) - sum(object$seeds)
+
+  }
+  if(!is.null(A) & !is.null(B)){
+    graph_pair <- check_graph(A, B)
+    A <- graph_pair[[1]]
+    B <- graph_pair[[2]]
+
+
+    # Matched edges
+    object$edge_match_info <-
+      edge_match_info(corr, A, B, directed)
+  }
+
+
+  # objective value: ||A-PBP^T||_F
+  # object@.Data$Permutation <- get_perm(nrow(A[[1]]), nrow(B[[1]]), corr)
+  class(object) <- c("summary.graphMatch")
+  object
+}
+
+#' @method summary graphMatch
+#' @export
+summary.graphMatch <- function(object, ...) {
+  summary_graphMatch(object, ...)
+}
+
+
+setGeneric("summary")
+
 #' @title Summary methods for graphMatch objects
 #' 
 #' @param object graphMatch object
@@ -411,35 +448,7 @@ permuted_subgraph <- function(g, corr_g) {
 #'  which will treat the graphs as directed if either adjacency
 #'  matrix is not symmetric.
 #' @rdname graphMatch_summary
-setMethod("summary", signature("graphMatch"),
-  function(object, A = NULL, B = NULL, true_label = NULL, directed = NULL) {
-
-    # Matched nodes
-    corr <- object@corr
-    object$n_match <- nrow(corr) - sum(object$seeds)
-    if(!is.null(true_label)){
-      object$n_true_match <-
-        sum(true_label[corr$corr_A] == corr$corr_B) - nrow(object$seeds)
-
-    }
-    if(!is.null(A) & !is.null(B)){
-      graph_pair <- check_graph(A, B)
-      A <- graph_pair[[1]]
-      B <- graph_pair[[2]]
-
-
-      # Matched edges
-      object$edge_match_info <-
-        edge_match_info(corr, A, B, directed)
-    }
-
-
-    # objective value: ||A-PBP^T||_F
-    # object@.Data$Permutation <- get_perm(nrow(A[[1]]), nrow(B[[1]]), corr)
-    class(object) <- c("summary.graphMatch")
-    object
-  }
-)
+setMethod("summary", signature("graphMatch"), summary_graphMatch)
 
 show.summary.graphMatch <- function(match) {
     cat("Call: ")
@@ -451,7 +460,7 @@ show.summary.graphMatch <- function(match) {
     if(!is.null(match$seeds)) { 
       cat(", # Seeds: ", sum(match$seeds0))
     }
-    cat(", # Vertices: ", paste(dim(match), sep = ","))
+    cat(", # Vertices: ", paste(dim(match), collapse = ", "))
     cat("\n")
     if(!is.null(match$edge_match_info)) {
       ep <- as.data.frame(t(match$edge_match_info))

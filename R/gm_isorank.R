@@ -123,7 +123,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     D[seeds$A, seeds$B] <- diag(nrow(seeds))
     D[nonseeds$A, nonseeds$B] <- R_tot[nonseeds$A, nonseeds$B]
 
-    graphMatch(
+    m <- graphMatch(
       corr = corr,
       nnodes = c(totv1, totv2),
       call = cl,
@@ -154,15 +154,16 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     D[seeds$A, seeds$B] <- diag(nrow(seeds))
     D[nonseeds$A, nonseeds$B] <- R_tot[nonseeds$A, nonseeds$B]
 
-    graphMatch(
+    m <- graphMatch(
       corr = corr,
       nnodes = c(totv1, totv2),
       call = cl,
       detail = list(
         method = method,
         seeds = seeds,
-        soft = R_tot
+        soft = D
       )
     )
   }
+  return(m)
 }
