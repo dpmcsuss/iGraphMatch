@@ -33,7 +33,7 @@
 #' )
 #'
 #' @export
-do_lap <- function(score, method){
+do_lap <- function(score, method = "clue"){
   n <- nrow(score)
   method <- set_lap_method(method, n, n)
   switch(method,
