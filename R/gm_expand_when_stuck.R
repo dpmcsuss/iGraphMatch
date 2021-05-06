@@ -3,7 +3,6 @@ cal_mark <- function(x,y){
 }
 
 
-#' @rdname gm_perco
 #' @references E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 #' \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
 #' Endowment, 8(10):1010–1021.
@@ -16,7 +15,6 @@ cal_mark <- function(x,y){
 #' seeds <- 1:5
 #' graph_match_ExpandWhenStuck(g1, g2, seeds, r = 2)
 #'
-#' @export
 #'
 #'
 graph_match_ExpandWhenStuck <- function(A, B, seeds,
