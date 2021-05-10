@@ -63,7 +63,7 @@ corresponding indices of \eqn{G_2}.}
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 
 \item{start}{A matrix or a character. Any \code{nns-by-nns} matrix or
-character value like "bari" or "convex" to initialize the starting matrix.}
+character value like "bari", "rds" or "convex" to initialize the starting matrix.}
 
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
@@ -100,11 +100,13 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
-graph_match_FW(g1, g2)
+gm(g1, g2, method = "convex")
 seeds <- 1:10 <= 3
 \donttest{
-graph_match_convex(g1, g2, seeds)
+gm(g1, g2, seeds, method = "convex")
 }
+
+
 
 
 # match G_1 & G_2 with some known node pairs as seeds
@@ -112,34 +114,36 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
-GM_bari <- graph_match_FW(g1, g2, seeds, start = "bari")
+GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
 GM_bari
 GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
 
-summary(GM_bari, g1, g2)
+summary(GM_bari, g1, g2, true_label = 1:10)
 
 # match G_1 & G_2 with some incorrect seeds
 hard_seeds <- matrix(c(4,6,5,4),2)
 seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
-GM_convex <- graph_match_FW(g1, g2, seeds, start = "convex")
+GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
 
 get_perm_mat(GM_convex) # get the corresponding permutation matrix
 GM_convex \%*\% g2 # permute the second graph according to match result: PBP^T
 GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
-GM_convex$iter # number of iterations: 2
-GM_convex$max_iter # preset maximum number of iterations: 20 > 2.
-                   # The Frank-Wolfe procedure converges
+GM_convex$iter # number of iterations
+GM_convex$max_iter # preset maximum number of iterations: 20
 
 # match two multi-layer graphs
 gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
 A <- lapply(gp_list, function(gp)gp[[1]])
 B <- lapply(gp_list, function(gp)gp[[2]])
 
-match_multi_layer <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+match_multi_layer <- gm(A, B, seeds = 1:10, method = "indefinite", start = "bari", max_iter = 20)
 summary(match_multi_layer, A, B)
 
+
 # match G_1 & G_2 using PATH algorithm
-graph_match_PATH(g1, g2)
+gm(g1, g2, method = "PATH")
+
+
 
 }
 \references{

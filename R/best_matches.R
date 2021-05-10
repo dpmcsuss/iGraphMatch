@@ -24,7 +24,7 @@
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:50 <= 10
 #' nonseeds <- !seeds
-#' match <- graph_match_FW(g1, g2, seeds)
+#' match <- gm(g1, g2, seeds, method = "indefinite")
 #'
 #' # Application: select best matched seeds from non seeds as new seeds, and do the
 #' # graph matching iteratively to get higher matching accuracy

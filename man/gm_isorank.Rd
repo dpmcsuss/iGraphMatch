@@ -10,7 +10,7 @@ graph_match_IsoRank(
   seeds = NULL,
   similarity,
   max_iter = 50,
-  method = "greedy"
+  lap_method = "greedy"
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
 
-\item{method}{A character. Choice of method to extract mapping from score matrix.
+\item{lap_method}{Choice of method to extract mapping from score matrix.
 One of "greedy" or "LAP".}
 }
 \value{
@@ -56,9 +56,9 @@ g2 <- cgnp_pair$graph2
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
 
-GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
+GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
 GM_IsoRank
-summary(GM_IsoRank, g1, g2)
+summary(GM_IsoRank, g1, g2, true_label = 1:10)
 
 get_perm_mat(GM_IsoRank) # get the corresponding permutation matrix
 GM_IsoRank \%*\% g2 # permute the second graph according to match result: PBP^T

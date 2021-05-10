@@ -43,44 +43,36 @@ cal_mark <- function(x,y){
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 3
-#' GM_perco <- graph_match_percolation(g1, g2, seeds, r = 2, ExpandWhenStuck = FALSE)
+#' GM_perco <- gm(g1, g2, seeds, method = "percolation", r = 2, ExpandWhenStuck = FALSE)
 #' GM_perco
 #'
 #' # matching accuracy with the true alignment being the identity
 #' mean(GM_perco$corr_A == GM_perco$corr_B)
 #' GM_perco$match_order
 #'
-#' summary(GM_perco, g1, g2)
+#' summary(GM_perco, g1, g2, true_label = 1:20)
 #' plot(g1[], g2[], GM_perco)
 #'
 #' # expand when stuck
-#' GM_exp <- graph_match_percolation(g1, g2, seeds, r = 4, ExpandWhenStuck = TRUE)
+#' GM_exp <- gm(g1, g2, seeds, method = "percolation", r = 4, ExpandWhenStuck = TRUE)
 #' GM_exp
 #'
-#' @export
 #'
 #'
 graph_match_percolation <- function (A, B, seeds,
                             similarity = NULL, r = 2,
                             ExpandWhenStuck = FALSE) {
 
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  n <- max(totv1, totv2)
+  ns <- nrow(seeds)
+  nn <- n - ns
   nc <- length(A)
 
-  n <- max(totv1, totv2)
-  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
-  nonseeds <- seeds$nonseeds
-  seeds_ori <- seeds <- seeds$seeds
-  ns <- nrow(seeds)
-  if(ns == 0 & is.null(similarity)){
-    stop("at least one of seeds and similarity score should be known for this method.")
-  }
+  nonseeds <- check_seeds(seeds, n)$nonseeds
+  seeds_ori <- seeds
   Z <- seeds #matched nodes
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
 
   M <- Matrix(0, n, n) #marks matrix
   if(sum(abs(similarity)) != 0){

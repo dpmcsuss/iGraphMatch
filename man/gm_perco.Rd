@@ -51,19 +51,21 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 20, corr =  0.5, p =  0.8)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
-GM_perco <- graph_match_percolation(g1, g2, seeds, r = 2, ExpandWhenStuck = FALSE)
+GM_perco <- gm(g1, g2, seeds, method = "percolation", r = 2, ExpandWhenStuck = FALSE)
 GM_perco
 
 # matching accuracy with the true alignment being the identity
 mean(GM_perco$corr_A == GM_perco$corr_B)
 GM_perco$match_order
 
-summary(GM_perco, g1, g2)
+summary(GM_perco, g1, g2, true_label = 1:20)
 plot(g1[], g2[], GM_perco)
 
 # expand when stuck
-GM_exp <- graph_match_percolation(g1, g2, seeds, r = 4, ExpandWhenStuck = TRUE)
+GM_exp <- gm(g1, g2, seeds, method = "percolation", r = 4, ExpandWhenStuck = TRUE)
 GM_exp
+
+
 
 }
 \references{
