@@ -134,6 +134,7 @@ add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
+  new_start <- splr_to_sparse(new_start)
   new_start[cbind(seeds_g1, seeds_g2)] <-1
   new_start
 }
