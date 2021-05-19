@@ -4,7 +4,7 @@
 \alias{do_lap}
 \title{Linear (sum) assignment problem}
 \usage{
-do_lap(score, method)
+do_lap(score, method = "clue")
 }
 \arguments{
 \item{score}{matrix of pairwise scores}

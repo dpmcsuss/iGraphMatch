@@ -12,7 +12,7 @@
 #'   column being the indices of \eqn{G_1} and the second column being the
 #'   corresponding indices of \eqn{G_2}.
 #' @param start A matrix or a character. Any \code{nns-by-nns} matrix or
-#'   character value like "bari" or "convex" to initialize the starting matrix.
+#'   character value like "bari", "rds" or "convex" to initialize the starting matrix.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param tol A number. Tolerance of edge disagreements.
 #' @param max_iter A number. Maximum number of replacing matches equals to
@@ -45,51 +45,40 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 3
-#' GM_bari <- graph_match_FW(g1, g2, seeds, start = "bari")
+#' GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
 #' GM_bari
 #' GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
 #'
-#' summary(GM_bari, g1, g2)
+#' summary(GM_bari, g1, g2, true_label = 1:10)
 #'
 #' # match G_1 & G_2 with some incorrect seeds
 #' hard_seeds <- matrix(c(4,6,5,4),2)
 #' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
-#' GM_convex <- graph_match_FW(g1, g2, seeds, start = "convex")
+#' GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
 #'
 #' get_perm_mat(GM_convex) # get the corresponding permutation matrix
 #' GM_convex %*% g2 # permute the second graph according to match result: PBP^T
 #' GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
-#' GM_convex$iter # number of iterations: 2
-#' GM_convex$max_iter # preset maximum number of iterations: 20 > 2.
-#'                    # The Frank-Wolfe procedure converges
+#' GM_convex$iter # number of iterations
+#' GM_convex$max_iter # preset maximum number of iterations: 20
 #'
 #' # match two multi-layer graphs
 #' gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
 #' A <- lapply(gp_list, function(gp)gp[[1]])
 #' B <- lapply(gp_list, function(gp)gp[[2]])
 #'
-#' match_multi_layer <- graph_match_FW(A, B, seeds = 1:10, start = "bari", max_iter = 20)
+#' match_multi_layer <- gm(A, B, seeds = 1:10, method = "indefinite", start = "bari", max_iter = 20)
 #' summary(match_multi_layer, A, B)
 #'
-#' @export
 #'
 graph_match_FW <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari",
   max_iter = 20, lap_method = NULL) {
 
-
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
-
-  nv <- nrow(A[[1]])
-
-  seed_check <- check_seeds(seeds, nv)
-  seeds <- seed_check$seeds
-  nonseeds <- seed_check$nonseeds
-
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
   ns <- nrow(seeds)
   nn <- nv - ns
 
@@ -108,8 +97,6 @@ graph_match_FW <- function(A, B, seeds = NULL,
   P <- P[, rp]
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
-
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   similarity <- similarity %*% Matrix::t(rpmat)
 
   # keep only nonseeds
@@ -214,6 +201,5 @@ graph_match_FW <- function(A, B, seeds = NULL,
 }
 
 #' @rdname gm_fw
-#' @export
 gm_indefinite <- graph_match_FW
 
