@@ -39,10 +39,11 @@ One of "greedy" or "LAP".}
   \describe{
     \item{corr_A}{matching correspondence in \eqn{G_1}}
     \item{corr_B}{matching correspondence in \eqn{G_2}}
+    \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
     \item{soft}{the functional similarity score matrix obtained from the power method
       with which one can extract more than one matching candidates}
-    \item{method}{Method for extracting node mapping}
-    \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+    \item{match_order}{the order of vertices getting matched}
+    \item{lap_method}{Method for extracting node mapping}
   }
 }
 \description{
