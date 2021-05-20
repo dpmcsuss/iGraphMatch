@@ -1,22 +1,22 @@
 # random doubly stochastic start w/o soft seeds
 
     2 x 2 Matrix of class "dgeMatrix"
-             [,1]     [,2]
-    [1,] 0.470197 0.529803
-    [2,] 0.529803 0.470197
+         [,1] [,2]
+    [1,] 0.47 0.53
+    [2,] 0.53 0.47
 
 # doubly stochastic matrix start w/o soft seeds
 
     Sparse part
-    2 x 2 sparse Matrix of class "dtCMatrix"
-                            
-    [1,] 0.2875775 .        
-    [2,] .         0.2875775
+    2 x 2 sparse Matrix of class "dgCMatrix"
+                  
+    [1,] 0.29 .   
+    [2,] .    0.29
     plus left factor
     2 x 1 Matrix of class "dgeMatrix"
-              [,1]
-    [1,] 0.7124225
-    [2,] 0.7124225
+         [,1]
+    [1,] 0.71
+    [2,] 0.71
     times right factor transpose
     2 x 1 Matrix of class "dgeMatrix"
          [,1]
@@ -47,25 +47,25 @@
 # random doubly stochastic start w. soft seeds
 
     3 x 3 sparse Matrix of class "dgCMatrix"
-                            
-    [1,] .        1 .       
-    [2,] 0.470197 . 0.529803
-    [3,] 0.529803 . 0.470197
+                    
+    [1,] .    1 .   
+    [2,] 0.47 . 0.53
+    [3,] 0.53 . 0.47
 
 # doubly stochastic matrix start w. soft seeds
 
     Sparse part
     3 x 3 sparse Matrix of class "dgCMatrix"
-                              
-    [1,] .         1 .        
-    [2,] 0.2875775 . .        
-    [3,] .         . 0.2875775
+                    
+    [1,] .    1 .   
+    [2,] 0.29 . .   
+    [3,] .    . 0.29
     plus left factor
     3 x 1 sparse Matrix of class "dgCMatrix"
-                  
-    [1,] .        
-    [2,] 0.7124225
-    [3,] 0.7124225
+             
+    [1,] .   
+    [2,] 0.71
+    [3,] 0.71
     times right factor transpose
     3 x 1 sparse Matrix of class "dgCMatrix"
             
@@ -77,16 +77,16 @@
 
     Sparse part
     3 x 3 sparse Matrix of class "dgCMatrix"
-                                         
-    [1,] 0.66832423 0.13590463 0.19577113
-    [2,] 0.03268557 0.80679463 0.02461517
-    [3,] 0.16308556 0.05730074 0.64370907
+                          
+    [1,] 0.668 0.136 0.196
+    [2,] 0.033 0.807 0.025
+    [3,] 0.163 0.057 0.644
     plus left factor
     3 x 1 sparse Matrix of class "dgCMatrix"
-                  
-    [1,] .        
-    [2,] 0.1359046
-    [3,] 0.1359046
+             
+    [1,] .   
+    [2,] 0.14
+    [3,] 0.14
     times right factor transpose
     3 x 1 sparse Matrix of class "dgCMatrix"
             
@@ -111,23 +111,23 @@
 # RDS from sim start
 
     3 x 3 sparse Matrix of class "dgCMatrix"
-                             
-    [1,] 0.3773 0.4409 0.1818
-    [2,] 0.2907 0.3694 0.3399
-    [3,] 0.3320 0.1897 0.4783
+                       
+    [1,] 0.38 0.44 0.18
+    [2,] 0.29 0.37 0.34
+    [3,] 0.33 0.19 0.48
 
 ---
 
     10 x 10 sparse Matrix of class "dgCMatrix"
-                                                                               
-     [1,] 0.0979 0.1848 0.2010 .      .      .      .      0.5164 .      .     
-     [2,] .      .      0.1954 0.3650 0.3532 0.0860 .      .      0.0005 .     
-     [3,] .      .      .      .      .      .      .      .      1.0000 .     
-     [4,] .      .      0.2505 .      .      0.6623 .      .      .      0.0871
-     [5,] 0.3618 .      .      .      .      0.1628 .      0.4486 0.0269 .     
-     [6,] .      0.2990 .      0.6208 .      0.0788 .      .      0.0014 .     
-     [7,] 0.0286 .      0.0331 .      .      0.0039 0.0047 0.0303 0.0040 0.8954
-     [8,] .      .      .      .      0.1507 .      0.8328 .      0.0165 .     
-     [9,] 0.5072 .      .      0.0014 0.4914 0.0000 .      .      .      .     
-    [10,] .      0.5104 0.3140 0.0067 .      .      0.1602 .      .      0.0087
+                                                                       
+     [1,] 0.098 0.18 0.201 .      .    .      .      0.52 .      .     
+     [2,] .     .    0.195 0.3650 0.35 0.0860 .      .    0.0005 .     
+     [3,] .     .    .     .      .    .      .      .    1.0000 .     
+     [4,] .     .    0.251 .      .    0.6623 .      .    .      0.0871
+     [5,] 0.362 .    .     .      .    0.1628 .      0.45 0.0269 .     
+     [6,] .     0.30 .     0.6208 .    0.0788 .      .    0.0014 .     
+     [7,] 0.029 .    0.033 .      .    0.0039 0.0047 0.03 0.0040 0.8954
+     [8,] .     .    .     .      0.15 .      0.8328 .    0.0165 .     
+     [9,] 0.507 .    .     0.0014 0.49 0.0000 .      .    .      .     
+    [10,] .     0.51 0.314 0.0067 .    .      0.1602 .    .      0.0087
 
