@@ -48,7 +48,7 @@ test_that(
   "error on other",
   {
     expect_error({
-      graph_match_FW(A, B, start = "bari", lap_method = "other")
+      gm(A, B, start = "bari", lap_method = "other")
     },
     "Unrecognized LAP method: other.*")
   }
@@ -59,7 +59,7 @@ test_that(
   "harder lap",
   {
     expect_snapshot_output({
-      hard <- 
+      hard <-
         matrix(sample(1000, 10000, replace = TRUE), 100) +
         sample(1000, 100, replace = TRUE)
       print(lapmod(hard))

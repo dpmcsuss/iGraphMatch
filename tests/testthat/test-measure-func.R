@@ -5,7 +5,7 @@ n <- 10
 cgnp_pair <- sample_correlated_gnp_pair(n = n, corr =  0.3,p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
-match <- graph_match_FW(g1, g2, start = "bari")
+match <- gm(g1, g2, start = "bari")
 g2m <- match %*% g2[]
 g1 <- g1[]
 
