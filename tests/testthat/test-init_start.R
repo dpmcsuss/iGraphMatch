@@ -168,3 +168,12 @@ test_that(
 
   }
 )
+
+test_that(
+  "soft seeds with non-initial seeds",
+  {
+    seeds <- c(1, 4, 10)
+    soft_seeds <- c(2, 3)
+    stop("This currently breaks things")
+  }
+)

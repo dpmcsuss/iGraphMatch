@@ -67,32 +67,34 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
 
   if(method == "indefinite"){
-    graph_match_FW(A, B, seeds, similarity, ...)
+    m <- graph_match_FW(A, B, seeds, similarity, ...)
   } else if(method == "convex"){
-    graph_match_convex(A, B, seeds, similarity, ...)
+    m <- graph_match_convex(A, B, seeds, similarity, ...)
   } else if(method == "PATH"){
-    graph_match_PATH(A, B, seeds, similarity, ...)
+    m <- graph_match_PATH(A, B, seeds, similarity, ...)
   } else if(method == "percolation"){
     if(nrow(seeds) == 0 & is.null(similarity_raw)){
       stop("At least one of seeds and similarity score should be known for this method.")
     }
-    graph_match_percolation(A, B, seeds, similarity, ...)
+    m <- graph_match_percolation(A, B, seeds, similarity, ...)
   } else if(method == "IsoRank"){
     if(is.null(similarity_raw)){
       stop("Similarity scores are mandatory for this method. Please input a value for the 'similarity' argument.")
     }
     similarity <- check_sim(similarity_raw, seeds, nonseeds, totv1, totv2, for_nonseeds = FALSE)
-    graph_match_IsoRank(A, B, seeds, similarity, ...)
+    m <- graph_match_IsoRank(A, B, seeds, similarity, ...)
   } else if(method == "Umeyama"){
-    graph_match_Umeyama(A, B, seeds, similarity)
+    m <- graph_match_Umeyama(A, B, seeds, similarity)
   }
+  m@nnodes <- c(totv1, totv2)
+  m@call <- match.call()
+  m
 }
 
-
-
-
-
-
-
-
-
+.onLoad <- function(libname, pkgname) {
+  packageStartupMessage(
+"Thanks for using iGraphMatch!
+We'd love to get feedback on what you like, what you don't like, 
+and how you are using the package.
+See ?iGraphMatch for contact information.")
+}

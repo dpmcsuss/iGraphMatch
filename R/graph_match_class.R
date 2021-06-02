@@ -459,7 +459,7 @@ show.summary.graphMatch <- function(match) {
       cat("\n# True Matches: ", match$n_true_match)
     }
     if(!is.null(match$seeds)) {
-      cat(", # Seeds: ", sum(match$seeds0))
+      cat(", # Seeds: ", sum(match$seeds))
     }
     cat(", # Vertices: ", paste(dim(match), collapse = ", "))
     cat("\n")

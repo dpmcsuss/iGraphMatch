@@ -50,7 +50,7 @@
 \item{name}{name of element in the list}
 }
 \value{
-dim returns a vector of length two 
+dim returns a vector of length two
 indicating the number of vertices in each original graph.
 length returns the number of found vertex-pair matches.
 m[i,j] will index the 2xlength data.frame of vertex-pair matches.
