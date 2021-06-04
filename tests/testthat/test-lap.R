@@ -48,7 +48,7 @@ test_that(
   "error on other",
   {
     expect_error({
-      graph_match_FW(A, B, start = "bari", lap_method = "other")
+      gm(A, B, start = "bari", method = "indefinite", lap_method = "other")
     },
     "Unrecognized LAP method: other.*")
   }

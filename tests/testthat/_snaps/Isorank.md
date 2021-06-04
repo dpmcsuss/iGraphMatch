@@ -1,7 +1,7 @@
 # isorank match with greedy LAP
 
-    graph_match_IsoRank(A = A, B = B, seeds = seeds, similarity = startm, 
-        method = "greedy")
+    gm(A = A, B = B, seeds = seeds, similarity = startm, method = "IsoRank", 
+        lap_method = "greedy")
     
     Match (10 x 10):
        corr_A corr_B
@@ -32,8 +32,8 @@
 
 # isorank match with hungarian lap
 
-    graph_match_IsoRank(A = A, B = B, seeds = seeds, similarity = startm, 
-        method = "LAP")
+    gm(A = A, B = B, seeds = seeds, similarity = startm, method = "IsoRank", 
+        lap_method = "LAP")
     
     Match (10 x 10):
        corr_A corr_B
@@ -62,41 +62,10 @@
      [9,]    0    0    0    0 0.0196 0.0042 0.0126 0.0074 0.0126 0.0050
     [10,]    0    0    0    0 0.0057 0.0010 0.0046 0.0009 0.0046 0.0051
 
-# test padding for similarity scores
-
-    graph_match_IsoRank(A = A, B = B, similarity = startm, method = "LAP")
-    
-    Match (10 x 10):
-       corr_A corr_B
-    1       1      1
-    2       2      2
-    3       3      3
-    4       4      4
-    5       5      9
-    6       6      6
-    7       7      7
-    8       8      8
-    9       9      5
-    10     10     10
-
----
-
-            [,1]   [,2]   [,3]   [,4]   [,5]   [,6]   [,7]   [,8]   [,9]  [,10]
-     [1,] 0.1298 0.0036 0.0053 0.0065 0.0046 0.0035 0.0035 0.0011 0.0035 0.0044
-     [2,] 0.0014 0.1272 0.0030 0.0025 0.0014 0.0009 0.0008 0.0005 0.0008 0.0012
-     [3,] 0.0028 0.0076 0.1403 0.0051 0.0124 0.0017 0.0054 0.0068 0.0054 0.0060
-     [4,] 0.0034 0.0021 0.0033 0.1305 0.0038 0.0029 0.0032 0.0010 0.0032 0.0031
-     [5,] 0.0044 0.0036 0.0111 0.0150 0.0187 0.0035 0.0120 0.0068 0.0120 0.0042
-     [6,] 0.0011 0.0018 0.0026 0.0024 0.0013 0.0007 0.0009 0.0005 0.0009 0.0009
-     [7,] 0.0019 0.0067 0.0083 0.0038 0.0061 0.0012 0.0050 0.0010 0.0050 0.0053
-     [8,] 0.0040 0.0031 0.0102 0.0064 0.0099 0.0032 0.0036 0.0065 0.0036 0.0037
-     [9,] 0.0055 0.0048 0.0131 0.0170 0.0196 0.0042 0.0126 0.0074 0.0126 0.0050
-    [10,] 0.0018 0.0058 0.0074 0.0030 0.0057 0.0010 0.0046 0.0009 0.0046 0.0051
-
 # IsoRank multi-layer
 
-    graph_match_IsoRank(A = A, B = B, seeds = seeds, similarity = startm, 
-        method = "LAP")
+    gm(A = A, B = B, seeds = seeds, similarity = startm, method = "IsoRank", 
+        lap_method = "LAP")
     
     Match (10 x 10):
        corr_A corr_B

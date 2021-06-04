@@ -481,3 +481,10 @@ setMethod("show", signature("summary.graphMatch"),
   }
 )
 
+
+setMethod("print", signature("summary.graphMatch"),
+  function(x){
+    show.summary.graphMatch(x)
+  }
+)
+

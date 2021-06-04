@@ -9,9 +9,10 @@ g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 hs <- 1:5 <= 2
 ss <- t(matrix(c(3, 4)))
-res <- init_start(start = "convex", nns = 3, ns=2,
-      soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
-
+suppressWarnings(
+  res <- init_start(start = "convex", nns = 3, ns=2,
+    soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
+)
 
 
 ## initialize start matrix without soft seeds
@@ -71,8 +72,10 @@ g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 hs <- 1:5 <= 2
 ss <- t(matrix(c(3, 4)))
-res <- init_start(start = "convex", nns = 3, ns=2,
-      soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
+suppressWarnings(
+  res <- init_start(start = "convex", nns = 3, ns=2,
+    soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
+)
 
 expected <- structure(
   c(0.786, 0.053, 0.081,
