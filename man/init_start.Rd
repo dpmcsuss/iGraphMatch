@@ -4,7 +4,7 @@
 \alias{init_start}
 \title{Initialization of the start matrix}
 \usage{
-init_start(start, nns, ns = 0, soft_seeds = NULL, ...)
+init_start(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...)
 }
 \arguments{
 \item{start}{A matrix or a character. Any \code{nns-by-nns} doubly stochastic matrix or start
@@ -19,6 +19,9 @@ input can be a vector of soft seed indices in \eqn{G_1}. Or if there is error in
 input should be in the form of a matrix or a data frame, with the first column being the
 indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 Note that if there are seeds in graphs, seeds should be put before non-seeds.}
+
+\item{seeds}{A vector, a matrix or a data frame. Indicating hard seeds.
+These are necessary for certain starts}
 
 \item{...}{Arguments passed to other start functions. See details in Values section.}
 }

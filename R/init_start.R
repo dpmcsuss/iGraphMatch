@@ -11,6 +11,8 @@
 #' input should be in the form of a matrix or a data frame, with the first column being the
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 #' Note that if there are seeds in graphs, seeds should be put before non-seeds.
+#' @param seeds  A vector, a matrix or a data frame. Indicating hard seeds.
+#' These are necessary for certain starts
 #' @param ... Arguments passed to other start functions. See details in Values section.
 #'
 #' @rdname init_start
@@ -58,7 +60,8 @@
 #' }
 #'
 #' @export
-init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
+init_start <- function(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...){
+
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   if (inherits(start, c("matrix", "Matrix"))){
     if (nss > 0 && any(dim(start) != c(nns - nss, nns - nss))) {
@@ -94,16 +97,15 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     start <- rds_from_sim_start(nns, ns, soft_seeds, ...)
   } else if (start == "convex") {
     # start at bari with soft seeds
-    start <- init_start("bari", nns, ns, soft_seeds)
+    start <- init_start("bari", nns, ns, soft_seeds, seeds)
     # match and pull out doubly stochastic
-    start <- gm(..., method = "convex", start = start)$soft
+    start <- gm(..., seeds = seeds, method = "convex", start = start)$soft
 
     # don't add back in soft seeds b/c we've used them for convex
     # maybe message/warning about this being a silly thing
     # to do
-    if ("seeds" %in% names(list(...))) {
+    if (!is.null(seeds)) {
       # needed to avoid check problems
-      seeds <- list(...)$seeds
       nonseeds <- check_seeds(seeds, nv = nns + ns)$nonseeds
       start <- start[nonseeds$A, nonseeds$B]
     }
@@ -112,20 +114,28 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     stop('Start must be either a matrix, function, or one of "bari", "rds",
       "rds_perm_bari", "rds_from_sim", "convex"')
   }
-  add_soft_seeds(start, nns, ns, soft_seeds)
+  if(ns > 0 & is.null(seeds)) {
+    seeds <- seq(ns)
+  }
+  add_soft_seeds(start, nns, ns, soft_seeds, seeds)
 }
 
 
 # Func that takes a nns - nss dim matrix and returns
 # a nns dim matrix that incorporates soft seeds
-add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
+add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   if (is.null(soft_seeds))
     return(start)
 
+  hard_seeds <- check_seeds(hard_seeds, nv = nns + ns)$seeds
+
+  reindex <- function(s, hs) s - sum(hs < s)
+
   cs <- check_seeds(soft_seeds, nv = nns + ns)
-  seeds_g1 <- cs$seeds$A - ns
-  seeds_g2 <- cs$seeds$B - ns
-  cs <- check_seeds(cs$seeds - ns, nv = nns)
+  seeds_g1 <- sapply(cs$seeds$A, reindex, hs = hard_seeds$A)
+  seeds_g2 <- sapply(cs$seeds$B, reindex, hs = hard_seeds$B)
+  
+  cs <- check_seeds(data.frame(A = seeds_g1, B = seeds_g2), nv = nns)
   nonseeds_g1 <- cs$nonseeds$A
   nonseeds_g2 <- cs$nonseeds$B
   nss <- nrow(cs$seeds)
@@ -134,7 +144,8 @@ add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
-  # avoid message about inefficiently treating single elements
+
+  # Hack to avoid message about inefficiently treating single elements
   suppressMessages(
     new_start[cbind(seeds_g1, seeds_g2)] <- 1
   )

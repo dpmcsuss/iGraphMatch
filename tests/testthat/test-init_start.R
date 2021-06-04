@@ -175,8 +175,11 @@ test_that(
 test_that(
   "soft seeds with non-initial seeds",
   {
-    seeds <- c(1, 4, 10)
+    seeds <- c(1, 4)
     soft_seeds <- c(2, 3)
-    stop("This currently breaks things")
+
+    s <- init_start("bari", nns = 5, seeds = seeds, soft_seeds = soft_seeds)
+
+    expect_equal(diag(s@x), c(1, 1, 0, 0, 0))
   }
 )
