@@ -91,7 +91,7 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   m
 }
 
-.onLoad <- function(libname, pkgname) {
+.onAttach <- function(libname, pkgname) {
   packageStartupMessage(
 "Thanks for using iGraphMatch!
 We'd love to get feedback on what you like, what you don't like, 

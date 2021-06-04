@@ -71,13 +71,13 @@ setGeneric(
 
 #' @method as.character graphMatch
 #' @export
-as.character.graphMatch <- function(from) {
+as.character.graphMatch <- function(x, ...) {
   paste0(
-    "Call:", as.character(from@call), "\n",
+    "Call:", as.character(x@call), "\n",
     "Match (",
-    paste(as.character(from@nnodes), collapse = " x "),
+    paste(as.character(x@nnodes), collapse = " x "),
     "):\n",
-    as.character(from@corr)
+    as.character(x@corr)
   )
 }
 
@@ -85,7 +85,9 @@ as.character.graphMatch <- function(from) {
 
 #'
 # #' @rdname graphMatch_methods
-setAs("graphMatch", "character", as.character.graphMatch)
+setAs("graphMatch", "character", 
+  function(from)  as.character.graphMatch(from)
+  )
 
 
 # #' @rdname graphMatch_methods
