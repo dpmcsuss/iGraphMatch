@@ -1,5 +1,34 @@
 
-
+#' @title Parameter checking for a graph-pair
+#'
+#' @description Internal function that checks that the pair of graphs passed
+#'  to a matching-related functions satisfies necessary conditions. check_single_graph
+#'  does similar checks but just for one graph or list of graphs.
+#'
+#' @param A A matrix, an 'igraph' object, or list of either.
+#' @param B A matrix, an 'igraph' object, or list of either.
+#' @param same_order Whether the returned objects should have the same number of nodes.
+#'  If the graphs start with different numbers of nodes the smaller graph is padded with
+#'  isolated vertices. (default = TRUE)
+#' @param square Whether the matrices need to be square. (default = TRUE)
+#'  Currently non-square matrices are not supported.
+#' @param as_list Whether to return the results as a matrix_list. (default = TRUE)
+#'  If FALSE and A and B have length > 1
+#' @param as_igraph Whether to return an igraph object. (default=FALSE)
+#'  Only allowed if the original parameters are igraph objects.
+#'  If FALSE, then this converts the objects to sparse matrices.
+#'
+#' @details If A and B are lists of matrices or igraph objects, then the lists
+#'  must be the same length. Additionally, within each list the graphs need to have the
+#'  same number of vertices but this does not need to be true across lists.
+#'
+#' @rdname check_graphs
+#' @return List containing A and B modified according to the parameters and the number of 
+#'  vertices in each graph in totv1 and totv2.
+#'  
+#'
+#' @export
+#'
 check_graph <- function(A, B,
   same_order = TRUE, square = TRUE, 
   as_list = TRUE, as_igraph = FALSE) {
@@ -96,4 +125,60 @@ check_graph <- function(A, B,
   }
 
   list(g1 = A, g2 = B, totv1 = totv1, totv2 = totv2)
+}
+
+
+#' @rdname check_graph
+check_single_graph <- function(A, square = TRUE, 
+  as_list = TRUE, as_igraph = FALSE) {
+
+
+  if (as_igraph) {
+    if (igraph::is.igraph(A)) {
+        return(A)
+    }
+    stop("Check single graph only supports as_igraph = TRUE if both A is an igraph object")
+    # return(check_graph_igraph(A, B, same_order))
+  }
+
+  # this will make the graphs be matrices if they are igraph objects
+  if (is.list(A) && !igraph::is.igraph(A)) {
+    A <- matrix_list(lapply(A, function(Al) Al[]))
+  } else {
+    A <- matrix_list(list(A[]))
+  }
+  
+  totv <- ncol(A[[1]])
+  
+  if (any(sapply(A, function(Al) ncol(Al) != totv))) {
+    stop("A contains graphs of different orders. All layers must have the same number of vertices.")
+  }
+  if (square) {
+    if (any(sapply(A, function(Al) nrow(Al) != totv))) {
+      stop("A is not square. This method only supports ",
+        "square matrices for matching.")
+    }
+  } else {
+    stop("square = FALSE is not yet supported for check_graph")
+  }
+
+
+  try({
+    A <- matrix_list(lapply(A, function(Al) as(Al, "dgCMatrix")))
+  }, silent = TRUE)
+  # try({
+  #   A <- as(A, "dgCMatrix")
+  #   B <- as(B, "dgCMatrix")
+  # }, silent = TRUE)
+
+  if (!as_list) {
+    if (length(A) > 1) {
+      stop("A is multi-layer and must be converted to single layer.\
+       (check_graph: is_list = FALSE)")
+    }  else {
+      A <- A[[1]]
+    }
+  }
+
+  A
 }
