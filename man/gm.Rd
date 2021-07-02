@@ -42,8 +42,8 @@ for more information.}
 }
 \description{
 \code{gm} is used to match a pair of given graphs, with specifications
-  of the adjacency matrices of two graph pairs, prior knowledge and a graph matching
-  method.
+  of the adjacency matrices of for a pair of graphs, possible prior knowledge, and
+  a graph matching method.
 }
 \details{
 aaa

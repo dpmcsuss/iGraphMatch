@@ -47,7 +47,9 @@ setGeneric(
     detail = list()
   ) {
 
-    # check args ....
+    if (!is.data.frame(corr)) {
+      stop("Correspondence corr must be stored as a data.frame")
+    }
     gm <- new(
       "graphMatch",
       corr = corr,

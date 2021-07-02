@@ -2,7 +2,6 @@
 % Please edit documentation in R/gm_convex.R, R/gm_indefinite.R, R/gm_path.R
 \name{graph_match_convex}
 \alias{graph_match_convex}
-\alias{graph_match_FW}
 \alias{gm_indefinite}
 \alias{graph_match_PATH}
 \title{Frank-Wolfe Graph Matching Methods}
@@ -15,16 +14,6 @@ graph_match_convex(
   start = "bari",
   max_iter = 100,
   tol = 1e-05,
-  lap_method = NULL
-)
-
-graph_match_FW(
-  A,
-  B,
-  seeds = NULL,
-  similarity = NULL,
-  start = "bari",
-  max_iter = 20,
   lap_method = NULL
 )
 

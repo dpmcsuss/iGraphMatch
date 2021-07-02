@@ -2,8 +2,9 @@
 #' @title Parameter checking for a graph-pair
 #'
 #' @description Internal function that checks that the pair of graphs passed
-#'  to a matching-related functions satisfies necessary conditions. check_single_graph
-#'  does similar checks but just for one graph or list of graphs.
+#'  to a matching-related functions satisfies necessary conditions and modifies
+#'  them according to specified parameters. check_single_graph
+#'  does similar checks and modifications but just for one graph or list of graphs.
 #'
 #' @param A A matrix, an 'igraph' object, or list of either.
 #' @param B A matrix, an 'igraph' object, or list of either.
@@ -22,7 +23,7 @@
 #'  must be the same length. Additionally, within each list the graphs need to have the
 #'  same number of vertices but this does not need to be true across lists.
 #'
-#' @rdname check_graphs
+#' @rdname check_graph
 #' @return List containing A and B modified according to the parameters and the number of 
 #'  vertices in each graph in totv1 and totv2.
 #'  

@@ -71,7 +71,7 @@
 #' summary(match_multi_layer, A, B)
 #'
 #'
-graph_match_FW <- function(A, B, seeds = NULL,
+gm_indefinite <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari",
   max_iter = 20, lap_method = NULL) {
 
@@ -199,7 +199,3 @@ graph_match_FW <- function(A, B, seeds = NULL,
     )
   )
 }
-
-#' @rdname gm_fw
-gm_indefinite <- graph_match_FW
-

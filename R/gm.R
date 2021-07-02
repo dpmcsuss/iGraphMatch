@@ -1,8 +1,8 @@
 #' @title Graph Matching Methods
 #'
 #' @description \code{gm} is used to match a pair of given graphs, with specifications
-#'   of the adjacency matrices of two graph pairs, prior knowledge and a graph matching
-#'   method.
+#'   of the adjacency matrices of for a pair of graphs, possible prior knowledge, and
+#'   a graph matching method.
 #'
 #' @param A A matrix, 'igraph' object, or list of either.
 #' @param B A matrix, 'igraph' object, or list of either.
@@ -49,6 +49,11 @@
 #'
 #'
 gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...){
+
+  methods <- c("indefinite", "convex", "PATH", "percolation", "IsoRank", "Umeyama")
+  if (!(method %in% methods)) {
+    stop("Method must be one of: ", paste(methods, collapse = ", "))
+  }
 
   # A, B argument checks
   graph_pair <- check_graph(A, B)
