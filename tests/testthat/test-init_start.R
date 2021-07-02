@@ -146,7 +146,7 @@ test_that(
   {
     expect_error(
       init_start("string", 10),
-      "Start must be either a matrix, function, or one of.*"
+      "start must be either a matrix, function, or one of.*"
     )
   }
 )

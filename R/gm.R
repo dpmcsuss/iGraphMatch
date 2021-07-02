@@ -20,7 +20,7 @@
 #'
 #' @details aaa
 #'
-#' @return \code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match_PATH}
+#' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
 #'   return an object of class "gm" which is a list containing the following
 #'   components:
 #'
@@ -72,7 +72,7 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
 
   if(method == "indefinite"){
-    m <- graph_match_FW(A, B, seeds, similarity, ...)
+    m <- graph_match_indefinite(A, B, seeds, similarity, ...)
   } else if(method == "convex"){
     m <- graph_match_convex(A, B, seeds, similarity, ...)
   } else if(method == "PATH"){

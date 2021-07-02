@@ -21,7 +21,7 @@
 #'
 #' @rdname gm_fw
 #'
-#' @return \code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match_PATH}
+#' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
 #'   return an object of class "gm" which is a list containing the following
 #'   components:
 #'
@@ -71,7 +71,7 @@
 #' summary(match_multi_layer, A, B)
 #'
 #'
-gm_indefinite <- function(A, B, seeds = NULL,
+graph_match_indefinite <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari",
   max_iter = 20, lap_method = NULL) {
 

@@ -25,7 +25,7 @@ corresponding indices of \eqn{G_2}.}
 for more information.}
 }
 \value{
-\code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match_PATH}
+\code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
   return an object of class "gm" which is a list containing the following
   components:
 
