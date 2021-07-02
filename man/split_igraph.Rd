@@ -15,7 +15,8 @@ split_igraph(g, e_attr, strip_vertex_attr = FALSE)
 attribute from the new graphs}
 }
 \value{
-A named list of 'igraph' objects
+A named list of 'igraph' objects with names corresponding to the values of
+ the edge attributes.
 }
 \description{
 Given an 'igraph' object and an edge attribute, this function

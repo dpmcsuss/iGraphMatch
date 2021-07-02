@@ -11,7 +11,8 @@
 #' @param strip_vertex_attr Whether to remove all vertex
 #'  attribute from the new graphs
 #'
-#' @returns A named list of 'igraph' objects
+#' @returns A named list of 'igraph' objects with names corresponding to the values of
+#'  the edge attributes.
 #'
 #' @examples
 #' g <- igraph::sample_gnm(20, 60)
