@@ -9,10 +9,10 @@ seeds <- 1:3
 match <- gm(A, B, seeds, r = 3, method = "percolation")
 
 test_that("best matches for all matches using all measures", {
-  expect_equal(nrow(best_matches(A, B, match, measure = "row_cor", 
+  expect_equal(nrow(best_matches(A, B, match, measure = "row_cor",
                                          num = 4)), 4)
-  expect_equal(nrow(best_matches(A, B, match, measure = "row_diff", 
+  expect_equal(nrow(best_matches(A, B, match, measure = "row_diff",
                                  num = 4)), 4)
-  expect_equal(nrow(best_matches(A, B, match, measure = "row_perm_stat", 
+  expect_equal(nrow(best_matches(A, B, match, measure = "row_perm_stat",
                                  num = 4)), 4)
 })
