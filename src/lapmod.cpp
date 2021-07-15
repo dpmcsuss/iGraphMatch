@@ -139,7 +139,7 @@ int_t _carr_sparse(
                 cj = cc[k];
                 k++;
             } else {
-                PRINTF("NOT GOOD   ");
+                PRINTF("NOT GOOD   %d", j);
                 cj = large;
             }
             const cost_t c = cj - v[j];
