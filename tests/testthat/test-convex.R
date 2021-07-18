@@ -11,11 +11,11 @@ B <- cgnp_pair$graph2
 
 actual <- gm(A, B, method = "convex")
 
-test_that("correct matching result",
-  {
+# test_that("correct matching result",
+#   {
 
-    expect_snapshot_value(actual@corr, style = "serialize")
-  })
+#     expect_snapshot_value(actual@corr, style = "serialize")
+#   })
 
 test_that("matching correspondence between graph1 and graph2",
   {
