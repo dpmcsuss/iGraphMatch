@@ -4,7 +4,7 @@
 \alias{do_lap}
 \title{Linear (sum) assignment problem}
 \usage{
-do_lap(score, method)
+do_lap(score, method = "clue")
 }
 \arguments{
 \item{score}{matrix of pairwise scores}
@@ -23,9 +23,12 @@ where \eqn{\Pi_n} denotes all permutations on n objects.
 }
 \details{
 Solves a linear assignment using one of three methods.
- clue uses solve_lsap from the clue package.
- lapjv uses the Jonker-Volgenaut approach implemented in this package.
- lapmod use a version that exploits sparsity in the score matrix.
+ "clue" uses \code{solve_lsap} from the clue package.
+ "lapjv" uses the Jonker-Volgenaut approach implemented in this package.
+ "lapmod" use a modification of JV that exploits sparsity in the score matrix.
+ 
+ Scores do not need to be non-negative. For "clue" the scores are pre-translated to be
+ non-negative which preserves the LAP solution.
 }
 \examples{
 set.seed(12345)

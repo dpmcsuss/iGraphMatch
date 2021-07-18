@@ -1,4 +1,5 @@
 
+set.seed(1234)
 
 x <- Matrix::rsparsematrix(10, 10, .5)
 a <- matrix(runif(30), 10)
@@ -207,7 +208,7 @@ test_that("warning on drop",
   {
     expect_warning(
       s[1:3, 1:3, drop = TRUE],
-      "drop = TRUE is ignored for the splrMatrix class. cast to another clas first"
+      "drop = TRUE is ignored for the splrMatrix class. cast to another class first"
     )
   }
 )
@@ -217,7 +218,7 @@ test_that("warning on drop",
   {
     expect_warning(
       s[, 1:3, drop = TRUE],
-      "drop = TRUE is ignored for the splrMatrix class. cast to another clas first"
+      "drop = TRUE is ignored for the splrMatrix class. cast to another class first"
     )
   }
 )
@@ -227,7 +228,7 @@ test_that("warning on drop",
   {
     expect_warning(
       s[1:3, , drop = TRUE],
-      "drop = TRUE is ignored for the splrMatrix class. cast to another clas first"
+      "drop = TRUE is ignored for the splrMatrix class. cast to another class first"
     )
   }
 )
@@ -236,15 +237,24 @@ test_that("warning on drop",
   {
     expect_warning(
       s[1:3, 1:10 < 3, drop = TRUE],
-      "drop = TRUE is ignored for the splrMatrix class. cast to another clas first"
+      "drop = TRUE is ignored for the splrMatrix class. cast to another class first"
     )
   }
 )
+
 test_that("warning on drop",
   {
     expect_warning(
       s[1:10 < 3, 1:3, drop = TRUE],
-      "drop = TRUE is ignored for the splrMatrix class. cast to another clas first"
+      "drop = TRUE is ignored for the splrMatrix class. cast to another class first"
     )
+  }
+)
+
+test_that(
+  "subtraction/negation works",
+  {
+    t <- s
+    expect_lt(sum(abs(as.matrix(t - s))), 1e-12)
   }
 )

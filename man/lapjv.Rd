@@ -2,24 +2,30 @@
 % Please edit documentation in R/rlapjv.R
 \name{lapjv}
 \alias{lapjv}
-\title{Solves the linear assignment problem using the Jonker-Vogenant algorithm}
+\alias{lapmod}
+\title{Solves a linear assignment problem using the Jonker-Vogenant algorithm or LAPMOD variant}
 \usage{
 lapjv(cost, maximize = FALSE)
+
+lapmod(cost, maximize = FALSE)
 }
 \arguments{
-\item{cost}{A non-negative matrix-like object that can be coerced to a matrix}
+\item{cost}{For lapjv, an object that can be coerced to a matrix. For lapmod, a sparseMatrix.}
 
 \item{maximize}{If FALSE (default) then costs are minimized and if TRUE the
 costs are maximized}
 }
 \value{
-The assignment of rows to columns as an integer vector
+The assignment of rows to columns as a vector.
 }
 \description{
-Find a set of vertices pairs in the order of goodness of matching according to a
-specified measure.
+Find the matching of rows to columns that minimizes or maximizes 
+the cost. See \link{do_lap} for usage.
 }
 \details{
-The C++ code for this method is modified from code in the
+The C++ code for these method is modified from code in the
  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
+ 
+ The cost matrix is padded with a single row and column of very large entries that
+ helps to avoid stability issues with the algorithms.
 }

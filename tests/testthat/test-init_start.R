@@ -9,9 +9,10 @@ g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 hs <- 1:5 <= 2
 ss <- t(matrix(c(3, 4)))
-res <- init_start(start = "convex", nns = 3, ns=2,
-      soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
-
+suppressWarnings(
+  res <- init_start(start = "convex", nns = 3, ns=2,
+    soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
+)
 
 
 ## initialize start matrix without soft seeds
@@ -71,8 +72,10 @@ g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 hs <- 1:5 <= 2
 ss <- t(matrix(c(3, 4)))
-res <- init_start(start = "convex", nns = 3, ns=2,
-      soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
+suppressWarnings(
+  res <- init_start(start = "convex", nns = 3, ns=2,
+    soft_seeds = ss, A = g1[], B = g2[], seeds = hs)
+)
 
 expected <- structure(
   c(0.786, 0.053, 0.081,
@@ -143,7 +146,7 @@ test_that(
   {
     expect_error(
       init_start("string", 10),
-      "Start must be either a matrix, function, or one of.*"
+      "start must be either a matrix, function, or one of.*"
     )
   }
 )
@@ -166,5 +169,17 @@ test_that(
       "Error: sim must be a matrix-like object.*"
     )
 
+  }
+)
+
+test_that(
+  "soft seeds with non-initial seeds",
+  {
+    seeds <- c(1, 4)
+    soft_seeds <- c(2, 3)
+
+    s <- init_start("bari", nns = 5, seeds = seeds, soft_seeds = soft_seeds)
+
+    expect_equal(diag(s@x), c(1, 1, 0, 0, 0))
   }
 )

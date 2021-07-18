@@ -1,19 +1,23 @@
 #
 
-#' @title Solves the linear assignment problem using the Jonker-Vogenant algorithm
+#' @title Solves a linear assignment problem using the Jonker-Vogenant algorithm or LAPMOD variant
 #'
-#' @description Find a set of vertices pairs in the order of goodness of matching according to a
-#' specified measure.
+#' @description Find the matching of rows to columns that minimizes or maximizes 
+#' the cost. See \link{do_lap} for usage.
 #'
-#' @param cost A non-negative matrix-like object that can be coerced to a matrix
+#' @param cost For lapjv, an object that can be coerced to a matrix. For lapmod, a sparseMatrix.
 #' @param maximize If FALSE (default) then costs are minimized and if TRUE the
 #' costs are maximized
 #'
-#' @details The C++ code for this method is modified from code in the
+#' @details The C++ code for these method is modified from code in the
 #'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
+#'  
+#'  The cost matrix is padded with a single row and column of very large entries that
+#'  helps to avoid stability issues with the algorithms.
 #'
-#' @return The assignment of rows to columns as an integer vector
+#' @return The assignment of rows to columns as a vector.
 #'
+#' @rdname lapjv
 lapjv <- function(cost, maximize = FALSE) {
     m <- max(cost, 10)
     n <- nrow(cost)
@@ -39,20 +43,7 @@ lapmod_index <- function(n, cc, ii, kk, maximize = FALSE) {
     cpp_lapmod(n, cc, ii, kk, maximize)
 }
 
-#' @title Solves the linear assignment problem using the LAPMOD algorithm
-#'
-#' @description Find a set of vertices pairs in the order of goodness of matching according to a
-#' specified measure.
-#'
-#' @param cost A non-negative CsparseMatrix object from the 'Matrix' package
-#' @param maximize If FALSE (default) then costs are minimized and if TRUE the
-#' costs are maximized
-#'
-#' @details The 'C++' code for this method is modified from code in the
-#'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
-#'
-#' @return The assignment of rows to columns as an integer vector
-#'
+#' @rdname lapjv
 lapmod <- function(cost, maximize = FALSE){
     cost <- Matrix::Matrix(cost, sparse = TRUE)
     n <- nrow(cost)

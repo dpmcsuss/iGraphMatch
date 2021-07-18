@@ -162,7 +162,7 @@ edge_match_info <- function(corr, A, B,
     # zero in A but not B
     res$extra_edges <- length(setdiff(nzB, nzA))
     # zero in A and B, ie the rest
-    res$common_non_edges <- nA^2 - nA - Reduce(sum, res)
+    # res$common_non_edges <- nA^2 - nA - Reduce(sum, res)
 
     # if undirected, divide by 2
     if (!directed) {

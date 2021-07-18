@@ -173,9 +173,9 @@ set.seed(123)
 Then implement seeded graph matching using the FAQ algorithm in R by using `graph_match_FW` function. To incorporate soft seeds, we specify the `start` argument in `graph_match_FW` function accordingly. Note that in this example, we assume the true permutation to be the identity matrix. 
 ```{r}
 set.seed(123)
-match_bari <- graph_match_FW(g1, g2, seeds, start = start_bari)
-match_rds <- graph_match_FW(g1, g2, seeds, start = start_rds)
-match_convex <- graph_match_FW(g1, g2, seeds, start = start_convex)
+match_bari <- gm(g1, g2, seeds, method = "indefinite", start = start_bari)
+match_rds <- gm(g1, g2, seeds, method = "indefinite", start = start_rds)
+match_convex <- gm(g1, g2, method = "indefinite", seeds, start = start_convex)
 err_bari_bad <- mean(match_bari$corr$corr_A[!seeds] != match_bari$corr$corr_B[!seeds])
 err_rds_bad <- mean(match_rds$corr$corr_A[!seeds] != match_rds$corr$corr_B[!seeds])
 err_convex_bad <- mean(match_convex$corr$corr_A[!seeds] != match_convex$corr$corr_B[!seeds])
@@ -185,9 +185,9 @@ Since in this example both of the soft seeds are incorrect, intuitively not inco
 
 ```{r }
 set.seed(123)
-match_nss_bari <- graph_match_FW(g1, g2, seeds, start = "bari")
-match_nss_rds <- graph_match_FW(g1, g2, seeds, start = "rds")
-match_nss_convex <- graph_match_FW(g1, g2, seeds, start = "convex")
+match_nss_bari <- gm(g1, g2, seeds, method = "indefinite", start = "bari")
+match_nss_rds <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
+match_nss_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
 ```
 
 ```{r echo=FALSE}
@@ -212,9 +212,9 @@ start_convex <- init_start(start = "convex", nns = nns, ns = ns, soft_seeds = go
                            A = g1, B = g2, seeds = seeds)
 
 set.seed(123)
-match_bari <- graph_match_FW(g1, g2, seeds, start = start_bari)
-match_rds <- graph_match_FW(g1, g2, seeds, start = start_rds)
-match_convex <- graph_match_FW(g1, g2, seeds, start = start_convex)
+match_bari <- gm(g1, g2, seeds, method = "indefinite", start = start_bari)
+match_rds <- gm(g1, g2, seeds, method = "indefinite", start = start_rds)
+match_convex <- gm(g1, g2, seeds, method = "indefinite", start = start_convex)
 err_bari_good <- mean(match_bari$corr$corr_A[!seeds] != match_bari$corr$corr_B[!seeds])
 err_rds_good <- mean(match_rds$corr$corr_A[!seeds] != match_rds$corr$corr_B[!seeds])
 err_convex_good <- mean(match_convex$corr$corr_A[!seeds] != match_convex$corr$corr_B[!seeds])
@@ -298,7 +298,7 @@ core <- 1 : 50 <= 45
 junk <- !core
 non_seeds <- !seeds
 
-match <- graph_match_FW(g1, g2, seeds, start = "rds")
+match <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
 ```
 
 Then implement the algorithm for finding core vertices, we use row permutation statistic as our measure in this example. The main steps of the algorithm involves calculating values of the row permutation statistic for each nonseed vertex and rank them in the order of increasing value of the statistic. These steps can be implemented by using the `best_matches` function. The `best_matches` function has the functionality of finding best matched vertices and identifying core vertices. Since we want to rank all the non-seed vertices in terms of their row permutation statistics, set argument `x` to be `non_seeds`, which denotes the vertices we are interested in. Also set argument `num` to be the number of non-seeds, which denotes the number of top ranked vertices we want to get. By returning the result in `A_best`, we get the indices corresponding to vertices in $G1$ in the order of decreasing likelihood of being core vertices. 

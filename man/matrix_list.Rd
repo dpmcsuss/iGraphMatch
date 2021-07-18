@@ -100,9 +100,9 @@ matrix_list(ml)
 \item{e2}{As in Matrix}
 }
 \description{
-Basically a list that has matrices that are all 
-the same size. It doesn't do much checking though.
-It can do various things like arithmatic and
-indexing, all of which are done element-wise.
+Basically a list with matrix components that are all 
+the same dimension. Mostly for internal igraphmatch use.
+It can do various things like arithmetic and
+indexing, all of which are done component-wise.
 }
 \keyword{internal}

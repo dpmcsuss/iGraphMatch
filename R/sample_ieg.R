@@ -32,7 +32,13 @@
 #'
 #' @export
 sample_correlated_ieg_pair<- function(n,p_mat,c_mat,ncore=n,directed=FALSE,loops=FALSE,permutation=1:n){
-
+  if (any(p_mat < 0 | p_mat > 1 | is.na(p_mat))) {
+    stop("p_mat must have all entries between 0 and 1 and non-NA.")
+  }
+  if (any(c_mat < 0 | c_mat > 1 | is.na(c_mat))) {
+    stop("c_mat must have all entries between 0 and 1 and non-NA.")
+  }
+  
   if(ncore > n){
     stop("ncore must be at most n.")
   }

@@ -9,7 +9,7 @@ test_that("graphMatch class functions",
   g2 <- igraph::sample_gnm(200, 40)
 
 
-  suppressWarnings(m <- gm_indefinite(g1, g2, start = "bari"))
+  suppressWarnings(m <- gm(g1, g2, start = "bari", method = "indefinite"))
 
   as.character(m)
   str(m)

@@ -28,6 +28,6 @@ These methods return an object of the same type
  returns g1 permuted so as to match with g2.
 }
 \description{
-Methods to use graphMatch objects as operators on 
+Methods to use graphMatch objects as operators on
  igraph and matrix-like objects.
 }

@@ -31,6 +31,14 @@
 
 sample_correlated_sbm_pair <- function(
   n, pref.matrix, block.sizes, rho, core.block.sizes=NULL, permutation=1:n, ...){
+  if (any(pref.matrix < 0 | pref.matrix > 1 | is.na(pref.matrix))) {
+    stop("pref.matrix must have all entries between 0 and 1 and non-NA.")
+  }
+  if (any(rho < 0 | rho > 1 | is.na(rho))) {
+    stop("rho must have all entries between 0 and 1 and non-NA.")
+  }
+  
+  
   if(is.null(core.block.sizes)){
     sample_correlated_sbm_pair_no_junk(n, pref.matrix, block.sizes, rho, permutation, ...)
   } else if(sum(block.sizes >= core.block.sizes) == length(block.sizes)){

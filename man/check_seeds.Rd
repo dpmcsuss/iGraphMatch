@@ -16,8 +16,8 @@ column being the corresponding indices of \eqn{G_2}.}
 
 \item{nv}{An integer. Number of total vertices.}
 
-\item{logical}{An logical. TRUE indicates returns seeds in a vector of logicals where TRUE
-indicates the corresponding vertex is a seed. FALSE indicates returns a data frame.}
+\item{logical}{A logical. TRUE indicates to return seeds in a vector of logicals where TRUE
+indicates the corresponding vertex is a seed. FALSE indicates to return a data frame.}
 }
 \value{
 returns a data frame with the first column being the corresponding indices of

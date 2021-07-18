@@ -7,7 +7,7 @@
 center_graph(A, scheme = c(-1, 1), use_splr = TRUE)
 }
 \arguments{
-\item{A}{A matrix or an 'igraph' object. Adjacency matrix.}
+\item{A}{A matrix, an 'igraph' object. Adjacency matrix.}
 
 \item{scheme}{A character vector, number or pair of numbers. Default c(-1, 1). See Details.}
 
@@ -19,8 +19,7 @@ centered adjacency matrix as a 'splrMatrix' if
  useSplr = TRUE, otherwise as a Matrix object.
 }
 \description{
-Center the adjacency matrix, including center the adjacency matrix to entries
-equal to -1 or 1, center the adjacency matrix by using Universal Singular Value Thresholding.
+Center the adjacency matrix by re-weighting edges according to a specified scheme
 }
 \details{
 The options for scheme are

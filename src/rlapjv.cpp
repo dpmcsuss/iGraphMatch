@@ -27,6 +27,10 @@ IntegerVector cpp_lapjv(NumericMatrix cost, bool maximize = false) {
     cost_p[i] = cost.column(i).begin();
   }
   int c = lapjv_internal(nr, cost_p, x.begin(), y.begin());
+  if(c != 0)
+  {
+    PRINTF("c is %i", c);
+  }
   if(maximize)
   {
     cost = max_cost - cost;
@@ -61,6 +65,10 @@ IntegerVector cpp_lapmod(int n, NumericVector cc, IntegerVector ii, IntegerVecto
 
   int c = lapmod_internal(nr, cc.begin(), ii.begin(), kk.begin(),
     x.begin(), y.begin(), fp_version, max_cost);
+  if(c != 0)
+  {
+    PRINTF("c is %i", c);
+  }
   // std::cout << "Done\n";
   // std::cout << c << "\n";
   // std::cout << x << "\n";

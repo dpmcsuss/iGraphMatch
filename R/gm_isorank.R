@@ -11,7 +11,7 @@
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #' @param max_iter A number. Maximum number of replacing matches equals to
 #'   max_iter times number of total vertices of \eqn{G_1}.
-#' @param method A character. Choice of method to extract mapping from score matrix.
+#' @param lap_method Choice of method to extract mapping from score matrix.
 #'   One of "greedy" or "LAP".
 #'
 #' @return \code{graph_match_IsoRank} returns an object of class "gm" which is a list
@@ -20,10 +20,11 @@
 #'   \describe{
 #'     \item{corr_A}{matching correspondence in \eqn{G_1}}
 #'     \item{corr_B}{matching correspondence in \eqn{G_2}}
+#'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
 #'     \item{soft}{the functional similarity score matrix obtained from the power method
 #'       with which one can extract more than one matching candidates}
-#'     \item{method}{Method for extracting node mapping}
-#'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+#'     \item{match_order}{the order of vertices getting matched}
+#'     \item{lap_method}{Method for extracting node mapping}
 #'   }
 #'
 #'
@@ -39,9 +40,9 @@
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
 #'
-#' GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
+#' GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
 #' GM_IsoRank
-#' summary(GM_IsoRank, g1, g2)
+#' summary(GM_IsoRank, g1, g2, true_label = 1:10)
 #'
 #' get_perm_mat(GM_IsoRank) # get the corresponding permutation matrix
 #' GM_IsoRank %*% g2 # permute the second graph according to match result: PBP^T
@@ -52,25 +53,17 @@
 #'
 #'
 #'
-#' @export
-#'
 graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
-                                max_iter = 50, method = "greedy"){
+                                max_iter = 50, lap_method = "greedy"){
 
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
+  ns <- nrow(seeds)
+  nn <- nv - ns
   nc <- length(A)
 
-  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
-  nonseeds <- seeds$nonseeds
-  seeds <- seeds$seeds
-  if(!is.null(similarity) && dim(similarity)[1] != dim(similarity)[2]){
-    diff <- dim(similarity)[1] - dim(similarity)[2]
-    similarity <- pad(similarity, max(-diff, 0), max(diff, 0))
-  }
   R <- E <- similarity / sum(abs(similarity))
   tol <- 1e-2
   R_tot <- Matrix(0, nrow(R), ncol(R))
@@ -102,7 +95,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
 
   # find GNA
   R <- R_tot[nonseeds$A, nonseeds$B]
-  if(method == "greedy"){
+  if(lap_method == "greedy"){
     corr <- NULL
     while (max(R)>0) {
       max_ind <- Matrix::which(R == max(R), arr.ind = TRUE)
@@ -128,13 +121,13 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
       nnodes = c(totv1, totv2),
       call = cl,
       detail = list(
-        method = method,
+        lap_method = lap_method,
         match_order = order,
         seeds = seeds,
         soft = D
       )
     )
-  } else if(method == "LAP") {
+  } else if(lap_method == "LAP") {
     # make a random permutation
     nn <- nrow(A[[1]]) - nrow(seeds)
     rp <- sample(nn)
@@ -159,7 +152,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
       nnodes = c(totv1, totv2),
       call = cl,
       detail = list(
-        method = method,
+        lap_method = lap_method,
         seeds = seeds,
         soft = D
       )

@@ -66,7 +66,7 @@ set.seed(123)
 graphs <- sample_correlated_gnp_pair(20, .9, .3)
 A <- graphs$graph1
 B <- graphs$graph2
-res <- graph_match_percolation(A, B, 1:4)
+res <- gm(A, B, 1:4, method = "percolation")
 
 plot(A, B, res)
 plot(A[], B[], res)

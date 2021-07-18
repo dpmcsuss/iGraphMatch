@@ -15,7 +15,7 @@
 
 \item{true_label}{the true correspondence (if available)}
 
-\item{directed}{whether to treat the graphs 
+\item{directed}{whether to treat the graphs
 as directed (TRUE) or not directed (FALSE) default is NULL
 which will treat the graphs as directed if either adjacency
 matrix is not symmetric.}

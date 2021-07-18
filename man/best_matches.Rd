@@ -2,21 +2,21 @@
 % Please edit documentation in R/best_matches.R
 \name{best_matches}
 \alias{best_matches}
-\title{Choose best matches}
+\title{Find best matches}
 \usage{
 best_matches(A, B, match, measure, num)
 }
 \arguments{
-\item{A}{A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_1}.}
+\item{A}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
 
-\item{B}{A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_2}.}
+\item{B}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
 
-\item{match}{Graph matching result see graph match methods.}
+\item{match}{Graph matching result see \link{gm}}
 
 \item{measure}{One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
 goodness of matching.}
 
-\item{num}{An integer. Number of pairs of best matched vertices needed.}
+\item{num}{An positive integer. Number of pairs of best matched vertices needed.}
 }
 \value{
 \code{best_matches} returns a data frame with the indices of best matched vertices
@@ -28,8 +28,7 @@ in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G
 \code{row_perm_stat} uses the row permutation statistics value.
 }
 \description{
-Find a set of vertices pairs in the order of goodness of matching according to a
-specified measure.
+Find a set of vertex-pairs in  order of a goodness of matching metric
 }
 \examples{
 cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3, p =  0.5)
@@ -37,7 +36,7 @@ g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:50 <= 10
 nonseeds <- !seeds
-match <- graph_match_FW(g1, g2, seeds)
+match <- gm(g1, g2, seeds, method = "indefinite")
 
 # Application: select best matched seeds from non seeds as new seeds, and do the
 # graph matching iteratively to get higher matching accuracy

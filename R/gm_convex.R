@@ -5,30 +5,22 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 with no seeds
-#' graph_match_FW(g1, g2)
+#' gm(g1, g2, method = "convex")
 #' seeds <- 1:10 <= 3
 #' \donttest{
-#' graph_match_convex(g1, g2, seeds)
+#' gm(g1, g2, seeds, method = "convex")
 #' }
 #'
-#' @export
 #'
 #'
 graph_match_convex <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari", max_iter = 100,
   tol = 1e-5, lap_method = NULL) {
-  graph_pair <- check_graph(A, B)
-  A <- matrix_list(graph_pair[[1]])
-  B <- matrix_list(graph_pair[[2]])
 
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
-  nv <- totv1
-
-  seed_check <- check_seeds(seeds, nv)
-  seeds <- seed_check$seeds
-  nonseeds <- seed_check$nonseeds
-
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
   ns <- nrow(seeds)
   nn <- nv - ns
 
@@ -47,7 +39,6 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   similarity <- similarity %*% Matrix::t(rpmat)
 
   tol0 <- 1

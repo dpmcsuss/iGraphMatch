@@ -1,6 +1,6 @@
 # matching correspondence between graph1 and graph2
 
-    graph_match_PATH(A = A, B = B, seeds = seeds)
+    gm(A = A, B = B, seeds = seeds, method = "PATH")
     
     Match (10 x 10):
        corr_A corr_B
