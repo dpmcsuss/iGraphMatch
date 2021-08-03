@@ -47,7 +47,9 @@ setGeneric(
     detail = list()
   ) {
 
-    # check args ....
+    if (!is.data.frame(corr)) {
+      stop("Correspondence corr must be stored as a data.frame")
+    }
     gm <- new(
       "graphMatch",
       corr = corr,
@@ -71,13 +73,13 @@ setGeneric(
 
 #' @method as.character graphMatch
 #' @export
-as.character.graphMatch <- function(from) {
+as.character.graphMatch <- function(x, ...) {
   paste0(
-    "Call:", as.character(from@call), "\n",
+    "Call:", as.character(x@call), "\n",
     "Match (",
-    paste(as.character(from@nnodes), collapse = " x "),
+    paste(as.character(x@nnodes), collapse = " x "),
     "):\n",
-    as.character(from@corr)
+    as.character(x@corr)
   )
 }
 
@@ -85,7 +87,9 @@ as.character.graphMatch <- function(from) {
 
 #'
 # #' @rdname graphMatch_methods
-setAs("graphMatch", "character", as.character.graphMatch)
+setAs("graphMatch", "character", 
+  function(from)  as.character.graphMatch(from)
+  )
 
 
 # #' @rdname graphMatch_methods
@@ -459,7 +463,7 @@ show.summary.graphMatch <- function(match) {
       cat("\n# True Matches: ", match$n_true_match)
     }
     if(!is.null(match$seeds)) {
-      cat(", # Seeds: ", sum(match$seeds0))
+      cat(", # Seeds: ", sum(match$seeds))
     }
     cat(", # Vertices: ", paste(dim(match), collapse = ", "))
     cat("\n")
@@ -478,6 +482,13 @@ setClass("summary.graphMatch",
 setMethod("show", signature("summary.graphMatch"),
   function(object){
     show.summary.graphMatch(object)
+  }
+)
+
+
+setMethod("print", signature("summary.graphMatch"),
+  function(x){
+    show.summary.graphMatch(x)
   }
 )
 

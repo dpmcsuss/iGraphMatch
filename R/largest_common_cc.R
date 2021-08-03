@@ -1,14 +1,14 @@
-#' @title Find the largest common connected subgraph(LCCS)
+#' @title Find the largest common connected subgraph (LCCS) of two graphs
 #'
-#' @description Assume two aligned graphs, find the largest common connect subgraph of these
-#' two graphs, which is an induced connected subgraph of both graphs that has as many vertices
-#' as possible.
+#' @description Find the largest common connected subgraphs of
+#' two matched graphs, which is an induced connected subgraph of both graphs 
+#' that has as many vertices as possible.
 #'
-#' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
+#' @param A A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.
+#' @param B A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.
 #' @param min_degree A number. Defines the level of connectedness of the 
 #' obtained largest common connected subgraph. The induced subgraph is 
-#' a graph with a minimum degree of vertices more than min_degree.
+#' a graph with a minimum vertex-degree of at least min_degree.
 #'
 #' @rdname largest_common_cc
 #'
@@ -33,11 +33,11 @@
 #' @export
 #'
 largest_common_cc <- function(A, B, min_degree = 1){
-  graph_pair <- check_graph(A, B)
+  graph_pair <- check_graph(A, B, as_list = FALSE)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
-  A <- graph_from_adjacency_matrix(as.matrix(A[[1]]))
-  B <- graph_from_adjacency_matrix(as.matrix(B[[1]]))
+  A <- igraph::graph_from_adjacency_matrix(as.matrix(A))
+  B <- igraph::graph_from_adjacency_matrix(as.matrix(B))
   keep <- rep(TRUE, igraph::vcount(A))
   while (!(igraph::is_connected(A) && igraph::is_connected(B))){
     cc1 <- igraph::components(A)

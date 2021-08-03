@@ -1,14 +1,13 @@
-#' @title Choose best matches
+#' @title Find best matches
 #'
-#' @description Find a set of vertices pairs in the order of goodness of matching according to a
-#' specified measure.
+#' @description Find a set of vertex-pairs in  order of a goodness of matching metric
 #'
-#' @param A A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_2}.
-#' @param match Graph matching result see graph match methods.
+#' @param A A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
+#' @param B A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
+#' @param match Graph matching result see \link{gm}
 #' @param measure One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
 #' goodness of matching.
-#' @param num An integer. Number of pairs of best matched vertices needed.
+#' @param num An positive integer. Number of pairs of best matched vertices needed.
 #'
 #' @return \code{best_matches} returns a data frame with the indices of best matched vertices
 #' in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
@@ -35,10 +34,18 @@
 #'
 best_matches <- function(A, B, match, measure, num){
 
+  if (!(measure %in% c("row_cor", "row_diff", "row_perm_stat"))) {
+    stop('measure must be one of "row_cor", "row_diff", or "row_perm_stat".')
+  }
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   nv <- nrow(A[[1]])
+  
+  if (num < 0 || num > nv) {
+    stop('num must be > 0 and <= number of nodes ', nv)
+  }
+  
   nc <- length(A)
   x <- !check_seeds(match$seeds, nv, logical = TRUE)
   match_corr <- match@corr

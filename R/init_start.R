@@ -2,15 +2,15 @@
 #'
 #' @description Initialize the start matrix for graph matching iteration.
 #'
-#' @param start A matrix or a character. Any \code{nns-by-nns} doubly stochastic matrix or start
-#' method like "bari", "convex" or "rds" to initialize the start matrix.
+#' @param start A matrix, character, or function. A \code{nns-by-nns} matrix, start
+#' method like "bari", "convex" or "rds", or a function  to initialize the start matrix.
+#' If a function, it must have at least the arguments nns, ns, and softs_seeds.
 #' @param nns An integer. Number of non-seeds.
 #' @param ns An integer. Number of seeds.
-#' @param soft_seeds A vector, a matrix or a data frame. If there is no error in the soft seeds,
-#' input can be a vector of soft seed indices in \eqn{G_1}. Or if there is error in soft seeds,
-#' input should be in the form of a matrix or a data frame, with the first column being the
-#' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
-#' Note that if there are seeds in graphs, seeds should be put before non-seeds.
+#' @param soft_seeds A vector, a matrix or a data frame indicating entries of the start matrix
+#'  that will be initialized at 1 to indicate . See \link{check_seeds}.
+#' @param seeds  A vector, a matrix or a data frame. Indicating hard seeds.
+#' These are used for "convex" start but otherwise are ignored. 
 #' @param ... Arguments passed to other start functions. See details in Values section.
 #'
 #' @rdname init_start
@@ -19,19 +19,20 @@
 #' \code{nns-by-nns} doubly stochastic matrix with 1's corresponding to the soft seeds and values
 #' at the other places are derived by different start method.
 #'
-#' There are five options for the start method. \code{bari} initializes at the barycenter.
-#' \code{rds_perm_bari} gives a linear combination of barycenter and a random permutation matrix.
-#'
-#' \code{rds} gives a random doubly stochastic matrix. Users can specify a random
+#'@details
+#' When \code{start} is a character, there are five options.
+#' \itemize{
+#' \item \code{"bari"} initializes at the barycenter.
+#' \item \code{"rds_perm_bari"} gives a linear combination of barycenter and a random permutation matrix.
+#' \item \code{"rds"} gives a random doubly stochastic matrix. Users can specify a random
 #' deviates generator to the \code{distribution} argument, and the default is \code{runif}.
-#'
-#' \code{rds_from_sim} gives a random doubly stochastic matrix derived from similarity scores. One
+#' \item \code{"rds_from_sim"} gives a random doubly stochastic matrix derived from similarity scores. One
 #' needs to input a similarity score matrix to the \code{sim} argument for this method.
-#'
-#' \code{convex} returns the doubly stochastic matrix from the last iteration of running the Frank-
+#' \item \code{"convex"} returns the doubly stochastic matrix from the last iteration of running the Frank-
 #' Wolfe algorithm with convex relaxation initialized at the barycenter. For this method, one needs to
 #' input two graphs \code{A} and \code{B}, as well as \code{seeds} if applicable.
-#'
+#' }
+#' 
 #' @examples
 #' ss <- matrix(c(5, 4, 4, 3), nrow = 2)
 #' # initialize start matrix without soft seeds
@@ -58,7 +59,8 @@
 #' }
 #'
 #' @export
-init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
+init_start <- function(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...){
+
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   if (inherits(start, c("matrix", "Matrix"))){
     if (nss > 0 && any(dim(start) != c(nns - nss, nns - nss))) {
@@ -94,38 +96,45 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     start <- rds_from_sim_start(nns, ns, soft_seeds, ...)
   } else if (start == "convex") {
     # start at bari with soft seeds
-    start <- init_start("bari", nns, ns, soft_seeds)
+    start <- init_start("bari", nns, ns, soft_seeds, seeds)
     # match and pull out doubly stochastic
-    start <- gm(..., method = "convex", start = start)$soft
+    start <- gm(..., seeds = seeds, method = "convex", start = start)$soft
 
     # don't add back in soft seeds b/c we've used them for convex
     # maybe message/warning about this being a silly thing
     # to do
-    if ("seeds" %in% names(list(...))) {
+    if (!is.null(seeds)) {
       # needed to avoid check problems
-      seeds <- list(...)$seeds
       nonseeds <- check_seeds(seeds, nv = nns + ns)$nonseeds
       start <- start[nonseeds$A, nonseeds$B]
     }
     return(start)
   } else {
-    stop('Start must be either a matrix, function, or one of "bari", "rds",
+    stop('start must be either a matrix, function, or one of "bari", "rds",
       "rds_perm_bari", "rds_from_sim", "convex"')
   }
-  add_soft_seeds(start, nns, ns, soft_seeds)
+  if(ns > 0 & is.null(seeds)) {
+    seeds <- seq(ns)
+  }
+  add_soft_seeds(start, nns, ns, soft_seeds, seeds)
 }
 
 
 # Func that takes a nns - nss dim matrix and returns
 # a nns dim matrix that incorporates soft seeds
-add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
+add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   if (is.null(soft_seeds))
     return(start)
 
+  hard_seeds <- check_seeds(hard_seeds, nv = nns + ns)$seeds
+
+  reindex <- function(s, hs) s - sum(hs < s)
+
   cs <- check_seeds(soft_seeds, nv = nns + ns)
-  seeds_g1 <- cs$seeds$A - ns
-  seeds_g2 <- cs$seeds$B - ns
-  cs <- check_seeds(cs$seeds - ns, nv = nns)
+  seeds_g1 <- sapply(cs$seeds$A, reindex, hs = hard_seeds$A)
+  seeds_g2 <- sapply(cs$seeds$B, reindex, hs = hard_seeds$B)
+  
+  cs <- check_seeds(data.frame(A = seeds_g1, B = seeds_g2), nv = nns)
   nonseeds_g1 <- cs$nonseeds$A
   nonseeds_g2 <- cs$nonseeds$B
   nss <- nrow(cs$seeds)
@@ -134,7 +143,11 @@ add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
-  new_start[cbind(seeds_g1, seeds_g2)] <-1
+
+  # Hack to avoid message about inefficiently treating single elements
+  suppressMessages(
+    new_start[cbind(seeds_g1, seeds_g2)] <- 1
+  )
   new_start
 }
 

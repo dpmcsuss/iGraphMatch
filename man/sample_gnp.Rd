@@ -10,14 +10,14 @@ sample_correlated_gnp_pair(n, corr, p, ncore = n, permutation = 1:n, ...)
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
 
 \item{corr}{A number. The target Pearson correlation between the adjacency matrices
-of the generated graphs. It must be in open (0,1) interval.}
+of the generated graphs. It must be in  [0,1] interval.}
 
 \item{p}{A number. Edge probability between two vertices. It must be in open
-(0,1) interval.}
+[0,1] interval.}
 
 \item{ncore}{An integer. Number of core vertices.}
 
-\item{permutation}{A numeric vector,permute second graph.}
+\item{permutation}{A numeric vector to permute second graph.}
 
 \item{...}{Passed to \code{sample_gnp}.}
 }

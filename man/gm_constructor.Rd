@@ -24,9 +24,9 @@ graphMatch object
 An 'S4' class for the results of a graph matching function
 }
 \details{
-graphMatch objects are returned by any of the graph 
+graphMatch objects are returned by any of the graph
 matching methods implemented in the iGraphMatch package. These
-objects are primarily to represent the found correspondence between 
+objects are primarily to represent the found correspondence between
 the two vertex sets. This is represented by a data.frame with two columns
 indicating the aligned vertex-pairs across the two graphs.
 }

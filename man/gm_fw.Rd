@@ -2,8 +2,7 @@
 % Please edit documentation in R/gm_convex.R, R/gm_indefinite.R, R/gm_path.R
 \name{graph_match_convex}
 \alias{graph_match_convex}
-\alias{graph_match_FW}
-\alias{gm_indefinite}
+\alias{graph_match_indefinite}
 \alias{graph_match_PATH}
 \title{Frank-Wolfe Graph Matching Methods}
 \usage{
@@ -18,17 +17,7 @@ graph_match_convex(
   lap_method = NULL
 )
 
-graph_match_FW(
-  A,
-  B,
-  seeds = NULL,
-  similarity = NULL,
-  start = "bari",
-  max_iter = 20,
-  lap_method = NULL
-)
-
-gm_indefinite(
+graph_match_indefinite(
   A,
   B,
   seeds = NULL,
@@ -75,7 +64,7 @@ max_iter times number of total vertices of \eqn{G_1}.}
 \item{epsilon}{A small number}
 }
 \value{
-\code{graph_match_FW}, \code{graph_match_convex} and \code{graph_match_PATH}
+\code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
   return an object of class "gm" which is a list containing the following
   components:
 

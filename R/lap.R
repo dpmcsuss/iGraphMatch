@@ -18,9 +18,12 @@
 #'
 #'
 #' @details Solves a linear assignment using one of three methods.
-#'  clue uses solve_lsap from the clue package.
-#'  lapjv uses the Jonker-Volgenaut approach implemented in this package.
-#'  lapmod use a version that exploits sparsity in the score matrix.
+#'  "clue" uses \code{solve_lsap} from the clue package.
+#'  "lapjv" uses the Jonker-Volgenaut approach implemented in this package.
+#'  "lapmod" use a modification of JV that exploits sparsity in the score matrix.
+#'  
+#'  Scores do not need to be non-negative. For "clue" the scores are pre-translated to be
+#'  non-negative which preserves the LAP solution.
 #'
 #'
 #' @examples
@@ -34,6 +37,9 @@
 #'
 #' @export
 do_lap <- function(score, method = "clue"){
+  if (!inherits(score, c("matrix", "Matrix"))) {
+    stop("score must a matrix-like object.")
+  }
   n <- nrow(score)
   method <- set_lap_method(method, n, n)
   switch(method,
@@ -55,15 +61,9 @@ do_lap <- function(score, method = "clue"){
       score <- score - min(score)
       as.vector(clue::solve_LSAP(score,
         maximum = TRUE))
-    }
-    # ,
-    # sinkhorn = {
-    #   lambda <- 10
-    #   n_iter <- 20
-    #   sinkhorn(exp(lambda * score), n_iter)
-    # },
-    # stop(paste0("The LAP method ", method,
-    #     " is not implemented. Please use one of lapjv, lapmod, or clue."))
+    },
+    stop(paste0("The LAP method '", method,
+        "' is not implemented. Please use one of 'lapjv', 'lapmod', or 'clue'."))
   )
 }
 
@@ -84,6 +84,6 @@ set_lap_method <- function(lap_method, totv1, totv2){
 }
 
 
-project_to_ds <- function(m, max_iter, tol) {
-  # G_t <- [G_t + 1/n * (I - G_t + 11^T G_t/n)11^T - 11^T G_t/n)^+
-}
+# project_to_ds_l2 <- function(m, max_iter, tol) {
+#   # Iterate G_t <- [G_t + 1/n * (I - G_t + 11^T G_t/n)11^T - 11^T G_t/n)^+
+# }

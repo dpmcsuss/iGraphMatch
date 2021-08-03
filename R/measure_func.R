@@ -1,4 +1,3 @@
-#' @importFrom stats cor
 # Measures for computing the goodness of matching for each vertex.
 
 row_cor <- function(g1,g2){
@@ -7,7 +6,7 @@ row_cor <- function(g1,g2){
 
 
   sapply(1:nrow(g1),
-    function(v) suppressWarnings(1-cor(g1[v,],g2[v,])))
+    function(v) suppressWarnings(1-stats::cor(g1[v,],g2[v,])))
 }
 
 row_diff <- function(g1,g2){

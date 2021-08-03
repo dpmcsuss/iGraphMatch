@@ -11,8 +11,8 @@
 #' column being the corresponding indices of \eqn{G_2}.
 #'
 #' @param nv An integer. Number of total vertices.
-#' @param logical An logical. TRUE indicates returns seeds in a vector of logicals where TRUE
-#' indicates the corresponding vertex is a seed. FALSE indicates returns a data frame.
+#' @param logical A logical. TRUE indicates to return seeds in a vector of logicals where TRUE
+#' indicates the corresponding vertex is a seed. FALSE indicates to return a data frame.
 #'
 #' @return returns a data frame with the first column being the corresponding indices of
 #' \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2} or a vector of
