@@ -80,7 +80,7 @@
 \alias{str,splrMatrix-method}
 \alias{t,splrMatrix-method}
 \alias{diag,splrMatrix-method}
-\title{'SPLR' Methods}
+\title{"SPLR" Methods}
 \usage{
 \S4method{show}{splrMatrix}(object)
 
@@ -245,31 +245,31 @@
 \S4method{diag}{splrMatrix}(x)
 }
 \arguments{
-\item{object}{As in 'Matrix'}
+\item{object}{As in "Matrix"}
 
-\item{x}{As in 'Matrix'}
+\item{x}{As in "Matrix"}
 
-\item{y}{As in 'Matrix'}
+\item{y}{As in "Matrix"}
 
-\item{e1}{As in 'Matrix'}
+\item{e1}{As in "Matrix"}
 
-\item{e2}{As in 'Matrix'}
+\item{e2}{As in "Matrix"}
 
-\item{type}{As in 'Matrix'}
+\item{type}{As in "Matrix"}
 
-\item{...}{As in 'Matrix'}
+\item{...}{As in "Matrix"}
 
-\item{na.rm}{As in 'Matrix'}
+\item{na.rm}{As in "Matrix"}
 
-\item{dims}{As in 'Matrix'}
+\item{dims}{As in "Matrix"}
 
-\item{i}{As in 'Matrix'}
+\item{i}{As in "Matrix"}
 
-\item{j}{As in 'Matrix'}
+\item{j}{As in "Matrix"}
 
-\item{drop}{As in 'Matrix'}
+\item{drop}{As in "Matrix"}
 
-\item{value}{As in 'Matrix'}
+\item{value}{As in "Matrix"}
 }
 \value{
 Results of matrix operations for splrMatrix objects.

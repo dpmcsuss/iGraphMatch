@@ -1,4 +1,4 @@
-
+# Codes below test Expand When Stuck
 
 set.seed(12)
 G <- sample_correlated_gnp_pair(n = 10, corr = .5, p = .5)
@@ -7,15 +7,13 @@ B <- G$graph2
 seeds <- seq(4)
 
 test_that("matching correspondence between graph1 and graph2", {
-  expect_snapshot_value(
-    graph_match_ExpandWhenStuck(A, B, seeds, r = 2),
-    style = "serialize"
-  )
+  tt <- gm(A, B, seeds, method = "percolation", r = 2, ExpandWhenStuck = TRUE)
+  expect_snapshot_output(print(tt))
 })
 
 test_that("test number of seeds", {
   expect_equal(
-    sum(graph_match_ExpandWhenStuck(A, B,seeds, r = 2)$seeds),
+    sum(gm(A, B,seeds, method = "percolation", r = 2, ExpandWhenStuck = TRUE)$seeds),
     length(seeds)
   )
 })
@@ -23,7 +21,7 @@ test_that("test number of seeds", {
 # with similarity score
 sim <- matrix(rnorm(100), 10)
 test_that("exp w. similarity score", {
-  m <- graph_match_ExpandWhenStuck(A, B, seeds = seeds, similarity = sim)
+  m <- gm(A, B, seeds = seeds, similarity = sim, method = "percolation", ExpandWhenStuck = TRUE)
   expect_equal(
     m[m$seeds],
     data.frame(corr_A = 1:4, corr_B = 1:4),
@@ -32,7 +30,7 @@ test_that("exp w. similarity score", {
 })
 
 test_that("exp w. similarity score & no seeds", {
-  m <- graph_match_ExpandWhenStuck(A, B, seeds = NULL, similarity = sim)
+  m <- gm(A, B, seeds = NULL, similarity = sim, method = "percolation", ExpandWhenStuck = TRUE)
   expect_equal(sum(m$seeds), 0)
 })
 
@@ -42,7 +40,7 @@ g <- sample_correlated_gnp_pair(n = 10, corr = 0.5, p = 0.5, directed = TRUE)
 A <- g$graph1
 B <- g$graph2
 test_that("perco w. similarity score", {
-  m <- graph_match_ExpandWhenStuck(A, B, seeds = seeds, similarity = sim)
+  m <- gm(A, B, seeds = seeds, similarity = sim, method = "percolation", ExpandWhenStuck = TRUE)
   expect_equal(
     m[m$seeds],
     data.frame(corr_A = 1:4, corr_B = 1:4),
@@ -58,7 +56,7 @@ A <- lapply(gp_list, function(gp)gp[[1]])
 B <- lapply(gp_list, function(gp)gp[[2]])
 seeds <- 1:3
 test_that("perco w. similarity score", {
-  m <- graph_match_ExpandWhenStuck(A, B, seeds = seeds)
+  m <- gm(A, B, seeds = seeds, method = "percolation", ExpandWhenStuck = TRUE)
   expect_equal(
     m[m$seeds],
     data.frame(corr_A = 1:3, corr_B = 1:3),

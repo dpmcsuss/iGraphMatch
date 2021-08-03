@@ -1,6 +1,6 @@
 # matching correspondence between graph1 and graph2
 
-    graph_match_Umeyama(A = A, B = B, seeds = seeds, similarity = startm)
+    gm(A = A, B = B, seeds = seeds, similarity = startm, method = "Umeyama")
     
     Match (10 x 10):
        corr_A corr_B
@@ -27,7 +27,7 @@
 
 # matching correspondence between graph1 and graph2 for directed graphs
 
-    graph_match_Umeyama(A = A, B = B, seeds = seeds, similarity = startm)
+    gm(A = A, B = B, seeds = seeds, similarity = startm, method = "Umeyama")
     
     Match (10 x 10):
        corr_A corr_B
@@ -54,7 +54,7 @@
 
 # Umeyama multi-layer
 
-    graph_match_Umeyama(A = A, B = B, seeds = seeds)
+    gm(A = A, B = B, seeds = seeds, method = "Umeyama")
     
     Match (10 x 10):
        corr_A corr_B

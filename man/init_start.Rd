@@ -4,21 +4,22 @@
 \alias{init_start}
 \title{Initialization of the start matrix}
 \usage{
-init_start(start, nns, ns = 0, soft_seeds = NULL, ...)
+init_start(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...)
 }
 \arguments{
-\item{start}{A matrix or a character. Any \code{nns-by-nns} doubly stochastic matrix or start
-method like "bari", "convex" or "rds" to initialize the start matrix.}
+\item{start}{A matrix, character, or function. A \code{nns-by-nns} matrix, start
+method like "bari", "convex" or "rds", or a function  to initialize the start matrix.
+If a function, it must have at least the arguments nns, ns, and softs_seeds.}
 
 \item{nns}{An integer. Number of non-seeds.}
 
 \item{ns}{An integer. Number of seeds.}
 
-\item{soft_seeds}{A vector, a matrix or a data frame. If there is no error in the soft seeds,
-input can be a vector of soft seed indices in \eqn{G_1}. Or if there is error in soft seeds,
-input should be in the form of a matrix or a data frame, with the first column being the
-indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
-Note that if there are seeds in graphs, seeds should be put before non-seeds.}
+\item{soft_seeds}{A vector, a matrix or a data frame indicating entries of the start matrix
+that will be initialized at 1 to indicate . See \link{check_seeds}.}
+
+\item{seeds}{A vector, a matrix or a data frame. Indicating hard seeds.
+These are used for "convex" start but otherwise are ignored.}
 
 \item{...}{Arguments passed to other start functions. See details in Values section.}
 }
@@ -27,22 +28,23 @@ Note that if there are seeds in graphs, seeds should be put before non-seeds.}
 matrix in the graph matching iteration. If conduct a soft seeding graph matching, returns a
 \code{nns-by-nns} doubly stochastic matrix with 1's corresponding to the soft seeds and values
 at the other places are derived by different start method.
-
-There are five options for the start method. \code{bari} initializes at the barycenter.
-\code{rds_perm_bari} gives a linear combination of barycenter and a random permutation matrix.
-
-\code{rds} gives a random doubly stochastic matrix. Users can specify a random
-deviates generator to the \code{distribution} argument, and the default is \code{runif}.
-
-\code{rds_from_sim} gives a random doubly stochastic matrix derived from similarity scores. One
-needs to input a similarity score matrix to the \code{sim} argument for this method.
-
-\code{convex} returns the doubly stochastic matrix from the last iteration of running the Frank-
-Wolfe algorithm with convex relaxation initialized at the barycenter. For this method, one needs to
-input two graphs \code{A} and \code{B}, as well as \code{seeds} if applicable.
 }
 \description{
 Initialize the start matrix for graph matching iteration.
+}
+\details{
+When \code{start} is a character, there are five options.
+\itemize{
+\item \code{"bari"} initializes at the barycenter.
+\item \code{"rds_perm_bari"} gives a linear combination of barycenter and a random permutation matrix.
+\item \code{"rds"} gives a random doubly stochastic matrix. Users can specify a random
+deviates generator to the \code{distribution} argument, and the default is \code{runif}.
+\item \code{"rds_from_sim"} gives a random doubly stochastic matrix derived from similarity scores. One
+needs to input a similarity score matrix to the \code{sim} argument for this method.
+\item \code{"convex"} returns the doubly stochastic matrix from the last iteration of running the Frank-
+Wolfe algorithm with convex relaxation initialized at the barycenter. For this method, one needs to
+input two graphs \code{A} and \code{B}, as well as \code{seeds} if applicable.
+}
 }
 \examples{
 ss <- matrix(c(5, 4, 4, 3), nrow = 2)

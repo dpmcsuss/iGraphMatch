@@ -43,7 +43,7 @@ g2 <- G$graph2
 startm <- matrix(0, 10, 10)
 diag(startm)[1:4] <- 1
 
-GM_Umeyama <- graph_match_Umeyama(g1, g2, similarity = startm)
+GM_Umeyama <- gm(g1, g2, similarity = startm, method = "Umeyama")
 GM_Umeyama
 # generate the corresponding permutation matrix
 get_perm_mat(GM_Umeyama)
@@ -52,6 +52,7 @@ summary(GM_Umeyama, g1, g2)
 # visualize the edge-wise matching performance
 plot(g1, g2, GM_Umeyama)
 plot(g1[], g2[], GM_Umeyama)
+
 
 }
 \references{

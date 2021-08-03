@@ -77,16 +77,16 @@
 
     Sparse part
     3 x 3 sparse Matrix of class "dgCMatrix"
-                                         
-    [1,] 0.66832423 0.13590463 0.19577113
-    [2,] 0.03268557 0.80679463 0.02461517
-    [3,] 0.16308556 0.05730074 0.64370907
+                                       
+    [1,] 0.77770061 0.1112377 0.1110617
+    [2,] 0.05552616 0.7777362 0.0555000
+    [3,] 0.05553555 0.1110262 0.7222006
     plus left factor
     3 x 1 sparse Matrix of class "dgCMatrix"
                   
     [1,] .        
-    [2,] 0.1359046
-    [3,] 0.1359046
+    [2,] 0.1112377
+    [3,] 0.1112377
     times right factor transpose
     3 x 1 sparse Matrix of class "dgCMatrix"
             

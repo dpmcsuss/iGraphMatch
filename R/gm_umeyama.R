@@ -33,7 +33,7 @@
 #' startm <- matrix(0, 10, 10)
 #' diag(startm)[1:4] <- 1
 #'
-#' GM_Umeyama <- graph_match_Umeyama(g1, g2, similarity = startm)
+#' GM_Umeyama <- gm(g1, g2, similarity = startm, method = "Umeyama")
 #' GM_Umeyama
 #' # generate the corresponding permutation matrix
 #' get_perm_mat(GM_Umeyama)
@@ -43,22 +43,17 @@
 #' plot(g1, g2, GM_Umeyama)
 #' plot(g1[], g2[], GM_Umeyama)
 #'
-#' @export
 #'
 graph_match_Umeyama <- function(A, B, seeds = NULL,
                                 similarity = NULL){
 
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
+  ns <- nrow(seeds)
+  nn <- nv - ns
   nc <- length(A)
-
-  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
-  nonseeds <- seeds$nonseeds
-  seeds <- seeds$seeds
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   Grad <- 0
 
   for( ch in 1:nc ){
