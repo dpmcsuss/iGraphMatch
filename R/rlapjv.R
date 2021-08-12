@@ -50,8 +50,14 @@ lapmod <- function(cost, maximize = FALSE){
     m <- max(abs(cost@x), 2)
     sign <- ifelse(maximize, -1, 1)
     pad_vec <- sign * 1e5 * m * rep(1, n)
-    cost <- rbind2(cbind2(cost, sign * 1e5 * (m * ceiling(stats::runif(n))),
-        c(pad_vec, - sign * 1e5 * m)))
+    cost <- 
+        rbind(
+            cbind(
+                cost,
+                sign * ceiling(m * 1e5 * stats::runif(n))
+            ),
+            c(pad_vec, - sign * 1e5 * m)
+        )
     ind <- cpp_lapmod(n + 1, cost@x,
         cost@p, cost@i, maximize)
     if (ind[n + 1] <= n){
