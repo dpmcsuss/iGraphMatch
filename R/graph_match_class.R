@@ -467,10 +467,20 @@ show.summary.graphMatch <- function(match) {
     }
     cat(", # Vertices: ", paste(dim(match), collapse = ", "))
     cat("\n")
+    match$edge_match_info
     if(!is.null(match$edge_match_info)) {
       ep <- as.data.frame(t(match$edge_match_info))
-      colnames(ep) <- NULL
-      print(ep)
+      ep <- cbind(
+        data.frame(name = rownames(ep)),
+        ep)
+      rownames(ep) <- NULL
+      if(ep$name[1] == "layer") {
+        colnames(ep) <- sapply(ep[1,], as.character)
+        ep <- ep[2:nrow(ep),]
+      } else {
+        colnames(ep) <- NULL
+      }
+      print(ep, row.names = FALSE)
     }
 }
 
