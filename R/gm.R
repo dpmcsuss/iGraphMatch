@@ -56,7 +56,7 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   }
 
   # A, B argument checks
-  graph_pair <- check_graph(A, B)
+  graph_pair <- check_graph(A, B, same_order = FALSE)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   totv1 <- graph_pair$totv1

@@ -80,6 +80,7 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   nv <- max(totv1, totv2)
   nonseeds <- check_seeds(seeds, nv)$nonseeds
   ns <- nrow(seeds)
+  #*** basically remove this
   nn <- nv - ns
 
   P <- init_start(start = start, nns = nn, ns = ns,
@@ -89,13 +90,16 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   toggle <- TRUE
 
   # make a random permutation
+  #*** Change nn to totv2 - ns
   rp <- sample(nn)
   rpmat <- Matrix::Diagonal(nn)[rp, ]
 
   # seed to non-seed info
+  #*** Check that this will give a rectangle back
   s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
   P <- P[, rp]
 
+  #*** zero mat and similarity will be rectangular
   zero_mat <- Matrix::Matrix(0, nn, nn)
   similarity <- similarity %*% Matrix::t(rpmat)
 
@@ -121,7 +125,7 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
     for(ch in 1:nc){
       Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
     }
-
+    #*** this will now be length totv1
     ind <- do_lap(Grad, lap_method)
 
     ind2 <- cbind(1:nn, ind)

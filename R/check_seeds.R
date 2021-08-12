@@ -61,6 +61,8 @@ check_seeds <- function(seeds, nv, logical = FALSE){
     seeds
   } else{
     seeds <- data.frame(A=seed_g1, B=seed_g2) # CORRECT this
+    #*** change these into lists if length(nv) != 1
+    #*** so that we can do rectangle things
     nonseeds <- data.frame(
         A = (1:nv)[!(1:nv %in% seeds$A)],
         B = (1:nv)[!(1:nv %in% seeds$B)])
