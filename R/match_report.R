@@ -146,7 +146,7 @@ edge_match_info <- function(corr, A, B,
   corr_B <- corr$corr_B[seq(nv)]
 
 
-  Reduce(rbind, lapply(layers, function(i) {
+  Reduce(rbind, lapply(seq_along(layers), function(i) {
     A_m <- A[[i]][corr_A, corr_A]
     B_m <- B[[i]][corr_B, corr_B]
     # computations below are fast for sparse matrices
@@ -170,7 +170,7 @@ edge_match_info <- function(corr, A, B,
     }
     res$fnorm <- Matrix::norm(A_m - B_m, "F")
     if(l > 1) {
-      res <- c(layer = i, res)
+      res <- c(layer = layers[i], res)
     }
     as.data.frame(res)
   }))
