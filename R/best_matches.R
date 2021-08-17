@@ -4,10 +4,10 @@
 #'
 #' @param A A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
 #' @param B A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
-#' @param match Graph matching result see \link{gm}
+#' @param match \link{graphMatch}, eg result of call to \link{gm}
 #' @param measure One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
 #' goodness of matching.
-#' @param num An positive integer. Number of pairs of best matched vertices needed.
+#' @param num A positive integer. Number of pairs of best matched vertices needed.
 #'
 #' @return \code{best_matches} returns a data frame with the indices of best matched vertices
 #' in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named

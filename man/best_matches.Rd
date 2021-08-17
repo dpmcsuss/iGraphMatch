@@ -11,12 +11,12 @@ best_matches(A, B, match, measure, num)
 
 \item{B}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
 
-\item{match}{Graph matching result see \link{gm}}
+\item{match}{\link{graphMatch}, eg result of call to \link{gm}}
 
 \item{measure}{One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
 goodness of matching.}
 
-\item{num}{An positive integer. Number of pairs of best matched vertices needed.}
+\item{num}{A positive integer. Number of pairs of best matched vertices needed.}
 }
 \value{
 \code{best_matches} returns a data frame with the indices of best matched vertices

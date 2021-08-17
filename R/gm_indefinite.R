@@ -70,7 +70,7 @@
 #' match_multi_layer <- gm(A, B, seeds = 1:10, method = "indefinite", start = "bari", max_iter = 20)
 #' summary(match_multi_layer, A, B)
 #'
-#'
+#' @keywords internal
 graph_match_indefinite <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari",
   max_iter = 20, lap_method = NULL) {

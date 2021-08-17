@@ -128,7 +128,6 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 match_multi_layer <- gm(A, B, seeds = 1:10, method = "indefinite", start = "bari", max_iter = 20)
 summary(match_multi_layer, A, B)
 
-
 # match G_1 & G_2 using PATH algorithm
 gm(g1, g2, method = "PATH")
 
@@ -140,3 +139,4 @@ M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
 algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
 pages 2227-2242.
 }
+\keyword{internal}

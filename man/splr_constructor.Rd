@@ -48,5 +48,5 @@ computation.
 }}
 
 \seealso{
-Methods are documented in \code{\link{splr}}.
+Methods are documented in \link{splrMatrix_method}.
 }
