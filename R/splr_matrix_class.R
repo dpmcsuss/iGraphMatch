@@ -174,6 +174,7 @@ setAs("splrMatrix", "matrix", function(from) as.matrix.splrMatrix(from))
 #'  Attempts are made such that the returned object is stored efficiently,
 #'  either as a splrMatrix or sparse Matrix.
 #'
+#' @aliases splrMatrix_method
 #' @rdname splrMatrix_method
 setMethod("show", signature("splrMatrix"),
   function(object){

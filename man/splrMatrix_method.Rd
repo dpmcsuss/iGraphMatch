@@ -2,6 +2,7 @@
 % Please edit documentation in R/splr_matrix_class.R
 \name{show,splrMatrix-method}
 \alias{show,splrMatrix-method}
+\alias{splrMatrix_method}
 \alias{print,splrMatrix-method}
 \alias{\%*\%,splrMatrix,splrMatrix-method}
 \alias{\%*\%,splrMatrix,matrix_list-method}
