@@ -13,8 +13,8 @@ best_matches(A, B, match, measure, num)
 
 \item{match}{\link{graphMatch}, eg result of call to \link{gm}}
 
-\item{measure}{One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
-goodness of matching.}
+\item{measure}{One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
+Measure for computing goodness of matching.}
 
 \item{num}{A positive integer. Number of pairs of best matched vertices needed.}
 }
@@ -29,6 +29,11 @@ in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G
 }
 \description{
 Find a set of vertex-pairs in  order of a goodness of matching metric
+}
+\details{
+If measure is a function, it should take exactly two matrices or igraph
+   objects as arguments and return a vector of length equal to the number nodes
+   in the first object. Larger values will be taken to indicate better matches.
 }
 \examples{
 cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3, p =  0.5)

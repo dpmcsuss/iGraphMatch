@@ -16,3 +16,36 @@ test_that("best matches for all matches using all measures", {
   expect_equal(nrow(best_matches(A, B, match, measure = "row_perm_stat",
                                  num = 4)), 4)
 })
+
+
+test_that(
+  "Error on bad measure",
+  {
+    expect_error(
+      best_matches(A, B, match, measure = "hello", 4),
+      "*measure must be one of*"
+    )
+    expect_error(
+      best_matches(A, B, match, measure = function(a, b) c(a, b), 4),
+      "*measure must be one of*"
+    )
+  }
+)
+
+rel_row_diff <- function(g1, g2){
+  g1 <- g1[]
+  g2 <- g2[]
+  g1 <- as.matrix(g1)
+  g2 <- as.matrix(g2)
+  rowSums(abs(g1-g2)) / (rowSums(g1) + rowSums(g2))
+}
+
+test_that(
+  "Function works for measure",
+  {
+    expect_equal(
+      nrow(best_matches(A, B, match, measure = rel_row_diff, 4)),
+      4
+    )
+  }
+)

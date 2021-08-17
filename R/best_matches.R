@@ -5,8 +5,8 @@
 #' @param A A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
 #' @param B A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
 #' @param match \link{graphMatch}, eg result of call to \link{gm}
-#' @param measure One of "row_cor", "row_diff", or "row_perm_stat". Measure for computing
-#' goodness of matching.
+#' @param measure One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
+#'    Measure for computing goodness of matching.
 #' @param num A positive integer. Number of pairs of best matched vertices needed.
 #'
 #' @return \code{best_matches} returns a data frame with the indices of best matched vertices
@@ -16,6 +16,10 @@
 #' \code{row_cor} takes 1 minus the row correlation value for the corresponding vertex.
 #' \code{row_diff} takes the row difference value for each corresponding vertex.
 #' \code{row_perm_stat} uses the row permutation statistics value.
+#' 
+#' @details If measure is a function, it should take exactly two matrices or igraph
+#'    objects as arguments and return a vector of length equal to the number nodes
+#'    in the first object. Larger values will be taken to indicate better matches.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3, p =  0.5)
@@ -34,8 +38,11 @@
 #'
 best_matches <- function(A, B, match, measure, num){
 
-  if (!(measure %in% c("row_cor", "row_diff", "row_perm_stat"))) {
-    stop('measure must be one of "row_cor", "row_diff", or "row_perm_stat".')
+  if (
+    !is.function(measure) &&
+    !(measure %in% c("row_cor", "row_diff", "row_perm_stat"))
+  ) {
+    stop('measure must be one of "row_cor", "row_diff", or "row_perm_stat" or a function that takes two matrices as arguments.')
   }
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
@@ -54,26 +61,37 @@ best_matches <- function(A, B, match, measure, num){
   stat <- rep(0, sum(x))
 
   for (ch in 1:nc) {
+    # TODO: Use graphMatch fuinctionality
     A[[ch]] <- A[[ch]][match_corr[,1], match_corr[,1]]
     B[[ch]] <- B[[ch]][match_corr[,2], match_corr[,2]]
 
     # calculate measure stat
-    stat <- stat + do.call(measure,list(A[[ch]],B[[ch]]))
+    tryCatch(
+      {
+        stat <- stat + do.call(measure,list(A[[ch]],B[[ch]]))
+      },
+      error = function(e) {
+        stop(
+          'measure must be one of "row_cor", "row_diff", or "row_perm_stat" or a function. See ?best_matches',
+          e
+        )
+      }
+    )
   }
 
   # find top ranking nodes pairs
-  if(measure != "row_cor"){
+  if(is.character(measure) && measure != "row_cor"){
     stat <- -stat
   }
   rperm <- sample(length(stat))
   stat <- stat[rperm]
   if(num <= nv){
     topindex <- order(stat, decreasing = TRUE)[1:num]
-  } else{
+  } else {
     stop("num can't exceed the total number of vertices.")
   }
 
-  if(measure != "row_cor"){
+  if(is.character(measure) && measure != "row_cor"){
     measure_value <- -stat[topindex]
   } else{
     measure_value <- stat[topindex]

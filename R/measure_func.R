@@ -5,7 +5,7 @@ row_cor <- function(g1,g2){
   g2 <- g2[]
 
 
-  sapply(1:nrow(g1),
+  -sapply(1:nrow(g1),
     function(v) suppressWarnings(1-stats::cor(g1[v,],g2[v,])))
 }
 
