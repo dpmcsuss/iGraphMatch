@@ -3,6 +3,7 @@
 #' @description Find the largest common connected subgraphs of
 #' two matched graphs, which is an induced connected subgraph of both graphs 
 #' that has as many vertices as possible.
+#' The \code{largest_cc} function returns the largest connected subgraph of a single graph.
 #'
 #' @param A A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.
 #' @param B A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.
@@ -66,4 +67,14 @@ largest_common_cc <- function(A, B, min_degree = 1){
   }
 
   list(g1 = A, g2 = B, keep = keep)
+}
+
+#' @rdname largest_common_cc
+#' @export
+largest_cc <- function(A){
+  g <- igraph::graph_from_adjacency_matrix(as.matrix(check_single_graph(A)))
+  c <- igraph::components(g)
+  lc <- which.max(c$csize)
+  keep <- c$membership == lc
+  list(g = induced_subgraph(g, V(g)[keep]), keep = keep)
 }

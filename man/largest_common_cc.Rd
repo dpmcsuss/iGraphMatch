@@ -2,9 +2,12 @@
 % Please edit documentation in R/largest_common_cc.R
 \name{largest_common_cc}
 \alias{largest_common_cc}
+\alias{largest_cc}
 \title{Find the largest common connected subgraph (LCCS) of two graphs}
 \usage{
 largest_common_cc(A, B, min_degree = 1)
+
+largest_cc(A)
 }
 \arguments{
 \item{A}{A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.}
@@ -24,6 +27,7 @@ the original graphs remain in the induced subgraph.
 Find the largest common connected subgraphs of
 two matched graphs, which is an induced connected subgraph of both graphs 
 that has as many vertices as possible.
+The \code{largest_cc} function returns the largest connected subgraph of a single graph.
 }
 \examples{
 cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.7, p =  0.2)
