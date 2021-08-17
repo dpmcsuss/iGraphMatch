@@ -37,8 +37,8 @@ largest_common_cc <- function(A, B, min_degree = 1){
   graph_pair <- check_graph(A, B, as_list = FALSE)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
-  A <- igraph::graph_from_adjacency_matrix(as.matrix(A))
-  B <- igraph::graph_from_adjacency_matrix(as.matrix(B))
+  A <- igraph::graph_from_adjacency_matrix(A)
+  B <- igraph::graph_from_adjacency_matrix(B)
   keep <- rep(TRUE, igraph::vcount(A))
   while (!(igraph::is_connected(A) && igraph::is_connected(B))){
     cc1 <- igraph::components(A)
@@ -72,9 +72,9 @@ largest_common_cc <- function(A, B, min_degree = 1){
 #' @rdname largest_common_cc
 #' @export
 largest_cc <- function(A){
-  g <- igraph::graph_from_adjacency_matrix(as.matrix(check_single_graph(A)))
+  g <- igraph::graph_from_adjacency_matrix(check_single_graph(A))
   c <- igraph::components(g)
   lc <- which.max(c$csize)
   keep <- c$membership == lc
-  list(g = induced_subgraph(g, V(g)[keep]), keep = keep)
+  list(g = igraph::induced_subgraph(g, V(g)[keep]), keep = keep)
 }
