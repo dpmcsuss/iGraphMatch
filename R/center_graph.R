@@ -38,6 +38,9 @@ center_graph <- function(A, scheme = c(-1, 1), use_splr = TRUE){
     stop("scheme must be either 'center', 'naive', ",
       "a positive integer, or a pair of scalars.")
   }
+  if (inherits(A, "matrix_list")) {
+    stop("center_graph does not support matrix lists. Please call on individual elements.")
+  }
   
   A <- check_single_graph(A)
   if (length(A) == 1) {
