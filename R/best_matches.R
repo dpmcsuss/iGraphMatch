@@ -7,7 +7,7 @@
 #' @param match \link{graphMatch}, eg result of call to \link{gm}
 #' @param measure One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
 #'    Measure for computing goodness of matching.
-#' @param num A positive integer. Number of pairs of best matched vertices needed.
+#' @param num A positive integer or NULL. Number of pairs of best matched vertices needed. NULL indicates all matches
 #'
 #' @return \code{best_matches} returns a data frame with the indices of best matched vertices
 #' in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
@@ -36,7 +36,7 @@
 #'
 #' @export
 #'
-best_matches <- function(A, B, match, measure, num){
+best_matches <- function(A, B, match, measure, num = NULL){
 
   if (
     !is.function(measure) &&
@@ -48,6 +48,9 @@ best_matches <- function(A, B, match, measure, num){
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   nv <- nrow(A[[1]])
+  if (is.null(num)){
+    num <- nv
+  }
   
   if (num < 0 || num > nv) {
     stop('num must be > 0 and <= number of nodes ', nv)

@@ -72,7 +72,7 @@ largest_common_cc <- function(A, B, min_degree = 1){
 #' @rdname largest_common_cc
 #' @export
 largest_cc <- function(A){
-  g <- igraph::graph_from_adjacency_matrix(check_single_graph(A))
+  g <- igraph::graph_from_adjacency_matrix(check_single_graph(A, as_list = FALSE))
   c <- igraph::components(g)
   lc <- which.max(c$csize)
   keep <- c$membership == lc

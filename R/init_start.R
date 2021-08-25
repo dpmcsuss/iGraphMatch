@@ -68,7 +68,9 @@
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...){
 
-  nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
+  soft_seeds <- check_seeds(soft_seeds, nns + ns)$seeds
+  nss <- nrow(soft_seeds)
+  
   if (inherits(start, c("matrix", "Matrix"))){
     if (nss > 0 && any(dim(start) != c(nns - nss, nns - nss))) {
       stop("You are trying to use soft seeds but you've already
@@ -138,10 +140,11 @@ add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   reindex <- function(s, hs) s - sum(hs < s)
 
   cs <- check_seeds(soft_seeds, nv = nns + ns)
-  seeds_g1 <- sapply(cs$seeds$A, reindex, hs = hard_seeds$A)
-  seeds_g2 <- sapply(cs$seeds$B, reindex, hs = hard_seeds$B)
   
-  cs <- check_seeds(data.frame(A = seeds_g1, B = seeds_g2), nv = nns)
+  seeds_g1 <- as.integer(sapply(cs$seeds$A, reindex, hs = hard_seeds$A))
+  seeds_g2 <- as.integer(sapply(cs$seeds$B, reindex, hs = hard_seeds$B))
+  
+  cs <- check_seeds(cbind(A = seeds_g1, B = seeds_g2), nv = nns)
   nonseeds_g1 <- cs$nonseeds$A
   nonseeds_g2 <- cs$nonseeds$B
   nss <- nrow(cs$seeds)

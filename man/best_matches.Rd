@@ -4,7 +4,7 @@
 \alias{best_matches}
 \title{Find best matches}
 \usage{
-best_matches(A, B, match, measure, num)
+best_matches(A, B, match, measure, num = NULL)
 }
 \arguments{
 \item{A}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
@@ -16,7 +16,7 @@ best_matches(A, B, match, measure, num)
 \item{measure}{One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
 Measure for computing goodness of matching.}
 
-\item{num}{A positive integer. Number of pairs of best matched vertices needed.}
+\item{num}{A positive integer or NULL. Number of pairs of best matched vertices needed. NULL indicates all matches}
 }
 \value{
 \code{best_matches} returns a data frame with the indices of best matched vertices
