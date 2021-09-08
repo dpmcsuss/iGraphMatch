@@ -14,8 +14,8 @@ largest_cc(A)
 
 \item{B}{A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.}
 
-\item{min_degree}{A number. Defines the level of connectedness of the 
-obtained largest common connected subgraph. The induced subgraph is 
+\item{min_degree}{A number. Defines the level of connectedness of the
+obtained largest common connected subgraph. The induced subgraph is
 a graph with a minimum vertex-degree of at least min_degree.}
 }
 \value{
@@ -25,7 +25,7 @@ the original graphs remain in the induced subgraph.
 }
 \description{
 Find the largest common connected subgraphs of
-two matched graphs, which is an induced connected subgraph of both graphs 
+two matched graphs, which is an induced connected subgraph of both graphs
 that has as many vertices as possible.
 The \code{largest_cc} function returns the largest connected subgraph of a single graph.
 }
@@ -43,4 +43,12 @@ igraph::V(g1)[lccs1$keep]
 
 # obtain a common largest connect subgraph with each vertex having a minimum degree of 3
 lccs3 <- largest_common_cc(g1, g2, min_degree = 3)
+
+g <- igraph::sample_gnp(100, .01)
+lcc <- largest_cc(g)
+# induced subgraph
+lcc$g
+# label of vertices of the induced subgraph in the original graph
+igraph::V(g)[lcc$keep]
+
 }
