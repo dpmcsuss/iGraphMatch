@@ -27,7 +27,8 @@ Suggests:
     rlapjv,
     purrr (>= 0.2.2.2),
     ramify (>= 0.3.3),
-    rmarkdown
+    rmarkdown,
+    knitr
 Remotes:
     dpmcsuss/rlapjv
 VignetteBuilder: knitr
