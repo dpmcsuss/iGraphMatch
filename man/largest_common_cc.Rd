@@ -7,17 +7,17 @@
 largest_common_cc(A, B, min_degree = 1)
 }
 \arguments{
-\item{A}{A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.}
+\item{A}{A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.}
 
-\item{B}{A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.}
+\item{B}{A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.}
 
-\item{min_degree}{A number. Defines the level of connectness of the obtained largest common
-connected subgraph. The induced subgraph is an graph with a minimum degree of vertices equal
-to min_degree.}
+\item{min_degree}{A number. Defines the level of connectedness of the 
+obtained largest common connected subgraph. The induced subgraph is 
+a graph with a minimum degree of vertices more than min_degree.}
 }
 \value{
 \code{largest_common_cc} returns the common largest connected subgraphs of
-two aligned graphs in the igraph object form and a logical vector indicating which vertices in
+two aligned graphs in the 'igraph' object form and a logical vector indicating which vertices in
 the original graphs remain in the induced subgraph.
 }
 \description{

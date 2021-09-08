@@ -10,9 +10,9 @@ graph_match_ExpandWhenStuck(A, B, seeds, similarity = NULL, r = 2)
 graph_match_percolation(A, B, seeds, similarity = NULL, r = 2)
 }
 \arguments{
-\item{A}{A matrix, igraph object, or list of either.}
+\item{A}{A matrix, 'igraph' object, or list of either.}
 
-\item{B}{A matrix, igraph object, or list of either.}
+\item{B}{A matrix, 'igraph' object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
@@ -20,7 +20,7 @@ vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
 
-\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
+\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 
 \item{r}{A number. Threshold of neighboring pair scores.}
 }

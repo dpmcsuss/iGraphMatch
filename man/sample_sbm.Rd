@@ -35,7 +35,7 @@ symmetric.}
 \item{block.sizes}{A numeric vector. Give the number of vertices in each group. The sum of the
 vector must match the number of vertices.}
 
-\item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated 
+\item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated
 graphs. It must be in open (0,1) interval.}
 
 \item{permutation}{A numeric vector, permute second graph.}
@@ -46,7 +46,7 @@ graphs. It must be in open (0,1) interval.}
 should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.}
 }
 \value{
-A list of two igraph object, named \code{graph1} and \code{graph2}.
+A list of two 'igraph' object, named \code{graph1} and \code{graph2}.
 }
 \description{
 Sample a pair of random graphs from stochastic block model with correlation between

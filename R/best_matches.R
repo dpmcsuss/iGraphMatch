@@ -3,8 +3,8 @@
 #' @description Find a set of vertices pairs in the order of goodness of matching according to a
 #' specified measure.
 #'
-#' @param A A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix, an igraph object or a list of either. Adjacency matrix of \eqn{G_2}.
+#' @param A A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_1}.
+#' @param B A matrix, an 'igraph' object or a list of either. Adjacency matrix of \eqn{G_2}.
 #' @param match Graph matching result see graph match methods.
 #' @param measure A character. Measure for computing goodness of matching.
 #' @param num An integer. Number of pairs of best matched vertices needed.
@@ -29,7 +29,7 @@
 #' @export
 #'
 best_matches <- function(A, B, match, measure, num){
-  
+
   graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
@@ -40,11 +40,11 @@ best_matches <- function(A, B, match, measure, num){
   x <- x[match_corr[,1]]
   match_corr <- match_corr[x,]
   stat <- rep(0, sum(x))
-  
+
   for (ch in 1:nc) {
     A[[ch]] <- A[[ch]][match_corr[,1], match_corr[,1]]
     B[[ch]] <- B[[ch]][match_corr[,2], match_corr[,2]]
-    
+
     # calculate measure stat
     stat <- stat + do.call(measure,list(A[[ch]],B[[ch]]))
   }

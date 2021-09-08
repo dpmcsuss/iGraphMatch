@@ -14,9 +14,9 @@ graph_match_IsoRank(
 )
 }
 \arguments{
-\item{A}{A matrix, igraph object, or list of either.}
+\item{A}{A matrix, 'igraph' object, or list of either.}
 
-\item{B}{A matrix, igraph object, or list of either.}
+\item{B}{A matrix, 'igraph' object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
@@ -24,7 +24,7 @@ vector. If not, seeds must be  a matrix
 or a data frame, with the first column being the indices of \eqn{G_1} and
 the second column being the corresponding indices of \eqn{G_2}.}
 
-\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similaities.}
+\item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 
 \item{max_iter}{A number. Maximum number of replacing matches equals to
 max_iter times number of total vertices of \eqn{G_1}.}
@@ -33,10 +33,10 @@ max_iter times number of total vertices of \eqn{G_1}.}
 including greedy method and the Hungarian algorithm.}
 }
 \value{
-\code{graph_match_IsoRank} returns a list of graph matching 
-  results, including the graph matching formula, a data frame containing the 
-  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A} 
-  and \code{corr_B} and seeds. If choose the greedy method to extract mapping, 
+\code{graph_match_IsoRank} returns a list of graph matching
+  results, including the graph matching formula, a data frame containing the
+  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
+  and \code{corr_B} and seeds. If choose the greedy method to extract mapping,
   the order of nodes getting matched will also be returned.
 }
 \description{

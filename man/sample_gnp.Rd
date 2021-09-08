@@ -32,11 +32,11 @@ of the generated graphs. It must be in open (0,1) interval.}
 \item{ncore}{An integer. Number of core vertices.}
 }
 \value{
-\code{sample_correlated_gnp_pair} returns a list of two igraph object, named
+\code{sample_correlated_gnp_pair} returns a list of two 'igraph' object, named
 \code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
 correlated with \code{rho}.
 
-\code{sample_correlated_gnp_pair_w_junk} returns a list of two igraph object, named
+\code{sample_correlated_gnp_pair_w_junk} returns a list of two 'igraph' object, named
 \code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
 correlated with \code{rho} and with first ncore vertices being core vertices and the rest being
 junk vertices.
