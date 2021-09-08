@@ -4,10 +4,10 @@ context("initialization of the start matrix")
 ## initialize start matrix without soft seeds
 set.seed(123)
 test_that("bari start w/o soft seeds", {
-  expected <- splr(Matrix(0,2,2),
+  expected <- splr(Matrix(0,2,2, doDiag=FALSE),
     a = Matrix(c(1,1),2), b = Matrix(c(.5,.5),2))
   expect_equal(init_start(start = "bari", nns = 2),
-               expected)
+               expected, ignore_attr = TRUE)
 })
 set.seed(123)
 test_that("random doubly stochastic start w/o soft seeds", {
