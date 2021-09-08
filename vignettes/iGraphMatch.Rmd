@@ -163,7 +163,6 @@ Initialization of different start matrix is very convenient in R with `iGraphPac
 ```{r}
 nns <- 7
 ns <- 3
-options(digits = 3)
 (start_bari <- init_start(start = "bari", nns = nns, ns = ns, soft_seeds = bad_soft_seeds))
 set.seed(123)
 (start_rds <- init_start(start = "rds", nns = nns, ns = ns, soft_seeds = bad_soft_seeds))

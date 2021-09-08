@@ -17,7 +17,7 @@ and each edge indicates whether there is email sent from one employee to
 the other.
 Two networks are unweighted and directed with self-loops.
 There are 488 and 482 edges in two networks respectively and the empirical
-Pearson's correlation bewteen two graphs is 0.85.
+Pearson's correlation between two graphs is 0.85.
 Two email communication networks for two different weeks are stored in a
 list in the form of igraph objects.
 }

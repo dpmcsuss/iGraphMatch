@@ -9,10 +9,10 @@
 #' seeds, input in the form of a matrix or a data frame, with the first column being the
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}. Note
 #' that if there are seeds in graphs, seeds should be put before non-seeds.
-#' @param distribution A charactor. Specify the distribution from which the random doubly stochastic
+#' @param distribution A character. Specify the distribution from which the random doubly stochastic
 #' matrix is sampled. Should input the name of the function for generating random deviates from that
 #' distribution.
-#' @param g A number. Specified in the range of [0, 1] to set weights to random permutaion matrix and
+#' @param g A number. Specified in the range of [0, 1] to set weights to random permutation matrix and
 #' barycenter matrix.
 #'
 #' @rdname start
@@ -38,7 +38,7 @@ bari_start <- function(nns, ns = 0, soft_seeds = NULL){
 
 bari_splr <- function(nns){
   nns <- as.integer(nns)
-  splr(x = Matrix(0, nns, nns), 
+  splr(x = Matrix(0, nns, nns),
     a = Matrix(1, nns), b = Matrix(1 / nns, nns))
 }
 
@@ -53,7 +53,7 @@ bari_splr <- function(nns){
 #' rds_sinkhorn_start(nns=5,
 #'    soft_seeds = as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)),
 #'    distribution = "rnorm")
-#' 
+#'
 #' @export
 #'
 rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "runif"){
@@ -77,23 +77,23 @@ rds_sinkhorn <- function(n, distribution="runif"){
   sinkhorn(matrix(abs(do.call(distribution, list(n^2))), n))
 }
 
- 
+
 #' @rdname start
-#' 
+#'
 #' @param is_splr should we return a splr matrix? (default = TRUE)
-#' 
+#'
 #' @return \code{rds_perm_bari} returns a \code{nns-by-nns} doubly stochastic matrix
 #' with 1's corresponding to adaptive seeds.
-#' 
+#'
 #' @examples
 #' ## Case without soft seeds
 #' rds_perm_bari_start(nns=5)
 #'
 #' ## Case with soft seeds and the input is a data frame
 #' rds_perm_bari_start(nns=5, ns=0, soft_seeds=as.data.frame(matrix(c(2, 4, 2, 3), nrow=2)))
-#' 
+#'
 #' @export
-#' 
+#'
 rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr = TRUE){
   nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
   rds <- rds_perm_bari(nns - nss, g)
@@ -108,21 +108,21 @@ rds_perm_bari <- function(nns, g){
 }
 
 #' @rdname start
-#' 
+#'
 #' @param sim nns x nns non-negative matrix.
-#' 
+#'
 #'
 #' @return \code{rds_from_sim_start} returns a doubly
-#'  stochastic Matrix given by sinkhorn algorithm applied to 
+#'  stochastic Matrix given by sinkhorn algorithm applied to
 #'  a matrix of iid log-normal with mu=sim. Note,
 #'  this ignores soft seeds.
-#' 
+#'
 #' @examples
 #' sim <- Matrix::rsparsematrix(10, 10, .4,
 #'  rand.x = function(n) rep(1,n))
 #' start_sparse <- rds_from_sim_start(10, sim = sim)
 #' start_dense <- rds_from_sim_start(10, sim = as.matrix(sim))
-#' 
+#'
 #' @export
 rds_from_sim_start <- function(nns, ns = 0,
     soft_seeds = NULL, sim) {
@@ -152,16 +152,16 @@ rds_from_sim <- function(nns, sim) {
 
 
 # #' @rdname featurestart
-# #' 
+# #'
 # #' @param f1
 # #' @param f2
 # #' @param s
-# #' 
-# #' @return \code{feature_tart} returns a 
+# #'
+# #' @return \code{feature_tart} returns a
 # #' \code{nns-by-nns} matrix
 # #' with entries corresponding to similiarity scores
 # #' for feature vectors.
-# #' 
+# #'
 # #' @examples
 # feature_start <- function(f1, f2, s){
 

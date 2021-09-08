@@ -9,17 +9,19 @@
 #'
 #' @param score matrix of pairwise scores
 #' @param method One of "lapjv", "lapmod", "rect", or "clue"
-#' 
-#'
+
 #' @rdname do_lap
 #'
-#' @return \code{do_lap} returns a vector which indicates the 
+#' @return \code{do_lap} returns a vector which indicates the
 #'  best matching column for each row.
-#'  
 #'
-#' @details TODO: details for the method
-#' 
-#' 
+#'
+#' @details Solves a linear assignment using one of three methods.
+#'  clue uses solve_lsap from the clue package.
+#'  lapjv uses the Jonker-Volgenaut approach implemented in this package.
+#'  lapmod use a version that exploits sparsity in the score matrix.
+#'
+#'
 #' @examples
 #' set.seed(12345)
 #' cost <- Matrix::rsparsematrix(30, 30, .5)
@@ -35,17 +37,17 @@ do_lap <- function(score, method){
   n <- nrow(score)
   method <- set_lap_method(method, n, n)
   switch(method,
-    lapjv = { 
+    lapjv = {
       score <- as.matrix(score)
-      rlapjv::lapjv(score, # round(score * n ^ 2 * max(score)),
+      lapjv(score, # round(score * n ^ 2 * max(score)),
         maximize = TRUE)
     },
     lapmod = {
       if( class(score) == "splrMatrix" ){
-        rlapjv::lapmod(splr_to_sparse(score),
+        lapmod(splr_to_sparse(score),
           maximize = TRUE)
       } else {
-        rlapjv::lapmod(score, maximize = TRUE)
+        lapmod(score, maximize = TRUE)
       }
     },
     clue = {
@@ -60,11 +62,11 @@ do_lap <- function(score, method){
     # sinkhorn = {
     #   lambda <- 10
     #   n_iter <- 20
-    #   sinkhorn(exp(lambda * score), n_iter)      
+    #   sinkhorn(exp(lambda * score), n_iter)
     # },
     stop(paste0("The LAP method ", method,
         " is not implemented. Please use one of lapjv, lapmod, or clue."))
-  )    
+  )
 }
 
 set_lap_method <- function(lap_method, totv1, totv2){
@@ -74,19 +76,12 @@ set_lap_method <- function(lap_method, totv1, totv2){
       "Please use one of:", paste(methods, collapse = " ")))
   }
   if (is.null(lap_method)){
-    if("rlapjv" %in% rownames(utils::installed.packages()) &&
-        totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5){
-        lap_method <- "lapmod"
+    if (totv1 / totv2 < 0.5 || totv2 / totv1 < 0.5) {
+      lap_method <- "lapmod"
     } else {
       lap_method <- "clue"
     }
   }
-  if (lap_method %in% c("lapmod", "lapjv") && 
-      !("rlapjv" %in% rownames(utils::installed.packages()))) {
-    
-      warning("LAP method reverting to 'clue' because the 'rlapjv' package is not installed.")
-      lap_method <- "clue"
-    }
   lap_method
 }
 

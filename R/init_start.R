@@ -12,7 +12,7 @@
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}.
 #' Note that if there are seeds in graphs, seeds should be put before non-seeds.
 #' @param ... Arguments passed to other start functions
-#' 
+#'
 #' @rdname init_start
 #' @return \code{init_start} returns a \code{nns-by-nns} doubly stochastic matrix as the start
 #' matrix in the graph matching iteration. If conduct a soft seeding graph matching, returns a
@@ -38,10 +38,10 @@
 #' seeds <- 1:10 <= 2
 #' init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
 #'
+#' \donttest{
 #' # FW graph matching with incorrect seeds to start at convex start
 #' init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
-#'
-#' # 
+#' }
 #'
 #' @export
 init_start <- function(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...){
@@ -113,11 +113,10 @@ add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   reindex <- function(s, hs) s - sum(hs < s)
 
   cs <- check_seeds(soft_seeds, nv = nns + ns)
-  
-  seeds_g1 <- as.integer(sapply(cs$seeds$A, reindex, hs = hard_seeds$A))
-  seeds_g2 <- as.integer(sapply(cs$seeds$B, reindex, hs = hard_seeds$B))
-  
-  cs <- check_seeds(cbind(A = seeds_g1, B = seeds_g2), nv = nns)
+
+  seeds_g1 <- cs$seeds$A - ns
+  seeds_g2 <- cs$seeds$B - ns
+  cs <- check_seeds(cs$seeds - ns, nv = nns)
   nonseeds_g1 <- cs$nonseeds$A
   nonseeds_g2 <- cs$nonseeds$B
   nss <- nrow(cs$seeds)
@@ -126,11 +125,7 @@ add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
-
-  # Hack to avoid message about inefficiently treating single elements
-  suppressMessages(
-    new_start[cbind(seeds_g1, seeds_g2)] <- 1
-  )
+  new_start[cbind(seeds_g1, seeds_g2)] <-1
   new_start
 }
 

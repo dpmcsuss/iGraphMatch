@@ -4,16 +4,16 @@
 #' two graphs, which is an induced connected subgraph of both graphs that has as many vertices
 #' as possible.
 #'
-#' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
-#' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
-#' @param min_degree A number. Defines the level of connectness of the obtained largest common
-#' connected subgraph. The induced subgraph is an graph with a minimum degree of vertices equal
-#' to min_degree.
+#' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
+#' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
+#' @param min_degree A number. Defines the level of connectedness of the 
+#' obtained largest common connected subgraph. The induced subgraph is 
+#' a graph with a minimum degree of vertices more than min_degree.
 #'
 #' @rdname largest_common_cc
 #'
 #' @return \code{largest_common_cc} returns the common largest connected subgraphs of
-#' two aligned graphs in the igraph object form and a logical vector indicating which vertices in
+#' two aligned graphs in the 'igraph' object form and a logical vector indicating which vertices in
 #' the original graphs remain in the induced subgraph.
 #'
 #' @examples
@@ -27,7 +27,7 @@
 #' lccs1$g2
 #' # label of vertices of the induced subgraph in the original graph
 #' igraph::V(g1)[lccs1$keep]
-#' 
+#'
 #' # obtain a common largest connect subgraph with each vertex having a minimum degree of 3
 #' lccs3 <- largest_common_cc(g1, g2, min_degree = 3)
 #' @export
