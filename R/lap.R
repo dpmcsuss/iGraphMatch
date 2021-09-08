@@ -68,7 +68,7 @@ do_lap <- function(score, method){
 }
 
 set_lap_method <- function(lap_method, totv1, totv2){
-  methods <- c("lapmod", "lapjv", "clue") #, "sinkhorn")
+  methods <- c("lapmod", "lapjv", "clue", "rect") #, "sinkhorn")
   if (!is.null(lap_method) && !(lap_method %in% methods)){
     stop(paste("Unrecognized LAP method:", lap_method,
       "Please use one of:", paste(methods, collapse = " ")))
@@ -126,7 +126,7 @@ rect_lap_inner <- function(x, maximize) {
   k <- n + m
 
   xpad <- matrix(max(x) + 1, k, k)
-  xpad[1:n, 1:m] <- x
+  xpad[1:n, 1:m] <- as.matrix(x)
   xpad[(n + 1):k, (m + 1):k] <- 0
 
   ind <- cpp_lapjv(xpad, maximize = FALSE)
