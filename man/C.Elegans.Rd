@@ -28,4 +28,9 @@ g1 <- C.Elegans[[1]]
 g2 <- C.Elegans[[2]]
 
 }
+\references{
+Chen, L., Vogelstein, J. T., Lyzinski, V., & Priebe, C. E.
+(2016). \emph{A joint graph inference case study: the C. elegans chemical
+and electrical connectomes.} Worm, 5(2), e1142041.
+}
 \keyword{datasets}

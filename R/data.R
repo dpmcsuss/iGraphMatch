@@ -12,12 +12,16 @@
 #' other one is the electrical synapses network.
 #'
 #' @usage data(C.Elegans)
-#' 
-#' @examples 
+#'
+#' @references Chen, L., Vogelstein, J. T., Lyzinski, V., & Priebe, C. E.
+#' (2016). \emph{A joint graph inference case study: the C. elegans chemical
+#' and electrical connectomes.} Worm, 5(2), e1142041.
+#'
+#' @examples
 #' data(C.Elegans)
 #' g1 <- C.Elegans[[1]]
 #' g2 <- C.Elegans[[2]]
-#' 
+#'
 "C.Elegans"
 
 
@@ -34,12 +38,15 @@
 #' list in the form of igraph objects.
 #'
 #' @usage data(Enron)
-#' 
-#' @examples 
+#'
+#' @references Originally released by William Cohen at CMU. More details on the
+#' origins and research uses of the dataset can be found at \url{http://www.cs.cmu.edu/~enron/}.
+#'
+#' @examples
 #' data(Enron)
 #' g1 <- Enron[[1]]
 #' g2 <- Enron[[2]]
-#' 
+#'
 "Enron"
 
 
