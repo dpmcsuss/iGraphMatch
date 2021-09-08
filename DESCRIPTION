@@ -20,17 +20,20 @@ Imports:
     Matrix (>= 1.2-11),
     igraph (>= 1.1.2),
     irlba,
-    methods,
-    Rcpp
+    methods
 Suggests:
     dplyr (>= 0.5.0),
     testthat (>= 2.0.0),
-    knitr,
+    rlapjv,
+    purrr (>= 0.2.2.2),
+    ramify (>= 0.3.3),
     rmarkdown
+Remotes:
+    dpmcsuss/rlapjv
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
-RoxygenNote: 7.1.2
+RoxygenNote: 7.1.1
 Language: en-US
 Encoding: UTF-8
 LinkingTo: 

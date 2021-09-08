@@ -113,7 +113,6 @@ add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   reindex <- function(s, hs) s - sum(hs < s)
 
   cs <- check_seeds(soft_seeds, nv = nns + ns)
-
   seeds_g1 <- cs$seeds$A - ns
   seeds_g2 <- cs$seeds$B - ns
   cs <- check_seeds(cs$seeds - ns, nv = nns)
@@ -125,7 +124,12 @@ add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
-  new_start[cbind(seeds_g1, seeds_g2)] <-1
+
+  # Hack to avoid message about inefficiently treating single elements
+  suppressMessages(
+    new_start[cbind(seeds_g1, seeds_g2)] <- 1
+  )
+
   new_start
 }
 

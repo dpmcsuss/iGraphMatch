@@ -9,7 +9,6 @@
 #'
 #' @param score matrix of pairwise scores
 #' @param method One of "lapjv", "lapmod", "rect", or "clue"
-
 #' @rdname do_lap
 #'
 #' @return \code{do_lap} returns a vector which indicates the
