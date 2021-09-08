@@ -4,7 +4,7 @@
 \alias{best_matches}
 \title{Find best matches}
 \usage{
-best_matches(A, B, match, measure, num = NULL)
+best_matches(A, B, match, measure, num = NULL, true_label = NULL)
 }
 \arguments{
 \item{A}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
@@ -16,12 +16,19 @@ best_matches(A, B, match, measure, num = NULL)
 \item{measure}{One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
 Measure for computing goodness of matching.}
 
-\item{num}{A positive integer or NULL. Number of pairs of best matched vertices needed. NULL indicates all matches}
+\item{num}{A positive integer or NULL. Number of pairs of best matched vertices needed.
+NULL indicates all matches.}
+
+\item{true_label}{the true correspondence (if available).}
 }
 \value{
 \code{best_matches} returns a data frame with the indices of best matched vertices
 in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
-\code{B_best} and the values of measure for best matches.
+\code{B_best} and the values of measure for best matches, where smaller values indicate
+better matches for all measures.
+If the true correspondence is available, also returns the precision of top n best matches,
+for each n <= \code{num}.
+
 
 \code{row_cor} takes 1 minus the row correlation value for the corresponding vertex.
 \code{row_diff} takes the row difference value for each corresponding vertex.
@@ -32,20 +39,19 @@ Find a set of vertex-pairs in  order of a goodness of matching metric
 }
 \details{
 If measure is a function, it should take exactly two matrices or igraph
-   objects as arguments and return a vector of length equal to the number nodes
-   in the first object. Larger values will be taken to indicate better matches.
+   objects as arguments and return a vector of length equal to the number of nonseed nodes
+   in the first object. Smaller values will be taken to indicate better matches.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 50, corr =  0.5, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:50 <= 10
-nonseeds <- !seeds
 match <- gm(g1, g2, seeds, method = "indefinite")
 
 # Application: select best matched seeds from non seeds as new seeds, and do the
 # graph matching iteratively to get higher matching accuracy
-best_matches(A = g1, B = g2, match = match, measure = "row_perm_stat", num = 5)
+best_matches(A = g1, B = g2, match = match, measure = "row_perm_stat", num = 5, true_label = 1:50)
 
 
 }

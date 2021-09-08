@@ -49,3 +49,15 @@ test_that(
     )
   }
 )
+
+test_that(
+  "true correspondence available",
+  {
+    expect_equal(ncol(best_matches(A, B, match, measure = "row_cor",
+                                   num = 4, true_label = 1:10)), 4)
+    expect_equal(ncol(best_matches(A, B, match, measure = "row_diff",
+                                   num = 4, true_label = 1:10)), 4)
+    expect_equal(ncol(best_matches(A, B, match, measure = "row_perm_stat",
+                                   num = 4, true_label = 1:10)), 4)
+  }
+)
