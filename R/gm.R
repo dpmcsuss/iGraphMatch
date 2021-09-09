@@ -18,7 +18,12 @@
 #'
 #' @rdname gm
 #'
-#' @details aaa
+#' @details If \code{method} is a function, it should take two matrices or igraph objects as
+#' arguments for minimum. Additionally, it can also take prior information in the form of
+#' \code{seeds} or \code{similarity} or both, and other arguments if needed. The self-defined
+#' function should return a graphMatch class object with matching correspondence, sizes of two
+#' input graphs, matching formula, and other algorithm hyperparameter details.
+#'
 #'
 #' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
 #'   return an object of class "gm" which is a list containing the following
@@ -45,14 +50,44 @@
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 3
 #'
+#' # customized graph matching algorithm
+#' graph_match_rand <- function(A, B, rand_seed){
+#'   totv1 <- nrow(A[[1]])
+#'   totv2 <- nrow(B[[1]])
+#'   nv <- max(totv1, totv2)
+#'
+#'   corr_A <- 1:nv
+#'   set.seed(rand_seed)
+#'   corr_B <- c(1:nv)[sample(nv)]
+#'   corr <- data.frame(corr_A, corr_B)
+#'
+#'   cl <- match.call()
+#'   graphMatch(
+#'     corr = corr,
+#'     nnodes = c(totv1, totv2),
+#'     call = cl,
+#'     detail = list(
+#'       rand_seed = rand_seed
+#'     )
+#'   )
+#' }
+#'
+#' m_self <- gm(g1, g2, method = graph_match_rand, rand_seed = 123) # pass additional argument 'rand_seed' to input
+#' summary(m_self, g1, g2)
+#' m_self$rand_seed # graph_match_rand method hyperparameter
+#' m_self@call
+#' m_self@nnodes
+#' m_self@corr
+#'
 #' @export
 #'
 #'
 gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...){
 
   methods <- c("indefinite", "convex", "PATH", "percolation", "IsoRank", "Umeyama")
-  if (!(method %in% methods)) {
-    stop("Method must be one of: ", paste(methods, collapse = ", "))
+  if (!is.function(method) && !(method %in% methods)) {
+    stop("Method must be one of: ", paste0(paste(methods, collapse = ", "),
+                                           " or a function that takes a pair of graphs and other prior knowledge if applicable."))
   }
 
   # A, B argument checks
@@ -71,7 +106,9 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   similarity_raw <- similarity
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
 
-  if(method == "indefinite"){
+  if(is.function(method)){
+    m <- method(A, B, ...)
+  } else if(method == "indefinite"){
     m <- graph_match_indefinite(A, B, seeds, similarity, ...)
   } else if(method == "convex"){
     m <- graph_match_convex(A, B, seeds, similarity, ...)
@@ -91,15 +128,25 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   } else if(method == "Umeyama"){
     m <- graph_match_Umeyama(A, B, seeds, similarity)
   }
-  m@nnodes <- c(totv1, totv2)
-  m@call <- match.call()
-  m
+  tryCatch(
+    {
+      m@nnodes <- c(totv1, totv2)
+      m@call <- match.call()
+      m
+    },
+    error = function(e) {
+      stop(
+        'Customized graph matching method function must return a graphMatch class object. See ?gm for examples.',
+        e
+      )
+    }
+  )
 }
 
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage(
 "Thanks for using iGraphMatch!
-We'd love to get feedback on what you like, what you don't like, 
+We'd love to get feedback on what you like, what you don't like,
 and how you are using the package.
 See ?iGraphMatch for contact information.")
 }

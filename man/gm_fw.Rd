@@ -135,6 +135,10 @@ gm(g1, g2, method = "PATH")
 
 }
 \references{
+Y. Aflalo and A. Bronstein and R. Kimmel (2014), \emph{On convex
+relaxation of graph isomorphism}. Proceedings of the National Academy of Sciences,
+pages 2942-2947.
+
 V. Lyzinski and D. E. Fishkind and M. Fiori and J. T. Vogelstein and C. E. Priebe
 and G. Sapiro (2016), \emph{Graph Matching: Relax at Your Own Risk}. IEEE TPAMI, pages 60-73.
 

@@ -46,7 +46,11 @@ for more information.}
   a graph matching method.
 }
 \details{
-aaa
+If \code{method} is a function, it should take two matrices or igraph objects as
+arguments for minimum. Additionally, it can also take prior information in the form of
+\code{seeds} or \code{similarity} or both, and other arguments if needed. The self-defined
+function should return a graphMatch class object with matching correspondence, sizes of two
+input graphs, matching formula, and other algorithm hyperparameter details.
 }
 \examples{
 
@@ -55,5 +59,34 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
+
+# customized graph matching algorithm
+graph_match_rand <- function(A, B, rand_seed){
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+
+  corr_A <- 1:nv
+  set.seed(rand_seed)
+  corr_B <- c(1:nv)[sample(nv)]
+  corr <- data.frame(corr_A, corr_B)
+
+  cl <- match.call()
+  graphMatch(
+    corr = corr,
+    nnodes = c(totv1, totv2),
+    call = cl,
+    detail = list(
+      rand_seed = rand_seed
+    )
+  )
+}
+
+m_self <- gm(g1, g2, method = graph_match_rand, rand_seed = 123) # pass additional argument 'rand_seed' to input
+summary(m_self, g1, g2)
+m_self$rand_seed # graph_match_rand method hyperparameter
+m_self@call
+m_self@nnodes
+m_self@corr
 
 }
