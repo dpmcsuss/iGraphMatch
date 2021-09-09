@@ -36,7 +36,7 @@
 #' GM_Umeyama <- gm(g1, g2, similarity = startm, method = "Umeyama")
 #' GM_Umeyama
 #' # generate the corresponding permutation matrix
-#' get_perm_mat(GM_Umeyama)
+#' GM_Umeyama[]
 #'
 #' summary(GM_Umeyama, g1, g2)
 #' # visualize the edge-wise matching performance

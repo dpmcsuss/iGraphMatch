@@ -1,5 +1,9 @@
 #' @rdname gm_fw
 #'
+#' @references Y. Aflalo and A. Bronstein and R. Kimmel (2014), \emph{On convex
+#' relaxation of graph isomorphism}. Proceedings of the National Academy of Sciences,
+#' pages 2942-2947.
+#'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 #' g1 <- cgnp_pair$graph1

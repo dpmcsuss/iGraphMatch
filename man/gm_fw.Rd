@@ -114,7 +114,7 @@ hard_seeds <- matrix(c(4,6,5,4),2)
 seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
 
-get_perm_mat(GM_convex) # get the corresponding permutation matrix
+GM_convex[] # get the corresponding permutation matrix
 GM_convex \%*\% g2 # permute the second graph according to match result: PBP^T
 GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
 GM_convex$iter # number of iterations
@@ -135,6 +135,12 @@ gm(g1, g2, method = "PATH")
 
 }
 \references{
+V. Lyzinski and D. E. Fishkind and M. Fiori and J. T. Vogelstein and C. E. Priebe
+and G. Sapiro (2016), \emph{Graph Matching: Relax at Your Own Risk}. IEEE TPAMI, pages 60-73.
+
+V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
+
 M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
 algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
 pages 2227-2242.

@@ -44,8 +44,9 @@
 #' GM_IsoRank
 #' summary(GM_IsoRank, g1, g2, true_label = 1:10)
 #'
-#' get_perm_mat(GM_IsoRank) # get the corresponding permutation matrix
+#' GM_IsoRank[] # get the corresponding permutation matrix
 #' GM_IsoRank %*% g2 # permute the second graph according to match result: PBP^T
+#' GM_IsoRank %*% g2[] # output permuted matrix
 #'
 #' # Visualize the edge-wise matching performance
 #' plot(g1, g2, GM_IsoRank)

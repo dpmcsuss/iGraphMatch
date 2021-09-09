@@ -36,6 +36,10 @@
 #'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
 #'   }
 #'
+#' @references V. Lyzinski and D. E. Fishkind and M. Fiori and J. T. Vogelstein and C. E. Priebe
+#' and G. Sapiro (2016), \emph{Graph Matching: Relax at Your Own Risk}. IEEE TPAMI, pages 60-73.
+#' @references V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+#' for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
 #'
 #'
 #' @examples
@@ -56,7 +60,7 @@
 #' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
 #' GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
 #'
-#' get_perm_mat(GM_convex) # get the corresponding permutation matrix
+#' GM_convex[] # get the corresponding permutation matrix
 #' GM_convex %*% g2 # permute the second graph according to match result: PBP^T
 #' GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
 #' GM_convex$iter # number of iterations
