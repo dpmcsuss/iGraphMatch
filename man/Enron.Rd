@@ -29,6 +29,6 @@ g2 <- Enron[[2]]
 }
 \references{
 Originally released by William Cohen at CMU. More details on the
-origins and research uses of the dataset can be found at \url{http://www.cs.cmu.edu/~enron/}.
+origins and research uses of the dataset can be found \href{http://www.cs.cmu.edu/~enron/}{here}.
 }
 \keyword{datasets}
