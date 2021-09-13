@@ -70,7 +70,11 @@
 #'   )
 #' }
 #'
-#' m_self <- gm(g1, g2, method = graph_match_rand, rand_seed = 123) # pass additional argument 'rand_seed' to input
+#' m_self <- gm(
+#'   g1, g2,
+#'   method = graph_match_rand,
+#'   rand_seed = 123 # pass additional argument 'rand_seed' to input
+#' )
 #' summary(m_self, g1, g2)
 #' m_self$rand_seed # graph_match_rand method hyperparameter
 #' m_self@call
