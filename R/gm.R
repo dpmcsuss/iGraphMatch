@@ -1,8 +1,8 @@
 #' @title Graph Matching Methods
 #'
-#' @description \code{gm} is used to match a pair of given graphs, with specifications
-#'   of the adjacency matrices of for a pair of graphs, possible prior knowledge, and
-#'   a graph matching method.
+#' @description \code{gm} is used to match a pair of given graphs, with
+#'   specifications of the adjacency matrices of for a pair of graphs, possible
+#'   prior knowledge, and a graph matching method.
 #'
 #' @param A A matrix, 'igraph' object, or list of either.
 #' @param B A matrix, 'igraph' object, or list of either.
@@ -11,39 +11,41 @@
 #'   vector. If not, seeds must be  a matrix or a data frame, with the first
 #'   column being the indices of \eqn{G_1} and the second column being the
 #'   corresponding indices of \eqn{G_2}.
-#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
-#' @param method Choice for graph matching methods.
-#' @param ... Arguments passed to graph matching methods. Please refer to Details section
-#'  for more information.
+#' @param similarity A matrix. An \code{n-by-n} matrix containing vertex
+#'   similarities.
+#' @param method Choice for graph matching methods. One of "indefinite",
+#'   "convex", "PATH", "percolation", "IsoRank", "Umeyama", or a user-defined
+#'   graph matching function. Please check Details and Examples sections for
+#'   instructions on how to define your own function.
+#' @param ... Arguments passed to graph matching methods. Please refer to
+#'   Details section for more information.
 #'
 #' @rdname gm
 #'
-#' @details If \code{method} is a function, it should take two matrices or igraph objects as
-#' arguments for minimum. Additionally, it can also take prior information in the form of
-#' \code{seeds} or \code{similarity} or both, and other arguments if needed. The self-defined
-#' function should return a graphMatch class object with matching correspondence, sizes of two
-#' input graphs, matching formula, and other algorithm hyperparameter details.
+#' @details If \code{method} is a function, it should take two matrices or
+#'   igraph objects, seeds and similarity scores as arguments for minimum.
+#'   Additionally, it can also take other arguments if needed.
+#'   The self-defined function should return a graphMatch class object with
+#'   matching correspondence, sizes of two input graphs, matching formula, and
+#'   other algorithm hyperparameter details.
 #'
 #'
-#' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
-#'   return an object of class "gm" which is a list containing the following
-#'   components:
+#' @return \code{graph_match_indefinite}, \code{graph_match_convex} and
+#'   \code{graph_match_PATH} return an object of class "gm" which is a list
+#'   containing the following components:
 #'
-#'   \describe{
-#'     \item{corr_A}{matching correspondence in \eqn{G_1}}
-#'     \item{corr_B}{matching correspondence in \eqn{G_2}}
-#'     \item{soft}{the doubly stochastic matrix from the last iteration with which one can
-#'           extract more than one matching candidates}
-#'     \item{iter}{number of iterations until convergence or reaches the \code{max_iter}}
-#'     \item{max_iter}{Maximum number of replacing matches}
-#'     \item{lap_method}{Choice for solving the LAP}
-#'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
-#'   }
+#'   \describe{ \item{corr_A}{matching correspondence in \eqn{G_1}}
+#'   \item{corr_B}{matching correspondence in \eqn{G_2}} \item{soft}{the doubly
+#'   stochastic matrix from the last iteration with which one can extract more
+#'   than one matching candidates} \item{iter}{number of iterations until
+#'   convergence or reaches the \code{max_iter}} \item{max_iter}{Maximum number
+#'   of replacing matches} \item{lap_method}{Choice for solving the LAP}
+#'   \item{seeds}{a vector of logicals indicating if the corresponding vertex is
+#'   a seed} }
 #'
 #'
 #'
 #' @examples
-#'
 #' # match G_1 & G_2 with some known node pairs as seeds
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 #' g1 <- cgnp_pair$graph1
@@ -51,7 +53,7 @@
 #' seeds <- 1:10 <= 3
 #'
 #' # customized graph matching algorithm
-#' graph_match_rand <- function(A, B, rand_seed){
+#' graph_match_rand <- function(A, B, seeds = NULL, similarity = NULL, rand_seed){
 #'   totv1 <- nrow(A[[1]])
 #'   totv2 <- nrow(B[[1]])
 #'   nv <- max(totv1, totv2)
@@ -107,7 +109,7 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
 
   if(is.function(method)){
-    m <- method(A, B, ...)
+    m <- method(A, B, seeds, similarity, ...)
   } else if(method == "indefinite"){
     m <- graph_match_indefinite(A, B, seeds, similarity, ...)
   } else if(method == "convex"){
