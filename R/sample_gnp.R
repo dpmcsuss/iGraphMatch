@@ -19,9 +19,16 @@
 #' \code{graph1} and \code{graph2}, whose adjacency matrix entries
 #' are correlated with \code{corr}. If sample two graphs with junk vertices, the first
 #' \code{ncore} vertices are core vertices and the rest are junk vertices.
+#'
+#' @references V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+#' for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
+#'
 #' @examples
 #' sample_correlated_gnp_pair(n=50, corr=0.3, p=0.5, ncore=40)
 #' sample_correlated_gnp_pair(n=5, corr=0.3, p=0.5, permutation=c(1,3,2,4,5))
+#'
+#' @seealso \code{\link{sample_correlated_sbm_pair}}, \code{\link{sample_correlated_rdpg_pair}}
+#'
 #' @export
 #'
 sample_correlated_gnp_pair <- function(n, corr, p, ncore = n, permutation = 1:n, ...){

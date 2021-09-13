@@ -34,4 +34,12 @@ two graphs being \code{rho} and edge probability being \code{p}.
 \examples{
 sample_correlated_gnp_pair(n=50, corr=0.3, p=0.5, ncore=40)
 sample_correlated_gnp_pair(n=5, corr=0.3, p=0.5, permutation=c(1,3,2,4,5))
+
+}
+\references{
+V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
+}
+\seealso{
+\code{\link{sample_correlated_sbm_pair}}, \code{\link{sample_correlated_rdpg_pair}}
 }
