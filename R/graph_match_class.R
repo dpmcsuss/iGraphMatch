@@ -81,6 +81,10 @@ setGeneric(
       corr = corr,
       nnodes = nnodes
     )
+    if (is.null(call)) {
+      browser()
+      call <- call("no call")
+    }
     gm@call <- call
     for (n in names(detail)) {
       gm[[n]] <- detail[[n]]

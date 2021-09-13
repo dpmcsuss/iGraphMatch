@@ -63,18 +63,20 @@
 #'   corr_B <- c(1:nv)[sample(nv)]
 #'   corr <- data.frame(corr_A, corr_B)
 #'
-#'   cl <- match.call()
 #'   graphMatch(
 #'     corr = corr,
 #'     nnodes = c(totv1, totv2),
-#'     call = cl,
 #'     detail = list(
 #'       rand_seed = rand_seed
 #'     )
 #'   )
 #' }
 #'
-#' m_self <- gm(g1, g2, method = graph_match_rand, rand_seed = 123) # pass additional argument 'rand_seed' to input
+#' m_self <- gm(
+#'   g1, g2,
+#'   method = graph_match_rand,
+#'   rand_seed = 123 # pass additional argument 'rand_seed' to input
+#' )
 #' summary(m_self, g1, g2)
 #' m_self$rand_seed # graph_match_rand method hyperparameter
 #' m_self@call

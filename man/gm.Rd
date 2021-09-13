@@ -73,11 +73,9 @@ graph_match_rand <- function(A, B, seeds = NULL, similarity = NULL, rand_seed){
   corr_B <- c(1:nv)[sample(nv)]
   corr <- data.frame(corr_A, corr_B)
 
-  cl <- match.call()
   graphMatch(
     corr = corr,
     nnodes = c(totv1, totv2),
-    call = cl,
     detail = list(
       rand_seed = rand_seed
     )

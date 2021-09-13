@@ -6,7 +6,16 @@ cgnp_pair <- sample_correlated_gnp_pair(10, .9, .5)
 A <- cgnp_pair$graph1
 B <- cgnp_pair$graph2
 seeds<-1:4
-tt <- gm(A, B, seeds, method = "PATH")
+
+test_that("warning from gm convex",
+  {
+    expect_warning(
+      tt <<- gm(A, B, seeds, method = "PATH"),
+      "Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.*"
+    )
+  }
+)
+
 
 
 test_that("matching correspondence between graph1 and graph2", {
@@ -15,7 +24,11 @@ test_that("matching correspondence between graph1 and graph2", {
   A <- cgnp_pair$graph1
   B <- cgnp_pair$graph2
   seeds <- 1:4
-  tt <- gm(A, B, seeds, method = "PATH")
+
+  expect_warning(
+    tt <<- gm(A, B, seeds, method = "PATH"),
+    "Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.*"
+  )
   expect_snapshot_output(print(tt))
   expect_snapshot_output(print(round(as.matrix(tt$soft), 4)))
 
