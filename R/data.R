@@ -39,8 +39,8 @@
 #'
 #' @usage data(Enron)
 #'
-#' @references Originally released by William Cohen at CMU. More details on the
-#' origins and research uses of the dataset can be found \href{http://www.cs.cmu.edu/~enron/}{here}.
+#' @references Originally released by William Cohen at CMU. \href{http://www.cs.cmu.edu/~enron/}{More details}
+#' on the origins and research uses of the dataset.
 #'
 #' @examples
 #' data(Enron)
