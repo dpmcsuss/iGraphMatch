@@ -31,3 +31,24 @@ These methods return an object of the same type
 Methods to use graphMatch objects as operators on
  igraph and matrix-like objects.
 }
+\examples{
+
+set.seed(123)
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+g1 <- cgnp_pair$graph1
+g2 <- cgnp_pair$graph2
+
+# match g1 & g2 using FW methodology with indefinite relaxation
+match <- gm(A = g1, B = g2, seeds = 1:3, method = 'indefinite')
+
+# permute the second graph according to the match result: P \%*\% g2 \%*\% P^T
+match \%*\% g2 # return an igraph object
+# equivalent to:
+match \%*\% g2 \%*\% t(match)
+
+match \%*\% g2[] # return a matrix
+# equivalent to:
+P <- match[]
+P \%*\% g2[] \%*\% Matrix::t(P)
+
+}
