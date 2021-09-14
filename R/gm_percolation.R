@@ -58,7 +58,7 @@ cal_mark <- function(x,y){
 #' GM_exp
 #'
 #'
-#'
+#' @keywords internal
 graph_match_percolation <- function (A, B, seeds,
                             similarity = NULL, r = 2,
                             ExpandWhenStuck = FALSE) {

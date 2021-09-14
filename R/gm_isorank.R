@@ -9,8 +9,7 @@
 #'   vector. If not, seeds must be  a matrix
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
-#' @param max_iter A number. Maximum number of replacing matches equals to
-#'   max_iter times number of total vertices of \eqn{G_1}.
+#' @param max_iter A number. Maximum number of replacing matches.
 #' @param lap_method Choice of method to extract mapping from score matrix.
 #'   One of "greedy" or "LAP".
 #'
@@ -37,8 +36,7 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using IsoRank algorithm
-#' startm <- matrix(0, 10, 10)
-#' diag(startm)[1:4] <- 1
+#' startm <- as.matrix(init_start(start = "bari", nns = 10, soft_seeds = 1:4))
 #'
 #' GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
 #' GM_IsoRank
@@ -53,7 +51,7 @@
 #' plot(g1[], g2[], GM_IsoRank)
 #'
 #'
-#'
+#' @keywords internal
 graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
                                 max_iter = 50, lap_method = "greedy"){
 

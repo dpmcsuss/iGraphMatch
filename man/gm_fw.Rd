@@ -54,8 +54,7 @@ corresponding indices of \eqn{G_2}.}
 \item{start}{A matrix or a character. Any \code{nns-by-nns} matrix or
 character value like "bari", "rds" or "convex" to initialize the starting matrix.}
 
-\item{max_iter}{A number. Maximum number of replacing matches equals to
-max_iter times number of total vertices of \eqn{G_1}.}
+\item{max_iter}{A number. Maximum number of replacing matches.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 
@@ -97,13 +96,12 @@ gm(g1, g2, seeds, method = "convex")
 
 
 
-
 # match G_1 & G_2 with some known node pairs as seeds
 cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
-GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
+GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "bari")
 GM_bari
 GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
 
@@ -130,7 +128,6 @@ summary(match_multi_layer, A, B)
 
 # match G_1 & G_2 using PATH algorithm
 gm(g1, g2, method = "PATH")
-
 
 
 }

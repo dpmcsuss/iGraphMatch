@@ -66,7 +66,6 @@ GM_exp <- gm(g1, g2, seeds, method = "percolation", r = 4, ExpandWhenStuck = TRU
 GM_exp
 
 
-
 }
 \references{
 L. Yartseva and M. Grossglauser (2013), \emph{On the performance
@@ -76,3 +75,4 @@ E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
 Endowment, 8(10):1010–1021.
 }
+\keyword{internal}

@@ -15,8 +15,7 @@
 #'   character value like "bari", "rds" or "convex" to initialize the starting matrix.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param tol A number. Tolerance of edge disagreements.
-#' @param max_iter A number. Maximum number of replacing matches equals to
-#'   max_iter times number of total vertices of \eqn{G_1}.
+#' @param max_iter A number. Maximum number of replacing matches.
 #' @param lap_method Choice for lap method. One of "lapjv", "lapmod", or "clue".
 #'
 #' @rdname gm_fw
@@ -49,7 +48,7 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 3
-#' GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
+#' GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "bari")
 #' GM_bari
 #' GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
 #'

@@ -44,6 +44,7 @@
 #' plot(g1[], g2[], GM_Umeyama)
 #'
 #'
+#' @keywords internal
 graph_match_Umeyama <- function(A, B, seeds = NULL,
                                 similarity = NULL){
 

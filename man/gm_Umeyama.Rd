@@ -59,3 +59,4 @@ plot(g1[], g2[], GM_Umeyama)
 S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
 }
+\keyword{internal}

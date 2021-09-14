@@ -8,7 +8,7 @@ B <- g$graph2
 
 
 # customized graph matching algorithm
-graph_match_rand <- function(A, B, rand_seed){
+graph_match_rand <- function(A, B, seeds = NULL, similarity = NULL, rand_seed){
   totv1 <- nrow(A[[1]])
   totv2 <- nrow(B[[1]])
   nv <- max(totv1, totv2)
@@ -50,7 +50,7 @@ test_that(
   "Error on invalid customized method output",
   {
     expect_error(
-      gm(A, B, method = function(A, B) list(A, B)),
+      gm(A, B, method = function(A, B, seeds, similarity) list(A, B)),
       "*Customized graph matching method function*"
     )
   }

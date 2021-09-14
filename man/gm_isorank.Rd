@@ -26,8 +26,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 
-\item{max_iter}{A number. Maximum number of replacing matches equals to
-max_iter times number of total vertices of \eqn{G_1}.}
+\item{max_iter}{A number. Maximum number of replacing matches.}
 
 \item{lap_method}{Choice of method to extract mapping from score matrix.
 One of "greedy" or "LAP".}
@@ -54,8 +53,7 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 using IsoRank algorithm
-startm <- matrix(0, 10, 10)
-diag(startm)[1:4] <- 1
+startm <- as.matrix(init_start(start = "bari", nns = 10, soft_seeds = 1:4))
 
 GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
 GM_IsoRank
@@ -70,10 +68,10 @@ plot(g1, g2, GM_IsoRank)
 plot(g1[], g2[], GM_IsoRank)
 
 
-
 }
 \references{
 R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 multiple protein interaction networks with application to functional
 orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
 }
+\keyword{internal}

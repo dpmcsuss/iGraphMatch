@@ -16,7 +16,7 @@
 #' }
 #'
 #'
-#'
+#' @keywords internal
 graph_match_convex <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari", max_iter = 100,
   tol = 1e-5, lap_method = NULL) {
