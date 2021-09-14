@@ -68,6 +68,5 @@ match$lap_method # method for solving lap
 
 }
 \seealso{
-\link{graphMatch_methods}, \link{graphMatch_summary},
-  \link{plot_graphMatch}, \link{graphMatch_operators}
+graphMatch_methods, graphMatch_summary, plot_graphMatch, graphMatch_operators
 }

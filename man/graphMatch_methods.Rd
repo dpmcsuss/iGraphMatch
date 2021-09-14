@@ -107,6 +107,5 @@ t(match)
 rev(match)
 }
 \seealso{
-\link{graphMatch_summary}, \link{plot_graphMatch},
-  \link{graphMatch_operators}
+plot_graphMatch, graphMatch_operators
 }
