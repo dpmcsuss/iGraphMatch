@@ -81,7 +81,7 @@ setGeneric(
       nnodes = nnodes
     )
     if (is.null(call)) {
-      browser()
+      #browser()
       call <- call("no call")
     }
     gm@call <- call

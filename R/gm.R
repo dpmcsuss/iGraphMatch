@@ -162,7 +162,6 @@
 #'   graphMatch(
 #'     corr = corr,
 #'     nnodes = c(totv1, totv2),
-#'     call = match.call(),
 #'     detail = list(
 #'       rand_seed = rand_seed
 #'     )
