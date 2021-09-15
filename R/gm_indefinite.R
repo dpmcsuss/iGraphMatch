@@ -150,6 +150,10 @@ graph_match_FW <- function(A, B, seeds = NULL,
 
   D_ns <- P
 
+  if (lap_method == "rect") {
+    P <- P[1:totv1, ]
+  }
+
   corr_ns <- do_lap(P, lap_method)
 
 
