@@ -4,7 +4,7 @@
 \alias{init_start}
 \title{Initialization of the start matrix}
 \usage{
-init_start(start, nns, ns = 0, soft_seeds = NULL, ...)
+init_start(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...)
 }
 \arguments{
 \item{start}{A matrix or a character. Any \code{nns-by-nns} doubly stochastic matrix or start

@@ -109,6 +109,9 @@ graph_match_FW <- function(A, B, seeds = NULL,
       Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
     }
 
+    if (lap_method == "rect") {
+      Grad <- Grad[1:totv1, ]
+    }
     ind <- do_lap(Grad, lap_method)
 
     ind2 <- cbind(1:nn, ind)
@@ -146,6 +149,10 @@ graph_match_FW <- function(A, B, seeds = NULL,
   }
 
   D_ns <- P
+
+  if (lap_method == "rect") {
+    P <- P[1:totv1, ]
+  }
 
   corr_ns <- do_lap(P, lap_method)
 

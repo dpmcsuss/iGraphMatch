@@ -25,8 +25,13 @@ Imports:
 Suggests:
     dplyr (>= 0.5.0),
     testthat (>= 2.0.0),
-    knitr,
-    rmarkdown
+    rlapjv,
+    purrr (>= 0.2.2.2),
+    ramify (>= 0.3.3),
+    rmarkdown,
+    knitr
+Remotes:
+    dpmcsuss/rlapjv
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE

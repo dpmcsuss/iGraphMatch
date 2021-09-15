@@ -44,8 +44,11 @@
 #' }
 #'
 #' @export
-init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
-  nss <- nrow(check_seeds(soft_seeds, nns + ns)$seeds)
+init_start <- function(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...){
+
+  soft_seeds <- check_seeds(soft_seeds, nns + ns)$seeds
+  nss <- nrow(soft_seeds)
+  
   if (inherits(start, c("matrix", "Matrix"))){
     if (nss > 0 && any(dim(start) != c(nns - nss, nns - nss))) {
       stop("You are trying to use soft seeds but you've already
@@ -96,15 +99,18 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, ...){
     stop('Start must be either a matrix, function, or one of "bari", "rds",
       "rds_perm_bari", "convex"')
   }
-  add_soft_seeds(start, nns, ns, soft_seeds)
+  add_soft_seeds(start, nns, ns, soft_seeds, seeds)
 }
-
 
 # Func that takes a nns - nss dim matrix and returns
 # a nns dim matrix that incorporates soft seeds
-add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
+add_soft_seeds <- function(start, nns, ns, soft_seeds, hard_seeds) {
   if (is.null(soft_seeds))
     return(start)
+
+  hard_seeds <- check_seeds(hard_seeds, nv = nns + ns)$seeds
+
+  reindex <- function(s, hs) s - sum(hs < s)
 
   cs <- check_seeds(soft_seeds, nv = nns + ns)
   seeds_g1 <- cs$seeds$A - ns
@@ -118,7 +124,13 @@ add_soft_seeds <- function(start, nns, ns = 0, soft_seeds = NULL) {
   reorderB <- order(c(nonseeds_g2, seeds_g2))
 
   new_start <- pad(start, nss)[reorderA, reorderB]
-  new_start[cbind(seeds_g1, seeds_g2)] <-1
+
+  # Hack to avoid message about inefficiently treating single elements
+  suppressMessages(
+    new_start[cbind(seeds_g1, seeds_g2)] <- 1
+  )
+
   new_start
 }
+
 

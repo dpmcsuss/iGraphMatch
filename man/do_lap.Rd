@@ -9,7 +9,7 @@ do_lap(score, method)
 \arguments{
 \item{score}{matrix of pairwise scores}
 
-\item{method}{One of "lapjv", "lapmod", or "clue"}
+\item{method}{One of "lapjv", "lapmod", "rect", or "clue"}
 }
 \value{
 \code{do_lap} returns a vector which indicates the
@@ -29,11 +29,12 @@ Solves a linear assignment using one of three methods.
 }
 \examples{
 set.seed(12345)
-cost <- Matrix::rsparsematrix(10, 10, .5)
+cost <- Matrix::rsparsematrix(30, 30, .5)
 cbind(
  do_lap(cost, "lapjv"),
  do_lap(cost, "lapmod"),
- do_lap(cost, "clue")
+ do_lap(cost, "clue"),
 )
+do_lap(cost[1:5, ], "rect")
 
 }

@@ -8,9 +8,7 @@
 #' where \eqn{\Pi_n} denotes all permutations on n objects.
 #'
 #' @param score matrix of pairwise scores
-#' @param method One of "lapjv", "lapmod", or "clue"
-#'
-#'
+#' @param method One of "lapjv", "lapmod", "rect", or "clue"
 #' @rdname do_lap
 #'
 #' @return \code{do_lap} returns a vector which indicates the
@@ -25,13 +23,14 @@
 #'
 #' @examples
 #' set.seed(12345)
-#' cost <- Matrix::rsparsematrix(10, 10, .5)
+#' cost <- Matrix::rsparsematrix(30, 30, .5)
 #' cbind(
 #'  do_lap(cost, "lapjv"),
 #'  do_lap(cost, "lapmod"),
-#'  do_lap(cost, "clue")
+#'  do_lap(cost, "clue"),
 #' )
-#'
+#' do_lap(cost[1:5, ], "rect")
+#' 
 #' @export
 do_lap <- function(score, method){
   n <- nrow(score)
@@ -56,6 +55,9 @@ do_lap <- function(score, method){
       as.vector(clue::solve_LSAP(score,
         maximum = TRUE))
     },
+    rect = {
+      rect_lap(score)
+    },
     # sinkhorn = {
     #   lambda <- 10
     #   n_iter <- 20
@@ -67,7 +69,7 @@ do_lap <- function(score, method){
 }
 
 set_lap_method <- function(lap_method, totv1, totv2){
-  methods <- c("lapmod", "lapjv", "clue") #, "sinkhorn")
+  methods <- c("lapmod", "lapjv", "clue", "rect") #, "sinkhorn")
   if (!is.null(lap_method) && !(lap_method %in% methods)){
     stop(paste("Unrecognized LAP method:", lap_method,
       "Please use one of:", paste(methods, collapse = " ")))
@@ -85,4 +87,46 @@ set_lap_method <- function(lap_method, totv1, totv2){
 
 project_to_ds <- function(m, max_iter, tol) {
   # G_t <- [G_t + 1/n * (I - G_t + 11^T G_t/n)11^T - 11^T G_t/n)^+
+}
+
+
+rect_lap <- function(g_rect) {
+  n = nrow(g_rect)
+  m = ncol(g_rect)
+
+  topk       = t(sapply(1:n, function(i) order(-g_rect[i,])))
+  topk       = topk[,1:n]
+  sel        = sort(unique(c(topk)))
+  g_rect_sub = g_rect[,sel]
+
+  # solve sub-problem
+  ind        = sel[rect_lap_inner(g_rect_sub, maximize=TRUE)]
+
+  # pad ind to get full solution
+  ind_extra = 1:m
+  ind_extra = ind_extra[!(ind_extra %in% ind)]
+  ind       = c(ind, ind_extra)
+  return(ind)
+}
+
+
+rect_lap_inner <- function(x, maximize) {
+  if(maximize) {
+    x <- (1 + max(x)) - x
+  }
+
+  n <- nrow(x)
+  m <- ncol(x)
+  k <- n + m
+
+  xpad <- matrix(max(x) + 1, k, k)
+  xpad[1:n, 1:m] <- as.matrix(x)
+  xpad[(n + 1):k, (m + 1):k] <- 0
+
+  ind <- cpp_lapjv(xpad, maximize = FALSE)
+
+  ind <- ind[1:n]
+  ind[ind > m] <- -1
+
+  return(ind)
 }
