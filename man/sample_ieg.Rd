@@ -15,7 +15,7 @@ sample_correlated_ieg_pair(
   permutation = 1:n
 )
 
-sample_correlated_rdpg_pair(X, rho, ncore = nrow(X), ...)
+sample_correlated_rdpg_pair(X, corr, ncore = nrow(X), ...)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
@@ -37,7 +37,7 @@ each entry should be in the open (0,1) interval.}
 \item{X}{A matrix. Dot products matrix, each entry must be in open (0,1)
 interval.}
 
-\item{rho}{A number. The target Pearson correlation between the adjacency
+\item{corr}{A number. The target Pearson correlation between the adjacency
 matrices of the generated graphs. It must be in open (0,1) interval.}
 
 \item{...}{Passed to \code{sample_correlated_rdpg_pair}.}
@@ -71,7 +71,7 @@ scale <- 8
 X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 X <- X/rowSums(X)
 X <- X[,1:xdim]
-sample_correlated_rdpg_pair(X,rho=0.5,ncore=40)
+sample_correlated_rdpg_pair(X,corr=0.5,ncore=40)
 
 }
 \references{

@@ -8,7 +8,7 @@ scale <- 8
 X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 X <- X/rowSums(X)
 X <- X[,1:xdim]
-g<-sample_correlated_rdpg_pair(X,rho=0.5,nc=nrow(X),directed=TRUE,loops=TRUE,permutation=c(sample(1:n)))
+g<-sample_correlated_rdpg_pair(X,corr=0.5,nc=nrow(X),directed=TRUE,loops=TRUE,permutation=c(sample(1:n)))
 
 test_that("number of vertices", {
   expect_equal(igraph::vcount(g$graph1),50)

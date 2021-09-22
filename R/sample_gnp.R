@@ -3,7 +3,7 @@
 #' @title Sample correlated G(n,p) random graphs
 #'
 #' @description Sample a pair of correlated G(n,p) random graphs with correlation between
-#' two graphs being \code{rho} and edge probability being \code{p}.
+#' two graphs being \code{corr} and edge probability being \code{p}.
 #'
 #' @param n An integer. Number of total vertices for the sampled graphs.
 #' @param corr A number. The target Pearson correlation between the adjacency matrices

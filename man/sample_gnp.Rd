@@ -29,7 +29,7 @@ are correlated with \code{corr}. If sample two graphs with junk vertices, the fi
 }
 \description{
 Sample a pair of correlated G(n,p) random graphs with correlation between
-two graphs being \code{rho} and edge probability being \code{p}.
+two graphs being \code{corr} and edge probability being \code{p}.
 }
 \examples{
 sample_correlated_gnp_pair(n=50, corr=0.3, p=0.5, ncore=40)

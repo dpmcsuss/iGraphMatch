@@ -11,7 +11,7 @@
 #' @param directed A logical. \code{TRUE} if the sampled graphs are directed.
 #' @param X A matrix. Dot products matrix, each entry must be in open (0,1)
 #'   interval.
-#' @param rho A number. The target Pearson correlation between the adjacency
+#' @param corr A number. The target Pearson correlation between the adjacency
 #'   matrices of the generated graphs. It must be in open (0,1) interval.
 #' @param directed Logical scalar, whether to generate directed graphs.
 #' @param loops Logical scalar, whether self-loops are allowed in the graph.
@@ -93,17 +93,17 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,ncore=n,directed=FALSE,loops
 #' X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 #' X <- X/rowSums(X)
 #' X <- X[,1:xdim]
-#' sample_correlated_rdpg_pair(X,rho=0.5,ncore=40)
+#' sample_correlated_rdpg_pair(X,corr=0.5,ncore=40)
 #'
 #' @export
-sample_correlated_rdpg_pair <- function(X,rho,ncore=nrow(X),...){
+sample_correlated_rdpg_pair <- function(X,corr,ncore=nrow(X),...){
   p_mat <- X%*%t(X)
   n <- nrow(X)
-  if(length(rho)==1){
+  if(length(corr)==1){
     c_mat <- matrix(0,n,n)
-    c_mat[1:ncore,1:ncore] <- rho
+    c_mat[1:ncore,1:ncore] <- corr
   }else{
-    c_mat <- rho
+    c_mat <- corr
   }
   sample_correlated_ieg_pair(n,p_mat,c_mat,ncore, ...)
 }
