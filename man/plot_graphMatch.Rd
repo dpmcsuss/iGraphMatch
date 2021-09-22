@@ -50,7 +50,7 @@ matrix plot.
 Grey edges/pixels indicate common edges, blue
 indicates edges only in graph A and red
 represents edges only graph B. The corresponding
-linetypes are solid, short dash, and long dash.
+linetypes are solid, long dash, and short dash.
 
 The plots can be recreated from the output with the code \cr
 \code{plot(g)} \cr
