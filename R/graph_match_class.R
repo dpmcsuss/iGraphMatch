@@ -432,8 +432,8 @@ identity_match <- function(x, y) {
 #'  the matched graphs.
 #'
 #' @details
-#' Grey edges/pixels indicate common edges, red
-#' indicates edges only in graph A and green
+#' Grey edges/pixels indicate common edges, blue
+#' indicates edges only in graph A and red
 #' represents edges only graph B. The corresponding
 #' linetypes are solid, short dash, and long dash.
 #'
