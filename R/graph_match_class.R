@@ -15,7 +15,10 @@ setOldClass("igraph")
 #'   represented by a data.frame with two columns indicating the aligned
 #'   vertex-pairs across the two graphs.
 #'
-#' @seealso graphMatch_methods, graphMatch_summary, plot_graphMatch, graphMatch_operators
+#' @seealso \link[iGraphMatch:as.data.frame,graphMatch-method]{graphMatch_methods},
+#' \link[iGraphMatch:summary,graphMatch-method]{graphMatch_summary},
+#' \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators},
+#' \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}
 #'
 #' @rdname graphMatch_constructor
 setClass("graphMatch",
@@ -176,7 +179,7 @@ setAs("graphMatch", "data.frame", function(from) {
 #' # get nonseed matching correspondence
 #' match[!match$seeds]
 #'
-#' @seealso plot_graphMatch, graphMatch_operators
+#' @seealso \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}, \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators}
 #'
 #' @rdname graphMatch_methods
 setMethod("as.data.frame", signature("graphMatch"),

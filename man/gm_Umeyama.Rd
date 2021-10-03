@@ -20,7 +20,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 }
 \value{
-\code{graph_match_Umeyama} returns an object of class "graphMatch" which is a list
+\code{graph_match_Umeyama} returns an object of class "\code{\link{graphMatch}}" which is a list
   containing the following components:
 
   \describe{

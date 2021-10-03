@@ -10,7 +10,7 @@
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #'
-#' @return \code{graph_match_Umeyama} returns an object of class "graphMatch" which is a list
+#' @return \code{graph_match_Umeyama} returns an object of class "\code{\link{graphMatch}}" which is a list
 #'   containing the following components:
 #'
 #'   \describe{

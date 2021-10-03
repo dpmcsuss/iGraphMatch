@@ -6,7 +6,7 @@ cal_mark <- function(x,y){
 #' @title Percolation Graph Matching Methods
 #' @rdname gm_perco
 #'
-#' @return \code{graph_match_percolation} returns an object of class "graphMatch" which is a
+#' @return \code{graph_match_percolation} returns an object of class "\code{\link{graphMatch}}" which is a
 #'   list containing the following components:
 #'
 #'   \describe{

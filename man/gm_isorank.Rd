@@ -32,7 +32,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 One of "greedy" or "LAP".}
 }
 \value{
-\code{graph_match_IsoRank} returns an object of class "graphMatch" which is a list
+\code{graph_match_IsoRank} returns an object of class "\code{\link{graphMatch}}" which is a list
   containing the following components:
 
   \describe{

@@ -68,5 +68,8 @@ match$lap_method # method for solving lap
 
 }
 \seealso{
-graphMatch_methods, graphMatch_summary, plot_graphMatch, graphMatch_operators
+\link[iGraphMatch:as.data.frame,graphMatch-method]{graphMatch_methods},
+\link[iGraphMatch:summary,graphMatch-method]{graphMatch_summary},
+\link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators},
+\link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}
 }

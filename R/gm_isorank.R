@@ -13,7 +13,7 @@
 #' @param lap_method Choice of method to extract mapping from score matrix.
 #'   One of "greedy" or "LAP".
 #'
-#' @return \code{graph_match_IsoRank} returns an object of class "graphMatch" which is a list
+#' @return \code{graph_match_IsoRank} returns an object of class "\code{\link{graphMatch}}" which is a list
 #'   containing the following components:
 #'
 #'   \describe{

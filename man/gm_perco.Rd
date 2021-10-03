@@ -32,7 +32,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 stops before matching all the vertices.}
 }
 \value{
-\code{graph_match_percolation} returns an object of class "graphMatch" which is a
+\code{graph_match_percolation} returns an object of class "\code{\link{graphMatch}}" which is a
   list containing the following components:
 
   \describe{

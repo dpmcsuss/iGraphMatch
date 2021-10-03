@@ -21,7 +21,7 @@
 #' @rdname gm_fw
 #'
 #' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
-#'   return an object of class "graphMatch" which is a list containing the following
+#'   return an object of class "\code{\link{graphMatch}}" which is a list containing the following
 #'   components:
 #'
 #'   \describe{

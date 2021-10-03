@@ -107,5 +107,5 @@ t(match)
 rev(match)
 }
 \seealso{
-plot_graphMatch, graphMatch_operators
+\link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}, \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators}
 }

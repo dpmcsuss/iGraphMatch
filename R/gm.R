@@ -8,7 +8,7 @@
 #' @param B A matrix, 'igraph' object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
-#'   vector. If not, seeds must be  a matrix or a data frame, with the first
+#'   vector. If not, seeds must be a matrix or a data frame, with the first
 #'   column being the indices of \eqn{G_1} and the second column being the
 #'   corresponding indices of \eqn{G_2}.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex
@@ -29,42 +29,15 @@
 #'   correspondence, sizes of two input graphs, matching formula, and other
 #'   algorithm hyperparameter details.
 #'
-#'   The \code{method} argument can also take one of the implemented algorithms.
+#'   The \code{method} argument can also take one of the implemented algorithms,
+#'   including \link[=graph_match_indefinite]{"indefinite"},
+#'   \link[=graph_match_convex]{"convex"}, \link[=graph_match_PATH]{"PATH"},
+#'   \link[=graph_match_percolation]{"percolation"}, \link[=graph_match_IsoRank]{"IsoRank"},
+#'   and \link[=graph_match_Umeyama]{"Umeyama"}.
 #'   In this case, one can pass additional arguments to the \code{gm} function
 #'   according to the specified method.
-#'
-#'   For "indefinite", "convex" and "PATH" methods, additional arguments with their
-#'   default values contain the followings:
-#'
-#'   \describe{
-#'     \item{\code{start = "bari"}}{A matrix or a character. Any \code{nns-by-nns}
-#'       matrix or character value like "bari", "rds" or "convex" to
-#'       initialize the starting matrix.}
-#'     \item{\code{max_iter = 20}}{A number. Maximum number of replacing matches.
-#'       When the algorithm reaches \code{max_iter} before convergence, it would
-#'       stop and give a warning message.
-#'       Note that the default value is 100 for "convex".}
-#'     \item{\code{tol = 1e-05}}{A number. Tolerance of edge disagreements for "convex" and
-#'       "PATH" methods. The default value is 1e-05.}
-#'     \item{\code{lap_method = NULL}}{Choice for lap method. One of "lapjv", "lapmod",
-#'       or "clue".
-#'       When \code{lap_method} takes default value, the function automatically selects
-#'       a preferred lap method based on graph sizes.}
-#'  }
-#'
-#'  The "IsoRank" method also has \code{max_iter} and \code{lap_method} as additional
-#'  arguments. The default for \code{max_iter} is 50. \code{lap_method} takes either "greedy"
-#'  (default) or "LAP", where the former extracts mapping using the greedy algorithm and
-#'  not necessarily grows a mapping to the entire graphs, whereas the latter solves a LAP.
-#'
-#'  The "percolation" method has two additional arguments:
-#'
-#'  \describe{
-#'    \item{\code{r = 2}}{A number. Threshold of neighboring pair scores.}
-#'    \item{\code{ExpandWhenStuck = FALSE}}{A logical. TRUE if expand the seed
-#'      set when Percolation algorithm stops before matching all the vertices.}
-#'  }
-#'
+#'   For a detailed list of additional arguments for each one of the implemented method,
+#'   please click on the corresponding method name for its help page.
 #'
 #'
 #' @return \code{gm} returns an object of class "\code{\link{graphMatch}}".
@@ -84,27 +57,13 @@
 #'     \item{call}{The call to the graph matching function}
 #'   }
 #'
-#' Additionally, \code{gm} also returns a list of matching details corresponding
-#' to the specified method. The returned list for the "percolation" method contains
+#' Additionally, \code{gm} also returns a list of matching details of the specified method.
+#' Please refer to the help page for each implemented method, i.e.
+#' \link[=graph_match_indefinite]{"indefinite"},
+#' \link[=graph_match_convex]{"convex"}, \link[=graph_match_PATH]{"PATH"},
+#' \link[=graph_match_percolation]{"percolation"}, \link[=graph_match_IsoRank]{"IsoRank"},
+#' and \link[=graph_match_Umeyama]{"Umeyama"} for details on the corresponding returned list.
 #'
-#'   \describe{
-#'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
-#'     \item{match_order}{the order of vertices getting matched}
-#'   }
-#'
-#' Notably, \code{seeds} information is returned for all the methods. In addition to
-#' \code{seeds}, "convex", "indefinite", "PATH", "IsoRank" and "Umeyama" also return
-#'
-#'   \describe{
-#'     \item{soft}{the doubly stochastic matrix from the last iteration or
-#'       functional similarity score matrix with which one can extract more than
-#'       one matching candidates}
-#'     \item{lap_method}{Choice for extracting matches or solving the LAP}
-#'   }
-#'
-#' "IsoRank" method also returns match_order when \code{lap_method="greedy"}. "PATH",
-#' "convex" and "indefinite" methods return two more components, max_iter and iter
-#' to indicate the maximum number of replacing matches and the actual number of iterations.
 #'
 #' @examples
 #' # match G_1 & G_2 with some known node pairs as seeds
@@ -180,33 +139,6 @@
 #' m_self@corr
 #'
 #'
-#'
-#'
-#' @references V. Lyzinski and D. E. Fishkind and M. Fiori and J. T. Vogelstein and C. E. Priebe
-#' and G. Sapiro (2016), \emph{Graph Matching: Relax at Your Own Risk}. IEEE TPAMI, pages 60-73.
-#' @references V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
-#' for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
-#'
-#' @references Y. Aflalo and A. Bronstein and R. Kimmel (2014), \emph{On convex
-#' relaxation of graph isomorphism}. Proceedings of the National Academy of Sciences,
-#' pages 2942-2947.
-#'
-#' @references M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
-#' algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
-#' pages 2227-2242.
-#'
-#' @references L. Yartseva and M. Grossglauser (2013), \emph{On the performance
-#'   of percolation graph matching}. COSN, Boston, MA, USA, pages 119–130.
-#' @references E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
-#' \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
-#' Endowment, 8(10):1010–1021.
-#'
-#' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
-#' multiple protein interaction networks with application to functional
-#' orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
-#'
-#' @references S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
-#'   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
 #'
 #' @export
 #'
