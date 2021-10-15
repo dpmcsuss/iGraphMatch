@@ -25,6 +25,7 @@
 #' data(C.Elegans)
 #' g1 <- C.Elegans[[1]]
 #' g2 <- C.Elegans[[2]]
+#' plot(g1, g2)
 #'
 "C.Elegans"
 
@@ -50,6 +51,7 @@
 #' data(Enron)
 #' g1 <- Enron[[1]]
 #' g2 <- Enron[[2]]
+#' plot(g1, g2)
 #'
 "Enron"
 
