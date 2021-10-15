@@ -1,6 +1,6 @@
-#' @title Find best matches
+#' @title Rank best matches
 #'
-#' @description Find a set of vertex-pairs in  order of a goodness of matching metric
+#' @description Rank a set of vertex-pairs in  order of a goodness of matching metric
 #'
 #' @param A A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
 #' @param B A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
