@@ -5,8 +5,8 @@
 #' that has as many vertices as possible.
 #' The \code{largest_cc} function returns the largest connected subgraph of a single graph.
 #'
-#' @param A A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.
-#' @param B A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.
+#' @param A A matrix or an igraph object. See \link{check_graph}. Must be single-layer.
+#' @param B A matrix or an igraph object. See \link{check_graph}. Must be single-layer.
 #' @param min_degree A number. Defines the level of connectedness of the
 #' obtained largest common connected subgraph. The induced subgraph is
 #' a graph with a minimum vertex-degree of at least min_degree.
@@ -14,7 +14,7 @@
 #' @rdname largest_common_cc
 #'
 #' @return \code{largest_common_cc} returns the common largest connected subgraphs of
-#' two aligned graphs in the 'igraph' object form and a logical vector indicating which vertices in
+#' two aligned graphs in the igraph object form and a logical vector indicating which vertices in
 #' the original graphs remain in the induced subgraph.
 #'
 #' @examples

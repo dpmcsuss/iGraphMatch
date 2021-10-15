@@ -24,7 +24,7 @@ graph(s) they are in.}
 to which graph(s) they are in.}
 
 \item{...}{additional parameters passed to either the
-'igraph' plot function or the Matrix image function.}
+igraph plot function or the Matrix image function.}
 
 \item{col.regions}{NULL for default colors, otherwise see \link[Matrix]{image-methods}}
 
@@ -35,14 +35,14 @@ to which graph(s) they are in.}
 \value{
 Both functions return values invisibly.
 \code{match_plot_igraph} returns the union of the
- matched graphs as an 'igraph' object with additional
+ matched graphs as an igraph object with additional
  edge attributes \code{edge_match, color, lty}.
  \code{match_plot_matrix} returns the difference between
  the matched graphs.
 }
 \description{
 Two functions are provided, \code{match_plot_igraph}
-which makes a ball and stick plot from 'igraph' objects
+which makes a ball and stick plot from igraph objects
 and \code{match_plot_matrix} which shows an adjacency
 matrix plot.
 }

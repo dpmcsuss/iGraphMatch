@@ -32,5 +32,9 @@ g2 <- C.Elegans[[2]]
 Chen, L., Vogelstein, J. T., Lyzinski, V., & Priebe, C. E.
 (2016). \emph{A joint graph inference case study: the C. elegans chemical
 and electrical connectomes.} Worm, 5(2), e1142041.
+
+Sulston, J. E., Schierenberg, E., White, J. G., & Thomson, J.N. (1983).
+\emph{The embryonic cell lineage of the nematode caenorhabditis
+ elegans.} Developmental biology, 100(1):64–119.
 }
 \keyword{datasets}

@@ -1,8 +1,8 @@
 #' @title Spectral Graph Matching Methods: Umeyama Algorithm
 #' @rdname gm_Umeyama
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a

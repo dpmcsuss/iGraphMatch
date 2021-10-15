@@ -21,7 +21,7 @@
 #' @param ... Passed to \code{sample_sbm}.
 #'
 #' @rdname sample_sbm
-#' @return Returns a list of two 'igraph' object, named \code{graph1} and
+#' @return Returns a list of two igraph object, named \code{graph1} and
 #'   \code{graph2}. If sample two graphs with junk vertices, in each
 #'   corresponding block the first \code{core.block.sizes} vertices are core
 #'   vertices and the rest are junk vertices.

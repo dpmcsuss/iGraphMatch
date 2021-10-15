@@ -10,9 +10,9 @@ largest_common_cc(A, B, min_degree = 1)
 largest_cc(A)
 }
 \arguments{
-\item{A}{A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.}
+\item{A}{A matrix or an igraph object. See \link{check_graph}. Must be single-layer.}
 
-\item{B}{A matrix or an 'igraph' object. See \link{check_graph}. Must be single-layer.}
+\item{B}{A matrix or an igraph object. See \link{check_graph}. Must be single-layer.}
 
 \item{min_degree}{A number. Defines the level of connectedness of the
 obtained largest common connected subgraph. The induced subgraph is
@@ -20,7 +20,7 @@ a graph with a minimum vertex-degree of at least min_degree.}
 }
 \value{
 \code{largest_common_cc} returns the common largest connected subgraphs of
-two aligned graphs in the 'igraph' object form and a logical vector indicating which vertices in
+two aligned graphs in the igraph object form and a logical vector indicating which vertices in
 the original graphs remain in the induced subgraph.
 }
 \description{

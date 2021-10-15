@@ -7,9 +7,9 @@
 center_graph(A, scheme = c(-1, 1), use_splr = TRUE)
 }
 \arguments{
-\item{A}{A matrix, an 'igraph' object. Adjacency matrix.}
+\item{A}{A matrix, an igraph object. Adjacency matrix.}
 
-\item{scheme}{A character vector, number or pair of numbers. Default c(-1, 1). See Details.}
+\item{scheme}{A character vector, number or pair of numbers. Default \code{c(-1, 1)}. See Details.}
 
 \item{use_splr}{A boolean indicating whether to use the 'splrMatrix' object when storing the
 centered graph.  Defaults to TRUE.}
@@ -31,7 +31,7 @@ The options for scheme are
  \item A pair of scalars: Returns s * A + a such that the
    minimum of the returned matrix is min(scheme) and the
    maximum is max(scheme).
- \item "center": Same as scheme=c(-1,1)
+ \item "center": Same as \code{scheme=c(-1,1)}
 }
 }
 \examples{

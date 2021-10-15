@@ -7,8 +7,8 @@
 # #' based on several evaluation metrics associated with nodes and edges of two graphs.
 # #'
 # #' @param match Graph matching result see \link[=graph_match_FW]{graph match methods}.
-# #' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
-# #' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
+# #' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
+# #' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
 # #' @param true_label A vector. NULL if the true correspondence
 # #'  between two graphs is unknown. A vector indicating the
 # #'  true correspondence in the second graph if the true
@@ -93,9 +93,9 @@
 # #'  a result of match method
 # #'
 # #' @param match Result from a a graph matching method.
-# #' @param A A matrix, 'igraph' object, or list of either.
+# #' @param A A matrix, igraph object, or list of either.
 # #'  Likely used in the call for creating match.
-# #' @param B A matrix, 'igraph' object, or list of either.
+# #' @param B A matrix, igraph object, or list of either.
 # #'  Likely used in the call for creating match.
 # #'
 # #' @return A list of aligned graphs named \code{A_m} and \code{B_m}.

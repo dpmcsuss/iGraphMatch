@@ -445,7 +445,7 @@ identity_match <- function(x, y) {
 #' @title Plotting methods for visualizing matches
 #'
 #' @description Two functions are provided, \code{match_plot_igraph}
-#' which makes a ball and stick plot from 'igraph' objects
+#' which makes a ball and stick plot from igraph objects
 #' and \code{match_plot_matrix} which shows an adjacency
 #' matrix plot.
 #'
@@ -459,11 +459,11 @@ identity_match <- function(x, y) {
 #' @param linetype Whether to set edge line types according
 #'  to which graph(s) they are in.
 #' @param ... additional parameters passed to either the
-#'  'igraph' plot function or the Matrix image function.
+#'  igraph plot function or the Matrix image function.
 #'
 #' @returns Both functions return values invisibly.
 #' \code{match_plot_igraph} returns the union of the
-#'  matched graphs as an 'igraph' object with additional
+#'  matched graphs as an igraph object with additional
 #'  edge attributes \code{edge_match, color, lty}.
 #'  \code{match_plot_matrix} returns the difference between
 #'  the matched graphs.

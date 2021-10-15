@@ -20,7 +20,7 @@
 #' @param ... Passed to \code{sample_correlated_rdpg_pair}.
 #'
 #' @rdname sample_ieg
-#' @return \code{sample_correlated_ieg_pair} returns two 'igraph' objects named
+#' @return \code{sample_correlated_ieg_pair} returns two igraph objects named
 #'   \code{graph1} and \code{graph2}. If sample two graphs with junk vertices,
 #'   the first \code{ncore} vertices are core vertices and the rest are junk
 #'   vertices.
@@ -79,7 +79,7 @@ sample_correlated_ieg_pair<- function(n,p_mat,c_mat,ncore=n,directed=FALSE,loops
 }
 
 #' @rdname sample_ieg
-#' @return \code{sample_correlated_rdpg_pair} returns two 'igraph' objects named
+#' @return \code{sample_correlated_rdpg_pair} returns two igraph objects named
 #' \code{graph1} and \code{graph2} that are sampled from random dot product
 #' graphs model. If sample two graphs with junk vertices, the first
 #' \code{ncore} vertices are core vertices and the rest are junk vertices.

@@ -38,7 +38,7 @@ vector length should be the same as \code{block.sizes}.}
 \item{...}{Passed to \code{sample_sbm}.}
 }
 \value{
-Returns a list of two 'igraph' object, named \code{graph1} and
+Returns a list of two igraph object, named \code{graph1} and
   \code{graph2}. If sample two graphs with junk vertices, in each
   corresponding block the first \code{core.block.sizes} vertices are core
   vertices and the rest are junk vertices.

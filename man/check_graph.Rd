@@ -17,9 +17,9 @@ check_graph(
 check_single_graph(A, square = TRUE, as_list = TRUE, as_igraph = FALSE)
 }
 \arguments{
-\item{A}{A matrix, an 'igraph' object, or list of either.}
+\item{A}{A matrix, an igraph object, or list of either.}
 
-\item{B}{A matrix, an 'igraph' object, or list of either.}
+\item{B}{A matrix, an igraph object, or list of either.}
 
 \item{same_order}{Whether the returned objects should have the same number of nodes.
 If the graphs start with different numbers of nodes the smaller graph is padded with

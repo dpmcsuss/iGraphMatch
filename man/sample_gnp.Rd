@@ -22,7 +22,7 @@ of the generated graphs. It must be in  [0,1] interval.}
 \item{...}{Passed to \code{sample_gnp}.}
 }
 \value{
-\code{sample_correlated_gnp_pair} returns a list of two 'igraph' object, named
+\code{sample_correlated_gnp_pair} returns a list of two igraph object, named
 \code{graph1} and \code{graph2}, whose adjacency matrix entries
 are correlated with \code{corr}. If sample two graphs with junk vertices, the first
 \code{ncore} vertices are core vertices and the rest are junk vertices.

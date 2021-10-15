@@ -15,7 +15,7 @@
 #' @param ... Passed to \code{sample_gnp}.
 #'
 #' @rdname sample_gnp
-#' @return \code{sample_correlated_gnp_pair} returns a list of two 'igraph' object, named
+#' @return \code{sample_correlated_gnp_pair} returns a list of two igraph object, named
 #' \code{graph1} and \code{graph2}, whose adjacency matrix entries
 #' are correlated with \code{corr}. If sample two graphs with junk vertices, the first
 #' \code{ncore} vertices are core vertices and the rest are junk vertices.

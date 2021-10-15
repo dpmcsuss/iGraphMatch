@@ -4,8 +4,8 @@
 #'   results, including matching correspondence vector of \eqn{G_2} with respect
 #'   to \eqn{G_1}, doubly stochastic matrix and permutation matrix.
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix or a data frame, with the first

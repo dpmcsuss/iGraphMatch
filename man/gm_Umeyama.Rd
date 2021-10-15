@@ -7,9 +7,9 @@
 graph_match_Umeyama(A, B, seeds = NULL, similarity = NULL)
 }
 \arguments{
-\item{A}{A matrix, 'igraph' object, or list of either.}
+\item{A}{A matrix, igraph object, or list of either.}
 
-\item{B}{A matrix, 'igraph' object, or list of either.}
+\item{B}{A matrix, igraph object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a

@@ -43,12 +43,12 @@ matrices of the generated graphs. It must be in open (0,1) interval.}
 \item{...}{Passed to \code{sample_correlated_rdpg_pair}.}
 }
 \value{
-\code{sample_correlated_ieg_pair} returns two 'igraph' objects named
+\code{sample_correlated_ieg_pair} returns two igraph objects named
   \code{graph1} and \code{graph2}. If sample two graphs with junk vertices,
   the first \code{ncore} vertices are core vertices and the rest are junk
   vertices.
 
-\code{sample_correlated_rdpg_pair} returns two 'igraph' objects named
+\code{sample_correlated_rdpg_pair} returns two igraph objects named
 \code{graph1} and \code{graph2} that are sampled from random dot product
 graphs model. If sample two graphs with junk vertices, the first
 \code{ncore} vertices are core vertices and the rest are junk vertices.
