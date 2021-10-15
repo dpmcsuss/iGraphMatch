@@ -109,3 +109,4 @@ rev(match)
 \seealso{
 \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}, \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators}
 }
+\keyword{internal}

@@ -103,6 +103,8 @@ setGeneric(
   }
 )
 
+
+
 #' @method as.character graphMatch
 #' @export
 as.character.graphMatch <- function(x, ...) {
@@ -116,6 +118,37 @@ as.character.graphMatch <- function(x, ...) {
 }
 
 
+setGeneric(
+  name = "as.graphMatch",
+  function(from) { as(from, "graphMatch") }
+)
+
+
+as.graphMatch.data.frame <- function(from) {
+  if("corr_A" %in% names(from) && "corr_B" %in% names(from)){
+    from <- from[ ,c("corr_A", "corr_B")]
+  } else {
+    names(from)[1:2] <- c("corr_A", "corr_B")
+  }
+  nnodes <- as.integer(c(max(from[,1]), max(from[,2])))
+  call <- match.call()
+  graphMatch(from, nnodes, call)
+}
+
+setAs("data.frame", "graphMatch", as.graphMatch.data.frame)
+
+
+as.graphMatch.vector <- function(from) {
+  nnodes <- c(length(from), as.integer(max(from)))
+  call <- match.call()
+  graphMatch(
+    data.frame(corr_A = seq_along(from), corr_B = from),
+    nnodes,
+    call
+  )
+}
+
+setAs("vector", "graphMatch", as.graphMatch.vector)
 
 #'
 # #' @rdname graphMatch_methods
@@ -182,6 +215,7 @@ setAs("graphMatch", "data.frame", function(from) {
 #' @seealso \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}, \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators}
 #'
 #' @rdname graphMatch_methods
+#' @keywords internal
 setMethod("as.data.frame", signature("graphMatch"),
   function(x) {
     x@corr
@@ -467,6 +501,8 @@ setMethod("plot", signature(x = "igraph", y = "igraph"),
     color = TRUE, linetype = TRUE,...) {
     if(is.null(match)) {
       match <- identity_match(x,y)
+    } else {
+      match <- as(match, "graphMatch")
     }
     match_plot_igraph(x, y, match,
       color, linetype, ...)
