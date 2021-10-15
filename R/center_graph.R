@@ -4,7 +4,7 @@
 #'
 #' @param A A matrix, an igraph object. Adjacency matrix.
 #' @param scheme A character vector, number or pair of numbers. Default \code{c(-1, 1)}. See Details.
-#' @param use_splr A boolean indicating whether to use the 'splrMatrix' object when storing the
+#' @param use_splr A boolean indicating whether to use the \link{splrMatrix} object when storing the
 #' centered graph.  Defaults to TRUE.
 #'
 #' @details  The options for scheme are
@@ -21,7 +21,7 @@
 #'
 #'
 #' @rdname center_graph
-#' @return centered adjacency matrix as a 'splrMatrix' if
+#' @return centered adjacency matrix as a \link{splrMatrix} if
 #'  useSplr = TRUE, otherwise as a Matrix object.
 #'  
 #' @examples
