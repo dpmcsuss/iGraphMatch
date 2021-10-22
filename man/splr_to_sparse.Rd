@@ -17,3 +17,4 @@ See \code{\link[Matrix]{Matrix}}.
 \description{
 Convert splr "Matrix" to Sparse
 }
+\keyword{internal}

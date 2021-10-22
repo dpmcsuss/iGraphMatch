@@ -2,7 +2,7 @@
 % Please edit documentation in R/best_matches.R
 \name{best_matches}
 \alias{best_matches}
-\title{Find best matches}
+\title{Rank best matches}
 \usage{
 best_matches(A, B, match, measure, num = NULL, true_label = NULL)
 }
@@ -35,7 +35,7 @@ for each n <= \code{num}.
 \code{row_perm_stat} uses the row permutation statistics value.
 }
 \description{
-Find a set of vertex-pairs in  order of a goodness of matching metric
+Rank a set of vertex-pairs in  order of a goodness of matching metric
 }
 \details{
 If measure is a function, it should take exactly two matrices or igraph

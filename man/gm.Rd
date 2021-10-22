@@ -38,7 +38,7 @@ such as extracting a subset of matching correspondence, get the corresponding
 permutation matrix, and get the permuted graphs using matching results.
 
 An object of class "\code{\link{graphMatch}}" contains the following slots,
-and each can be called by using @
+and each can be accessed using \code{@}
 
   \describe{
     \item{corr}{data.frame indicating the correspondence between two graphs}

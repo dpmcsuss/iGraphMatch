@@ -12,7 +12,7 @@
 #' gm(g1, g2, method = "convex")
 #' seeds <- 1:10 <= 3
 #' \donttest{
-#' gm(g1, g2, seeds, method = "convex")
+#' gm(g1, g2, seeds, method = "convex", max_iter = 10)
 #' }
 #'
 #'

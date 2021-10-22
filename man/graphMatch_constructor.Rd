@@ -21,7 +21,7 @@ graphMatch(corr, nnodes, call = NULL, detail = list())
 graphMatch object
 }
 \description{
-An 'S4' class for the results of a graph matching function
+An S4 class for the results of a graph matching function
 }
 \details{
 graphMatch objects are returned by any of the graph matching methods

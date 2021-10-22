@@ -40,7 +40,7 @@ interval.}
 \item{corr}{A number. The target Pearson correlation between the adjacency
 matrices of the generated graphs. It must be in open (0,1) interval.}
 
-\item{...}{Passed to \code{sample_correlated_rdpg_pair}.}
+\item{...}{Passed to \code{sample_correlated_ieg_pair}.}
 }
 \value{
 \code{sample_correlated_ieg_pair} returns two igraph objects named

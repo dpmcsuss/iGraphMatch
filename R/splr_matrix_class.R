@@ -108,6 +108,7 @@ setMethod(
 #' See \code{\link[Matrix]{Matrix}}.
 #'
 #' @export
+#' @keywords internal
 splr_to_sparse <- function(data){
     data@x + Matrix(data@a, sparse = TRUE) %*% Matrix(t(data@b), sparse = TRUE)
 }

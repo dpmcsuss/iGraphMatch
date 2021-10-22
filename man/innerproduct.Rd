@@ -32,3 +32,4 @@ Matrix inner products
 \details{
 For a matrix_list object, sums over all layers/list-elements as well.
 }
+\keyword{internal}

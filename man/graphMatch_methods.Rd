@@ -89,6 +89,11 @@ match$corr_B # matching correspondence in the second graph
 # get nonseed matching correspondence
 match[!match$seeds]
 
+# create graphMatch object from a vector
+as.graphMatch(sample(10))
+# or data.frame
+as.graphMatch(data.frame(a = 1:10, b = sample(1000, 10)))
+
 # get corresponding permutation matrix for the match result
 match[] # preferred approach
 # or equivalently

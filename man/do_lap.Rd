@@ -40,3 +40,13 @@ cbind(
 )
 
 }
+\references{
+R. Jonker, A. Volgenant (1987). \emph{A shortest augmenting path algorithm
+for dense and sparse linear assignment problems}. Computing, pages 325-340.
+
+A. Volgenant (1996). \emph{Linear and Semi-Assignment Problems: A
+  Core Oriented Approach}. Computer Ops Res., pages 917-932.
+
+C. H. Papadimitriou and K. Steiglitz (1998). \emph{Combinatorial Optimization:
+Algorithms and Complexity}. Courier Corporation.
+}

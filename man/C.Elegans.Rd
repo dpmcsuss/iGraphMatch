@@ -26,6 +26,7 @@ other one is the electrical synapses network.
 data(C.Elegans)
 g1 <- C.Elegans[[1]]
 g2 <- C.Elegans[[2]]
+plot(g1, g2)
 
 }
 \references{

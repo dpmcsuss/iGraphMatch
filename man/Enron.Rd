@@ -25,6 +25,7 @@ list in the form of igraph objects.
 data(Enron)
 g1 <- Enron[[1]]
 g2 <- Enron[[2]]
+plot(g1, g2)
 
 }
 \references{
