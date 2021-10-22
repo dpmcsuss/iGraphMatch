@@ -19,6 +19,7 @@
 #' @return splrMatrix object
 #'
 #' @seealso Methods are documented in \link{splrMatrix_method}.
+#'  Other relevant methods are \link{splr_sparse_plus_constant} and 
 #'
 #' @rdname splr_constructor
 #'
@@ -119,7 +120,7 @@ as.matrix.splrMatrix <- function(from,...)  {
 
 #' Add a constant to a splrMatrix object
 #'
-#' @param x splrMatrix object
+#' @param x sparse Matrix object
 #' @param a scalar
 #'
 #' @return new splrMatrix object x + a
@@ -556,6 +557,7 @@ setMethod("norm", signature(x ="splrMatrix", type ="character"),
 #' @details For a matrix_list object, sums over all layers/list-elements as well.
 #'
 #' @rdname innerproduct
+#' @keywords internal
 #' @export
 setGeneric("innerproduct", function(x, y){
   sum(x * y)

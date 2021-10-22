@@ -3,7 +3,7 @@ setOldClass("igraph")
 
 #'
 #' @title Graph matching results class
-#' @description An 'S4' class for the results of a graph matching function
+#' @description An S4 class for the results of a graph matching function
 #'
 #' @slot corr data.frame indicating the correspondence between two graphs
 #' @slot nnodes of the original two graphs
@@ -211,6 +211,11 @@ setAs("graphMatch", "data.frame", function(from) {
 #'
 #' # get nonseed matching correspondence
 #' match[!match$seeds]
+#' 
+#' # create graphMatch object from a vector
+#' as.graphMatch(sample(10))
+#' # or data.frame
+#' as.graphMatch(data.frame(a = 1:10, b = sample(1000, 10)))
 #'
 #' @seealso \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}, \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators}
 #'
