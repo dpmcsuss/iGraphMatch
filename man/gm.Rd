@@ -30,21 +30,8 @@ Details section for more information.}
 }
 \value{
 \code{gm} returns an object of class "\code{\link{graphMatch}}".
-The functions \code{summary} and \code{plot} can be used to get a summary of
-graph matching results and visualization of matches.
-Implemented operations for the returned \code{graphMatch} objects enables obtaining
-flexible representations of matching results,
-such as extracting a subset of matching correspondence, get the corresponding
-permutation matrix, and get the permuted graphs using matching results.
-
-An object of class "\code{\link{graphMatch}}" contains the following slots,
-and each can be accessed using \code{@}
-
-  \describe{
-    \item{corr}{data.frame indicating the correspondence between two graphs}
-    \item{nnodes}{of the original two graphs}
-    \item{call}{The call to the graph matching function}
-  }
+See \link{graphMatch-class} and links therein for details
+on the graph match class.
 
 Additionally, \code{gm} also returns a list of matching details of the specified method.
 Please refer to the help page for each implemented method, i.e.
@@ -86,18 +73,6 @@ seeds <- 1:10 <= 4
 
 m_rds <- gm(g1, g2, seeds, method = "indefinite", start = "rds", max_iter = 20)
 summary(m_rds, g1, g2, true_label = 1:10)
-m_rds@call
-m_rds@corr
-m_rds[!m_rds$seeds] # matching correspondence for nonseed vertices
-
-m_rds$soft # doubly stochastic matrix from the last iteration
-m_rds[] # P: permutation matrix
-m_rds$iter
-
-m_rds \%*\% g2 # permute the second graph: P \%*\% g2 \%*\% P^T
-
-plot(g1, g2, m_rds)
-plot(g1[], g2[], m_rds)
 
 m_path <- gm(g1, g2, method = "PATH", lap_method = "lapmod")
 
@@ -115,40 +90,17 @@ sim <- as.matrix(init_start(start = "bari", nns = 20, soft_seeds = 1:5))
 m_Iso <- gm(A, B, similarity = sim, method = "IsoRank", lap_method = "greedy")
 summary(m_Iso, A, B)
 
-m_Umeyama <- gm(A, B, method = "Umeyama")
-
-
 # customized graph matching algorithm
 graph_match_rand <- function(A, B, seeds = NULL, similarity = NULL, rand_seed){
-  totv1 <- nrow(A[[1]])
-  totv2 <- nrow(B[[1]])
-  nv <- max(totv1, totv2)
-
-  corr_A <- 1:nv
+  nm <- min(nrow(A), nrow(B))
   set.seed(rand_seed)
-  corr_B <- c(1:nv)[sample(nv)]
-  corr <- data.frame(corr_A, corr_B)
-
-  graphMatch(
-    corr = corr,
-    nnodes = c(totv1, totv2),
-    detail = list(
-      rand_seed = rand_seed
-    )
-  )
+  m <- data.frame(sample(nrow(A), nm), corr_B = sample(nrow(B), nm))
+  m <- as.graphMatch(m)
+  m$rand_seed <- rand_seed
+  m
 }
 
-m_self <- gm(
-  g1, g2,
-  method = graph_match_rand,
-  rand_seed = 123 # pass additional argument 'rand_seed' to input
-)
+m_self <- gm(g1, g2, method = graph_match_rand, rand_seed = 123)
 summary(m_self, g1, g2)
-m_self$rand_seed # graph_match_rand method hyperparameter
-m_self@call
-m_self@nnodes
-m_self@corr
-
-
 
 }

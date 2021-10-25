@@ -60,8 +60,8 @@
   length(m)}.
 }
 \description{
-These methods provide functionality to plot, view, inspect, and
-  convert graphMatch objects.
+These methods provide functionality to view, inspect, and
+  convert \link{graphMatch} objects.
 }
 \details{
 Methods for the graphmatch
@@ -82,7 +82,6 @@ print(match)
 show(match)
 
 # print matching correspondence
-match@corr
 match$corr_A # matching correspondence in the first graph
 match$corr_B # matching correspondence in the second graph
 

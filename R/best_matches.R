@@ -1,22 +1,24 @@
 #' @title Rank best matches
 #'
-#' @description Rank a set of vertex-pairs in  order of a goodness of matching metric
+#' @description Rank vertex-pairs in  order of a goodness of matching metric
 #'
-#' @param A A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
-#' @param B A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}
+#' @param A A matrix, an \code{igraph} object, or a list of either.
+#'   See \link{check_graph}
+#' @param B A matrix, an \code{igraph} object, or a list of either.
+#'   See \link{check_graph}
 #' @param match \link{graphMatch}, eg result of call to \link{gm}
-#' @param measure One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
-#'    Measure for computing goodness of matching.
-#' @param num A positive integer or NULL. Number of pairs of best matched vertices needed.
-#'    NULL indicates all matches.
+#' @param measure One of "row_cor", "row_diff", or "row_perm_stat" or
+#'   a function (see details). Measure for computing goodness of matching.
+#' @param num A positive integer or NULL. Number of pairs of best matched
+#'   vertices needed. NULL indicates all matches.
 #' @param true_label the true correspondence (if available).
 #'
-#' @return \code{best_matches} returns a data frame with the indices of best matched vertices
-#' in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
-#' \code{B_best} and the values of measure for best matches, where smaller values indicate
-#' better matches for all measures.
-#' If the true correspondence is available, also returns the precision of top n best matches,
-#' for each n <= \code{num}.
+#' @return \code{best_matches} returns a data frame with the indices of best
+#'   matched vertices in \eqn{G_1} named \code{A_best}, the indices of best
+#'   matched vertices in \eqn{G_2} named \code{B_best} and the values of measure
+#'   for best matches, where smaller values indicate better matches for all
+#'   measures. If the true correspondence is available, also returns the
+#'   precision of top n best matches, for each n <= \code{num}.
 #'
 #'
 #' \code{row_cor} takes 1 minus the row correlation value for the corresponding vertex.

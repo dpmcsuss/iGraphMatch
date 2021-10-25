@@ -7,27 +7,29 @@
 best_matches(A, B, match, measure, num = NULL, true_label = NULL)
 }
 \arguments{
-\item{A}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
+\item{A}{A matrix, an \code{igraph} object, or a list of either.
+See \link{check_graph}}
 
-\item{B}{A matrix, an \code{igraph} object, or a list of either. See \link{check_graph}}
+\item{B}{A matrix, an \code{igraph} object, or a list of either.
+See \link{check_graph}}
 
 \item{match}{\link{graphMatch}, eg result of call to \link{gm}}
 
-\item{measure}{One of "row_cor", "row_diff", or "row_perm_stat" or a function (see details).
-Measure for computing goodness of matching.}
+\item{measure}{One of "row_cor", "row_diff", or "row_perm_stat" or
+a function (see details). Measure for computing goodness of matching.}
 
-\item{num}{A positive integer or NULL. Number of pairs of best matched vertices needed.
-NULL indicates all matches.}
+\item{num}{A positive integer or NULL. Number of pairs of best matched
+vertices needed. NULL indicates all matches.}
 
 \item{true_label}{the true correspondence (if available).}
 }
 \value{
-\code{best_matches} returns a data frame with the indices of best matched vertices
-in \eqn{G_1} named \code{A_best}, the indices of best matched vertices in \eqn{G_2} named
-\code{B_best} and the values of measure for best matches, where smaller values indicate
-better matches for all measures.
-If the true correspondence is available, also returns the precision of top n best matches,
-for each n <= \code{num}.
+\code{best_matches} returns a data frame with the indices of best
+  matched vertices in \eqn{G_1} named \code{A_best}, the indices of best
+  matched vertices in \eqn{G_2} named \code{B_best} and the values of measure
+  for best matches, where smaller values indicate better matches for all
+  measures. If the true correspondence is available, also returns the
+  precision of top n best matches, for each n <= \code{num}.
 
 
 \code{row_cor} takes 1 minus the row correlation value for the corresponding vertex.
@@ -35,7 +37,7 @@ for each n <= \code{num}.
 \code{row_perm_stat} uses the row permutation statistics value.
 }
 \description{
-Rank a set of vertex-pairs in  order of a goodness of matching metric
+Rank vertex-pairs in  order of a goodness of matching metric
 }
 \details{
 If measure is a function, it should take exactly two matrices or igraph

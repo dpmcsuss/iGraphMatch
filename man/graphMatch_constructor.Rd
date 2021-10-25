@@ -4,9 +4,12 @@
 \name{graphMatch-class}
 \alias{graphMatch-class}
 \alias{graphMatch}
+\alias{as.graphMatch}
 \title{Graph matching results class}
 \usage{
 graphMatch(corr, nnodes, call = NULL, detail = list())
+
+as.graphMatch(from)
 }
 \arguments{
 \item{corr}{data.frame indicating the correspondence between two graphs}
@@ -16,6 +19,8 @@ graphMatch(corr, nnodes, call = NULL, detail = list())
 \item{call}{The call to the graph matching function}
 
 \item{detail}{List with other more detailed information}
+
+\item{from}{object to convert to graphMatch object}
 }
 \value{
 graphMatch object
@@ -52,19 +57,24 @@ match <- gm(A = g1, B = g2, seeds = 1:3, method = 'indefinite')
 
 # graphMatch object
 match
-match@call # graph matching function
-match@nnodes # sizes of two graphs
-match@corr # matching correspondence
 
 match$corr_A # matching correspondence in the first graph
 match$corr_B # matching correspondence in the second graph
 match$seeds # vector of logicals indicating seeded nodes
+
+as.data.frame(match)
+match[]
+dim(match)
+length(match)
 
 # matching details unique to the FW methodology with indefinite relaxation
 match$iter # number of iterations
 match$soft # doubly stochastic matrix from the last iteration, can be used to extract soft matching
 match$lap_method # method for solving lap
 
+# create a graphMatch object from a data.frame or matrix
+as.graphMatch(data.frame(1:5, 1:5))
+as.graphMatch(1:5)
 
 }
 \seealso{

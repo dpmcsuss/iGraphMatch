@@ -36,9 +36,10 @@ setClass("graphMatch",
 #' @param nnodes dimensions of the original two graphs
 #' @param call The call to the graph matching function
 #' @param detail List with other more detailed information
+#' @param from object to convert to graphMatch object
 #'
 #' @return graphMatch object
-#'
+#' 
 #' @examples
 #' # sample a pair of correlated random graphs from G(n,p)
 #' set.seed(123)
@@ -51,20 +52,25 @@ setClass("graphMatch",
 #'
 #' # graphMatch object
 #' match
-#' match@call # graph matching function
-#' match@nnodes # sizes of two graphs
-#' match@corr # matching correspondence
 #'
 #' match$corr_A # matching correspondence in the first graph
 #' match$corr_B # matching correspondence in the second graph
 #' match$seeds # vector of logicals indicating seeded nodes
+#' 
+#' as.data.frame(match)
+#' match[]
+#' dim(match)
+#' length(match)
 #'
 #' # matching details unique to the FW methodology with indefinite relaxation
 #' match$iter # number of iterations
 #' match$soft # doubly stochastic matrix from the last iteration, can be used to extract soft matching
 #' match$lap_method # method for solving lap
-#'
-#'
+#' 
+#' # create a graphMatch object from a data.frame or matrix
+#' as.graphMatch(data.frame(1:5, 1:5))
+#' as.graphMatch(1:5)
+#' 
 #' @export
 setGeneric(
   name = "graphMatch",
@@ -117,7 +123,8 @@ as.character.graphMatch <- function(x, ...) {
   )
 }
 
-
+#' @rdname graphMatch_constructor
+#' @export
 setGeneric(
   name = "as.graphMatch",
   function(from) { as(from, "graphMatch") }
@@ -172,8 +179,8 @@ setAs("graphMatch", "data.frame", function(from) {
 
 #' @title Methods for the graphMatch class
 #'
-#' @description These methods provide functionality to plot, view, inspect, and
-#'   convert graphMatch objects.
+#' @description These methods provide functionality to view, inspect, and
+#'   convert \link{graphMatch} objects.
 #'
 #' @details Methods for the graphmatch
 #'
@@ -205,7 +212,6 @@ setAs("graphMatch", "data.frame", function(from) {
 #' show(match)
 #'
 #' # print matching correspondence
-#' match@corr
 #' match$corr_A # matching correspondence in the first graph
 #' match$corr_B # matching correspondence in the second graph
 #'
@@ -221,11 +227,17 @@ setAs("graphMatch", "data.frame", function(from) {
 #'
 #' @rdname graphMatch_methods
 #' @keywords internal
+#' @export
 setMethod("as.data.frame", signature("graphMatch"),
   function(x) {
     x@corr
   }
 )
+
+as.data.frame.graphMatch <- function(x) {
+  x@corr
+}
+
 
 show.graphMatch <- function(object){
     print(object@call)
@@ -276,7 +288,7 @@ setMethod("[",
 #'
 #' @title Operator methods for graphMatch objects
 #'
-#' @description Methods to use graphMatch objects as operators on
+#' @description Methods to use \link[iGraphMatch:graphMatch]{graphMatch} objects as operators on
 #'  igraph and matrix-like objects.
 #'
 #'
@@ -301,14 +313,18 @@ setMethod("[",
 #'
 #' # permute the second graph according to the match result: P %*% g2 %*% P^T
 #' match %*% g2 # return an igraph object
-#' # equivalent to:
-#' match %*% g2 %*% t(match)
+#' # equivalent to the matrix operation
+#' match[] %*% g2[] %*% t(match[])
 #'
 #' match %*% g2[] # return a matrix
 #' # equivalent to:
 #' P <- match[]
 #' P %*% g2[] %*% Matrix::t(P)
-#'
+#' 
+#' # the inverse operations are performed via right multiplication
+#' all(g1[] %*% match == t(P) %*% g1[] %*% P)
+#' 
+#' 
 setMethod("%*%", signature(x = "graphMatch", y = "ANY"),
   function(x, y) {
     x[] %*% y %*% t(x[])
@@ -384,6 +400,7 @@ reverse_match <- function(x) {
 #' # reverse the matching correspondence between two graphs
 #' t(match)
 #' rev(match)
+#' @export
 setMethod("t", signature(x = "graphMatch"), reverse_match)
 
 
