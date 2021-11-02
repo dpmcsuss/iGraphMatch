@@ -15,6 +15,8 @@ C.Elegans networks consist of the chemical synapses network and the
 electrical synapses network of the roundworm, where each of 279 nodes
 represents a neuron and each edge represents the intensity of synapses
 connections between two neurons.
+}
+\details{
 Two networks are weighted and directed graphs with self-loops.
 There are 2194 and 1031 edges in two graphs respectively and the empirical
 Pearson's correlation between two graphs is 0.17.
