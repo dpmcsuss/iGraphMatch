@@ -104,7 +104,6 @@
 #' candidate <- Transportation[[3]]
 #' tn <- nrow(tm[[1]])
 #' wn <- nrow(cm[[1]])
-#' similarity <- candidate %>%
-#'   with(Matrix::sparseMatrix(i = tem, j = wor, x = 1,
+#' similarity <- with(candidate, Matrix::sparseMatrix(i = tem, j = wor, x = 1,
 #'                             dims = c(tn,wn)))
 "Transportation"
