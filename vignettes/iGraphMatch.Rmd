@@ -51,13 +51,10 @@ preamble: >
 
   \newtheorem{defn}{Definition}
   
-# output: 
-#   bookdown::pdf_book:
-#     base_format: rticles::jss_article
-#     extra_dependencies: "subfig"
-output: rmarkdown::html_vignette
-
-
+# output: rmarkdown::html_vignette
+output:
+  bookdown::html_document2:
+    base_format: rmarkdown::html_vignette
 bibliography: refs.bib
 
 vignette: >
@@ -81,10 +78,6 @@ vignette: >
 # Introduction {#sec:intro}
 
 
-
-<!-- \todo{mention somewhere about random permutations inside gm functions, or make those optional} -->
-<!-- add in sec background when talk about LAP & QAP -->
-
 The graph matching (GM) problem seeks to find an alignment between the vertex sets of graphs that best preserves common structure across graphs.
 This is often posed as minimizing edge disagreements of two graphs over all alignments.
 Formally, given $A$ and $B$, two adjacency matrices corresponding to two graphs $G_1=(V_1, E_1)$ and $G_2=(V_2, E_2)$, the goal is to find
@@ -92,49 +85,38 @@ Formally, given $A$ and $B$, two adjacency matrices corresponding to two graphs 
     \argmin_{P\in\Pi}\lVert A-PBP^T \rVert_F^2
 \end{align*}
 where $\Pi$ is the set of all permutation matrices.
-GM has wide applications in diverse fields, such as pattern recognition \citep{PatternRec1, PatternRec2, PatternRec3}, machine learning \citep{ML1, ML2}, bioinformatics \citep{bio3, bio2}, neuroscience \citep{neuro}, social network analysis \citep{SocialNetwork}, and knowledge graph queries \citep{Hu2018-hd}.
+GM has wide applications in diverse fields, such as pattern recognition (@PatternRec1, @PatternRec2, @PatternRec3), machine learning (@ML1, @ML2), bioinformatics (@bio3, @bio2), neuroscience (@neuro), social network analysis (@SocialNetwork), and knowledge graph queries (@Hu2018-hd).
 More generally, the problem of discovering some true latent alignment between two networks can often be posed as variations on the above problem by adjusting the objective function for the setting.
 
 The well-known graph isomorphism problem is a special case of GM problem when there exists a bijection between the nodes of two graphs which exactly preserves the edge structure.
-In terms of computational complexity, GM is equivalent to the NP-hard quadratic assignment problem, which is considered a very challenging problem where few theoretical guarantees exist, even in special cases \citep{QAP}.
-For certain problems where the graphs are nearly isomorphic, polynomial-time algorithms do exist \citep{friendly, Umeyama} but these methods frequently break down for more challenging instances.
+In terms of computational complexity, GM is equivalent to the NP-hard quadratic assignment problem, which is considered a very challenging problem where few theoretical guarantees exist, even in special cases (@QAP).
+For certain problems where the graphs are nearly isomorphic, polynomial-time algorithms do exist (@friendly, @Umeyama) but these methods frequently break down for more challenging instances.
 
 This paper presents the detailed functionality of the `iGraphMatch` R package which serves as a practical tool for the use of prevalent graph matching methodologies.
-These algorithms utilize either the spectral embedding of vertices \citep{Umeyama}, or relaxations of the objective function \citep{PATH, FAQ}, or apply ideas from percolation theory \citep{Percolation, ExpandWhenStuck}.
+These algorithms utilize either the spectral embedding of vertices (@Umeyama), or relaxations of the objective function (@PATH, @FAQ), or apply ideas from percolation theory (@Percolation, @ExpandWhenStuck).
 The `iGraphMatch` package provides versatile options of working with graphs in the form of matrices, igraph objects or lists of either, and matching graphs under a generalized setting: weighted, directed, graphs of a different order, and multilayer graphs.
 
 
-<!-- DLS: I'm wondering if here is a good place for mentioning need for a package.
-Might also skip the division into groups discussion for now since I'm not sure how meaningful it is at this point.
-Generally, I think we want to make sure that the introduction (1) emphasizes the need for the package and (2) emphasizes a need for a detailed paper like this one.
--->
-<!-- Due to these challenges, many GM approaches have been proposed. -->
-<!-- In general, these GM algorithms can be divided into three groups. -->
-<!-- The first group of algorithms is based on the spectral embedding of vertices, which was first proposed by \cite{Umeyama}. -->
-<!-- The second group uses relaxations of the objective function, including using convex \citep{PATH, FAQ}, concave \citep{PATH}, and indefinite relaxations \citep{FAQ}. -->
-<!-- The last group consists of algorithms that apply ideas from percolation theory, where matching information is spread from an initial set of matched nodes \cite{Percolation, ExpandWhenStuck}. -->
-
 In addition, the `iGraphMatch` package incorporates prior information: seeds and similarities for all the implemented algorithms.
-<!-- Indeed, many authors including \cite{SGM, IsoRank, Percolation, ExpandWhenStuck} have proposed matching methods that incorporate some form of prior knowledge, such as seeds or similarity scores. -->
 Seeds, or anchors, refer to partial knowledge of the alignment of two graphs.
 In practice, seeds can be users with the same name and location across different social networks or pairs of genes with the same DNA sequences.
-Some algorithms like the percolation algorithm \citep{Percolation, ExpandWhenStuck} which matches two graphs by propagating matching information to neighboring pairs require seeds to kick off.
-All algorithms improve substantially by incorporating seeds and can achieve accurate matching in polynomial time \citep{SGM}.
+Some algorithms like the percolation algorithm (@Percolation, @ExpandWhenStuck) which matches two graphs by propagating matching information to neighboring pairs require seeds to kick off.
+All algorithms improve substantially by incorporating seeds and can achieve accurate matching in polynomial time (@SGM).
 Similarity scores are another commonly used prior which measures the similarity between pairs of nodes across the graphs.
-In the bioinformatics area, BLAST similarity score is an example of similarity scores that plays an important role in aligning two PPI networks \citep{IsoRank}.
-Similarity scores are usually generated from nodal covariates that are observed in both networks \citep{BLAST, SimilarityScore}.
+In the bioinformatics area, BLAST similarity score is an example of similarity scores that plays an important role in aligning two PPI networks (@IsoRank).
+Similarity scores are usually generated from nodal covariates that are observed in both networks (@BLAST, @SimilarityScore).
 
 While under many scenarios the availability of exact partial matches, or hard seeding, is not realistic and expensive, the package also enables utilizing noisy prior information.
 Similarity scores incorporate uncertainty by assigning the pair of nodes with higher similarity scores a bigger chance to match.
-Seeds with uncertainty and even error can still be handled by self-correcting graph matching algorithms like the \textsc{Frank-Wolfe} algorithm initialized at the noisy partial matching, called soft seeding.
-\cite{soft_seeding} showed that the \textsc{Frank-Wolfe} algorithm with soft seeding scheme converges quickly to the true alignment under the correlated Erd\H{o}s-R\'enyi model with high probability.
+Seeds with uncertainty and even error can still be handled by self-correcting graph matching algorithms like the <span style="font-variant:small-caps;">Frank-Wolfe</span> algorithm initialized at the noisy partial matching, called soft seeding.
+@soft_seeding showed that the <span style="font-variant:small-caps;">Frank-Wolfe</span> algorithm with soft seeding scheme converges quickly to the true alignment under the correlated Erd\H{o}s-R\'enyi model with high probability.
 Thus, the original intractable problem is reduced to be solvable in polynomial time.
 
 Although there exist some open source software and packages containing graph matching functionality, `iGraphMatch` package provides a centralized repository for common graph matching methodologies with flexibility, tools for developing graph matching problem methodology, as well as metrics for evaluating and tools for visualizing matching performance.
 Among the alternative GM packages, the most relevant ones include
-the `igraph` \citep{igraph} package which focuses on descriptive network analysis and graph visualization based on igraph objects and provides a single graph matching algorithm,
-the `GraphM` \citep{PATH} package which implements several GM algorithms proposed between 1999 and 2009 in C, and the
-`Corbi` \citep{Corbi} R package which is particularly designed for studies in bioinformatics and `SpecMatch` \citep{SpecMatch} which only involves implementations of spectral embedding based GM algorithms and written in C/C++.
+the `igraph` (@igraph) package which focuses on descriptive network analysis and graph visualization based on igraph objects and provides a single graph matching algorithm,
+the `GraphM` (@PATH) package which implements several GM algorithms proposed between 1999 and 2009 in C, and the
+`Corbi` (@Corbi) R package which is particularly designed for studies in bioinformatics and `SpecMatch` (@SpecMatch) which only involves implementations of spectral embedding based GM algorithms and written in C/C++.
 None of these packages provide the breadth of tools, flexibility, and ease-of-use provided by the `iGraphMatch` package.
 
 The rest of this paper is organized as follows.
@@ -143,14 +125,11 @@ Section \@ref(sec:usage) discusses the functionality and usage of R functions in
 Section \@ref(sec:example) presents more complex examples on real data with several functions involved in the analysis and section \@ref(sec:conclusion) gives guidelines on using different GM algorithms under different circumstances and concludes the paper.
 
 
-<!--chapter:end:index.Rmd-->
-
 
 # Graph matching background {#sec:background}
 In this section, we give background on graph matching and related problems followed by descriptions of the principal algorithms implemented in `iGraphMatch`.
 For simplicity, we state all the algorithms in the context of matching undirected, unweighted graphs with the same cardinality.
 All algorithms can also be directly applied to directed and weighted graphs.
-<!-- by passing the corresponding asymmetric real-valued adjacency matrices into the algorithms. -->
 In the second subsection, we discuss the techniques for matching graphs with a different number of vertices along with other extensions.
 To conclude the section, we introduce the statistical models for correlated networks and discuss measures for the goodness of matching.
 
@@ -178,7 +157,7 @@ Let $\Pi$ be the set of all permutation matrices and $\mathcal{D}$ be the set of
 
 ### Assignment problems
 
-Matching or assignment problems are core problems in combinatorial optimization and appear in numerous fields \citep{AP}.
+Matching or assignment problems are core problems in combinatorial optimization and appear in numerous fields (@AP).
 As we illustrate in Eq. \eqref{eq:ob_func}, a general version of the graph matching problem is equivalent to the quadratic assignment problem (QAP).
 Similarly, QAP is related to the linear assignment problem (LAP) which also plays a role in GM.
 The LAP asks how to assign $n$ items (eg. workers or nodes in $G_1$) to $n$ other items (eg. tasks or nodes in $G_2$) with minimum cost.
@@ -186,22 +165,19 @@ Let $C$ denote an ${n\times n}$ cost matrix, where $C_{ij}$ denotes the cost of 
 \begin{equation} \label{eq:LAP}
 \begin{aligned}
 & \argmin_{P\in \Pi}
-& & \mathrm{trace}(C^TP)
+& \mathrm{trace}(C^TP)
 \end{aligned}
 \end{equation}
-LAP is solvable in $O(n^3)$ time and there are numerous exact and approximate methods for both general \citep{lap_solver, Hungarian} and special cases, such as sparse cost matrices \citep{Volgenant1996-o}.
+LAP is solvable in $O(n^3)$ time and there are numerous exact and approximate methods for both general (@lap_solver, @Hungarian) and special cases, such as sparse cost matrices (@Volgenant1996-o).
 
 The statement of QAP resembles LAP, except that the cost function is expressed as a quadratic function.
 Given two $n\text{-by-}n$ matrices $A$ and $B$ which can represent flows between facilities and the distance between locations respectively, or the adjacency matrices of two unaligned graphs, the objective function for QAP is:
 \begin{equation}\label{eq:qap}
 \argmin_{P\in \Pi}    \mathrm{trace}(APBP^T).
 \end{equation}
-This problem is NP-hard \citep{QAP} leading to a core challenge for any graph matching approach.
-<!-- Note that over the space of all matrices the gradient for the QAP objective function is $2APB^T$ which can be viewed as a cost matrix for a LAP. -->
- 
-<!-- DLS: Is this the only place we mention similarities.
-Also, we include similarities in cases where the algorithm does not reduce to LAP as well.
-I think maybe we want to say either reduce to LAP or use LAP methods. -->
+This problem is NP-hard (@QAP) leading to a core challenge for any graph matching approach.
+
+
 As will be illustrated in the rest of the section, some  matching algorithms reduce the graph matching problem to solving a LAP.
 For these algorithms, we include similarity scores $S$ by adding an additional term $\mathrm{trace}(S^TP)$ to the reduced objective function.
 
@@ -213,13 +189,10 @@ The first group uses relaxations of the objective function, including convex, co
 The second group consists of algorithms that apply ideas from percolation theory, where matching information is spread from an initial set of matched nodes.
 The last group is based on the spectral embedding of vertices.
 
-<!-- DLS: Put more detailed discussion of three types here.
-Do we mention that none of these algs are guaranteed to find optimal in general?
- -->
 
 ### Relaxation-based algorithms
 
-<!-- Although there are no known efficient algorithms to solve GM, relaxation techniques provide one promising approach. -->
+
 These approaches relax the constraint that $P$ is a permutation matrix to require only that $P$ is doubly stochastic, optimizing over $\mathcal{D}$, the convex hull of $\Pi$.
 When $P$ is a permutation matrix
 \begin{equation}
@@ -229,31 +202,27 @@ When $P$ is a permutation matrix
 However, these equalities do not hold for all $P\in \mathcal{D}$, leading to different relaxations.
 
 The second term of Eq.\eqref{eq:ob_func} is a convex function and optimizing it over $P\in\mathcal{D}$ gives the convex relaxation, where the gradient at $P$ to the convex relaxed objective function is $-4 APB + 2A^TAP + 2PBB^T$.
-<!-- \todo{is that right?} -->
 The last equality in Eq. \eqref{eq:ob_func} shows that minimizing edge disagreements is equivalent to maximizing the number of edge agreements, $\mathrm{trace} APBP^T$, a QAP.
-Optimizing the indefinite function over $\mathcal{D}$ gives the indefinite relaxation with gradient $-2APB$ \citep{FAQ}.
+Optimizing the indefinite function over $\mathcal{D}$ gives the indefinite relaxation with gradient $-2APB$ (@FAQ).
 
 
 
 | Relaxation           | Objective Function                                     | Domain        | GM Algorithm      | Optimization Guarantee | Optimum Form    |
 | ----------           | ----------------                                     | -------------     | ------------     | ----------------     | -------------- |
 | None              | $\lVert A-PBP^T \rVert_F^2$                            | $\Pi$         | NA                |              | $\Pi$           |
-| Indefinite | $\mathrm{tr}ADBD^T$                                    | $\mathcal{D}$ | \textsc{FW}       | Local          | $\mathcal{D}$ (often $\Pi$)          |
-| Convex     | $\lVert AD-DB \rVert_F^2$                              | $\mathcal{D}$ | \textsc{FW, PATH} | Global         | $\mathcal{D}$   |
-| Concave    | $-\mathrm{tr}(\Delta D)-2\mathrm{tr}(L_1^T D L_2 D^T)$ | $\mathcal{D}$ | \textsc{PATH}     | Local          | $\Pi$           |
+| Indefinite | $\mathrm{tr}ADBD^T$                                    | $\mathcal{D}$ | <span style="font-variant:small-caps;">FW</span>       | Local          | $\mathcal{D}$ (often $\Pi$)          |
+| Convex     | $\lVert AD-DB \rVert_F^2$                              | $\mathcal{D}$ | <span style="font-variant:small-caps;">FW, PATH</span> | Global         | $\mathcal{D}$   |
+| Concave    | $-\mathrm{tr}(\Delta D)-2\mathrm{tr}(L_1^T D L_2 D^T)$ | $\mathcal{D}$ | <span style="font-variant:small-caps;">PATH</span>     | Local          | $\Pi$           |
 
 Table: (\#tab:relaxation) Summary of relaxation methods for graph matching problem.
-<!-- The optimization problem converges at the local minimum. -->
-<!-- ^[The optimum solution to the indefinite relaxation problem almost always coincides with the permutation matrix under the correlated \ErdosRenyi model.] -->
+
 
 Generally, the convex relaxation leads to a solution that is not guaranteed to be near the solution to the original GM.
-However, \cite{friendly} introduced the class of "friendly" graphs based on the spectral properties of the adjacency matrices to characterize the applicability of the convex relaxation.
+However, @friendly introduced the class of "friendly" graphs based on the spectral properties of the adjacency matrices to characterize the applicability of the convex relaxation.
 Matching two friendly graphs by using the convex relaxation is guaranteed to find the exact solution to the GM problem.
 Unfortunately, this class is quite limiting and does not hold for most statistical models or real-world examples.
-<!-- Specifically, the result is extended to two graphs that satisfy the weak friendliness with bounded weight disagreement. -->
-<!-- Even if two graphs are unfriendly, we can still guarantee the uniqueness of the solution to the relaxation by introducing additional information on the true alignment, such as seeds. -->
 
-Another relaxation is the concave relaxation used in the PATH algorithm \citep{PATH}.
+Another relaxation is the concave relaxation used in the PATH algorithm (@PATH).
 The concave relaxation uses the Laplacian matrix defined as $L=D-A$, where $D$ is the diagonal degree matrix with diagonal entries $D_{ii}=\sum_{i=1}^N A_{ij}$.
 Assume $L_i$ and $D_i$, $i=1,2$, are the Laplacian matrices and degree matrices for $G_1$ and $G_2$ respectively, then we can rewrite the objective function as
 \begin{equation} \label{eq:concave}
@@ -269,10 +238,10 @@ Dropping the terms not dependent on $P$ in equation \ref{eq:concave}, we obtain 
 A summary of the different relaxations is provided in Table \ref{tab:relaxation}.
 Relaxing the discrete problem to a continuous problem breaks the equivalence to the original formulation of the edge disagreement and enables employing algorithms based on gradient descent.
 
-#### \textsc{Frank Wolfe} methodology
+#### <span style="font-variant:small-caps;">Frank Wolfe</span> methodology
 
-\cite{FAQ} introduced an algorithm for the relaxed graph matching problem, with each iteration computable in polynomial time, that can find local optima for the relaxations above.
-The \textsc{Frank-Wolfe (FW)} \citep{FW} methodology is an iterative gradient ascent approach composed of two steps.
+@FAQ introduced an algorithm for the relaxed graph matching problem, with each iteration computable in polynomial time, that can find local optima for the relaxations above.
+The \<span style="font-variant:small-caps;">Frank-Wolfe (FW)</span> (@FW) methodology is an iterative gradient ascent approach composed of two steps.
 The first step finds an ascent direction that maximizes the gradient ascent.
 In this case the ascent direction is a permutation matrix which is a vertex of the polytope of doubly stochastic matrices.
 For the convex, indefinite, and concave relaxations, this corresponds to a LAP with the gradient as the cost function.
@@ -280,23 +249,18 @@ The second step performs a line search along the ascent direction to optimize th
 As the objectives are all quadratic, this line search is simply requires optimizing a single-variable quadratic function along a line segment.
 After the iterative algorithm converges, the final step of the procedure is to project the doubly stochastic matrix back to the set of permutation matrices, which is also a LAP.
 
-The various relaxed forms can all serve as the objective function $f(\cdot)$ in the \textsc{FW} Methodology, but in all cases a matrix $D^0\in \mathcal{D}$ must be chosen to initialize the procedure.
-For the convex relaxation, the \textsc{FW} methodology is guaranteed to converge to the global optimum regardless of the $D^0$.
-On the other hand, the \textsc{FW} algorithm for the indefinite relaxation is not guaranteed to find a global optimum so the initialization is critical.
+The various relaxed forms can all serve as the objective function $f(\cdot)$ in the <span style="font-variant:small-caps;">FW</span> Methodology, but in all cases a matrix $D^0\in \mathcal{D}$ must be chosen to initialize the procedure.
+For the convex relaxation, the <span style="font-variant:small-caps;">FW</span> methodology is guaranteed to converge to the global optimum regardless of the $D^0$.
+On the other hand, the <span style="font-variant:small-caps;">FW</span> algorithm for the indefinite relaxation is not guaranteed to find a global optimum so the initialization is critical.
 
 In many instances, the optimal solution to the convex relaxation lies in the interior of $\mathcal{D}$.
 This can lead to inaccurate solutions after the last projection step.
 The local optima for the indefinite relaxation are often at extreme points of $\mathcal{D}$, meaning the final projection often does nothing.
 
 The default initialization for the indefinite problem is at the barycenter matrix, $D^0 = \frac{1}{n}11^T$, but many other initialization procedures can be used.
-These include randomized initializations, initializations based on similarity matrices, and initializing the indefinite relaxation at the interior point solution of the convex relaxation \citep{relax_paper}.
-When prior information regarding a partial correspondence is known to be noisy, rather than incorporating this information as seeds, one can incorporate it as "soft" seeds which are used to generate the initialization \citep{soft_seeding}.
+These include randomized initializations, initializations based on similarity matrices, and initializing the indefinite relaxation at the interior point solution of the convex relaxation (@relax_paper).
+When prior information regarding a partial correspondence is known to be noisy, rather than incorporating this information as seeds, one can incorporate it as "soft" seeds which are used to generate the initialization (@soft_seeding).
 
-
-<!-- Within the framework of soft seeding, noisy seeds are leveraged to generate the initial matrix \citep{soft_seeding}.
-In this way, noisy seeds provide prior information about the truth and the noisy part can evolve over iterations at the same time.
-Thus, a good strategy is to initialize the indefinite relaxed problem at the optimal value of the convex relaxed problem \citep{relax_paper}.
- -->
 
 \begin{algorithm}
 \caption{Frank-Wolfe Methodology}
@@ -315,9 +279,8 @@ Project $D^{i}$ to the nearest $P$ by maximizing $\mathrm{trace}(P^TD)$;\par
 \end{algorithm}
 
 When prior information is available in the form of seeds, 
-the seeded graph matching problem \citep{SGM} works on the objective function \ref{eq:ob_func} with the permutation matrix $P^{n\times n}$ substituted by $I_s\oplus P^{(n-s)\times (n-s)}$, the direct sum of an $s\times s$ identity matrix and an $(n-s)\times (n-s)$ permutation matrix.
-<!-- DLS: Also mention seeds here and include in the displayed eqn below. -->
-<!-- where $\oplus$ denotes the direct sum of the identity matrix $I_s$ which embeds hard seeds and the permutation matrix to optimize over. -->
+the seeded graph matching problem (@SGM) works on the objective function \ref{eq:ob_func} with the permutation matrix $P^{n\times n}$ substituted by $I_s\oplus P^{(n-s)\times (n-s)}$, the direct sum of an $s\times s$ identity matrix and an $(n-s)\times (n-s)$ permutation matrix.
+
 Employing the indefinite relaxed objective function incorporating seeds, we formulate the problem as finding
 \begin{align*}
     \hat{P} % &= \argmin_{P\in \Pi} \mathrm{trace} A(I_s\oplus P)B(I_s\oplus P)^T \\
@@ -328,94 +291,60 @@ where the gradient to the objective function is
   \nabla f(P)=2\cdot A_{21}B_{21}^T+2\cdot A_{22}PB_{22}.
 \end{equation}
 
-<!-- \todo{is this the right place for this para? - similarity scale para moved to usage section when talk about arguments for gm.} -->
+
 In total, this uses the information between seeded nodes and nonseeded nodes and the nonseed-to-nonseed information.
 Applying seeded graph matching to the convex relaxation and concave relaxation closely resembles the case of indefinite relaxation.
 
-#### \textsc{PATH} algorithm
+#### <span style="font-variant:small-caps;">PATH</span> algorithm
 
-\cite{PATH} introduced a convex-concave programming approach to approximately solve the graph matching problem.
+@PATH introduced a convex-concave programming approach to approximately solve the graph matching problem.
 The concave relaxation has the same solution as the original graph matching problem.
- <!-- but there is no efficient algorithm to solve it. -->
-The \textsc{PATH} algorithm finds a local optimum to the concave relaxation by considering convex combinations of the convex relaxation $F_0(P)$ and the concave relaxation $F_1(P)$ denoted by $F_{\lambda} =(1 - \lambda) F_0 + \lambda F_1$.
-<!-- , where $\lambda$ represents the weight between two relaxations. -->
+The <span style="font-variant:small-caps;">PATH</span> algorithm finds a local optimum to the concave relaxation by considering convex combinations of the convex relaxation $F_0(P)$ and the concave relaxation $F_1(P)$ denoted by $F_{\lambda} =(1 - \lambda) F_0 + \lambda F_1$.
 Starting from the solution to the convex relaxation ($\lambda=0$) the algorithm iteratively performs gradient ascent using the FW methodology at $F_\lambda$, increasing $\lambda$ after each iteration, until $\lambda = 1$.
- <!-- to the concave objective function over $\mathcal{D}$, it seeks the local minimum of $F_{\lambda}$ initialized at the optimum from the last iteration using the \textsc{FW} methodology. -->
-<!-- Each step has the length of $d\lambda$ which is self-adaptive at each iteration and guarantees a significant difference of two objective functions between two successive iterations. -->
-<!-- 
-\begin{algorithm}
-\caption{PATH Algorithm}
-\label{alg:PATH}
-\SetKwInOut{Input}{Input}
-\SetKwInOut{Output}{Output}
-\Input{$A,B$, similarity scores or seeds matrix $S$, minimal searching increment $d\lambda$, tolerance $\epsilon$}
-\Output{permutation matrix $P$}
-Set $\lambda=0$;\par
-Solve $P^0=\argmin F_0$ by Frank-Worlfe algorithm;\par
-\While{$\lambda<1$}{
-    $\lambda_{new}=\lambda+d\lambda$;\par
-    \eIf{$|F_{\lambda_{new}}(P^{\lambda})-F_{\lambda}(P^{\lambda})|<\epsilon$}{$\lambda=\lambda_{new}$;\par}{
-    Solve $P^{\lambda_{new}}=\argmin F_{\lambda_{new}}$ by \textsc{FW} methodology;\par
-    $\lambda=\lambda_{new}$;\par
-    }
-}
-\end{algorithm} -->
+ 
 
 ### Percolation-based algorithms
 
-Under the \textsc{FW} methodology, all the nodes admit a correspondence but the (relaxed) matching correspondence evolves through iterations.
+Under the <span style="font-variant:small-caps;">FW</span> methodology, all the nodes admit a correspondence but the (relaxed) matching correspondence evolves through iterations.
 On the other hand, percolation approaches start with a set of seeds, adding one new match at each iteration.
 The new matches are fixed and hence not updated in future iterations.
 
 Each iteration expands the set of matched nodes by propagating the current matching information to neighbors.
 The guiding intuition is that more matched neighbors are an indicator of a more plausible match, an intuition analogous to the gradient ascent approaches above.
-We will present two algorithms in this category where the \textsc{ExpandWhenStuck} algorithm is an extension to the \textsc{Perocolation} algorithm.
+We will present two algorithms in this category where the <span style="font-variant:small-caps;">ExpandWhenStuck</span> algorithm is an extension to the <span style="font-variant:small-caps;">Percolation</span> algorithm.
 
 
 There are some distinctions about the inputs and outputs of percolation methods compared to the above relaxation methods.
-<!--
-    Requires seeds or similarity. Similar but not identical to initialization. 
-    Not all matched, ordered match. -->
 
-#### \textsc{Percolation} Algorithm
 
-\cite{Percolation} provides a simple and fast approach to solve the graph matching problem by starting with a handful of seeds and propagating to the rest of the graphs.
+#### <span style="font-variant:small-caps;">Percolation</span> Algorithm
+
+@Percolation provides a simple and fast approach to solve the graph matching problem by starting with a handful of seeds and propagating to the rest of the graphs.
 At each iteration, the matching information up to the current iteration is encoded in a subpermutation matrix $P$ where $P_{ij}=1$ if $i$ is matched to $j$, and $0$ otherwise.
-<!-- \begin{equation*} \label{P}
-P_{ij}=
-    \begin{cases}
-    1       & \quad \text{if } (i,j) \text{ is matched}\\
-    0  & \quad \text{otherwise} 
-  \end{cases}
-\end{equation*} -->
-The \textsc{percolation} algorithm searches for the most promising new match among the unmatched pairs through the mark matrix, $M=APB$,
-<!-- \begin{equation} \label{eq:M}
-    M=APB
-\end{equation} -->
+
+The <span style="font-variant:small-caps;">Percolation</span> algorithm searches for the most promising new match among the unmatched pairs through the mark matrix, $M=APB$,
 which is the gradient of the indefinite relaxation when extended to sub-doubly stochastic matrices.
 When similarity scores are available, they are added to the mark matrix to combine topological structure and similarity scores.
 
 Adopting analogous partitions on the adjacency matrices as in equation \eqref{eq:seed_blocks}, we let $A_{21}, B_{21}$  denote sub-matrix corresponding to potential adjacencies between unmatched and matched nodes.
 Since all the candidates of matched pairs are permanently removed from consideration, we need only consider $M'=A_{21}B_{21}^T$, the sub-matrix of $M$ corresponding to the unmatched nodes in both graphs.
-As a result, the \textsc{percolation} algorithm only uses matched-to-unmatched information to generate new matches.
+As a result, the <span style="font-variant:small-caps;">Percolation</span> algorithm only uses matched-to-unmatched information to generate new matches.
 
 Moreover, the mark matrix $M$ can also be interpreted as encoding the number of matched neighboring pairs for each pair of nodes $i\in V_1$, $j\in V_2$.
 Suppose $u, u'\in V_1$, $v,v'\in V_2$, $[u,u']\in E_1$ and $[v,v']\in E_2$, then $(u',v')$ is a neighboring pair of $(u,v)$.
 In each iteration, while there remain unmatched nodes with more than $r$ matched neighboring pairs, the percolation algorithm matches the pair of nodes with the highest score $M_{uv}$,  
-<!-- updating the current match $P$ with $P_{uv} = 1$ and recomputing the mark matrix. -->
 and adds one mark to all the neighboring pairs of $(u,v)$.
 Note that the algorithm may stop before all nodes are matched, leading to the return of a partial match.
 
 
-There is only one tuning parameter in the \textsc{percolation} algorithm, the threshold $r$ which controls a tradeoff between quantity of matches and quality of matches.
+There is only one tuning parameter in the <span style="font-variant:small-caps;">Percolation</span> algorithm, the threshold $r$ which controls a tradeoff between quantity of matches and quality of matches.
 With a small threshold, the algorithm has a larger chance of matching wrong pairs.
-If $r$ is larger, then the algorithm might stop before matching many pairs \citep{ExpandWhenStuck}.
+If $r$ is larger, then the algorithm might stop before matching many pairs (@ExpandWhenStuck).
 
-The \textsc{percolation} algorithm can be generalized to matching weighted graphs by making an adjustment to how we measure the matching information from the neighbors.
+The <span style="font-variant:small-caps;">Percolation</span> algorithm can be generalized to matching weighted graphs by making an adjustment to how we measure the matching information from the neighbors.
 Since we prefer to match edges with smaller weight differences and higher absolute weights, we propose to adopt the following update formula for the score associated with each pair of nodes $(i,j)$:
 $$M_{ij}=M_{ij} + \sum_{u\in N(i)}\sum_{v\in N(j)}1-\frac{|w_{iu}-w_{jv}|}{\max(|w_{iu}|, |w_{jv}|)}.$$
 Thus, the score contributed by each neighboring pair of $(i,j)$ is a number in $[0,1]$.
-<!-- At the same time, we should set a smaller threshold $r$ accordingly. -->
 
 \begin{algorithm}[H]
 \SetAlgoLined
@@ -435,48 +364,39 @@ Thus, the score contributed by each neighboring pair of $(i,j)$ is a number in $
 \label{alg:perco}
 \end{algorithm}
 
-#### \textsc{ExpandWhenStuck} Algorithm
+#### <span style="font-variant:small-caps;">ExpandWhenStuck</span> Algorithm
 
-\cite{ExpandWhenStuck} extends the \textsc{percolation} algorithm to a version that can operate with a smaller number of seeds.
-<!-- Notice that the quantity of final matches of the \textsc{percolation} algorithm heavily relies on the number of seeds. -->
-Without enough seeds, when there are no more unmatched pairs with a score higher or equal to the threshold $r$, the \textsc{percolation} algorithm would stop even if there are still unmatched pairs.
-\textsc{ExpandWhenStuck} uses all pairs of nodes with at least one matched neighboring pair, $M_{ij}\geq 1$, as new seeds to restart the matching process by adding one mark to all of the new seeds' neighboring pairs, without updating the matched set.
+@ExpandWhenStuck extends the <span style="font-variant:small-caps;">Percolation</span> algorithm to a version that can operate with a smaller number of seeds.
+Without enough seeds, when there are no more unmatched pairs with a score higher or equal to the threshold $r$, the <span style="font-variant:small-caps;">Percolation</span> algorithm would stop even if there are still unmatched pairs.
+<span style="font-variant:small-caps;">ExpandWhenStuck</span> uses all pairs of nodes with at least one matched neighboring pair, $M_{ij}\geq 1$, as new seeds to restart the matching process by adding one mark to all of the new seeds' neighboring pairs, without updating the matched set.
 If the updated mark matrix consists of new pairs with marks greater or equal to $r$, then the percolation algorithm continues, leading to larger matched sets.
-<!-- Notice that such seeds are not as yet qualified for being matched, thus will not be added to the final permutation matrix. -->
 
 ### Spectral-based algorithm
 
 Another class of graph matching algorithms uses the spectral properties of adjacency matrices.
 
-#### \textsc{IsoRank} Algorithm
+#### <span style="font-variant:small-caps;">IsoRank</span> Algorithm
 
-\cite{IsoRank} propose the \textsc{IsoRank} algorithm that uses neighboring topology and similarity scores and exploits spectral properties of the solution.
-The \textsc{IsoRank} algorithm is also based on the relaxation-based algorithms by encoding the topological structure of two graphs in $ADB$, which is again proportional to the gradient of the indefinite relaxation.
+@IsoRank propose the <span style="font-variant:small-caps;">IsoRank</span> algorithm that uses neighboring topology and similarity scores and exploits spectral properties of the solution.
+The <span style="font-variant:small-caps;">IsoRank</span> algorithm is also based on the relaxation-based algorithms by encoding the topological structure of two graphs in $ADB$, which is again proportional to the gradient of the indefinite relaxation.
 However, the representations of each term of $ADB$ are slightly different.
 $A$ and $B$ are the column-wise normalized adjacency matrices and $D$ is not necessarily a doubly stochastic matrix yet $D_{ij}$ still indicates how promising it is to match $i\in V_1$ to $j\in V_2$.
 
 
-Similar to the idea of \textsc{Percolation} algorithm, the intuition is that the impact of a pair of matched nodes is evenly distributed to all of their neighbors to propagate plausible matches.
+Similar to the idea of <span style="font-variant:small-caps;">Percolation</span> algorithm, the intuition is that the impact of a pair of matched nodes is evenly distributed to all of their neighbors to propagate plausible matches.
 This is achieved by solving the eigenvalue problem
 \begin{align}\label{eq:Iso1}
     \mathrm{vec}(D)=(A\otimes B) \mathrm{vec}(D),
 \end{align}
 where $\mathrm{vec}(D)$ denotes the vectorization of matrix $D$, and the right hand side is equivalent to $ADB$.
-<!-- Notably, the above equation is equivalent to  -->
-<!-- $D=ADB$ -->
-<!-- which leads to the form correlated with the gradient of the relaxation-based algorithms. -->
+
 To combine network-topological structure and similarity scores in the objective function, the normalized similarity score $E$ is added to the right hand side of Eq. \ref{eq:Iso1}, where $E=S/\|S\|_1$, and $|\cdot|_1$ denotes the L1 norm.
 
-<!-- \begin{align}\label{eq:Iso2} -->
-<!--    \mathrm{vec}(D)=&\alpha\cdot A\otimes B\cdot \mathrm{vec}(D) + (1-\alpha) \mathrm{vec}(E) \quad 0\le\alpha\le 1  -->
-<!-- \end{align} -->
 
-<!-- Note that we can also construct a similarity score matrix from seeds by assigning 1's to elements corresponding to seeds and the remaining elements with 0's.\todo{is this how we do it? I'd think we'd include the seeds in E adding in $A_{12}^TB_{12}$.} -->
-Note that when similarity score is not available as prior information, we can also construct a doubly stochastic similarity score matrix from seeds by taking $I_{s\times s}\oplus \frac{1}{n-s}\mathbbm{1}\mathbbm{1}_{(n-s)\times (n-s)}$.
+Note that when similarity score is not available as prior information, we can also construct a doubly stochastic similarity score matrix from seeds by taking $I_{s\times s}\oplus \frac{1}{n-s}11_{(n-s)\times (n-s)}$.
 To solve the eigenvalue problem \ref{eq:Iso1}, we resort to the power method.
 Finally, the global alignment is generated by a greedy algorithm or using the algorithms for solving the linear assignment problem (LAP).
-<!-- Also note that with some prior information in the form of seeds, we only extract the global mapping from nonseed nodes in the final step.
-The same strategy of handling seeds is also applied to the \textsc{Umeyama} algorithm, another spectral-based algorithm that we will illustrate next. -->
+
 
 \begin{algorithm}
 \caption{IsoRank Algorithm}
@@ -495,11 +415,10 @@ Initialize $D^0=E$ and tolerance $\epsilon$;\par
 }
 Extract node mapping from $\hat{D}$ using a greedy method or by solving a LAP;
 \end{algorithm}
-<!-- \todo{when you normalize is it with the Frobenius norm? - No, it's L1 norm.} -->
 
-#### \textsc{Umeyama} algorithm
+#### <span style="font-variant:small-caps;">Umeyama</span> algorithm
 
-\cite{Umeyama} is a spectral approach to find approximate solutions to the graph matching problem.
+@Umeyama is a spectral approach to find approximate solutions to the graph matching problem.
 Assuming eigendecompositions of adjacency matrices $A$ and $B$ as $A=U_A\Lambda_AU_A^T$ and $B=U_B\Lambda_BU_B^T$, let $|U_A|$ and $|U_B|$ be matrices which takes absolute values of each element of $U_A$ and $U_B$.
 Such modification to the eigenvector matrices guarantees the uniqueness of eigenvector selection.
 The global mapping is obtained by minimizing the differences between matched rows of $U_A$ and $U_B$:
@@ -507,10 +426,8 @@ The global mapping is obtained by minimizing the differences between matched row
     \hat{P}=\mathop{\argmin}_{P\in\Pi}\lVert |U_A|-P|U_B|\rVert_F=\mathop{\argmax}_{P\in\Pi}\mathrm{trace}(|U_B||U_A|^TP)
 \end{align*}
 
-<!-- Still we can include prior information by introducing an additional linear term in the objective function as in the previous Algorithms.\todo{same thing here?} -->
-<!-- Finally, this problem can be efficiently solved by the Hungarian algorithm in $O(N^3)$ \citep{Hungarian}. -->
 
-The \textsc{Umeyama} algorithm can be generalized to matching directed graphs by eigendecomposing the Hermitian matrices $E_A$ and $E_B$ derived from the asymmetric adjacency matrices of the directed graphs.
+The <span style="font-variant:small-caps;">Umeyama</span> algorithm can be generalized to matching directed graphs by eigendecomposing the Hermitian matrices $E_A$ and $E_B$ derived from the asymmetric adjacency matrices of the directed graphs.
 The Hermitian matrix for the adjacency matrix $A$ is defined as $E_A=A_S+iA_N$, where $A_S=(A+A^T)/2$ is a symmetric matrix, $A_N=(A-A^T)/2$ is a skew-symmetric matrix and $i$ is the imaginary unit.
 Similarly, we can define the Hermitian matrix for $B$.
 Assume the eigendecompositions of $E_A$ and $E_B$ as follows:
@@ -521,7 +438,7 @@ and we aim at searching for:
 \begin{align*}
     \hat{P}=\mathop{\argmax}_{P\in\Pi}\mathrm{trace}(|W_B||W_A|^TP)
 \end{align*}
-Note that the \textsc{Umeyama} algorithm works on the condition that two graphs are isomorphic or nearly isomorphic.
+Note that the <span style="font-variant:small-caps;">Umeyama</span> algorithm works on the condition that two graphs are isomorphic or nearly isomorphic.
 
 
 \begin{algorithm}
@@ -539,12 +456,11 @@ Solve the LAP: $P=\mathop{\argmax}_{P\in\Pi}\mathrm{trace}(|U_B||U_A|^TP)$;\par
 
 ## Auxiliary graph matching tools
 
-<!-- \todo{move to usage?} -->
 
 ### Centering technique
 
 
-Instead of encoding the non-adjacencies by zeros in the adjacency matrices, the centering technique \citep{centering} assigns negative values to such edges.
+Instead of encoding the non-adjacencies by zeros in the adjacency matrices, the centering technique (@centering) assigns negative values to such edges.
 The first approach is encoding non-adjacent node-pairs as $-1$ with centered adjacency matrices $\tilde{A}=2A-\textbf{J}$ and $\tilde{B}=2B-\textbf{J}$, where $\textbf{J}$ is a matrix of all ones.
 An alternative approach relies on modeling assumptions where the pair of graphs are correlated but do not share a global structure.
 We match $\tilde{A} = A-\Lambda_A$ and $\tilde{B} = B-\Lambda_B$, where $\Lambda$ is an $n\text{-by-}n$ matrix with $ij$-th entry denoting an estimated marginal probability of an edge.
@@ -553,8 +469,7 @@ In general, $\Lambda$ is unknown but there are methods in the literature to esti
 
 Matching centered graphs changes the rewards for matching edges, non-edges, and the penalties for mismatches.
 Adapting the centering technique for the problem at hand can be used to find specific types of correspondences.
-This can also be combined with constructing multilayer networks out of single layer networks to match according to multiple criteria \citep{Lin, GRAMPA}.
-<!-- \todo{cite Lin paper and GRAMPA paper}  -->
+This can also be combined with constructing multilayer networks out of single layer networks to match according to multiple criteria (@Lin, @GRAMPA).
 The centering technique can be applied to any of the implemented graph matching algorithm.
 It is especially useful when padding graphs with differing numbers of vertices to distinguish isolated vertices from padded vertices.
 
@@ -563,17 +478,13 @@ It is especially useful when padding graphs with differing numbers of vertices t
 Until this section, we have been considering matching two graphs whose vertex sets are of the same cardinality.
 However, matching graphs with different orders are commonly seen in real-world problems.
 
-<!-- Except for the \textsc{percolation} algorithm and the \textsc{Isorank} algorithm which is based on the greedy method to find an alignment between two graphs, issues occur when the dimensions of the adjacency matrices $A$ and $B$ differ. -->
-<!-- One of the biggest issues associated with this is that the objective function $\lVert A-PBP^T \rVert_F^2$ to the graph matching problem no longer holds since the permutation matrix $P$ ought to be a square matrix. -->
-<!-- Another issue applies to algorithms using the Hungarian algorithm as a final step to extract mappings, including the \textsc{Frank-Wolfe} methodology and the \textsc{Umeyama} methodology, as the Hungarian algorithm only works for square matrices. -->
-<!-- These lead us to deploy the padding scheme \cite{SGM} to accommodate for the order difference. -->
 Suppose $A\in\{0,1\}^{n\times n}$ and $B\in\{0,1\}^{n_c\times n_c}$ with $n_c<n$.
 One can then pad the smaller graph with extra vertices to match the order of the larger graph, $\tilde{B}=B\oplus \textbf{0}_{n-n_c}$ and match $A$ and $\tilde{B}$.
 Every implemented graph matching algorithm in the `iGraphMatch` package automatically handles input graphs with a different number of vertices using sparse padding with minimal memory impact.
 
 Since the isolated vertices and the padded vertices share the same topological structure, it can be useful to center the original graphs first then pad the smaller graph in the same manner.
 This approach serves to differentiate between isolated vertices the padded ones.
-It's theoretically verified that in the correlated \ErdosRenyi graph model, the centered padding scheme is guaranteed to find the true correspondence between the nodes of $G_1$ and the induced subgraph of $G_2$ under mild conditions even if $|V_1|\ll|V_2|$, but the true alignment is not guaranteed without centering \citep{centering}.
+It's theoretically verified that in the correlated \ErdosRenyi graph model, the centered padding scheme is guaranteed to find the true correspondence between the nodes of $G_1$ and the induced subgraph of $G_2$ under mild conditions even if $|V_1|\ll|V_2|$, but the true alignment is not guaranteed without centering (@centering).
 
 
 ### Exploiting sparse and low-rank structure
@@ -581,7 +492,7 @@ It's theoretically verified that in the correlated \ErdosRenyi graph model, the 
 Many real-world graphs, especially large graphs, are often very sparse with $o(n^2)$ and often $\theta(n)$ edges.
 This can increase the difficulty of the graph matching problem due to the fact that there are fewer potential edges to match, but sparse graphs also come with computational advantages.
 We rely on `igraph` and `Matrix` for efficient storage of these structures as well as the efficient implementation of various matrix operations.
-We also use the LAPMOD algorithm for sparse LAP problems \citep{Volgenant1996-o}.
+We also use the LAPMOD algorithm for sparse LAP problems (@Volgenant1996-o).
 
 Similarly, a low-rank structure appears in some of the procedures including starting at the rank-1 barycenter matrix and the different centering schemes.
 Since low-rank matrices are generally not sparse and visa-versa we implemented the `splr` S4 class, standing for sparse plus low-rank matrices.
@@ -592,7 +503,7 @@ While users can also use these matrices explicitly, most use of them is automati
 
 ### Multi-layered graph matching
 
-Frequently, networks edges may have categorical attributes and from these categories, we can construct multilayer graphs \citep{multilayer}, where each layer in the networks contains edges from specific categories.
+Frequently, networks edges may have categorical attributes and from these categories, we can construct multilayer graphs (@multilayer), where each layer in the networks contains edges from specific categories.
 For matching two multilayer graphs, the standard graph matching problem can be extended as $\sum_{l=1}^{m}\|A^{(l)} - PB^{(l)}P^T\|_F^2$ where $m$ denotes the number of categories and $A^{(l)}, B^{(l)}$ are the adjacency matrices for the $l$th layers in each graph.
 Note, we assume that the layers are aligned, so that layer $l$ corresponds to the same edge-types in both multi-layer networks.
 
@@ -606,7 +517,7 @@ We also implemented a `matrixlist` S4 class that implements many standard matrix
 ## Correlated random graph models {#graph-models}
 
 
-The correlated \ErdosRenyi model \citep{FAQ} is essential in the theoretical study of graph matching algorithms.
+The correlated \ErdosRenyi model (@FAQ) is essential in the theoretical study of graph matching algorithms.
 In a single \ErdosRenyi graph, each edge is present in the graph independently with probability $p$.
 The correlated \ErdosRenyi model provides a joint distribution for a pair of graphs, where each graph is marginally distributed as an \ErdosRenyi graph and corresponding edge-pairs are correlated.
 
@@ -620,36 +531,20 @@ $A_{uv}$ and $B_{u'v'}$ are independent unless $u=u', v=v'$ in which case the Pe
 To sample a pair of correlated \ErdosRenyi graphs with edge probability $p$, and Pearson correlation $\rho$, we first sample three independent \ErdosRenyi graphs $G_1$, $Z_0$ and $Z_1$ with edge probabilities $p$, $p(1-\rho)$ and $p+\rho(1-p)$ respectively.
 Let $G_2 = (Z_1 \cap G_1) \bigcup (Z_0\cap G_1^c)$.
 
-\cite{Percolation} provide an alternative formulation for the correlated \ErdosRenyi model.
+@Percolation provide an alternative formulation for the correlated \ErdosRenyi model.
 First, one samples a single random \ErdosRenyi graph $G$ with edge probability $p'$.
 Conditioned on $G$, each edge in $G$ is present independently in $G_1,G_2$ with probability $s'$.
-<!-- All non-edges in $G$ are non-edges in $G_1,G_2$. -->
 These two parameterizations are related to each other by the relationship $s'=p+\rho(1-p)$ and $p'=p/(p+\rho(1-p))$.
 The original parameterization is slightly more general because it allows for the possibility of negative correlation.
 
 In addition to homogeneous correlated \ErdosRenyi random graphs, we also implement heterogeneous generalizations of this model.
-The stochastic block model \citep{SBM} and the random dot product graphs (RDPG) model \citep{rdpg} can both be regarded as extensions of the \ErdosRenyi model.
+The stochastic block model (@SBM) and the random dot product graphs (RDPG) model (@rdpg) can both be regarded as extensions of the \ErdosRenyi model.
 The stochastic block model is useful to represent the community structure of graphs by dividing the graph into $K$ groups.
 Each node is assigned to a group and the probability of edges is determined by the group memberships of the vertex pair.
 For the RDPG model, each vertex is assigned a latent position in $\mathbb{R}^d$ and edge probabilities are given by the inner product between the latent positions of the vertex pair.
 
-<!--
-with different ways of specifying the edge probability to incorporate some special properties of graph structures.
--->
-
-<!--
-Edges within the same group share the same edge probability while the within-group edge probability can vary across different groups.
-There can be edges occurring between the nodes from different groups as well, while the between-group edge probability should be smaller than the within-group edge probability.
--->
-<!-- pair of vertices $1\le u\le v\le n$, the edge probability between them is specified by the dot product of two vectors in $\mathbb{R}^d$ drawn.
-Given this, the probability of an edge occurring between $\{u,v\}$ is determined by the Bernoulli trial with probability given by the dot product of two latent positions vectors.
-Thus, the edge probability matrix $pJ$ in definition \ref{def: ER} is replaced by a random dot product matrix with differing entries. -->
 
 For both of these models, we can consider correlated graph-pairs where marginally they arise from one of these models and again corresponding edge pairs are correlated.
-<!-- Similar to how we generate a pair of correlated \ErdosRenyi graphs, we provide corresponding functions for generating the correlated RDPG, SBM, and general heterogeneous graph pairs. -->
-
-
-<!-- \todo{put this remark here}In the `iGraphMatch` package, for all graph matching algorithms that are eventually reduced to solving LAPs including all the relaxation-based algorithms, \textsc{Umeyama} algorithm and \textsc{IsoRank} using \textsc{Hungarian} algorithm, we obscure the vertex correspondence by randomly permuting the second network inside these functions to reduce bias. -->
 
 
 
@@ -657,30 +552,28 @@ For both of these models, we can consider correlated graph-pairs where marginall
 
 The ability to assess the quality of the match when ground truth is unavailable is critical for the usage of the matching approaches.
 There are various topological criteria that can be applied to measure the quality of matching results.
-At the graph level, the most frequently used structural measures include matching pairs (MP), edge correctness (EC), and the size of the largest common connected subgraph (LCCS) \citep{measure}.
+At the graph level, the most frequently used structural measures include matching pairs (MP), edge correctness (EC), and the size of the largest common connected subgraph (LCCS) (@measure).
 MP counts the number of correctly matched pairs of nodes, thus can only be used when the true alignment is available.
 Global counts of common edges (CE) and common non-edges (CNE) can be defined as
 \begin{align*}
-    CE=\frac{1}{2}\sum_{i,j}\mathds{1}\{A_{ij}=PBP^T_{ij} =1\}\quad CNE=\frac{1}{2}\sum_{i,j}\mathds{1}\{A_{ij}=PBP^T_{ij} = 0\},
+    CE=\frac{1}{2}\sum_{i,j}1\{A_{ij}=PBP^T_{ij} =1\}\quad CNE=\frac{1}{2}\sum_{i,j}1\{A_{ij}=PBP^T_{ij} = 0\},
 \end{align*}
 along with error counts such extra edges (EE) and missing edges (ME),
 \begin{align*}
-    EE=\frac{1}{2}\sum_{i,j}\mathds{1}\{A_{ij}=0=1 - PBP^T_{ij}\}\quad ME=\frac{1}{2}\sum_{i,j}\mathds{1}\{A_{ij}= 1 = 1 - PBP^T_{ij}\},
+    EE=\frac{1}{2}\sum_{i,j}1\{A_{ij}=0=1 - PBP^T_{ij}\}\quad ME=\frac{1}{2}\sum_{i,j}1\{A_{ij}= 1 = 1 - PBP^T_{ij}\},
 \end{align*}
 
 EC measures the percentage of correctly aligned edges, that is the fraction CE$/|E_1|$.
 The LCCS denotes the largest subset of aligned vertices such that the corresponding induced subgraphs of each graph are connected.
-<!-- \todo{mathematical definition?} -->
 Matches with a larger LCCS are often preferable to those with many isolated components.
 
 Another group of criteria measures the goodness of matching at the vertex level.
 Informally, we aim at testing the hypotheses 
-<!-- \todo{i think reversing these makes more sense} -->
 $$H_0^{(v)}: \text{the vertex } v \text{ is not matched correctly by } P^*, $$
 $$H_a^{(v)}: \text{the vertex } v \text{ is matched correctly by } P^*$$
 for each vertex $v$.
 
-The goal is to address if the permutation matrix found by graph matching algorithm is significantly different from the one sampled from uniformly distributed permutation matrices \citep{row_perm}.
+The goal is to address if the permutation matrix found by graph matching algorithm is significantly different from the one sampled from uniformly distributed permutation matrices (@row_perm).
 Unfortunately, vertex-level matching criteria have only received limited attention in the literature, however, we include two test statistics to measure fit.
 The row difference statistic is the L$_1$-norm of the difference between $A$ and $P^*B{P^*}^T$, namely
 \begin{equation*}
@@ -693,8 +586,6 @@ Alternatively, the row correlation statistic is defined as
 T_c(v,P^*):=1 - corr(A_{v\cdot},(P^*B{P^*}^T)_{v\cdot}).
 \end{equation*}
 We expect the empirical correlation between the neighborhoods of $v$ in $A$ and $P^*B{P^*}^T$ to be larger for a correctly matched vertex.
-<!-- The row correlation statistic is preferable to the row difference statistic for weighted graphs since the former statistic put less stress on the weight magnitude. -->
-
 
 We employ permutation testing ideas to the raw statistics as a normalization across vertices.
 Let us take the row difference statistic for example.
@@ -706,13 +597,10 @@ The normalization is then given by
 T_p(v,P^*):=\frac{T(v,P^*)-\mathbb{E}_PT(v,P)}{\sqrt{Var_PT(v,P)}}
 \end{equation*}
 where $T(v, P)$ can be either of the two test statistics we introduced earlier.
-<!-- The variance and expectation can either be computed by  -->
-<!-- Hence, more extreme values are It is more likely that we find the true alignment to a vertex $v$ by $P^*$ if the value of $T_P(v, P^*)$ is larger. -->
 
 In addition to measuring match quality, these vertex-wise statistics can also serve as a tool to find which vertices have no valid match in another network, i.e. the vertex entity is present in one network but not the other.
 
 
-<!--chapter:end:02_gm_background.Rmd-->
 
 # R functions and usage {#sec:usage}
 
@@ -738,7 +626,6 @@ The functions each return a named list of two `igraph` objects.
 
 For the homogeneous correlated \ErdosRenyi graph model, the model parameters are `p`, the global edge probability, and `corr`, the Pearson correlation between aligned vertex-pairs.
 For example, to sample a pair of graphs with 5 nodes from $\mathrm{CorrER}(0.5J, 0.7J)$ we run
-<!-- \todo{move first lines?} -->
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning=FALSE, message=FALSE)
@@ -754,15 +641,12 @@ cgnp_g1[]
 cgnp_g2 <- cgnp_pair$graph2
 ```
 
-<!-- From `igraph`, `cgnp_g1[]` converts the `igraph` object to a sparse \pkg{Matrix} form. -->
-<!-- In the next subsection, we will demonstrate the usage of the graph matching methods using this sampled pair of correlated \ErdosRenyi graphs.  -->
+
 Since we didn't obscure the vertex correspondence by assigning a value to the `permutation` argument, the underlying true alignment is the identity.
-<!-- , and here the sampled adjacency matrices are binary (unweighted) and symmetric (undirected). -->
 
 For the more general heterogeneous correlated \ErdosRenyi graph model, one needs to specify an edge probability matrix and a Pearson correlation matrix.
 To sample a pair of graphs from the heterogeneous correlated \ErdosRenyi model again with 5 nodes in each graph, and with random edge probabilities and Pearson correlations:
 
-<!-- \todo{note this is undirected} -->
 ```{r sample_ieg}
 p <- matrix(runif(5^2),5)
 c <- matrix(runif(5^2),5)
@@ -800,7 +684,6 @@ Here, we center the sampled graph `cgnp_g1` using different schemes:
 center_graph(cgnp_g1, scheme = "center", use_splr = FALSE)
 center_graph(cgnp_g1, scheme = 2, use_splr = FALSE)
 ```
-<!-- center_graph(cgnp_g1, scheme = c(-4, 2), use_splr = FALSE) -->
 
 Users can then use the centered graphs as inputs to the implemented graph matching algorithms, which serve to alter rewards and penalties for common edges, common non-edges, missing edges, and extra edges.
 
@@ -809,7 +692,6 @@ Users can then use the centered graphs as inputs to the implemented graph matchi
 
 The graph matching methods share the same basic syntax:
 
-<!-- \todo{how consistent is this?} -->
 
 ```
 gm(A, B, seeds = NULL, similarity = NULL, method = "indefinite", 
@@ -823,7 +705,7 @@ gm(A, B, seeds = NULL, similarity = NULL, method = "indefinite",
 | `max_iter`      |  Number                 |  Maximum number of iterations.                          | `FW, convex, PATH, IsoRank`  |
 | `tol`           |  Number                 |  Tolerance of edge disagreements.                       | `FW, convex, PATH`  |
 | `r`             |  Number                 |  Threshold of neighboring pair scores.                  | `percolation`  |
-| `ExpandWhenStuck`   |  Boolean           |  `TRUE` if performs \textsc{ExpandWhenStuck} algorithm.                  | `percolation`  |
+| `ExpandWhenStuck`   |  Boolean           |  `TRUE` if performs <span style="font-variant:small-caps;">ExpandWhenStuck</span> algorithm.                  | `percolation`  |
 
 
 Table: (\#tab:gm-alg) Overview of arguments for different graph matching functions. 
@@ -839,7 +721,6 @@ The `method` argument specifies a graph matching algorithm to use, and one can c
 If `method` is a function, it should take at least two networks, seeds and similarity scores as arguments.
 Users can also include additional arguments if applicable.
 The self-defined graph matching function should return an object of the "graphMatch" class with matching correspondence, sizes of two input graphs, and other matching details.
-<!-- \todo[inline]{I remember the editor mentioned extensibility, which we have not yet implemented, but it would be good to think about that before we resubmit.} -->
 As an illustrative example, `graph_match_rand` defines a new graph matching function which matches by randomly permuting the vertex label of the second graph using a random seed `rand_seed`. 
 We then apply this self-defined GM method to matching the correlated \ErdosRenyi graphs sampled earlier with a specified random seed:
 ```{r self_defined_method}
@@ -867,7 +748,7 @@ match_rand <- gm(cgnp_g1, cgnp_g2,
 ```
 
 Other arguments vary for different graph matching algorithms with an overview given in Table \ref{tab:gm-alg}.
-The `start` argument for the \textsc{FW} methodology with "indefinite" and "convex" relaxations takes any $nns\text{-by-}nns$ matrix or an initialization method including "bari", "rds" or "convex".
+The `start` argument for the <span style="font-variant:small-caps;">FW</span> methodology with "indefinite" and "convex" relaxations takes any $nns\text{-by-}nns$ matrix or an initialization method including "bari", "rds" or "convex".
 These represent initializing the iterations at a specific matrix, the barycenter, a random doubly stochastic matrix, or the doubly stochastic solution from "convex" method on the same graphs, respectively.
 
 Moreover, sometimes we have access to side information on partial correspondence with uncertainty.
@@ -881,7 +762,6 @@ hard_seeds <- 1:5 <= 2
 soft_seeds <- data.frame(seed_A = 3, seed_B = 4)
 ```
 We generate a start matrix incorporating soft seeds initialized at the barycenter: 
-<!-- $D_{bari}=\frac{1}{n_{ns}-n_{ss}}\mathbbm{1}\mathbbm{1}_{(n_{ns}-n_{ss})\times (n_{ns}-n_{ss})}$, where $n_{ns}$ and $n_{ss}$ are the number of non-hard-seed vertices and the number of soft seeds -->
 
 ```{r start_bari}
 as.matrix(start_bari <- init_start(start = "bari", nns = 3,
@@ -896,7 +776,7 @@ as.matrix(start_rds <- init_start(start = "rds", nns = 3,
       ns = 2, soft_seeds = soft_seeds))
 ```
 
-Then we can initialize the \textsc{Frank-Wolfe} iterations at any of the start matrix by specifying the `start` parameter.
+Then we can initialize the <span style="font-variant:small-caps;">Frank-Wolfe</span> iterations at any of the start matrix by specifying the `start` parameter.
 
 When there are no soft seeds, we no longer need to initialize the start matrix by using `init_start` first. Instead we can directly assign an initialization method to the `start` argument in the `gm` function:
 
@@ -907,10 +787,6 @@ match_rds <- gm(cgnp_g1, cgnp_g2, seeds = hard_seeds,
 
 Below use solution from the convex relaxation as the initialization for the indefinite relaxation.
 
-<!-- 
-match_bari <- graph_match_FW(cgnp_g1, cgnp_g2, hard_seeds, start = start_bari)
-match_rds <- graph_match_FW(cgnp_g1, cgnp_g2, hard_seeds, start = start_rds)
- -->
 
 ```{r match_convex}
 set.seed(123)
@@ -918,13 +794,12 @@ match_convex <- gm(cgnp_g1, cgnp_g2, seeds = hard_seeds,
                    method = "indefinite", start = "convex")
 ```
 
-Now let's match the sampled pair of graphs \code{sbm_pair} from the stochastic block model by using \textsc{percolation} algorithm. 
-Apart from the common arguments for all the graph matching algorithms, \textsc{percolation} has another argument \code{r} representing the minimum number of matched neighbors required for matching a new qualified vertex pair.
+Now let's match the sampled pair of graphs \code{sbm_pair} from the stochastic block model by using <span style="font-variant:small-caps;">Percolation</span> algorithm. 
+Apart from the common arguments for all the graph matching algorithms, <span style="font-variant:small-caps;">Percolation</span> has another argument \code{r} representing the minimum number of matched neighbors required for matching a new qualified vertex pair.
 Here we adopt the default value which is 2.
-Also, at least one of similarity scores and seeds is required for \textsc{percolation} algorithm to kick off.
+Also, at least one of similarity scores and seeds is required for <span style="font-variant:small-caps;">Percolation</span> algorithm to kick off.
 Let's utilize the same set of hard seeds and assume there is no available prior information on similarity scores.
 
-<!-- \todo{sbm_pair takes up a lot of characters} -->
 ```{r match_perco}
 sbm_g1 <- sbm_pair$graph1
 sbm_g2 <- sbm_pair$graph2
@@ -933,10 +808,10 @@ match_perco <- gm(sbm_g1, sbm_g1, seeds = hard_seeds,
 match_perco
 ```
 
-Without enough prior information on partial correspondence, \textsc{percolation} couldn't find any qualifying matches.
+Without enough prior information on partial correspondence, <span style="font-variant:small-caps;">Percolation</span> couldn't find any qualifying matches.
 Suppose in addition to the current pair of sampled graphs, the above sampled correlated homogeneous and heterogeneous \ErdosRenyi graphs are different layers of connectivity for the same set of vertices.
 We can then match the nonseed vertices based on the topological information in all of these three graph layers. 
-To be consistent, let's still use the \textsc{percolation} algorithm with threshold \code{r} equal to 2 and the same set of seeds.
+To be consistent, let's still use the <span style="font-variant:small-caps;">Percolation</span> algorithm with threshold \code{r} equal to 2 and the same set of seeds.
 
 ```{r match_perco_multi, warning=FALSE}
 matrix_lA <- list(sbm_g1, ieg_pair$graph1, cgnp_g1)
@@ -947,10 +822,9 @@ match_perco_list
 ```
 
 With the same amount of available prior information, we are now able to match all the nodes correctly.
- <!-- when there are multiple layers of connectivity to extract topological information. -->
 
-Finally, we will give an example of matching multi-layers of graphs using \textsc{IsoRank} algorithm. 
-Unlike the other algorithm, similarity scores are required for \textsc{IsoRank} algorithm.
+Finally, we will give an example of matching multi-layers of graphs using <span style="font-variant:small-caps;">IsoRank</span> algorithm. 
+Unlike the other algorithm, similarity scores are required for <span style="font-variant:small-caps;">IsoRank</span> algorithm.
 Without further information, we adopt the barycenter as the similarity matrix here.
 
 ```{r match_IsoRank}
@@ -963,7 +837,6 @@ match_IsoRank <- gm(A = matrix_lA, B = matrix_lB,
 ```
 
 
-<!-- \todo{right now the class is called "graphMatch"} -->
 Graph matching functions return an object of class "graphMatch" which contains the details of the matching results, including a list of the matching correspondence, a call to the graph matching function and dimensions of the original two graphs.
 ```{r graphMatch_class}
 match_convex@corr
@@ -1003,15 +876,6 @@ match_convex %*% cgnp_g2
 ```
 
 
-<!-- \todo{Explain how the object can be basically used as a matrix.} -->
-<!-- `
-The `get_perm_mat` function converts a "gm" object into a permutation matrix, which can be easier to work with in some cases.
-```{r eval=FALSE}
-get_perm_mat(match_convex)
-```
--->
-
-
 
 ## Evaluation of goodness of matching
 
@@ -1031,10 +895,8 @@ summary(match_IsoRank, matrix_lA, matrix_lB)
 
 
 In realistic scenarios, the true correspondence is not available.
-<!-- and it's important to come up with an approach to measure the goodness of matching for each pair of match. -->
 As introduced in section \ref{sec:background}, the user can use vertex level statistics to evaluate match performance.
 The `best_matches` function evaluates a vertex-level metric and returns a sorted `data.frame` of the vertex-matches with the metrics.
-<!-- has the functionality of finding best matched vertices and identifying core vertices when matching two graphs with junk vertices by ranking the likelihood of being a correct match or core vertices for each pair of matched nodes. -->
 The arguments are the two networks, a specific measure to use, the number of top-ranked vertex-matches to output, and the matching correspondence in the second graph if applicable.
 As an example here, we apply `best_matches` to rank the matches from above with the true underlying alignment
 
@@ -1043,40 +905,36 @@ best_matches(cgnp_g1, cgnp_g2, match = match_convex,
              measure = "row_perm_stat", num = 3, 
              true_label = 1:igraph::vcount(cgnp_g1))
 ```
-<!-- The output is a data frame with each row being a pair of match in the order of the likelihood of being a correct match. -->
+
 Note, `best_matches` uses seed information from the `match` parameter and only outputs non-seed matches.
 Without the true correspondence, `true_label` would take the default value and the output data frame only contains the first three columns.
 
 To visualize the matches of smaller graphs, the function `plot` displays edge discrepancies of the two matched graphs by an adjacency matrix or a ball-and-stick plot, depending on the input format of two graphs.
 
-```{r, out.width="47.5%", fig.show="hold", fig.cap="\\label{fig:visualization} Match visualizations. Grey, blue, and red colors indicate common edges, missing edges present only in the first network, and extra edges present only in the second network, respectively."}
+```{r visualization, out.width="47.5%", fig.show="hold", fig.cap=" Match visualizations. Grey, blue, and red colors indicate common edges, missing edges present only in the first network, and extra edges present only in the second network, respectively."}
 plot(cgnp_g1, cgnp_g2, match_convex)
 plot(cgnp_g1[], cgnp_g2[], match_convex)
 ```
 
-The plots for visualizing matching performance of `match_convex` are shown in Figure \ref{fig:visualization}. 
+The plots for visualizing matching performance of `match_convex` are shown in Figure \@ref(fig:visualization). 
 Grey edges and pixels indicate common edges, red ones indicate edges only in the second graph.
 If they were present, blue pixels and edges represent missing edges that only exist in the first graph.
 The corresponding linetypes are solid, short dash, and long dash.
 
-<!--chapter:end:03_r_usage.rmd-->
 
 
 # Examples {#sec:example}
 
 In this section, we demonstrate graph matching analysis using `iGraphMatch` via examples on real datasets, including communication networks,  neuronal networks, and transportation networks.
 Table \@ref(tab:dataset-overview) presents brief overviews of the first two datasets. 
-<!-- with regard to the size of graphs, the density of graphs and some other properties of the graphs.  -->
 Note that the number of edges doesn't consider weights for weighted graphs, and for directed graphs, an edge from node $i$ to node $j$ and another edge from $j$ to $i$ will be counted as two edges. 
 Tables \@ref(tab:edge-summary) and \@ref(tab:edge-summary-trans) summarize the edge correspondence between two graphs under the true alignment including the number of common edges, missing edges, and extra edges in two graphs.
 
-In the first Enron email network example, we demonstrate the usage of \textsc{Frank-Wolfe} methodology and how to improve matching performance by using the centering technique and incorporating adaptive seeds.
-In the second example using _C. Elegans_ synapses networks, we illustrate how to use soft matching for a challenging graph matching task using \textsc{Frank-Wolfe} methodology, \textsc{PATH} algorithm and \textsc{IsoRank} algorithm.
+In the first Enron email network example, we demonstrate the usage of <span style="font-variant:small-caps;">Frank-Wolfe</span> methodology and how to improve matching performance by using the centering technique and incorporating adaptive seeds.
+In the second example using _C. Elegans_ synapses networks, we illustrate how to use soft matching for a challenging graph matching task using <span style="font-variant:small-caps;">Frank-Wolfe</span> methodology, <span style="font-variant:small-caps;">PATH</span> algorithm and <span style="font-variant:small-caps;">IsoRank</span> algorithm.
 Finally, we include an example of matching two multi-layer graphs with similarity scores on the Britain transportation networks.
-<!-- Note that the two networks in the first and last example are of different sizes. -->
-<!-- In addition to matching two graphs, we will also illustrate how to detect cores, as opposed to junk vertices which are vertices without true alignments in the other graph. -->
 
-```{r, echo=FALSE, results="asis"}
+```{r dataset-overview, echo=FALSE, results="asis"}
 summarize_graph <- function(gp, name) {
   nn <- nrow(gp[[1]][])
   if (nn != nrow(gp[[2]][])) {
@@ -1106,38 +964,18 @@ summarize_graph <- function(gp, name) {
 knitr::kable(
   rbind(
     summarize_graph(Enron, "Enron"),
-    summarize_graph(C.Elegans, "{\\it C. Elegans}")
+    summarize_graph(C.Elegans, "C. Elegans")
   ),
-  format = "latex",
   col.names = c("Dataset", "\\# Nodes", "\\# Edges", "Correlation", "Weighted", "Directed", "Loop"),
   booktabs = TRUE,
-  caption =  "Overview of the Enron and {\\it C. Elegans} graphs. \\label{tab:dataset-overview}",
+  caption =  "Overview of the Enron and C. Elegans graphs.",
   escape = FALSE
 )
 ```
 
-<!-- DLS: Move transportation to its own table overviewing all layers -->
-
-<!-- 
-| Dataset  | # Nodes | # Edges   |  Correlation |  Weighted | Directed  | Loop |
-| :---------- | :----------------: | :-------------: | :-------------: |:------------: | :----------------: | :--------------: |
-| Enron          |        `r igraph::vcount(Enron[[1]])`       |  488/ 482   |  0.85  |  No       |   Yes    | Yes |
-| _C. Elegans_      | 279           |  2194/ 1031   |  0.10  | Yes |  Yes  | Yes |
-| Transp.   | 53/2075     |  56/ 8368    |  0.56 | No |  Yes  | No |
-
-Table: (\#tab:dataset-overview) Overview of datasets for examples. 
-Two numbers for edges or nodes indicate counts in the two graphs.
-Correlation indicates the empirical Pearson's correlation of entries of the adjacency matrices under the true alignment.
-The Britain transportation network consists of 5 layers. # edges indicate the total number of edges in all the layers and the correlation column displays the average empirical Pearson's correlation over all the layers.
- -->
-<!-- 
-  | Dataset  | Common Edges  | Common Non-Edges |  Extra Edges $G_1 \setminus G_2$ | Extra Edges $G_2 \setminus G_1$  |
--->
-
-<!-- DLS: Same here -->
 
 
-```{r, echo=FALSE, results="asis"}
+```{r edge-summary, echo=FALSE, results="asis"}
 summarize_edge <- function(gp1, gp2, name) {
   nn <- nrow(gp1[])
   corr <- graphMatch(data.frame(corr_A = 1:nn, corr_B = 1:nn), nn)
@@ -1154,19 +992,15 @@ summarize_edge <- function(gp1, gp2, name) {
 knitr::kable(
   rbind(
     summarize_edge(Enron[[1]], Enron[[2]], "Enron"),
-    summarize_edge(C.Elegans[[1]], C.Elegans[[2]], "{\\it C. Elegans}")
+    summarize_edge(C.Elegans[[1]], C.Elegans[[2]], "C. Elegans")
   ),
-  format = "latex",
   col.names = c("Dataset", "Common edges", "Missing edges", "Extra edges"),
   booktabs = TRUE,
-  caption =  "Edge summary under the true alignments of the Enron and {\\it C. Elegans} graphs. The columns indicate the number of common edges, missing edges in $G_1$, and extra edges in $G_2$. For weighted graphs, we define a pair of corresponding edges as a common edge as long as they both have positive weights. \\label{tab:edge-summary}",
+  caption =  "Edge summary under the true alignments of the Enron and C. Elegans graphs. The columns indicate the number of common edges, missing edges in $G_1$, and extra edges in $G_2$. For weighted graphs, we define a pair of corresponding edges as a common edge as long as they both have positive weights. ",
   escape = FALSE
 )
 ```
 
-<!-- Table: (\#tab:edge-summary) Edge summary under the true alignments.  The columns indicate the number of common edges, common non-edges, extra edges in $G_1$, and extra edges in $G_2$. -->
-<!-- For weighted graphs, we define a pair of corresponding edges as a common edge as long as they both have positive weights. -->
-<!-- For the Transportation network, edges are counted across all layers but only within the induced subgraph of $G_2$ corresponding to the true match. -->
 
 
 
@@ -1174,14 +1008,13 @@ knitr::kable(
 
 ## Example: Enron Email Network Data {#sec:Enron}
 
-The Enron email network data was originally made public by the Federal Energy Commission during the investigation into the Enron Corporation \citep{Enron}.
+The Enron email network data was originally made public by the Federal Energy Commission during the investigation into the Enron Corporation (@Enron).
 <!-- DLS: Citation -->
 Each node of Enron network represents an email address and if there is at least one email sent from one address to another address, a directed edge exists between the corresponding nodes. 
 
 The `iGraphMatch` package includes the Enron email network data in the form of a pair of `igraph` objects derived from the original data where each graph represents one week of emails between 184 email addresses.
 The two networks are unweighted and directed with edge densities around 
 `r round((igraph::edge_density(Enron[[1]]) + igraph::edge_density(Enron[[2]]))/2, 3)` in each graph and the empirical correlation between two graphs is `r round(cor(as.numeric(Enron[[1]][]), as.numeric(Enron[[2]][])), 2)`. 
-<!-- DLS: Not sure where you got 0.29 from before? -->
 
 First, let's load packages required for the following analysis:
 ```{r load_packages, message=FALSE}
@@ -1193,9 +1026,9 @@ library(dplyr)
 
 
 ### Visualization of Enron networks
-We visualize the aligned Enron networks using the \code{plot} function with vertices sorted by a community detection algorithm \citep{community_detection} and degree.
-For detailed interpretations to figure \ref{fig:Enron_graph}, please refer to figure \ref{fig:visualization}.
-```{r, out.width="0.6\\textwidth", fig.cap="\\label{fig:Enron_graph} Asymmetric adjacency matrices of aligned Enron Corporation communication networks. The vertices are sorted by a community detection algorithm \\citep{community_detection} and degree."}
+We visualize the aligned Enron networks using the \code{plot} function with vertices sorted by a community detection algorithm (@community_detection) and degree.
+For detailed interpretations to figure \@ref(fig:Enron-graph), please refer to figure \@ref(fig:visualization).
+```{r Enron-graph, fig.show="hold", fig.cap="Asymmetric adjacency matrices of aligned Enron Corporation communication networks. The vertices are sorted by a community detection algorithm (@community_detection) and degree."}
 g <- igraph::as.undirected(Enron[[1]])
 com <- igraph::membership(igraph::cluster_fast_greedy(g))
 deg <- rowSums(as.matrix(g[]))
@@ -1220,7 +1053,6 @@ B <- Enron[[2]][][c(vinsct, v2), c(vinsct, v2)]
 
 
 The sizes of largest connect components of two graphs are `r dim(A)[1]` and `r dim(B)[1]`, which are different.
-<!-- The number of core vertices $n_c$ is `r length(vinsct)`, the rest are junk vertices with cardinality $n_j=$ `r max(dim(A)[1], dim(B)[1])-length(vinsct)`. -->
 We reorder two graphs so that the first `r length(vinsct)` nodes are aligned and common to both graphs.
 
 ### Matching largest connected components using FW Algorithm
@@ -1228,12 +1060,9 @@ We reorder two graphs so that the first `r length(vinsct)` nodes are aligned and
 Let's assume the Enron email communication network from the second week is anonymous, and we aim at
 finding an alignment between the email addresses from the first network and the second one to de-anonymize the latter.
 Additionally, we want to find the email addresses that are active in both months.
-<!-- , that is to detect the core vertices. -->
 
 Suppose no prior information on partial alignment is available in this example.
-<!-- In addition to the \textsc{FW} algorithm, other algorithms implemented in the `iGraphMatch` package require prior information in the form of either seeds or similarity scores, and thus are not applicable here. -->
-<!-- DLS: Above sentence is a bit confusing. Maybe be more clear that FW doesn't strictly require prior information. -->
-We match the two largest connected components using the \textsc{FW} algorithm with indefinite relaxation since seeds and similarity scores are not mandatory for this method.
+We match the two largest connected components using the <span style="font-variant:small-caps;">FW</span> algorithm with indefinite relaxation since seeds and similarity scores are not mandatory for this method.
 
 Without any prior information, \code{seeds} and \code{similarity} arguments take default values which are \code{NULL}.
 For the \code{start} argument, we assign equal likelihood to all the possible matches by initializing at the barycenter.
@@ -1253,10 +1082,9 @@ summary(match_FW, A, B)
 emi <- summary(match_FW, A, B)$edge_match_info
 ```
 
-<!-- If the ground truth alignment is available, users can pass in the true alignment via \code{true_label}, and the report will also provide information on the number of correctly matched vertices. -->
+
 In this example, we can evaluate the matching result based on statistics on matched edges.
 Without any seeds or similarity scores, around `r paste(round(100*emi$common_edges / (emi$common_edges + emi$missing_edges), 0), "%", sep="")` of edges are correctly matched.
-<!-- DLS: 80% of edges means ? Use inline r code here. -->
 
 ### Centering the larger graph
 
@@ -1269,13 +1097,6 @@ match_FW_center <- gm(A = A_center, B = B_center,
                            start = "bari", max_iter = 200)
 summary(match_FW_center, A, B)
 ```
-<!-- Running \textsc{FW} algorithm on the centered graphs raises the flag that convergence may not occur with the maximum number of iterations set to be 200. -->
-<!-- One might want to increase the value for \code{max_iter} argument or change random seed in this case to make the algorithm converge so that the results can be more reliable. -->
-<!-- Here we choose to set a different random seed in the \code{set.seed} function. -->
-
-<!-- I don't like that at this point we've changed two things, the centering and the seed, so it kind of obscures what's making the difference. What performance do we get if we use uncentered here. -->
-
-<!-- DLS: result is below. We could just set seed to 1 for the first match in the example and then never run into the warnings. -->
 
 
 From the summary tables, we would prefer matching Enron networks with the application of the centering scheme, since we get more matched common edges, as well as fewer missing edges and extra edges. 
@@ -1283,13 +1104,8 @@ From the summary tables, we would prefer matching Enron networks with the applic
 
 ### Matching with adaptive seeds
 
-<!-- The \code{summary} function measures the matching performance on the graph level, and it's especially useful when the ground truth is available and \code{summary} returns the number of correct matches as a straightforward measure of the overall matching performance.
-In this example, we have no access to the ground truth but would still want to rank the matched pairs of vertices in the order of their likelihood of being correct matches. -->
 Supposing we have no access to ground truth, we use the \code{best_matches} function to measure and rank the vertex-wise matching performance.
 Below shows the 6 matches that minimize the row permutation statistic.
-<!-- The \code{num} argument reflects the number of top ranked vertices the user is trying to extract from the entire matching.
-Here we target at ranking all the matched pairs of nodes and set \code{num=151}. -->
-<!-- DLS: made this the default -->
 
 ```{r enron_best_matches}
 bm <- best_matches(A = A, B = B, match = match_FW_center, 
@@ -1297,12 +1113,11 @@ bm <- best_matches(A = A, B = B, match = match_FW_center,
 head(bm)
 ```
 
-Since seeded graph matching enhances the graph matching performance substantially \citep{SGM}, it may be useful to use some of these best matches as seeds to improve matching results.
+Since seeded graph matching enhances the graph matching performance substantially (@SGM), it may be useful to use some of these best matches as seeds to improve matching results.
 Here, we use adaptive seeds, taking the $k$ best matches and using them as seeds in a second run of the matching algorithm.
-<!-- provided precision is high using the matches \code{best_matches} as seeds and running \textsc{FW} algorithm again may improve the matching results. -->
 The table below displays edge statistics and objective function values for different number of adaptive seeds used.
 The second column in the table shows the matching precision of the adaptive seeds based on ground truth.
-Incorporating adaptive seeds and repeating the \textsc{FW} matching procedure on centered graphs further improve the matching results, compared with the case without any adaptive seeds when $ns=0$.
+Incorporating adaptive seeds and repeating the <span style="font-variant:small-caps;">FW</span> matching procedure on centered graphs further improve the matching results, compared with the case without any adaptive seeds when $ns=0$.
 The first 40 pairs of matched nodes ranked by \code{best_matches} function are all correctly matched, and this is also when matching is improved the most.
 
 
@@ -1364,8 +1179,8 @@ Suppose the ground truth is known and that the first 145 vertices are core verti
 The mean precision of detecting core vertices and junk vertices using \code{best_matches} function is displayed in figure \ref{fig:core}.
 A lower rank is a stronger indicator of a core vertex and a higher rank is a stronger indicator of a junk vertex.
 Let $r^C_i, 1\le i\le n_c$ and $r^J_j, 1\le j\le n_j$ denote the ranks associated with each core vertex and each junk vertex.
-The figure shows the precision of identifying core vertices at each low rank $r$, i.e. $\frac{1}{r}\sum_{i = 1}^{n_c}\mathbbm{1}_{r^C_i\le r}$, 
-and the precision of identifying junk vertices at each high rank $r$, i.e. $\frac{1}{r}\sum_{j = 1}^{n_j}\mathbbm{1}_{r^J_j\ge n_c+n_j-r}$, which are separated by the vertical lines.
+The figure shows the precision of identifying core vertices at each low rank $r$, i.e. $\frac{1}{r}\sum_{i = 1}^{n_c}1_{r^C_i\le r}$, 
+and the precision of identifying junk vertices at each high rank $r$, i.e. $\frac{1}{r}\sum_{j = 1}^{n_j}1_{r^J_j\ge n_c+n_j-r}$, which are separated by the vertical lines.
 
 ```{r enron_core}
 nc <- length(vinsct)
@@ -1408,12 +1223,9 @@ map_df  %>%
 
 
 
-<!-- Maybe instead of this figure we just cite some precision at k values for various k, for both junk and core. -->
-
-
 ## Example: C. Elegans Network Data {#sec:CE}
 
-The _C. Elegans_ networks consist of the chemical synapses network and the electrical synapses network of the roundworm, where each of `r vcount(C.Elegans[[1]])` nodes represents a neuron and each edge represents the intensity of synapse connections between two neurons \citep{neuro}.
+The _C. Elegans_ networks consist of the chemical synapses network and the electrical synapses network of the roundworm, where each of `r vcount(C.Elegans[[1]])` nodes represents a neuron and each edge represents the intensity of synapse connections between two neurons (@neuro).
 Matching the chemical synapses network to the electrical synapses network is essential for understanding how the brain functions.
 These networks are quite sparse with edge densities of `r round(igraph::edge_density(C.Elegans[[1]]), 3)` and `r round(igraph::edge_density(C.Elegans[[2]]), 3)` in each graph and the empirical correlation between two graphs is `r round(cor(as.numeric(C.Elegans[[1]][]), as.numeric(C.Elegans[[2]][])), 2)`. 
 
@@ -1421,7 +1233,7 @@ These networks are quite sparse with edge densities of `r round(igraph::edge_den
 
 ### A challenging task
 For simplicity, we made the networks unweighted and undirected for the experiments, and we assume the ground truth is known to be the identity.
-```{r, warning = FALSE, fig.subcap=c('True correspondence', 'Alignment found by FW initialized at true alignment'), out.height="0.24\\textheight", out.extra="keepaspectratio", fig.cap="\\label{fig:edge} Edge discrepancies for the matched graphs with the true correspondence and FW algorithm starting at the true correspondence. Green pixels represents an edge in the chemical graph while no edge in the electrical graph. Red pixels represent only an edge in the electrical graph. Grey pixels represent there is an edge in both graphs and white represents no edge in both graphs."}
+```{r C-Elegans-edge, warning = FALSE, fig.show="hold", fig.cap="Edge discrepancies for the matched graphs with the true correspondence (left) and FW algorithm starting at the true correspondence (right). Green pixels represents an edge in the chemical graph while no edge in the electrical graph. Red pixels represent only an edge in the electrical graph. Grey pixels represent there is an edge in both graphs and white represents no edge in both graphs."}
 C1 <- C.Elegans[[1]][] > 0
 C2 <- C.Elegans[[2]][] > 0
 plot(C1[], C2[])
@@ -1440,24 +1252,14 @@ m_emi <- m_sum$edge_match_info
 ```
 
 Matching the _C. Elegans_ networks is a challenging task.
-Figures \ref{fig:edge} depict the edge discrepancies of two networks under the true alignment and the matching correspondence using \textsc{FW} algorithm initialized at the true alignment.
-<!-- \todo{is it feasible to refer to figure 1 here to avoid detailed explanation?} -->
-<!-- The figures were generated by using the \code{plot} function in the `iGraphMatch` package on the chemical synapses network and the electrical synapses network. -->
-<!-- One can refer to Figure \ref{fig:visualization} for more details. -->
-<!-- Blue pixels represent edges only in the chemical network and red pixels are edges only in the electrical network. -->
-<!-- Grey pixels represent edges in both graphs and white pixels non-edges in both graphs. -->
-The alignment found using \textsc{FW} is not the identity with `r m_sum$n_true_match` out of `r nv` nodes correctly matched 
-<!-- \todo{how far from identity?}  -->
+Figures \@ref(fig:C-Elegans-edge) depict the edge discrepancies of two networks under the true alignment and the matching correspondence using <span style="font-variant:small-caps;">FW</span> algorithm initialized at the true alignment.
+The alignment found using <span style="font-variant:small-caps;">FW</span> is not the identity with `r m_sum$n_true_match` out of `r nv` nodes correctly matched 
 and improves upon the identity in terms of the number of edge discrepancies.
-<!-- 
-DLS: Again, not sure where these numbers came from.
-For the true alignment, there are 4201 edge errors and 376 common edges while the alignment yielded by \textsc{FW} initialized at the true correspondence has 3265 edge errors and 836 common edges.
--->
 For the true alignment, there are
 `r i_emi$common_edges`
 edge errors and
 `r round(i_emi$extra_edges + i_emi$missing_edges)`
-common edges while the alignment yielded by \textsc{FW} initialized at the true correspondence has 
+common edges while the alignment yielded by <span style="font-variant:small-caps;">FW</span> initialized at the true correspondence has 
 `r m_emi$common_edges`
 edge errors and
 `r round(m_emi$extra_edges + m_emi$missing_edges)`
@@ -1477,8 +1279,8 @@ sim <- init_start(start = "bari", nns = nrow(C1), soft_seeds = seeds)
 ```
 
 In addition to one-on-one matching, we will also conduct soft matching, which is to find three most promising matches to each non-seed vertex.
-We achieve the goal of soft matching by finding the top 3 largest values in each row of the doubly stochastic matrix from the last iteration of \textsc{Frank Wolfe} methodology with indefinite relaxation and \textsc{PATH} algorithm, as well as the normalized matrix from the last iteration of the power method for \textsc{IsoRank} algorithm.
-To evaluate the matching performance, we will look at both matching precision: $precision=\frac{1}{n_m-s}\sum_{i\in V_m\setminus S}P_{ii}$, and Mean Average Precision \@ 3 (MAP\@ 3):$MAP@3 = \frac{1}{n_m-s}\sum_{i\in V_m\setminus S}\mathbbm{1}_{\{i\in T_i\}}$, where $T_i$ is the set of 3 most promising matches to node $i$.
+We achieve the goal of soft matching by finding the top 3 largest values in each row of the doubly stochastic matrix from the last iteration of <span style="font-variant:small-caps;">Frank Wolfe</span> methodology with indefinite relaxation and <span style="font-variant:small-caps;">PATH</span> algorithm, as well as the normalized matrix from the last iteration of the power method for <span style="font-variant:small-caps;">IsoRank</span> algorithm.
+To evaluate the matching performance, we will look at both matching precision: $precision=\frac{1}{n_m-s}\sum_{i\in V_m\setminus S}P_{ii}$, and Mean Average Precision \@ 3 (MAP\@ 3):$MAP@3 = \frac{1}{n_m-s}\sum_{i\in V_m\setminus S}1_{\{i\in T_i\}}$, where $T_i$ is the set of 3 most promising matches to node $i$.
 
 ```{r celegans_match, warning=FALSE}
 set.seed(123)
@@ -1532,7 +1334,7 @@ mc <- candidate %>%
 c_count <- rowSums(mc)
 ```
 
-To demonstrate matching multi-layer networks-layers, we consider two graphs derived from the Britain Transportation network \citep{transportation}.
+To demonstrate matching multi-layer networks-layers, we consider two graphs derived from the Britain Transportation network (@transportation).
 The network reflects the transportation connections in the UK, with five layers representing ferry, rail, metro, coach, and bus.
 A smaller template graph was constructed based on a random walk starting from a randomly chosen hub node, a node that has connections in all the layers.
 The template graph has `r tn` nodes and `r sum(sapply(tm, sum))` connections in total and is an induced subgraph of the original graph.
@@ -1549,16 +1351,14 @@ candidate <- Transportation[[3]]
 
 Figure \ref{Fig:trans_net} visualizes the transportation connections for the induced subgraphs, where means of transportation are represented by different colors.
 Note that all edges in the template are common edges shared by two graphs, 
-<!-- while the world graph is denser with some extra edges. -->
 where `r paste0(round(100*sum(tm[[1]]) / sum(cm[[1]][1:tn, 1:tn]),1), "%")`, `r paste0(round(100*sum(tm[[2]]) / sum(cm[[2]][1:tn, 1:tn]),1), "%")`, `r paste0(round(100*sum(tm[[3]]) / sum(cm[[3]][1:tn, 1:tn]),1), "%")`, `r paste0(round(100*sum(tm[[4]]) / sum(cm[[4]][1:tn, 1:tn]),1), "%")` and `r paste0(round(100*sum(tm[[5]]) / sum(cm[[5]][1:tn, 1:tn]),1), "%")` of edges in the world graph are in template for each layer.
 All graphs are unweighted, directed, and do not have self-loops.
 Tables \@ref(tab:edge-summary-trans) further displays an overview and edge summary regarding each layer of the Britain Transportation Network.
-<!-- The average over the layers of the empirical correlation between the induced graphs is 0.559.\todo{Change to, proportion of edges in world that are in template for each layer.} -->
 A true correspondence exists for each template vertex in the world graph, our goal is to locate each template vertex in the Britain Transportation network by matching two multi-layer graphs with different number of vertices. 
 
 
 
-```{r, echo=FALSE, results="asis"}
+```{r edge-summary-trans, echo=FALSE, results="asis"}
 summarize_graph_trans <- function(gp1, gp2, name) {
   nn <- nrow(gp1)
   if (nn != nrow(gp2)) {
@@ -1574,20 +1374,6 @@ summarize_graph_trans <- function(gp1, gp2, name) {
   )
 }
 
-# knitr::kable(
-#   rbind(
-#     summarize_graph_trans(tm[[1]], cm[[1]], "Ferry", tem_cid),
-#     summarize_graph_trans(tm[[2]], cm[[2]], "Rail", tem_cid),
-#     summarize_graph_trans(tm[[3]], cm[[3]], "Metro", tem_cid),
-#     summarize_graph_trans(tm[[4]], cm[[4]], "Coach", tem_cid),
-#     summarize_graph_trans(tm[[5]], cm[[5]], "Bus", tem_cid)
-#   ),
-#   format = "latex",
-#   col.names = c("Layer", "\\# Nodes", "\\# Edges", "Correlation", "Weighted", "Directed", "Loop"),
-#   booktabs = TRUE,
-#   caption =  "Overview of the Britain Transportation Network layers. Correlation is calculted using the template graph and the aligned induced subgraph of the world graph. \\label{tab:dataset-overview-trans}",
-#   escape = FALSE
-# )
  
 summary_table <- 
   rbind(
@@ -1605,20 +1391,48 @@ edge_layer <- summary(graphMatch(data.frame(corr_A = 1:tn, corr_B = 1:tn), as.in
 
 knitr::kable(
   cbind(summary_table, edge_layer[,2:4]),
-  format = "latex",
   col.names = c("Layer",  "\\# Nodes", "\\# Edges", "Correlation","Common", "Missing", "Extra"),
   booktabs = TRUE,
-  caption =  "Overview of the Britain Transportation Network layers. Correlation is calculted using the template graph and the aligned induced subgraph of the world graph. The final three columns indicate the number of common edges, missing edges, and extra edges in the aligned subgraph of the world graph. \\label{tab:edge-summary-trans}",
+  caption =  "Overview of the Britain Transportation Network layers. Correlation is calculted using the template graph and the aligned induced subgraph of the world graph. The final three columns indicate the number of common edges, missing edges, and extra edges in the aligned subgraph of the world graph.",
   escape = FALSE
 )
 # Edge summary of the Britain Transportation Network layers.  
 ```
 
 
-```{r, echo=FALSE, out.width="0.6\\linewidth", fig.cap="\\label{Fig:trans_net} Visualization of the template graph (left) and the world graph (right) with corresponding vertices, both derived from the Britain Transportation network with five layers: ferry, rail, metro, coach, and bus. Edges represent transportation transactions and each color indicates a different means of transportation from a different layer of network."}
-knitr::include_graphics("Transportation_network.pdf")
+```{r, out.width="47.5%", fig.show="hold", echo=FALSE, fig.cap="\\label{Fig:trans_net} Visualization of the template graph (left) and the world graph (right) with corresponding vertices, both derived from the Britain Transportation network with five layers: ferry, rail, metro, coach, and bus. Edges represent transportation transactions and each color indicates a different means of transportation from a different layer of network."}
+
+l <- 1:length(tm)
+
+tg_sub <- l %>% map(~ tm[[.x]] %>% graph_from_adjacency_matrix)
+wg_sub <- l %>% map(~ cm[[.x]][1:tn,1:tn] %>% graph_from_adjacency_matrix)
+
+for(l in 1:5){
+  tg_sub[[l]] <- set_edge_attr(tg_sub[[l]], "layer", value = l)
+  wg_sub[[l]] <- set_edge_attr(wg_sub[[l]], "layer", value = l)
+}
+
+tg_colored <- igraph::union(tg_sub[[1]], tg_sub[[2]], tg_sub[[3]], tg_sub[[4]], tg_sub[[5]])
+wg_colored <- igraph::union(wg_sub[[1]], wg_sub[[2]], wg_sub[[3]], wg_sub[[4]], wg_sub[[5]])
+
+tg_layer <- rep(0, ecount(tg_colored))
+wg_layer <- rep(0, ecount(wg_colored))
+for(l in 1:5){
+  tg_layer <- tg_layer + ifelse(is.na(edge_attr(tg_colored)[[l]]) | tg_layer != 0, 0, edge_attr(tg_colored)[[l]])
+  wg_layer <- wg_layer + ifelse(is.na(edge_attr(wg_colored)[[l]]) | wg_layer != 0, 0, edge_attr(wg_colored)[[l]])
+}
+
+layout <- layout_nicely(wg_colored)
+plot(tg_colored, edge.color = factor(tg_layer),
+     vertex.size = 5, vertex.label.cex = .666,
+     edge.curved = TRUE,
+     edge.arrow.size = 0.2, layout = layout)
+
+plot(wg_colored, edge.color = factor(wg_layer),
+     vertex.size = 5, vertex.label.cex = .666,
+     edge.curved = TRUE,
+     edge.arrow.size = 0.2, layout = layout)
 ```
-<!-- Maybe make this using the igm plot functions. -->
 
 ```{r set_up_similarity_matrix, echo=FALSE}
 start <- mc %>%
@@ -1628,14 +1442,13 @@ similarity <- start * 1e5
 
 ```
 
-Based on the candidates, we specify a start matrix that is row-stochastic which can be used for the \code{start} argument in the graph matching function for \textsc{FW} methodology.
+Based on the candidates, we specify a start matrix that is row-stochastic which can be used for the \code{start} argument in the graph matching function for <span style="font-variant:small-caps;">FW</span> methodology.
 For each row node, its value is either zero or the inverse of the number of candidates for that node.
 To ensure that template nodes only get matched to candidates, we constructed a similarity score matrix by taking the start matrix $\times 10^5$, so that a high similarity score is assigned to all the template-candidate pairs.
 
-Then we match the template graph with the world graph using \textsc{Percolation} algorithm. 
+Then we match the template graph with the world graph using <span style="font-variant:small-caps;">Percolation</span> algorithm. 
 The template graph stored in \code{tm} and world graph \code{cm} are lists of 5 matrices of dimensions 53 and 2075 respectively. 
-<!-- One can directly input two multi-layer graphs of different cardinalities into graph matching function, and it will automatically handle the multi-layers and pad the smaller graphs with extra nodes to match the size of the larger graph for each layer. -->
-Since we have no information on seeds, we assign \code{NULL} to the \code{seeds} argument, the \textsc{Percolation} algorithm will initialize the mark matrix using prior information in the similarity score matrix.
+Since we have no information on seeds, we assign \code{NULL} to the \code{seeds} argument, the <span style="font-variant:small-caps;">Percolation</span> algorithm will initialize the mark matrix using prior information in the similarity score matrix.
 ```{r transpo_match}
 match <- gm(A = tm, B = cm, similarity = similarity, 
             method = "percolation", r = 4)
@@ -1646,15 +1459,12 @@ The \code{summary} function outputs edge statistics and objective function value
 To further improve matching performance, one can replicate all the analysis in the first example on Enron dataset, such as using the centering scheme and adaptive seeds.
 Finally, one can refer to the match report to compare matching performance and pick the best one.
 
-<!--chapter:end:04_example.Rmd-->
 
 # Conclusions {#sec:conclusion}
 
 In this work, we detail the methods and usage of the R package `iGraphMatch` for finding and assessing an alignment between the vertex sets of two edge-correlated graphs.
 The package implements common steps for the analysis of graph matching: seamless matching of generalized graphs, evaluation of matching performance, and visualization.
 For each of the graph matching methodologies, we provide versatile options for the form of input graphs and the specification of available prior information.
-<!-- Most graph matching methodologies require bulky matrix operations, which is especially the case for graphs of a large scale. 
-Accordingly, the package also implements an \pkg{S}3 class for matrices with the sparse plus low-rank structure for computational gains. -->
 Through the discussion in section \ref{sec:example}, we demonstrate the broad functionality and flexibility of the package by analyzing diverse graph matching problems on real data step by step.
 The package also provides tools for simulating correlated graphs which can be used in the development and enhancement of graph matching methods.
 
@@ -1680,5 +1490,4 @@ We also want to thank all of our users, especially Youngser Park, for their feed
 
 This work was supported in part by grants from DARPA (FA8750-20-2-1001 and FA8750-18-0035) and from MIT Lincoln Labs.
 
-<!--chapter:end:05-conclusion.Rmd-->
 
