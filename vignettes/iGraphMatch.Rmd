@@ -492,7 +492,7 @@ It's theoretically verified that in the correlated \ErdosRenyi graph model, the 
 Many real-world graphs, especially large graphs, are often very sparse with $o(n^2)$ and often $\theta(n)$ edges.
 This can increase the difficulty of the graph matching problem due to the fact that there are fewer potential edges to match, but sparse graphs also come with computational advantages.
 We rely on `igraph` and `Matrix` for efficient storage of these structures as well as the efficient implementation of various matrix operations.
-We also use the LAPMOD algorithm for sparse LAP problems (@Volgenant1996-o).
+We also use the LAPMOD algorithm for sparse LAP problems (@Volgenant1996-o) (see below).
 
 Similarly, a low-rank structure appears in some of the procedures including starting at the rank-1 barycenter matrix and the different centering schemes.
 Since low-rank matrices are generally not sparse and visa-versa we implemented the `splr` S4 class, standing for sparse plus low-rank matrices.
@@ -500,6 +500,18 @@ This class inherits from the `Matrix` class and includes slots for an $n\times n
 This class implements efficient methods for matrix multiplication and other operations that exploit the sparse and low-rank structure of the matrices.
 Specifically, these methods often require only $O(\|x\|_0) + O(nd)$ storage as opposed to $O(n^2)$ required for densely stored matrices, and enjoy analogous computational advantages.
 While users can also use these matrices explicitly, most use of them is automatic within functions such as `init_start` and `center_graph` and the matrices can largely be used interchangeably with other matrices.
+
+
+### LAP methods {#sssec:lap_methods}
+
+
+Multiple graph matching methods include solving an LAP and so we have included multiple methods for solving LAPs into the package.
+Specifically we implement the Jonker-Volgenant algorithm (@lap_solver) for dense cost matrices and the LAPMOD algorithm (@Volgenant1996-o) for sparse cost matrices.
+Both algorithms are implemented in C to provide improved performance.
+The LAPMOD approach is typically advantageous when the number of non-zero entries is less than 50%.
+We also depend on the `clue` package for the `solve_LSAP` function which implements the Hungarian algorithm (@Papadimitriou1998-lz) for solving an LAP.
+Each of these methods can be used independently of a specific graph matching method using the `do_lap` function.
+
 
 ### Multi-layered graph matching
 

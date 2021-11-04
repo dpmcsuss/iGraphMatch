@@ -682,7 +682,7 @@ It’s theoretically verified that in the correlated graph model, the centered p
 <p>Many real-world graphs, especially large graphs, are often very sparse with <span class="math inline">\(o(n^2)\)</span> and often <span class="math inline">\(\theta(n)\)</span> edges.
 This can increase the difficulty of the graph matching problem due to the fact that there are fewer potential edges to match, but sparse graphs also come with computational advantages.
 We rely on <code>igraph</code> and <code>Matrix</code> for efficient storage of these structures as well as the efficient implementation of various matrix operations.
-We also use the LAPMOD algorithm for sparse LAP problems (<span class="citation">Volgenant (1996)</span>).</p>
+We also use the LAPMOD algorithm for sparse LAP problems (<span class="citation">Volgenant (1996)</span>) (see below).</p>
 <p>Similarly, a low-rank structure appears in some of the procedures including starting at the rank-1 barycenter matrix and the different centering schemes.
 Since low-rank matrices are generally not sparse and visa-versa we implemented the <code>splr</code> S4 class, standing for sparse plus low-rank matrices.
 This class inherits from the <code>Matrix</code> class and includes slots for an <span class="math inline">\(n\times n\)</span> sparse matrix <code>x</code> and <span class="math inline">\(n\times d\)</span> dense matrices <code>a</code> and <code>b</code>, to represent matrices of the form <code>x + tcrossprod(a, b)</code>.
@@ -690,8 +690,17 @@ This class implements efficient methods for matrix multiplication and other oper
 Specifically, these methods often require only <span class="math inline">\(O(\|x\|_0) + O(nd)\)</span> storage as opposed to <span class="math inline">\(O(n^2)\)</span> required for densely stored matrices, and enjoy analogous computational advantages.
 While users can also use these matrices explicitly, most use of them is automatic within functions such as <code>init_start</code> and <code>center_graph</code> and the matrices can largely be used interchangeably with other matrices.</p>
 </div>
+<div id="sssec:lap_methods" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> LAP methods</h3>
+<p>Multiple graph matching methods include solving an LAP and so we have included multiple methods for solving LAPs into the package.
+Specifically we implement the Jonker-Volgenant algorithm (<span class="citation">Jonker and Volgenant (1988)</span>) for dense cost matrices and the LAPMOD algorithm (<span class="citation">Volgenant (1996)</span>) for sparse cost matrices.
+Both algorithms are implemented in C to provide improved performance.
+The LAPMOD approach is typically advantageous when the number of non-zero entries is less than 50%.
+We also depend on the <code>clue</code> package for the <code>solve_LSAP</code> function which implements the Hungarian algorithm (<span class="citation">Papadimitriou and Steiglitz (1998)</span>) for solving an LAP.
+Each of these methods can be used independently of a specific graph matching method using the <code>do_lap</code> function.</p>
+</div>
 <div id="multi-layered-graph-matching" class="section level3">
-<h3><span class="header-section-number">3.2.4</span> Multi-layered graph matching</h3>
+<h3><span class="header-section-number">3.2.5</span> Multi-layered graph matching</h3>
 <p>Frequently, networks edges may have categorical attributes and from these categories, we can construct multilayer graphs (<span class="citation">Kivelä et al. (2014)</span>), where each layer in the networks contains edges from specific categories.
 For matching two multilayer graphs, the standard graph matching problem can be extended as <span class="math inline">\(\sum_{l=1}^{m}\|A^{(l)} - PB^{(l)}P^T\|_F^2\)</span> where <span class="math inline">\(m\)</span> denotes the number of categories and <span class="math inline">\(A^{(l)}, B^{(l)}\)</span> are the adjacency matrices for the <span class="math inline">\(l\)</span>th layers in each graph.
 Note, we assume that the layers are aligned, so that layer <span class="math inline">\(l\)</span> corresponds to the same edge-types in both multi-layer networks.</p>
@@ -788,9 +797,9 @@ For example, to sample a pair of graphs with 5 nodes from <span class="math inli
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>cgnp_pair &lt;-<span class="st"> </span><span class="kw">sample_correlated_gnp_pair</span>(<span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">corr =</span> <span class="fl">0.7</span>, <span class="dt">p =</span> <span class="fl">0.5</span>)</span>
 <span id="cb2-4"><a href="#cb2-4"></a>(cgnp_g1 &lt;-<span class="st"> </span>cgnp_pair<span class="op">$</span>graph1)</span></code></pre></div>
-<pre><code>## IGRAPH aee2b79 U--- 5 4 -- Erdos renyi (gnp) graph
+<pre><code>## IGRAPH 91dbe19 U--- 5 4 -- Erdos renyi (gnp) graph
 ## + attr: name (g/c), type (g/c), loops (g/l), p (g/n)
-## + edges from aee2b79:
+## + edges from 91dbe19:
 ## [1] 1--2 2--3 2--5 3--5</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>cgnp_g1[]</span></code></pre></div>
 <pre><code>## 5 x 5 sparse Matrix of class &quot;dgCMatrix&quot;
@@ -1095,11 +1104,11 @@ In addition to the returned list of matching correspondence, one can obtain the 
 <p>Notably, multiplicity is applicable to the “graphMatch” object directly without converting to the permutation matrix.
 This enables obtaining the permuted second graph, that is <span class="math inline">\(PBP^T\)</span> simply by</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>match_convex <span class="op">%*%</span><span class="st"> </span>cgnp_g2</span></code></pre></div>
-<pre><code>## IGRAPH 5984ece UN-- 5 5 -- Erdos renyi (gnp) graph
+<pre><code>## IGRAPH e75c24c UN-- 5 5 -- Erdos renyi (gnp) graph
 ## + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1
 ## | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),
 ## | loops (g/l), p (g/n), name (v/n)
-## + edges from 5984ece (vertex names):
+## + edges from e75c24c (vertex names):
 ## [1] 5--3 2--5 2--3 1--5 1--2</code></pre>
 </div>
 <div id="evaluation-of-goodness-of-matching" class="section level2">
@@ -1834,6 +1843,9 @@ We also want to thank all of our users, especially Youngser Park, for their feed
 </div>
 <div id="ref-SocialNetwork">
 <p>Narayanan, A., and V. Shmatikov. 2009. “De-Anonymizing Social Networks.” In <em>2009 30th Ieee Symposium on Security and Privacy</em>, 173–87. <a href="https://doi.org/10.1109/SP.2009.22">https://doi.org/10.1109/SP.2009.22</a>.</p>
+</div>
+<div id="ref-Papadimitriou1998-lz">
+<p>Papadimitriou, Christos H, and Kenneth Steiglitz. 1998. <em>Combinatorial Optimization: Algorithms and Complexity</em>. Courier Corporation. <a href="https://play.google.com/store/books/details?id=cDY-joeCGoIC">https://play.google.com/store/books/details?id=cDY-joeCGoIC</a>.</p>
 </div>
 <div id="ref-transportation">
 <p>Riccardo, Gallotti, and Barthelemy Marc. 2015. “The Multilayer Temporal Network of Public Transport in Great Britain.” <em>Scientific Data</em> 2 (January). <a href="https://doi.org/10.1038/sdata.2014.56">https://doi.org/10.1038/sdata.2014.56</a>.</p>
