@@ -797,9 +797,9 @@ For example, to sample a pair of graphs with 5 nodes from <span class="math inli
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>cgnp_pair &lt;-<span class="st"> </span><span class="kw">sample_correlated_gnp_pair</span>(<span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">corr =</span> <span class="fl">0.7</span>, <span class="dt">p =</span> <span class="fl">0.5</span>)</span>
 <span id="cb2-4"><a href="#cb2-4"></a>(cgnp_g1 &lt;-<span class="st"> </span>cgnp_pair<span class="op">$</span>graph1)</span></code></pre></div>
-<pre><code>## IGRAPH 91dbe19 U--- 5 4 -- Erdos renyi (gnp) graph
+<pre><code>## IGRAPH 95016e3 U--- 5 4 -- Erdos renyi (gnp) graph
 ## + attr: name (g/c), type (g/c), loops (g/l), p (g/n)
-## + edges from 91dbe19:
+## + edges from 95016e3:
 ## [1] 1--2 2--3 2--5 3--5</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>cgnp_g1[]</span></code></pre></div>
 <pre><code>## 5 x 5 sparse Matrix of class &quot;dgCMatrix&quot;
@@ -813,9 +813,10 @@ For example, to sample a pair of graphs with 5 nodes from <span class="math inli
 <p>Since we didn’t obscure the vertex correspondence by assigning a value to the <code>permutation</code> argument, the underlying true alignment is the identity.</p>
 <p>For the more general heterogeneous correlated graph model, one needs to specify an edge probability matrix and a Pearson correlation matrix.
 To sample a pair of graphs from the heterogeneous correlated model again with 5 nodes in each graph, and with random edge probabilities and Pearson correlations:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>p &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">5</span><span class="op">^</span><span class="dv">2</span>),<span class="dv">5</span>)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>c &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">5</span><span class="op">^</span><span class="dv">2</span>),<span class="dv">5</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a>ieg_pair &lt;-<span class="st"> </span><span class="kw">sample_correlated_ieg_pair</span>(<span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">p_mat =</span> p, <span class="dt">c_mat =</span> c)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>p &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">5</span><span class="op">^</span><span class="dv">2</span>, <span class="fl">.5</span>, <span class="fl">.8</span>),<span class="dv">5</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>c &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">runif</span>(<span class="dv">5</span><span class="op">^</span><span class="dv">2</span>, <span class="fl">.5</span>, <span class="fl">.8</span>),<span class="dv">5</span>)</span>
+<span id="cb7-4"><a href="#cb7-4"></a>ieg_pair &lt;-<span class="st"> </span><span class="kw">sample_correlated_ieg_pair</span>(<span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">p_mat =</span> p, <span class="dt">c_mat =</span> c)</span></code></pre></div>
 <p>Since the default is undirected graphs without self-loops, the entries of <code>p</code> and <code>c</code> along and below the diagonal are effectively ignored.</p>
 <p>The stochastic block model requires block-to-block edge probabilities stored in the <code>pref.matrix</code> argument and the <code>block.sizes</code> argument indicates the size of each block, along with the Pearson correlation parameter <code>corr</code>.
 Next, we sample a pair of graphs from the stochastic block model with two blocks of size 2 nodes and 3 nodes respectively, within-group edge probabilities of .7 and .5, across-group edge probability of .001, and Pearson correlation equal to .5.</p>
@@ -1104,11 +1105,11 @@ In addition to the returned list of matching correspondence, one can obtain the 
 <p>Notably, multiplicity is applicable to the “graphMatch” object directly without converting to the permutation matrix.
 This enables obtaining the permuted second graph, that is <span class="math inline">\(PBP^T\)</span> simply by</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>match_convex <span class="op">%*%</span><span class="st"> </span>cgnp_g2</span></code></pre></div>
-<pre><code>## IGRAPH e75c24c UN-- 5 5 -- Erdos renyi (gnp) graph
+<pre><code>## IGRAPH 55ef375 UN-- 5 5 -- Erdos renyi (gnp) graph
 ## + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1
 ## | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),
 ## | loops (g/l), p (g/n), name (v/n)
-## + edges from e75c24c (vertex names):
+## + edges from 55ef375 (vertex names):
 ## [1] 5--3 2--5 2--3 1--5 1--2</code></pre>
 </div>
 <div id="evaluation-of-goodness-of-matching" class="section level2">
@@ -1135,11 +1136,11 @@ Applying the <code>summary</code> function on the matching result <code>match_co
 ##     method = &quot;IsoRank&quot;, lap_method = &quot;LAP&quot;)
 ## 
 ## # Matches: 3, # Seeds:  2, # Vertices:  5, 5
-##          layer 1   2   3
-##   common_edges 2 3.0 2.0
-##  missing_edges 0 3.0 2.0
-##    extra_edges 0 3.0 3.0
-##          fnorm 0 3.5 3.2</code></pre>
+##          layer   1   2   3
+##   common_edges 2.0 6.0 4.0
+##  missing_edges 0.0 1.0 0.0
+##    extra_edges 1.0 0.0 1.0
+##          fnorm 1.4 1.4 1.4</code></pre>
 <p>In realistic scenarios, the true correspondence is not available.
 As introduced in section , the user can use vertex level statistics to evaluate match performance.
 The <code>best_matches</code> function evaluates a vertex-level metric and returns a sorted <code>data.frame</code> of the vertex-matches with the metrics.
@@ -1346,7 +1347,7 @@ Below shows the 6 matches that minimize the row permutation statistic.</p>
 ## V64      48     48          -2.3
 ## V51      36     36          -1.9</code></pre>
 <p>Since seeded graph matching enhances the graph matching performance substantially (<span class="citation">Lyzinski, Fishkind, and Priebe (2014)</span>), it may be useful to use some of these best matches as seeds to improve matching results.
-Here, we use adaptive seeds, taking the <span class="math inline">\(k\)</span> best matches and using them as seeds in a second run of the matching algorithm.
+Here, we use adaptive seeds, taking the <span class="math inline">\(ns\)</span> best matches and using them as seeds in a second run of the matching algorithm.
 The table below displays edge statistics and objective function values for different number of adaptive seeds used.
 The second column in the table shows the matching precision of the adaptive seeds based on ground truth.
 Incorporating adaptive seeds and repeating the <span class="smallcaps">FW</span> matching procedure on centered graphs further improve the matching results, compared with the case without any adaptive seeds when <span class="math inline">\(ns=0\)</span>.
@@ -1420,7 +1421,7 @@ The first 40 pairs of matched nodes ranked by  function are all correctly matche
 Note that if they are treated as hard seeds, incorrect matches will remain in the matched set and might cause a cascade of errors.
 An alternative way is to treat the top-ranked matches as soft seeds embedded in the start matrix to handle the uncertainty.
 In this way, adaptive seeds not only provide prior information but also evolve over iterations.
-The table below shows that the matching performance for soft seeding approach always outperforms hard seeding approach regardless of the number of adaptive seeds being used.</p>
+The table below shows that the soft seeding approach always outperforms or performs as good as the hard seeding approach regardless of the number of adaptive seeds being used.</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1"></a>match_w_soft_seeds &lt;-<span class="st"> </span><span class="cf">function</span>(ns){</span>
 <span id="cb59-2"><a href="#cb59-2"></a>  seeds_bm &lt;-<span class="st"> </span><span class="kw">head</span>(bm, ns)</span>
 <span id="cb59-3"><a href="#cb59-3"></a>  precision &lt;-<span class="st"> </span><span class="kw">mean</span>(seeds_bm<span class="op">$</span>A_best <span class="op">==</span><span class="st"> </span>seeds_bm<span class="op">$</span>B_best)</span>

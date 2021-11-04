@@ -660,8 +660,9 @@ For the more general heterogeneous correlated \ErdosRenyi graph model, one needs
 To sample a pair of graphs from the heterogeneous correlated \ErdosRenyi model again with 5 nodes in each graph, and with random edge probabilities and Pearson correlations:
 
 ```{r sample_ieg}
-p <- matrix(runif(5^2),5)
-c <- matrix(runif(5^2),5)
+set.seed(123)
+p <- matrix(runif(5^2, .5, .8),5)
+c <- matrix(runif(5^2, .5, .8),5)
 ieg_pair <- sample_correlated_ieg_pair(n = 5, p_mat = p, c_mat = c)
 ```
 Since the default is undirected graphs without self-loops, the entries of `p` and `c` along and below the diagonal are effectively ignored.
@@ -1126,7 +1127,7 @@ head(bm)
 ```
 
 Since seeded graph matching enhances the graph matching performance substantially (@SGM), it may be useful to use some of these best matches as seeds to improve matching results.
-Here, we use adaptive seeds, taking the $k$ best matches and using them as seeds in a second run of the matching algorithm.
+Here, we use adaptive seeds, taking the $ns$ best matches and using them as seeds in a second run of the matching algorithm.
 The table below displays edge statistics and objective function values for different number of adaptive seeds used.
 The second column in the table shows the matching precision of the adaptive seeds based on ground truth.
 Incorporating adaptive seeds and repeating the <span style="font-variant:small-caps;">FW</span> matching procedure on centered graphs further improve the matching results, compared with the case without any adaptive seeds when $ns=0$.
@@ -1158,7 +1159,7 @@ As the number of adaptive seeds increases, the precision of adaptive seeds decre
 Note that if they are treated as hard seeds, incorrect matches will remain in the matched set and might cause a cascade of errors.
 An alternative way is to treat the top-ranked matches as soft seeds embedded in the start matrix to handle the uncertainty.
 In this way, adaptive seeds not only provide prior information but also evolve over iterations.
-The table below shows that the matching performance for soft seeding approach always outperforms hard seeding approach regardless of the number of adaptive seeds being used.
+The table below shows that the soft seeding approach always outperforms or performs as good as the hard seeding approach regardless of the number of adaptive seeds being used.
 
 
 ```{r enron_match_w_soft_seeds, warning=FALSE, message=FALSE, results='hide'}
