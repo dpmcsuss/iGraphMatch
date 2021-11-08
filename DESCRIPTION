@@ -25,7 +25,8 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2,
-    purrr
+    purrr,
+    bookdown
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
