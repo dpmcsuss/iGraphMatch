@@ -1,5 +1,5 @@
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/dpmcsuss/iGraphMatch/branch/dev/graph/badge.svg)](https://codecov.io/gh/dpmcsuss/iGraphMatch?branch=dev)
+[![Codecov test coverage](https://app.codecov.io/gh/dpmcsuss/iGraphMatch/branch/dev/graph/badge.svg)](https://app.codecov.io/gh/dpmcsuss/iGraphMatch?branch=dev)
 [![CRAN status](https://www.r-pkg.org/badges/version/iGraphMatch)](https://CRAN.R-project.org/package=iGraphMatch)
 [![R-CMD-check](https://github.com/dpmcsuss/iGraphMatch/workflows/R-CMD-check/badge.svg)](https://github.com/dpmcsuss/iGraphMatch/actions)
 <!-- badges: end -->
