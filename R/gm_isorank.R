@@ -29,7 +29,7 @@
 #'
 #' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 #' multiple protein interaction networks with application to functional
-#' orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
+#' orthology detection}. Proceedings of the National Academy of Science. USA, pages 12763-12768.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)

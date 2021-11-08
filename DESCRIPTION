@@ -1,6 +1,6 @@
 Package: iGraphMatch
 Type: Package
-Title: Tools Graph Matching
+Title: Tools for Graph Matching
 Version: 2.0.0
 Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussman@bu.edu"),
              person("Zihuan", "Qiao", role = c("aut"), email = "zhqiao@bu.edu"),
@@ -19,6 +19,7 @@ Imports:
     methods,
     Rcpp
 Suggests:
+    spelling,
     dplyr (>= 0.5.0),
     testthat (>= 2.0.0),
     knitr,

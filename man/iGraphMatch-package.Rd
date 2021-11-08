@@ -4,7 +4,7 @@
 \name{iGraphMatch-package}
 \alias{iGraphMatch}
 \alias{iGraphMatch-package}
-\title{iGraphMatch: Tools Graph Matching}
+\title{iGraphMatch: Tools for Graph Matching}
 \description{
 Versatile tools and data for graph matching analysis with various forms of prior information
     that supports working with igraph objects, matrix objects, or lists of either.

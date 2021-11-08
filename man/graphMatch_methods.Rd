@@ -52,7 +52,7 @@
 \value{
 \code{dim} returns a vector of length two indicating the number of
   vertices in each original graph. \code{length} returns the number of found
-  vertex-pair matches. \code{m[i,j]} will index the 2xlength data.frame of
+  vertex-pair matches. \code{m[i,j]} will index the 2 x length data.frame of
   vertex-pair matches. This is true for any i,j unless both are missing. In
   that case, \code{m[]} returns a sparse matrix of dimension dim(m) where
   \code{m[][i,j]} is 0 unless m matches node i with node j. (Note this is not
@@ -64,7 +64,7 @@ These methods provide functionality to view, inspect, and
   convert \link{graphMatch} objects.
 }
 \details{
-Methods for the graphmatch
+Methods for the graphMatch class
 }
 \examples{
 # sample a pair of correlated random graphs from G(n,p)
