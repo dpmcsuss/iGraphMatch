@@ -84,14 +84,14 @@ Match two given graphs, returns a list of graph matching
   to \eqn{G_1}, doubly stochastic matrix and permutation matrix.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+cgnp_pair <- sample_correlated_gnp_pair(n = 5, corr =  0.9, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
-gm(g1, g2, method = "convex", max_iter = 10)
-seeds <- 1:10 <= 3
+gm(g1, g2, method = "convex", max_iter = 2)
+seeds <- 1:5 <= 2
 \donttest{
-gm(g1, g2, seeds, method = "convex", max_iter = 10)
+gm(g1, g2, seeds, method = "convex", max_iter = 2)
 }
 
 

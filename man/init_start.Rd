@@ -66,6 +66,7 @@ init_start(start = "bari", nns = 5, ns = 1, soft_seeds = ss)
 init_start(start = "rds", nns = 5, soft_seeds = ss)
 init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 
+\donttest{
 # initialize start matrix for convex graph matching
 cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
@@ -73,7 +74,6 @@ g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 2
 init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
 
-\donttest{
 # FW graph matching with incorrect seeds to start at convex start
 init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
 }

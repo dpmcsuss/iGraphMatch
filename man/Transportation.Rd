@@ -51,7 +51,7 @@ doi: 10.1109/BigData.2018.8622566.
 }
 \seealso{
 The original Britain Transportation Network
-\href{https://math.bu.edu/people/sussman/data/Transportation.rda}{data}.
+\href{http://math.bu.edu/people/sussman/data/Transportation.rda}{data}.
 The template graph and world graph in the `Transportation` data are
 induced subgraphs of the original graphs , keeping only the candidate nodes.
 }
