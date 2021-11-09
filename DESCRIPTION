@@ -8,7 +8,7 @@ Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussma
              person("Lujia", "Wang", role = "ctb"),
              person("Vince", "Lyzinski", role = "ctb"))
 Description: Versatile tools and data for graph matching analysis with various forms of prior information
-    that supports working with igraph objects, matrix objects, or lists of either. 
+    that supports working with 'igraph' objects, matrix objects, or lists of either. 
 Depends:
     R (>= 3.3.1)
 Imports:
