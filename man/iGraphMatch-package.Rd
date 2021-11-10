@@ -8,6 +8,14 @@
 \description{
 Versatile tools and data for graph matching analysis with various forms of prior information that supports working with 'igraph' objects, matrix objects, or lists of either.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/dpmcsuss/iGraphMatch/}
+  \item \url{https://rdrr.io/github/dpmcsuss/iGraphMatch/}
+}
+
+}
 \author{
 \strong{Maintainer}: Daniel Sussman \email{sussman@bu.edu}
 
