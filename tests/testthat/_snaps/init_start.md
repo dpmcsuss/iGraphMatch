@@ -7,21 +7,9 @@
 
 # doubly stochastic matrix start w/o soft seeds
 
-    Sparse part
-    2 x 2 sparse Matrix of class "dtCMatrix"
-                            
-    [1,] 0.2875775 .        
-    [2,] .         0.2875775
-    plus left factor
-    2 x 1 sparse Matrix of class "dgCMatrix"
-                  
-    [1,] 0.7124225
-    [2,] 0.7124225
-    times right factor transpose
-    2 x 1 sparse Matrix of class "dgCMatrix"
-            
-    [1,] 0.5
-    [2,] 0.5
+              [,1]      [,2]
+    [1,] 0.6437888 0.3562112
+    [2,] 0.3562112 0.6437888
 
 # bari start w. soft seeds
 

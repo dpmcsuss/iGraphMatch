@@ -35,7 +35,7 @@ set.seed(123)
 test_that("doubly stochastic matrix start w/o soft seeds",
   {
     expect_snapshot_output(
-      init_start(start = "rds_perm_bari", nns = 2)
+      as.matrix(init_start(start = "rds_perm_bari", nns = 2))
     )
   }
 )
