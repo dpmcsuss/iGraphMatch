@@ -114,31 +114,23 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   while(toggle && iter < max_iter){
     iter <- iter + 1
     # non-seed to non-seed info
-    tAnn_P_Bnn <- zero_mat
-    for( ch in 1:nc ){
-      tAnn_P_Bnn <- tAnn_P_Bnn +
-        Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
-    }
+    tAnn_P_Bnn <- ml_sum(t(A) %*% P %*% B)
 
-    Grad <- s_to_ns + tAnn_P_Bnn + similarity
-    for(ch in 1:nc){
-      Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
-    }
+
+    Grad <- s_to_ns + tAnn_P_Bnn + similarity +
+      ml_sum(A %*% P %*% t(B))
 
     ind <- do_lap(Grad, lap_method)
 
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    ns_Pdir_ns <- zero_mat
-    for(ch in 1:nc){
-      ns_Pdir_ns <- ns_Pdir_ns +
-        Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+    tAnn_Pdir_Bnn <- ml_sum(t(A)[, order(ind)] %*% B)
 
-    }
+    
     c <- innerproduct(tAnn_P_Bnn, P)
-    d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
-    e <- sum(ns_Pdir_ns[ind2])
+    d <- innerproduct(tAnn_Pdir_Bnn, P) + sum(tAnn_P_Bnn[ind2])
+    e <- sum(tAnn_Pdir_Bnn[ind2])
     u <- innerproduct(P, s_to_ns + similarity)
     v <- sum((s_to_ns + similarity)[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {
