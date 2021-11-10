@@ -50,8 +50,8 @@ International Conference on Big Data (Big Data), pp. 3980-3985,
 doi: 10.1109/BigData.2018.8622566.
 }
 \seealso{
-The original Britain Transportation Network
-\href{https://math.bu.edu/people/sussman/data/Transportation.rda}{data}.
+The original Britain Transportation Network data is found here
+math.bu.edu/people/sussman/data/Transportation.rda.
 The template graph and world graph in the `Transportation` data are
 induced subgraphs of the original graphs , keeping only the candidate nodes.
 }

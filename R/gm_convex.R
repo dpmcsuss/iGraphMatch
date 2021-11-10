@@ -6,7 +6,6 @@
 #'
 #' @examples
 #' \donttest{
-#' # These examples are time consuming and so are not run
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2

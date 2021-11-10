@@ -83,8 +83,8 @@
 #'
 #' @usage data(Transportation)
 #'
-#' @seealso The original Britain Transportation Network
-#' \href{https://math.bu.edu/people/sussman/data/Transportation.rda}{data}.
+#' @seealso The original Britain Transportation Network data is found here
+#' math.bu.edu/people/sussman/data/Transportation.rda.
 #' The template graph and world graph in the `Transportation` data are
 #' induced subgraphs of the original graphs , keeping only the candidate nodes.
 #'

@@ -63,8 +63,6 @@
 #' m_rds <- gm(g1, g2, seeds, method = "indefinite", start = "rds", max_iter = 20)
 #' summary(m_rds, g1, g2, true_label = 1:10)
 #'
-#' m_path <- gm(g1, g2, method = "PATH", lap_method = "lapmod")
-#'
 #'
 #' # match two multi-layer graphs
 #' set.seed(123)

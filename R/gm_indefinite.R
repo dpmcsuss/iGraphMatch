@@ -57,13 +57,13 @@
 #' # match G_1 & G_2 with some incorrect seeds
 #' hard_seeds <- matrix(c(4,6,5,4),2)
 #' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
-#' GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
+#' GM_badseed <- gm(g1, g2, seeds, method = "indefinite")
 #'
-#' GM_convex[] # get the corresponding permutation matrix
-#' GM_convex %*% g2 # permute the second graph according to match result: PBP^T
-#' GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
-#' GM_convex$iter # number of iterations
-#' GM_convex$max_iter # preset maximum number of iterations: 20
+#' GM_badseed[] # get the corresponding permutation matrix
+#' GM_badseed %*% g2 # permute the second graph according to match result: PBP^T
+#' GM_badseed$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
+#' GM_badseed$iter # number of iterations
+#' GM_badseed$max_iter # preset maximum number of iterations: 20
 #'
 #' # match two multi-layer graphs
 #' gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
