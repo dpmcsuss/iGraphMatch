@@ -1,17 +1,18 @@
-#' @title Split an 'igraph' object into aligned graphs by attribute
+#' @title Split an igraph object into aligned graphs by attribute
 #'
-#' @description Given an 'igraph' object and an edge attribute, this function
+#' @description Given an igraph object and an edge attribute, this function
 #' finds all unique values of the edge attribute in the graph
-#' and returns a list of 'igraph' objects on the same vertex set
+#' and returns a list of igraph objects on the same vertex set
 #' where each element of the list has a graph containing only
 #' those edges with specified attributed.
 #'
-#' @param g An 'igraph' object
+#' @param g An igraph object
 #' @param e_attr the name of an edge attribute in g
 #' @param strip_vertex_attr Whether to remove all vertex
 #'  attribute from the new graphs
 #'
-#' @returns A named list of 'igraph' objects
+#' @returns A named list of igraph objects with names corresponding to the values of
+#'  the edge attributes.
 #'
 #' @examples
 #' g <- igraph::sample_gnm(20, 60)

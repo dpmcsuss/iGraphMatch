@@ -1,34 +1,30 @@
 #' @rdname gm_fw
 #'
+#' @references Y. Aflalo and A. Bronstein and R. Kimmel (2014), \emph{On convex
+#' relaxation of graph isomorphism}. Proceedings of the National Academy of Sciences,
+#' pages 2942-2947.
+#'
 #' @examples
-#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' \donttest{
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 with no seeds
-#' graph_match_FW(g1, g2)
+#' gm(g1, g2, method = "convex", max_iter = 10)
 #' seeds <- 1:10 <= 3
-#' \donttest{
-#' graph_match_convex(g1, g2, seeds)
+#' gm(g1, g2, seeds, method = "convex", max_iter = 10)
 #' }
 #'
-#' @export
 #'
-#'
+#' @keywords internal
 graph_match_convex <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari", max_iter = 100,
   tol = 1e-5, lap_method = NULL) {
-  graph_pair <- check_graph(A, B)
-  A <- matrix_list(graph_pair[[1]])
-  B <- matrix_list(graph_pair[[2]])
 
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
-  nv <- totv1
-
-  seed_check <- check_seeds(seeds, nv)
-  seeds <- seed_check$seeds
-  nonseeds <- seed_check$nonseeds
-
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
   ns <- nrow(seeds)
   nn <- nv - ns
 
@@ -47,7 +43,6 @@ graph_match_convex <- function(A, B, seeds = NULL,
 
 
   zero_mat <- Matrix::Matrix(0, nn, nn)
-  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
   similarity <- similarity %*% Matrix::t(rpmat)
 
   tol0 <- 1
@@ -121,9 +116,10 @@ graph_match_convex <- function(A, B, seeds = NULL,
     toggle <- f_diff > tol && f > tol && P_diff > tol
   }
 
+  if(iter == max_iter){
+    warning("Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.")
+  }
 
-
-  D_ns <- P
 
   corr_ns <- do_lap(P, lap_method)
   # undo rand perm here
@@ -132,17 +128,18 @@ graph_match_convex <- function(A, B, seeds = NULL,
   corr <- 1:nv
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
-  P <- Matrix::Diagonal(nv)[corr, ]
-  # D <- P
-  # D[nonseeds$A, nonseeds$B] <- D_ns %*% rpmat
+  # P <- Matrix::Diagonal(nv)[corr, ]
+
   reorderA <- order(c(nonseeds$A, seeds$A))
   reorderB <- order(c(nonseeds$B, seeds$B))
 
-  D <- pad(D_ns %*% rpmat, ns)[reorderA, reorderB]
+  D <- pad(P %*% rpmat, ns)[reorderA, reorderB]
   if (is(D, "splrMatrix")) {
-    D@x[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+    D@x[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+      # P[seeds$A, seeds$B]
   } else {
-    D[seeds$A, seeds$B] <- P[seeds$A, seeds$B]
+    D[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+     # P[seeds$A, seeds$B]
   }
 
 
@@ -157,14 +154,17 @@ graph_match_convex <- function(A, B, seeds = NULL,
   #   geom_vline(xintercept = aopt)
 
   cl <- match.call()
-  z <- list(
-    call = cl,
+
+  graphMatch(
     corr = data.frame(corr_A = 1:nv, corr_B = corr),
-    seeds = seeds,
-    P = P,
-    D = D,
-    iter = iter
-    # seq = list(alpha_seq = alpha_seq, Pseq = Pseq)
+    nnodes = c(totv1, totv2),
+    call = cl,
+    detail = list(
+      iter = iter,
+      max_iter = max_iter,
+      lap_method = lap_method,
+      seeds = seeds,
+      soft = D
+    )
   )
-  z
 }

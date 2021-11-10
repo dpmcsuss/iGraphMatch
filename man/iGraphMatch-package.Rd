@@ -4,14 +4,17 @@
 \name{iGraphMatch-package}
 \alias{iGraphMatch}
 \alias{iGraphMatch-package}
-\title{iGraphMatch: Tools Graph Matching}
+\title{iGraphMatch: Tools for Graph Matching}
 \description{
-Graph matching methods and analysis. The package
-  works for both 'igraph' objects and matrix objects. You provide the adjacency
-  matrices of two graphs and some other information you might know, choose the
-  graph matching method, and it returns the graph matching results. 'iGraphMatch'
-  also provides a bunch of useful functions you might need related to graph
-  matching.
+Versatile tools and data for graph matching analysis with various forms of prior information that supports working with 'igraph' objects, matrix objects, or lists of either.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/dpmcsuss/iGraphMatch/}
+  \item \url{https://rdrr.io/github/dpmcsuss/iGraphMatch/}
+}
+
 }
 \author{
 \strong{Maintainer}: Daniel Sussman \email{sussman@bu.edu}

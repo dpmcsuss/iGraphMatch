@@ -1,9 +1,9 @@
 #' Lists of Matrices
 #' 
-#' Basically a list that has matrices that are all 
-#' the same size. It doesn't do much checking though.
-#' It can do various things like arethmatic and
-#' indexing, all of which are done element-wise.
+#' Basically a list with matrix components that are all 
+#' the same dimension. Mostly for internal igraphmatch use.
+#' It can do various things like arithmetic and
+#' indexing, all of which are done component-wise.
 #'
 #' @param x As in Matrix
 #' @param y As in Matrix
@@ -223,6 +223,15 @@ ml_sum <- function(x){
   }
 }
 
+
+#' @rdname matrix_list
+setMethod("names<-", signature(x = "matrix_list", value = "ANY"),
+  function(x, value) {
+    x <- as.list(x)
+    names(x) <- value
+    matrix_list(x)
+  }
+)
 
 # setMethod("%*%", signature(x = "Matrix", y = "splrMatrix"), .leftmult)
 

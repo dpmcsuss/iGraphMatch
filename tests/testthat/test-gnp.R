@@ -1,4 +1,4 @@
-context("gnp & gnp with junk vertices")
+
 
 
 #sample correlated G(n,p) random graphs

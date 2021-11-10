@@ -1,4 +1,4 @@
-context("Check graph")
+
 
 # sample pair of graphs w. 10 vertices
 cgnp_pair <- sample_correlated_gnp_pair(n=10, corr=0.8, p=0.5)

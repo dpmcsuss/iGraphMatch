@@ -1,4 +1,4 @@
-context("check_seeds")
+
 
 test_that("vector type input", {
   expect_equal(check_seeds(seeds = c(1,3,5), nv = 5), 

@@ -28,6 +28,7 @@
 \alias{*,ANY,matrix_list-method}
 \alias{/,ANY,matrix_list-method}
 \alias{-,matrix_list,missing-method}
+\alias{names<-,matrix_list-method}
 \title{Lists of Matrices}
 \usage{
 matrix_list(ml)
@@ -79,6 +80,8 @@ matrix_list(ml)
 \S4method{/}{ANY,matrix_list}(e1, e2)
 
 \S4method{-}{matrix_list,missing}(e1, e2)
+
+\S4method{names}{matrix_list}(x) <- value
 }
 \arguments{
 \item{ml}{A list of matrices}
@@ -100,9 +103,9 @@ matrix_list(ml)
 \item{e2}{As in Matrix}
 }
 \description{
-Basically a list that has matrices that are all 
-the same size. It doesn't do much checking though.
-It can do various things like arethmatic and
-indexing, all of which are done element-wise.
+Basically a list with matrix components that are all 
+the same dimension. Mostly for internal igraphmatch use.
+It can do various things like arithmetic and
+indexing, all of which are done component-wise.
 }
 \keyword{internal}

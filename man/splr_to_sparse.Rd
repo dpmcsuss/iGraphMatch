@@ -2,7 +2,7 @@
 % Please edit documentation in R/splr_matrix_class.R
 \name{splr_to_sparse}
 \alias{splr_to_sparse}
-\title{Convert splr 'Matrix' to Sparse}
+\title{Convert splr "Matrix" to Sparse}
 \usage{
 splr_to_sparse(data)
 }
@@ -15,5 +15,6 @@ sparse Matrix equal to x + a %*% t(b)
 See \code{\link[Matrix]{Matrix}}.
 }
 \description{
-Convert splr 'Matrix' to Sparse
+Convert splr "Matrix" to Sparse
 }
+\keyword{internal}

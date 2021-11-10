@@ -7,17 +7,17 @@
 check_seeds(seeds, nv, logical = FALSE)
 }
 \arguments{
-\item{seeds}{A vector of integers or logicals, a matrix or a data frame. Input in the form of a 
-vector of integers denotes the indices of seeds which are identical in both graphs. Input in the 
-form of a vector of logicals indicate the location of seeds with TRUE and the indices of seeds 
-are identical in both graphs. Input in the form of a matrix or a data frame, with the first 
+\item{seeds}{A vector of integers or logicals, a matrix or a data frame. Input in the form of a
+vector of integers denotes the indices of seeds which are identical in both graphs. Input in the
+form of a vector of logicals indicate the location of seeds with TRUE and the indices of seeds
+are identical in both graphs. Input in the form of a matrix or a data frame, with the first
 column being the indices of \eqn{G_1} and the second
 column being the corresponding indices of \eqn{G_2}.}
 
 \item{nv}{An integer. Number of total vertices.}
 
-\item{logical}{An logical. TRUE indicates returns seeds in a vector of logicals where TRUE
-indicates the corresponding vertex is a seed. FALSE indicates returns a data frame.}
+\item{logical}{A logical. TRUE indicates to return seeds in a vector of logicals where TRUE
+indicates the corresponding vertex is a seed. FALSE indicates to return a data frame.}
 }
 \value{
 returns a data frame with the first column being the corresponding indices of

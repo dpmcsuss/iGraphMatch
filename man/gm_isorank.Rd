@@ -10,13 +10,13 @@ graph_match_IsoRank(
   seeds = NULL,
   similarity,
   max_iter = 50,
-  method = "greedy"
+  lap_method = "greedy"
 )
 }
 \arguments{
-\item{A}{A matrix, 'igraph' object, or list of either.}
+\item{A}{A matrix, igraph object, or list of either.}
 
-\item{B}{A matrix, 'igraph' object, or list of either.}
+\item{B}{A matrix, igraph object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
@@ -26,18 +26,24 @@ the second column being the corresponding indices of \eqn{G_2}.}
 
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 
-\item{max_iter}{A number. Maximum number of replacing matches equals to
-max_iter times number of total vertices of \eqn{G_1}.}
+\item{max_iter}{A number. Maximum number of replacing matches.}
 
-\item{method}{A character. Choice of method to extract mapping from score matrix,
-including greedy method and the Hungarian algorithm.}
+\item{lap_method}{Choice of method to extract mapping from score matrix.
+One of "greedy" or "LAP".}
 }
 \value{
-\code{graph_match_IsoRank} returns a list of graph matching
-  results, including the graph matching formula, a data frame containing the
-  matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
-  and \code{corr_B} and seeds. If choose the greedy method to extract mapping,
-  the order of nodes getting matched will also be returned.
+\code{graph_match_IsoRank} returns an object of class "\code{\link{graphMatch}}" which is a list
+  containing the following components:
+
+  \describe{
+    \item{corr_A}{matching correspondence in \eqn{G_1}}
+    \item{corr_B}{matching correspondence in \eqn{G_2}}
+    \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+    \item{soft}{the functional similarity score matrix obtained from the power method
+      with which one can extract more than one matching candidates}
+    \item{match_order}{the order of vertices getting matched}
+    \item{lap_method}{Method for extracting node mapping}
+  }
 }
 \description{
 Spectral Graph Matching Methods: IsoRank Algorithm
@@ -47,13 +53,25 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 using IsoRank algorithm
-startm <- matrix(0, 10, 10)
-diag(startm)[1:4] <- 1
-GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
+startm <- as.matrix(init_start(start = "bari", nns = 10, soft_seeds = 1:4))
+
+GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
+GM_IsoRank
+summary(GM_IsoRank, g1, g2, true_label = 1:10)
+
+GM_IsoRank[] # get the corresponding permutation matrix
+GM_IsoRank \%*\% g2 # permute the second graph according to match result: PBP^T
+GM_IsoRank \%*\% g2[] # output permuted matrix
+
+# Visualize the edge-wise matching performance
+plot(g1, g2, GM_IsoRank)
+plot(g1[], g2[], GM_IsoRank)
+
 
 }
 \references{
 R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 multiple protein interaction networks with application to functional
-orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
+orthology detection}. Proceedings of the National Academy of Science. USA, pages 12763-12768.
 }
+\keyword{internal}

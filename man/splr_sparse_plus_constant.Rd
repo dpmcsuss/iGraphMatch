@@ -7,7 +7,7 @@
 splr_sparse_plus_constant(x, a)
 }
 \arguments{
-\item{x}{splrMatrix object}
+\item{x}{sparse Matrix object}
 
 \item{a}{scalar}
 }

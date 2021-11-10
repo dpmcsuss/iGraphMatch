@@ -12,17 +12,17 @@ splr(x, a = NULL, b = NULL, rank = NULL, dimnames = list(NULL, NULL), ...)
 \S4method{splr}{Matrix,Matrix,Matrix}(x, a = NULL, b = NULL, rank = NULL, dimnames = list(NULL, NULL), ...)
 }
 \arguments{
-\item{x}{as in 'Matrix'}
+\item{x}{as in "Matrix"}
 
-\item{a}{as in 'Matrix'}
+\item{a}{as in "Matrix"}
 
-\item{b}{as in 'Matrix'}
+\item{b}{as in "Matrix"}
 
 \item{rank}{rank of the matrix to be factorized.}
 
 \item{dimnames}{optional - the list of names for the matrix}
 
-\item{...}{as in 'Matrix'}
+\item{...}{as in "Matrix"}
 }
 \value{
 splrMatrix object
@@ -30,7 +30,7 @@ splrMatrix object
 splrMatrix object
 }
 \description{
-An 'S4' class for efficient computation with sparse plus
+An "S4" class for efficient computation with sparse plus
 low-rank matrices. Stores sparse plus low-rank matrices
 (e.g. from matrix factorization or centering graphs)
 of the form \code{x + a \%*\% t(b)} for faster
@@ -48,5 +48,6 @@ computation.
 }}
 
 \seealso{
-Methods are documented in \code{\link{splr}}.
+Methods are documented in \link{splrMatrix_method}.
+ Other relevant methods are \link{splr_sparse_plus_constant} and
 }

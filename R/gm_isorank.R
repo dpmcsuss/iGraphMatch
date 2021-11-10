@@ -1,57 +1,68 @@
 #' @title Spectral Graph Matching Methods: IsoRank Algorithm
 #' @rdname gm_isorank
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
-#' @param max_iter A number. Maximum number of replacing matches equals to
-#'   max_iter times number of total vertices of \eqn{G_1}.
-#' @param method A character. Choice of method to extract mapping from score matrix,
-#'   including greedy method and the Hungarian algorithm.
+#' @param max_iter A number. Maximum number of replacing matches.
+#' @param lap_method Choice of method to extract mapping from score matrix.
+#'   One of "greedy" or "LAP".
 #'
-#' @return \code{graph_match_IsoRank} returns a list of graph matching
-#'   results, including the graph matching formula, a data frame containing the
-#'   matching correspondence between \eqn{G_1} and \eqn{G_2} named \code{corr_A}
-#'   and \code{corr_B} and seeds. If choose the greedy method to extract mapping,
-#'   the order of nodes getting matched will also be returned.
+#' @return \code{graph_match_IsoRank} returns an object of class "\code{\link{graphMatch}}" which is a list
+#'   containing the following components:
+#'
+#'   \describe{
+#'     \item{corr_A}{matching correspondence in \eqn{G_1}}
+#'     \item{corr_B}{matching correspondence in \eqn{G_2}}
+#'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
+#'     \item{soft}{the functional similarity score matrix obtained from the power method
+#'       with which one can extract more than one matching candidates}
+#'     \item{match_order}{the order of vertices getting matched}
+#'     \item{lap_method}{Method for extracting node mapping}
+#'   }
+#'
 #'
 #' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 #' multiple protein interaction networks with application to functional
-#' orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
+#' orthology detection}. Proceedings of the National Academy of Science. USA, pages 12763-12768.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using IsoRank algorithm
-#' startm <- matrix(0, 10, 10)
-#' diag(startm)[1:4] <- 1
-#' GM_IsoRank <- graph_match_IsoRank(g1, g2, similarity = startm, method = "greedy")
+#' startm <- as.matrix(init_start(start = "bari", nns = 10, soft_seeds = 1:4))
 #'
-#' @export
+#' GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
+#' GM_IsoRank
+#' summary(GM_IsoRank, g1, g2, true_label = 1:10)
 #'
+#' GM_IsoRank[] # get the corresponding permutation matrix
+#' GM_IsoRank %*% g2 # permute the second graph according to match result: PBP^T
+#' GM_IsoRank %*% g2[] # output permuted matrix
+#'
+#' # Visualize the edge-wise matching performance
+#' plot(g1, g2, GM_IsoRank)
+#' plot(g1[], g2[], GM_IsoRank)
+#'
+#'
+#' @keywords internal
 graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
-                                max_iter = 50, method = "greedy"){
+                                max_iter = 50, lap_method = "greedy"){
 
-  graph_pair <- check_graph(A, B)
-  A <- graph_pair[[1]]
-  B <- graph_pair[[2]]
-  totv1 <- graph_pair$totv1
-  totv2 <- graph_pair$totv2
+  totv1 <- nrow(A[[1]])
+  totv2 <- nrow(B[[1]])
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
+  ns <- nrow(seeds)
+  nn <- nv - ns
   nc <- length(A)
 
-  seeds <- check_seeds(seeds, nv = max(totv1, totv2))
-  nonseeds <- seeds$nonseeds
-  seeds <- seeds$seeds
-  if(!is.null(similarity) && dim(similarity)[1] != dim(similarity)[2]){
-    diff <- dim(similarity)[1] - dim(similarity)[2]
-    similarity <- pad(similarity, max(-diff, 0), max(diff, 0))
-  }
   R <- E <- similarity / sum(abs(similarity))
   tol <- 1e-2
   R_tot <- Matrix(0, nrow(R), ncol(R))
@@ -83,7 +94,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
 
   # find GNA
   R <- R_tot[nonseeds$A, nonseeds$B]
-  if(method == "greedy"){
+  if(lap_method == "greedy"){
     corr <- NULL
     while (max(R)>0) {
       max_ind <- Matrix::which(R == max(R), arr.ind = TRUE)
@@ -99,13 +110,23 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(
-      call = cl,
+
+    D <- Matrix(0, nrow(R_tot), ncol(R_tot))
+    D[seeds$A, seeds$B] <- diag(nrow(seeds))
+    D[nonseeds$A, nonseeds$B] <- R_tot[nonseeds$A, nonseeds$B]
+
+    m <- graphMatch(
       corr = corr,
-      seeds = seeds,
-      order = order)
-    z
-  } else if(method == "LAP"){
+      nnodes = c(totv1, totv2),
+      call = cl,
+      detail = list(
+        lap_method = lap_method,
+        match_order = order,
+        seeds = seeds,
+        soft = D
+      )
+    )
+  } else if(lap_method == "LAP") {
     # make a random permutation
     nn <- nrow(A[[1]]) - nrow(seeds)
     rp <- sample(nn)
@@ -121,10 +142,20 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
     names(corr) <- c("corr_A","corr_B")
     rownames(corr) <- paste0(as.character(1:nrow(corr)))
     cl <- match.call()
-    z <- list(
-      call = cl,
+    D <- Matrix(0, nrow(R_tot), ncol(R_tot))
+    D[seeds$A, seeds$B] <- diag(nrow(seeds))
+    D[nonseeds$A, nonseeds$B] <- R_tot[nonseeds$A, nonseeds$B]
+
+    m <- graphMatch(
       corr = corr,
-      seeds = seeds)
-    z
+      nnodes = c(totv1, totv2),
+      call = cl,
+      detail = list(
+        lap_method = lap_method,
+        seeds = seeds,
+        soft = D
+      )
+    )
   }
+  return(m)
 }

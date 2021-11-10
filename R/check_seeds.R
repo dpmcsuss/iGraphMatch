@@ -3,16 +3,16 @@
 #' @description Convert the input seeds data into data frame type with the first column being the
 #' indices of \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2}
 #'
-#' @param seeds A vector of integers or logicals, a matrix or a data frame. Input in the form of a 
-#' vector of integers denotes the indices of seeds which are identical in both graphs. Input in the 
-#' form of a vector of logicals indicate the location of seeds with TRUE and the indices of seeds 
-#' are identical in both graphs. Input in the form of a matrix or a data frame, with the first 
+#' @param seeds A vector of integers or logicals, a matrix or a data frame. Input in the form of a
+#' vector of integers denotes the indices of seeds which are identical in both graphs. Input in the
+#' form of a vector of logicals indicate the location of seeds with TRUE and the indices of seeds
+#' are identical in both graphs. Input in the form of a matrix or a data frame, with the first
 #' column being the indices of \eqn{G_1} and the second
 #' column being the corresponding indices of \eqn{G_2}.
-#' 
+#'
 #' @param nv An integer. Number of total vertices.
-#' @param logical An logical. TRUE indicates returns seeds in a vector of logicals where TRUE
-#' indicates the corresponding vertex is a seed. FALSE indicates returns a data frame.
+#' @param logical A logical. TRUE indicates to return seeds in a vector of logicals where TRUE
+#' indicates the corresponding vertex is a seed. FALSE indicates to return a data frame.
 #'
 #' @return returns a data frame with the first column being the corresponding indices of
 #' \eqn{G_1} and the second column being the corresponding indices of \eqn{G_2} or a vector of
@@ -47,10 +47,12 @@ check_seeds <- function(seeds, nv, logical = FALSE){
   } else if(is.matrix(seeds)){
     seed_g1 <- seeds[,1]
     seed_g2 <- seeds[,2]
-  } else{
+  } else if(is.data.frame(seeds)){
     seeds <- as.matrix(seeds)
     seed_g1 <- seeds[,1]
     seed_g2 <- seeds[,2]
+  } else{
+    stop("Unrecognized seeds input format: seeds must be a vector of integers or logicals, a matrix or a data frame.")
   }
 
   if(logical==TRUE){

@@ -2,52 +2,44 @@
 % Please edit documentation in R/sample_gnp.R
 \name{sample_correlated_gnp_pair}
 \alias{sample_correlated_gnp_pair}
-\alias{sample_correlated_gnp_pair_w_junk}
 \title{Sample correlated G(n,p) random graphs}
 \usage{
-sample_correlated_gnp_pair(n, corr, p, permutation = 1:n, ...)
-
-sample_correlated_gnp_pair_w_junk(
-  n,
-  corr,
-  p,
-  ncore = n,
-  permutation = 1:n,
-  ...
-)
+sample_correlated_gnp_pair(n, corr, p, ncore = n, permutation = 1:n, ...)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
 
 \item{corr}{A number. The target Pearson correlation between the adjacency matrices
-of the generated graphs. It must be in open (0,1) interval.}
+of the generated graphs. It must be in  [0,1] interval.}
 
 \item{p}{A number. Edge probability between two vertices. It must be in open
-(0,1) interval.}
-
-\item{permutation}{A numeric vector,permute second graph.}
-
-\item{...}{Passed to \code{sample_correlated_gnp_pair} and \code{sample_correlated_gnp_pair_w_junk}.}
+[0,1] interval.}
 
 \item{ncore}{An integer. Number of core vertices.}
+
+\item{permutation}{A numeric vector to permute second graph.}
+
+\item{...}{Passed to \code{sample_gnp}.}
 }
 \value{
-\code{sample_correlated_gnp_pair} returns a list of two 'igraph' object, named
-\code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
-correlated with \code{rho}.
-
-\code{sample_correlated_gnp_pair_w_junk} returns a list of two 'igraph' object, named
-\code{graph1} and \code{graph2}, which are two graphs whose adjacency matrix entries
-correlated with \code{rho} and with first ncore vertices being core vertices and the rest being
-junk vertices.
+\code{sample_correlated_gnp_pair} returns a list of two igraph object, named
+\code{graph1} and \code{graph2}, whose adjacency matrix entries
+are correlated with \code{corr}. If sample two graphs with junk vertices, the first
+\code{ncore} vertices are core vertices and the rest are junk vertices.
 }
 \description{
 Sample a pair of correlated G(n,p) random graphs with correlation between
-two graphs being \code{rho} and edge probability being \code{p}.
+two graphs being \code{corr} and edge probability being \code{p}.
 }
 \examples{
-sample_correlated_gnp_pair(50, 0.3, 0.5)
-sample_correlated_gnp_pair_w_junk(50, 0.3, 0.5, 40)
+sample_correlated_gnp_pair(n=50, corr=0.3, p=0.5, ncore=40)
+sample_correlated_gnp_pair(n=5, corr=0.3, p=0.5, permutation=c(1,3,2,4,5))
 
-
+}
+\references{
+V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
+}
+\seealso{
+\code{\link{sample_correlated_sbm_pair}}, \code{\link{sample_correlated_rdpg_pair}}
 }

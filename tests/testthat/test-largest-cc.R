@@ -1,4 +1,4 @@
-context("largest cc")
+# largest common cc
 
 set.seed(123)
 n <- 10
@@ -13,8 +13,21 @@ test_that("largest cc w. min_degree", {
   expect_length(lcc1, 3)
   expect_equal(sum(lcc1$keep), 4)
   expect_length(lcc1$keep, n)
-  
+
   expect_length(lcc3, 3)
   expect_equal(sum(lcc3$keep), 2)
   expect_length(lcc3$keep, n)
+})
+
+
+# largest cc
+
+set.seed(123)
+g <- igraph::sample_gnp(100, .01)
+lcc <- largest_cc(g)
+
+test_that("largest cc", {
+  expect_length(lcc, 2)
+  expect_equal(sum(lcc$keep), 46)
+  expect_length(lcc$keep, 100)
 })

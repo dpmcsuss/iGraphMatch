@@ -15,6 +15,8 @@ The Enron network data consists of email messages between 184 employees
 of the Enron Corporation where each graph represents one week of emails
 and each edge indicates whether there is email sent from one employee to
 the other.
+}
+\details{
 Two networks are unweighted and directed with self-loops.
 There are 488 and 482 edges in two networks respectively and the empirical
 Pearson's correlation between two graphs is 0.85.
@@ -25,6 +27,11 @@ list in the form of igraph objects.
 data(Enron)
 g1 <- Enron[[1]]
 g2 <- Enron[[2]]
+plot(g1, g2)
 
+}
+\references{
+Originally released by William Cohen at CMU. \href{http://www.cs.cmu.edu/~enron/}{More details}
+on the origins and research uses of the dataset.
 }
 \keyword{datasets}
