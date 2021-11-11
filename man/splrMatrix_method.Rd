@@ -81,6 +81,13 @@
 \alias{str,splrMatrix-method}
 \alias{t,splrMatrix-method}
 \alias{diag,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,Matrix-method}
+\alias{tcrossprod,Matrix,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,matrix-method}
+\alias{tcrossprod,matrix,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,ANY-method}
+\alias{tcrossprod,ANY,splrMatrix-method}
 \title{"SPLR" Methods}
 \usage{
 \S4method{show}{splrMatrix}(object)
@@ -244,6 +251,20 @@
 \S4method{t}{splrMatrix}(x)
 
 \S4method{diag}{splrMatrix}(x)
+
+\S4method{tcrossprod}{splrMatrix,splrMatrix}(x, y)
+
+\S4method{tcrossprod}{splrMatrix,Matrix}(x, y)
+
+\S4method{tcrossprod}{Matrix,splrMatrix}(x, y)
+
+\S4method{tcrossprod}{splrMatrix,matrix}(x, y)
+
+\S4method{tcrossprod}{matrix,splrMatrix}(x, y)
+
+\S4method{tcrossprod}{splrMatrix,ANY}(x, y)
+
+\S4method{tcrossprod}{ANY,splrMatrix}(x, y)
 }
 \arguments{
 \item{object}{As in "Matrix"}

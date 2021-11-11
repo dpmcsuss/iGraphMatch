@@ -945,3 +945,114 @@ setAs(
   "splrMatrix", "dgeMatrix",
   function(from) from@x + Matrix::tcrossprod(from@a, from@b)
 )
+
+
+#_/\_/\_/\_/\_/\_/\_/\_/\_#
+
+
+# tcrossproduct aka  x %*% t(y)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "splrMatrix"),
+  function(x, y) {
+    splr(
+      Matrix::tcrossprod(x@x, y@x),
+      cbind(
+        x@a,
+        x@x %*% y@b
+      ),
+      cbind(
+        y@x %*% x@b + y@a %*% Matrix::crossprod(y@b, x@b),
+        y@a
+      )
+    )
+  }
+)
+
+.tcrossprod_left <- function(x, y) {
+  Matrix::tcrossprod(x@x, y) +
+  Matrix::tcrossprod(x@a, y %*% x@b)
+}
+
+.tcrossprod_right <- function(x, y) {
+  Matrix::tcrossprod(x, y@x) +
+  Matrix::tcrossprod(x %*% y@b, y@a)
+}
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "Matrix"),
+  function(x, y) {
+    if (is(y, "sparseMatrix")) {
+      splr(
+        Matrix::tcrossprod(x@x, y),
+        x@a,
+        y %*% x@b
+      )
+    } else {
+      .tcrossprod_left(x, y)
+    }
+  }
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "Matrix", y = "splrMatrix"),
+  function(x, y) {
+    if (is(x, "sparseMatrix")) {
+      splr(
+        Matrix::tcrossprod(x, y@x),
+        x %*% y@b,
+        y@a
+      )
+    } else {
+      .tcrossprod_right(x, y)
+    }
+  }
+)
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "matrix"),
+  .tcrossprod_left
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "matrix", y = "splrMatrix"),
+  .tcrossprod_right
+)
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "ANY"),
+  .tcrossprod_left
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "ANY", y = "splrMatrix"),
+  .tcrossprod_right
+)
+
+
+
+
