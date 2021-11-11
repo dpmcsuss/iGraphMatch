@@ -20,27 +20,27 @@
 #'  the two graphs, if for_nonseeds = TRUE, or between all nodes, if for_nonseeds = FALSE
 #'
 #' @rdname check_sim
-check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE){
+check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, square = TRUE){
 
   ns <- nrow(seeds)
-  nn <- nrow(nonseeds)
+  nn <- sapply(nonseeds, length)
   nv <- ns + nn
 
   # nv == max(totv1, totv2)
 
-  # if its null then return the zero matrix
-  if(is.null(sim)){
-    return(Matrix::Matrix(0, nn, nn))
+  # if its null then start with the zero matrix
+  if (is.null(sim)) {
+    sim <- Matrix::Matrix(0, nn[1], nn[2])
   }
 
   # if not we need to check dimensions
   dim_sim <- dim(sim)
 
   # first, if the sim is not square, we pad it to be square
-  if(dim_sim[1] != dim_sim[2]){
+  if(square && dim_sim[1] != dim_sim[2]){
     # has to be one of these dimensions
-    if( all(dim_sim == c(totv1, totv2)) ||
-        all(dim_sim + ns == c(totv1, totv2)) ){
+    if(all(dim_sim == c(totv1, totv2)) ||
+        all(dim_sim + ns == c(totv1, totv2))){
       diff <- totv1 - totv2
       sim <- pad(sim, max(-diff, 0), max(diff, 0))
     } else {
@@ -52,25 +52,25 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE){
 
   }
 
-  # now we've made them square
-  dim_sim <- dim(sim)[1]
+  # now we've made them square if needed
+  dim_sim <- dim(sim)
 
   # if they are nonseeds x nonseeds we're good
   if(for_nonseeds){
-    if(dim_sim == nn){
+    if(dim_sim == nn || (square && dim_sim[1] == max(nn))){
       return(sim)
     } else if(dim_sim == nv){
       # otherwise keep only nonseeds
       return(sim[nonseeds$A, nonseeds$B])
     }
-  } else{
-      if(dim_sim < nv){
-        stop(paste0("Similarity matrices must have dimension equal to ",
-                    totv1, " x ", totv2, "."))
-      } else{
-        return(sim)
-      }
+  } else {
+    if(any(dim_sim < nv)){
+      stop(paste0("Similarity matrices must have dimension equal to ",
+                  totv1, " x ", totv2, "."))
+    } else{
+      return(sim)
     }
+  }
 
 
   # otherwise, things seem wrong

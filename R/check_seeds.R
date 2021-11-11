@@ -33,6 +33,10 @@
 #'
 #' @export
 check_seeds <- function(seeds, nv, logical = FALSE){
+  if(length(nv) == 1) {
+    nv <- c(nv, nv)
+  }
+
   if(is.null(seeds)){
     seed_g1 <- numeric()
     seed_g2 <- numeric()
@@ -56,16 +60,21 @@ check_seeds <- function(seeds, nv, logical = FALSE){
   }
 
   if(logical==TRUE){
+    if(nv[1] != nv[2]) {
+      stop("logical seed vector can only be returned if graph are of the same order")
+    }
+    if(seeds_g1 != seeds_g2) {
+      stop("logical seed vector can only be returned if seed indices are equal")
+    }
     seeds <- rep(FALSE, nv)
     seeds[seed_g1] <- TRUE
     seeds
   } else{
-    seeds <- data.frame(A=seed_g1, B=seed_g2) # CORRECT this
-    #*** change these into lists if length(nv) != 1
-    #*** so that we can do rectangle things
-    nonseeds <- data.frame(
-        A = (1:nv)[!(1:nv %in% seeds$A)],
-        B = (1:nv)[!(1:nv %in% seeds$B)])
+    seeds <- data.frame(A=seed_g1, B=seed_g2)
+    nonseeds <- list(
+        A = which(!(1:nv[1] %in% seeds$A)),
+        B = which(!(1:nv[2] %in% seeds$B))
+      )
 
     list(seeds = seeds, nonseeds = nonseeds)
   }
