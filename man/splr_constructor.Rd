@@ -48,5 +48,6 @@ computation.
 }}
 
 \seealso{
-Methods are documented in \code{\link{splr}}.
+Methods are documented in \link{splrMatrix_method}.
+ Other relevant methods are \link{splr_sparse_plus_constant} and
 }

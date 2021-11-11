@@ -224,6 +224,15 @@ ml_sum <- function(x){
 }
 
 
+#' @rdname matrix_list
+setMethod("names<-", signature(x = "matrix_list", value = "ANY"),
+  function(x, value) {
+    x <- as.list(x)
+    names(x) <- value
+    matrix_list(x)
+  }
+)
+
 # setMethod("%*%", signature(x = "Matrix", y = "splrMatrix"), .leftmult)
 
 # setMethod("%*%", signature(x = "matrix", y = "splrMatrix"), .leftmult)

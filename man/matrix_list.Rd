@@ -28,6 +28,7 @@
 \alias{*,ANY,matrix_list-method}
 \alias{/,ANY,matrix_list-method}
 \alias{-,matrix_list,missing-method}
+\alias{names<-,matrix_list-method}
 \title{Lists of Matrices}
 \usage{
 matrix_list(ml)
@@ -79,6 +80,8 @@ matrix_list(ml)
 \S4method{/}{ANY,matrix_list}(e1, e2)
 
 \S4method{-}{matrix_list,missing}(e1, e2)
+
+\S4method{names}{matrix_list}(x) <- value
 }
 \arguments{
 \item{ml}{A list of matrices}

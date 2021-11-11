@@ -15,7 +15,7 @@ sample_correlated_ieg_pair(
   permutation = 1:n
 )
 
-sample_correlated_rdpg_pair(X, rho, ncore = nrow(X), ...)
+sample_correlated_rdpg_pair(X, corr, ncore = nrow(X), ...)
 }
 \arguments{
 \item{n}{An integer. Number of total vertices for the sampled graphs.}
@@ -37,24 +37,25 @@ each entry should be in the open (0,1) interval.}
 \item{X}{A matrix. Dot products matrix, each entry must be in open (0,1)
 interval.}
 
-\item{rho}{A number. The target Pearson correlation between the adjacency
+\item{corr}{A number. The target Pearson correlation between the adjacency
 matrices of the generated graphs. It must be in open (0,1) interval.}
 
-\item{...}{Passed to \code{sample_correlated_rdpg_pair}.}
+\item{...}{Passed to \code{sample_correlated_ieg_pair}.}
 }
 \value{
-\code{sample_correlated_ieg_pair} returns two 'igraph' objects named
-\code{graph1} and \code{graph2}. If sample two graphs with junk vertices, the first
-\code{ncore} vertices are core vertices and the rest are junk vertices.
+\code{sample_correlated_ieg_pair} returns two igraph objects named
+  \code{graph1} and \code{graph2}. If sample two graphs with junk vertices,
+  the first \code{ncore} vertices are core vertices and the rest are junk
+  vertices.
 
-\code{sample_correlated_rdpg_pair} returns two 'igraph' objects named
+\code{sample_correlated_rdpg_pair} returns two igraph objects named
 \code{graph1} and \code{graph2} that are sampled from random dot product
 graphs model. If sample two graphs with junk vertices, the first
 \code{ncore} vertices are core vertices and the rest are junk vertices.
 }
 \description{
 Sample a pair of graphs with specified edge probability and
-correlation between each pair of vertices.
+  correlation between each pair of vertices.
 }
 \examples{
 n <- 50
@@ -70,6 +71,18 @@ scale <- 8
 X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 X <- X/rowSums(X)
 X <- X[,1:xdim]
-sample_correlated_rdpg_pair(X,rho=0.5,ncore=40)
+sample_correlated_rdpg_pair(X,corr=0.5,ncore=40)
 
+}
+\references{
+S. Young and E. Scheinerman (2007), \emph{Random Dot Product
+  Graph Models for Social Networks}. Proceedings of the 5th International
+  Conference on Algorithms and Models for the Web-graph, pages 138-149.
+
+F. Fang and D. Sussman and V. Lyzinski (2018), \emph{Tractable
+  Graph Matching via Soft Seeding}. \url{https://arxiv.org/abs/1807.09299}.
+}
+\seealso{
+\code{\link{sample_correlated_gnp_pair}},
+  \code{\link{sample_correlated_sbm_pair}}
 }

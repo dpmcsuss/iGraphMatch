@@ -24,8 +24,12 @@ innerproduct(x, y)
 \item{y}{matrix like object}
 }
 \value{
-inner product <x, y>
+inner product <x, y> = sum over all elements i,j of x_ij * y_ij.
 }
 \description{
 Matrix inner products
 }
+\details{
+For a matrix_list object, sums over all layers/list-elements as well.
+}
+\keyword{internal}

@@ -15,6 +15,8 @@ C.Elegans networks consist of the chemical synapses network and the
 electrical synapses network of the roundworm, where each of 279 nodes
 represents a neuron and each edge represents the intensity of synapses
 connections between two neurons.
+}
+\details{
 Two networks are weighted and directed graphs with self-loops.
 There are 2194 and 1031 edges in two graphs respectively and the empirical
 Pearson's correlation between two graphs is 0.17.
@@ -26,6 +28,16 @@ other one is the electrical synapses network.
 data(C.Elegans)
 g1 <- C.Elegans[[1]]
 g2 <- C.Elegans[[2]]
+plot(g1, g2)
 
+}
+\references{
+Chen, L., Vogelstein, J. T., Lyzinski, V., & Priebe, C. E.
+(2016). \emph{A joint graph inference case study: the C. elegans chemical
+and electrical connectomes.} Worm, 5(2), e1142041.
+
+Sulston, J. E., Schierenberg, E., White, J. G., & Thomson, J.N. (1983).
+\emph{The embryonic cell lineage of the nematode caenorhabditis
+ elegans.} Developmental biology, 100(1):64–119.
 }
 \keyword{datasets}

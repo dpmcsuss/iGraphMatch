@@ -8,7 +8,7 @@ sample_correlated_sbm_pair(
   n,
   pref.matrix,
   block.sizes,
-  rho,
+  corr,
   core.block.sizes = NULL,
   permutation = 1:n,
   ...
@@ -17,36 +17,52 @@ sample_correlated_sbm_pair(
 \arguments{
 \item{n}{An integer. Number of vertices in the graph.}
 
-\item{pref.matrix}{The matrix giving the Bernoulli rates. This is a \code{K-by-K} matrix, where
-\code{k} is the number of groups. The probability of creating an edge between vertices from groups
-\code{i} and \code{j} is given by element \code{i,j}. For undirected graphs, this matrix must be
-symmetric.}
+\item{pref.matrix}{The matrix giving the Bernoulli rates. This is a
+\code{K-by-K} matrix, where \code{k} is the number of groups. The
+probability of creating an edge between vertices from groups \code{i} and
+\code{j} is given by element \code{i,j}. For undirected graphs, this matrix
+must be symmetric.}
 
-\item{block.sizes}{A numeric vector. Give the number of vertices in each group. The sum of the
-vector must match the number of vertices.}
+\item{block.sizes}{A numeric vector. Give the number of vertices in each
+group. The sum of the vector must match the number of vertices.}
 
-\item{rho}{A number. The target Pearson correlation between the adjacency matrices of the generated
-graphs. It must be in open (0,1) interval.}
+\item{corr}{A number. The target Pearson correlation between the adjacency
+matrices of the generated graphs. It must be in open (0,1) interval.}
 
-\item{core.block.sizes}{A numeric vector. Give the number of core vertices in each group. Entries
-should be smaller than \code{block.sizes} and the vector length should be the same as \code{block.sizes}.}
+\item{core.block.sizes}{A numeric vector. Give the number of core vertices in
+each group. Entries should be smaller than \code{block.sizes} and the
+vector length should be the same as \code{block.sizes}.}
 
 \item{permutation}{A numeric vector, permute second graph.}
 
 \item{...}{Passed to \code{sample_sbm}.}
 }
 \value{
-Returns a list of two 'igraph' object, named \code{graph1} and \code{graph2}. If sample two
-graphs with junk vertices, in each corresponding block the first \code{core.block.sizes} vertices
-are core vertices and the rest are junk vertices.
+Returns a list of two igraph object, named \code{graph1} and
+  \code{graph2}. If sample two graphs with junk vertices, in each
+  corresponding block the first \code{core.block.sizes} vertices are core
+  vertices and the rest are junk vertices.
 }
 \description{
-Sample a pair of random graphs from stochastic block model with correlation between
-two graphs being \code{rho} and edge probability being \code{p}.
+Sample a pair of random graphs from stochastic block model with
+  correlation between two graphs being \code{corr} and edge probability being
+  \code{p}.
 }
 \examples{
 pm <- cbind( c(.1, .001), c(.001, .05) )
-sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5)
-sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), rho=0.5,
+sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), corr=0.5)
+sample_correlated_sbm_pair(n=1000, pref.matrix=pm, block.sizes=c(300,700), corr=0.5,
 core.block.sizes=c(200,500))
+
+}
+\references{
+P. Holland and K. Laskey and S. Leinhardt (1983),
+  \emph{Stochastic Blockmodels: First Steps}. Social Networks, pages 109-137.
+
+F. Fang and D. Sussman and V. Lyzinski (2018), \emph{Tractable
+  Graph Matching via Soft Seeding}. \url{https://arxiv.org/abs/1807.09299}.
+}
+\seealso{
+\code{\link{sample_correlated_gnp_pair}},
+  \code{\link{sample_correlated_rdpg_pair}}
 }

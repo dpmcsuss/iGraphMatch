@@ -1,20 +1,19 @@
 #' @title Spectral Graph Matching Methods: IsoRank Algorithm
 #' @rdname gm_isorank
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
-#' @param max_iter A number. Maximum number of replacing matches equals to
-#'   max_iter times number of total vertices of \eqn{G_1}.
+#' @param max_iter A number. Maximum number of replacing matches.
 #' @param lap_method Choice of method to extract mapping from score matrix.
 #'   One of "greedy" or "LAP".
 #'
-#' @return \code{graph_match_IsoRank} returns an object of class "gm" which is a list
+#' @return \code{graph_match_IsoRank} returns an object of class "\code{\link{graphMatch}}" which is a list
 #'   containing the following components:
 #'
 #'   \describe{
@@ -30,29 +29,29 @@
 #'
 #' @references R. Singh, J. Xu, B. Berger (2008), \emph{Global alignment of
 #' multiple protein interaction networks with application to functional
-#' orthology detection}. Proc Natl Acad Sci. USA, pages 12763-12768.
+#' orthology detection}. Proceedings of the National Academy of Science. USA, pages 12763-12768.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' # match G_1 & G_2 using IsoRank algorithm
-#' startm <- matrix(0, 10, 10)
-#' diag(startm)[1:4] <- 1
+#' startm <- as.matrix(init_start(start = "bari", nns = 10, soft_seeds = 1:4))
 #'
 #' GM_IsoRank <- gm(g1, g2, similarity = startm, method = "IsoRank", lap_method = "greedy")
 #' GM_IsoRank
 #' summary(GM_IsoRank, g1, g2, true_label = 1:10)
 #'
-#' get_perm_mat(GM_IsoRank) # get the corresponding permutation matrix
+#' GM_IsoRank[] # get the corresponding permutation matrix
 #' GM_IsoRank %*% g2 # permute the second graph according to match result: PBP^T
+#' GM_IsoRank %*% g2[] # output permuted matrix
 #'
 #' # Visualize the edge-wise matching performance
 #' plot(g1, g2, GM_IsoRank)
 #' plot(g1[], g2[], GM_IsoRank)
 #'
 #'
-#'
+#' @keywords internal
 graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
                                 max_iter = 50, lap_method = "greedy"){
 

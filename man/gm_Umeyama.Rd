@@ -7,9 +7,9 @@
 graph_match_Umeyama(A, B, seeds = NULL, similarity = NULL)
 }
 \arguments{
-\item{A}{A matrix, 'igraph' object, or list of either.}
+\item{A}{A matrix, igraph object, or list of either.}
 
-\item{B}{A matrix, 'igraph' object, or list of either.}
+\item{B}{A matrix, igraph object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
@@ -20,7 +20,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 \item{similarity}{A matrix. An \code{n-by-n} matrix containing vertex similarities.}
 }
 \value{
-\code{graph_match_Umeyama} returns an object of class "gm" which is a list
+\code{graph_match_Umeyama} returns an object of class "\code{\link{graphMatch}}" which is a list
   containing the following components:
 
   \describe{
@@ -46,7 +46,7 @@ diag(startm)[1:4] <- 1
 GM_Umeyama <- gm(g1, g2, similarity = startm, method = "Umeyama")
 GM_Umeyama
 # generate the corresponding permutation matrix
-get_perm_mat(GM_Umeyama)
+GM_Umeyama[]
 
 summary(GM_Umeyama, g1, g2)
 # visualize the edge-wise matching performance
@@ -59,3 +59,4 @@ plot(g1[], g2[], GM_Umeyama)
 S. Umeyama (1988), \emph{An eigendecomposition approach to weighted
   graph matching problems}. IEEE TPAMI. USA, pages 695-703.
 }
+\keyword{internal}

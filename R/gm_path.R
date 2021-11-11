@@ -14,7 +14,7 @@ delta_cal <- function(x, y){
 #' gm(g1, g2, method = "PATH")
 #'
 #'
-#'
+#' @keywords internal
 graph_match_PATH <- function(A, B, seeds = NULL, similarity = NULL,
                              epsilon = 1, tol = 1e-05, max_iter = 20,
                              lap_method = NULL){

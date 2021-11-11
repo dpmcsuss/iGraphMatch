@@ -1,13 +1,13 @@
 
 #' @title Parameter checking for a graph-pair
 #'
-#' @description Internal function that checks that the pair of graphs passed
+#' @description Function that checks that the pair of graphs passed
 #'  to a matching-related functions satisfies necessary conditions and modifies
 #'  them according to specified parameters. check_single_graph
 #'  does similar checks and modifications but just for one graph or list of graphs.
 #'
-#' @param A A matrix, an 'igraph' object, or list of either.
-#' @param B A matrix, an 'igraph' object, or list of either.
+#' @param A A matrix, an igraph object, or list of either.
+#' @param B A matrix, an igraph object, or list of either.
 #' @param same_order Whether the returned objects should have the same number of nodes.
 #'  If the graphs start with different numbers of nodes the smaller graph is padded with
 #'  isolated vertices. (default = TRUE)

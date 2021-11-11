@@ -70,3 +70,5 @@ Meta
 docs
 docs/
 .DS_Store
+/doc/
+/Meta/

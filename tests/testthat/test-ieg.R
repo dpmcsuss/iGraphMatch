@@ -40,7 +40,7 @@ scale <- 8
 X <- matrix(rgamma(n*(xdim+1),scale,1),n,xdim+1)
 X <- X/rowSums(X)
 X <- X[,1:xdim]
-g <- sample_correlated_rdpg_pair(X,rho=0.5)
+g <- sample_correlated_rdpg_pair(X,corr=0.5)
 
 test_that("sample undirected rdpg pairs", {
   expect_equal(igraph::vcount(g$graph1),10)
@@ -48,9 +48,9 @@ test_that("sample undirected rdpg pairs", {
 })
 
 
-g <- sample_correlated_rdpg_pair(X,rho=c_mat)
+g <- sample_correlated_rdpg_pair(X,corr=c_mat)
 
-test_that("sample undirected rdpg pairs w. rho mat", {
+test_that("sample undirected rdpg pairs w. corr mat", {
   expect_equal(igraph::vcount(g$graph1),10)
   expect_equal(igraph::vcount(g$graph2),10)
 })

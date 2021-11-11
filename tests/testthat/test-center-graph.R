@@ -74,3 +74,15 @@ test_that("padding for multi-layer graphs", {
     22
   )
 })
+
+
+test_that(
+  "error on center multi-layer graphs",
+  {
+    expect_error(
+      center_graph(A, "center"),
+      "center_graph does not support matrix lists. Please call on individual elements."
+    )
+  }
+)
+

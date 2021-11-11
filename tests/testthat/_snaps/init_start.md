@@ -1,27 +1,15 @@
 # random doubly stochastic start w/o soft seeds
 
-    2 x 2 Matrix of class "dgeMatrix"
-             [,1]     [,2]
+    2 x 2 sparse Matrix of class "dgCMatrix"
+                          
     [1,] 0.470197 0.529803
     [2,] 0.529803 0.470197
 
 # doubly stochastic matrix start w/o soft seeds
 
-    Sparse part
-    2 x 2 sparse Matrix of class "dtCMatrix"
-                            
-    [1,] 0.2875775 .        
-    [2,] .         0.2875775
-    plus left factor
-    2 x 1 Matrix of class "dgeMatrix"
-              [,1]
-    [1,] 0.7124225
-    [2,] 0.7124225
-    times right factor transpose
-    2 x 1 Matrix of class "dgeMatrix"
-         [,1]
-    [1,]  0.5
-    [2,]  0.5
+              [,1]      [,2]
+    [1,] 0.6437888 0.3562112
+    [2,] 0.3562112 0.6437888
 
 # bari start w. soft seeds
 
@@ -118,16 +106,9 @@
 
 ---
 
-    10 x 10 sparse Matrix of class "dgCMatrix"
-                                                                               
-     [1,] 0.0979 0.1848 0.2010 .      .      .      .      0.5164 .      .     
-     [2,] .      .      0.1954 0.3650 0.3532 0.0860 .      .      0.0005 .     
-     [3,] .      .      .      .      .      .      .      .      1.0000 .     
-     [4,] .      .      0.2505 .      .      0.6623 .      .      .      0.0871
-     [5,] 0.3618 .      .      .      .      0.1628 .      0.4486 0.0269 .     
-     [6,] .      0.2990 .      0.6208 .      0.0788 .      .      0.0014 .     
-     [7,] 0.0286 .      0.0331 .      .      0.0039 0.0047 0.0303 0.0040 0.8954
-     [8,] .      .      .      .      0.1507 .      0.8328 .      0.0165 .     
-     [9,] 0.5072 .      .      0.0014 0.4914 0.0000 .      .      .      .     
-    [10,] .      0.5104 0.3140 0.0067 .      .      0.1602 .      .      0.0087
+    3 x 3 sparse Matrix of class "dgCMatrix"
+                             
+    [1,] 0.0979 0.1848 0.2010
+    [2,] .      .      0.1954
+    [3,] .      .      .     
 

@@ -4,8 +4,8 @@
 #'   results, including matching correspondence vector of \eqn{G_2} with respect
 #'   to \eqn{G_1}, doubly stochastic matrix and permutation matrix.
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix or a data frame, with the first
@@ -15,14 +15,13 @@
 #'   character value like "bari", "rds" or "convex" to initialize the starting matrix.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param tol A number. Tolerance of edge disagreements.
-#' @param max_iter A number. Maximum number of replacing matches equals to
-#'   max_iter times number of total vertices of \eqn{G_1}.
+#' @param max_iter A number. Maximum number of replacing matches.
 #' @param lap_method Choice for lap method. One of "lapjv", "lapmod", or "clue".
 #'
 #' @rdname gm_fw
 #'
 #' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
-#'   return an object of class "gm" which is a list containing the following
+#'   return an object of class "\code{\link{graphMatch}}" which is a list containing the following
 #'   components:
 #'
 #'   \describe{
@@ -36,6 +35,10 @@
 #'     \item{seeds}{a vector of logicals indicating if the corresponding vertex is a seed}
 #'   }
 #'
+#' @references V. Lyzinski and D. E. Fishkind and M. Fiori and J. T. Vogelstein and C. E. Priebe
+#' and G. Sapiro (2016), \emph{Graph Matching: Relax at Your Own Risk}. IEEE TPAMI, pages 60-73.
+#' @references V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+#' for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
 #'
 #'
 #' @examples
@@ -45,7 +48,7 @@
 #' g1 <- cgnp_pair$graph1
 #' g2 <- cgnp_pair$graph2
 #' seeds <- 1:10 <= 3
-#' GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
+#' GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "bari")
 #' GM_bari
 #' GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
 #'
@@ -54,13 +57,13 @@
 #' # match G_1 & G_2 with some incorrect seeds
 #' hard_seeds <- matrix(c(4,6,5,4),2)
 #' seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
-#' GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
+#' GM_badseed <- gm(g1, g2, seeds, method = "indefinite")
 #'
-#' get_perm_mat(GM_convex) # get the corresponding permutation matrix
-#' GM_convex %*% g2 # permute the second graph according to match result: PBP^T
-#' GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
-#' GM_convex$iter # number of iterations
-#' GM_convex$max_iter # preset maximum number of iterations: 20
+#' GM_badseed[] # get the corresponding permutation matrix
+#' GM_badseed %*% g2 # permute the second graph according to match result: PBP^T
+#' GM_badseed$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
+#' GM_badseed$iter # number of iterations
+#' GM_badseed$max_iter # preset maximum number of iterations: 20
 #'
 #' # match two multi-layer graphs
 #' gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
@@ -70,7 +73,7 @@
 #' match_multi_layer <- gm(A, B, seeds = 1:10, method = "indefinite", start = "bari", max_iter = 20)
 #' summary(match_multi_layer, A, B)
 #'
-#'
+#' @keywords internal
 graph_match_indefinite <- function(A, B, seeds = NULL,
   similarity = NULL, start = "bari",
   max_iter = 20, lap_method = NULL) {
@@ -115,31 +118,23 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   while(toggle && iter < max_iter){
     iter <- iter + 1
     # non-seed to non-seed info
-    tAnn_P_Bnn <- zero_mat
-    for( ch in 1:nc ){
-      tAnn_P_Bnn <- tAnn_P_Bnn +
-        Matrix::t(A[[ch]]) %*% P %*% B[[ch]]
-    }
+    tAnn_P_Bnn <- ml_sum(t(A) %*% P %*% B)
 
-    Grad <- s_to_ns + tAnn_P_Bnn + similarity
-    for(ch in 1:nc){
-      Grad <- Grad + A[[ch]] %*% P %*% Matrix::t(B[[ch]])
-    }
-    #*** this will now be length totv1
+
+    Grad <- s_to_ns + tAnn_P_Bnn + similarity +
+      ml_sum(A %*% P %*% t(B))
+
     ind <- do_lap(Grad, lap_method)
 
     ind2 <- cbind(1:nn, ind)
     Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    ns_Pdir_ns <- zero_mat
-    for(ch in 1:nc){
-      ns_Pdir_ns <- ns_Pdir_ns +
-        Matrix::t(A[[ch]])[, order(ind)] %*% B[[ch]]
+    tAnn_Pdir_Bnn <- ml_sum(t(A)[, order(ind)] %*% B)
 
-    }
+    
     c <- innerproduct(tAnn_P_Bnn, P)
-    d <- innerproduct(ns_Pdir_ns, P) + sum(tAnn_P_Bnn[ind2])
-    e <- sum(ns_Pdir_ns[ind2])
+    d <- innerproduct(tAnn_Pdir_Bnn, P) + sum(tAnn_P_Bnn[ind2])
+    e <- sum(tAnn_Pdir_Bnn[ind2])
     u <- innerproduct(P, s_to_ns + similarity)
     v <- sum((s_to_ns + similarity)[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {

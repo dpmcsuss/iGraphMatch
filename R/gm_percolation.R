@@ -6,7 +6,7 @@ cal_mark <- function(x,y){
 #' @title Percolation Graph Matching Methods
 #' @rdname gm_perco
 #'
-#' @return \code{graph_match_percolation} returns an object of class "gm" which is a
+#' @return \code{graph_match_percolation} returns an object of class "\code{\link{graphMatch}}" which is a
 #'   list containing the following components:
 #'
 #'   \describe{
@@ -19,8 +19,8 @@ cal_mark <- function(x,y){
 #'
 #'
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
 #'   vector. If not, seeds must be  a matrix
@@ -58,7 +58,7 @@ cal_mark <- function(x,y){
 #' GM_exp
 #'
 #'
-#'
+#' @keywords internal
 graph_match_percolation <- function (A, B, seeds,
                             similarity = NULL, r = 2,
                             ExpandWhenStuck = FALSE) {

@@ -39,9 +39,9 @@ graph_match_PATH(
 )
 }
 \arguments{
-\item{A}{A matrix, 'igraph' object, or list of either.}
+\item{A}{A matrix, igraph object, or list of either.}
 
-\item{B}{A matrix, 'igraph' object, or list of either.}
+\item{B}{A matrix, igraph object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
@@ -54,8 +54,7 @@ corresponding indices of \eqn{G_2}.}
 \item{start}{A matrix or a character. Any \code{nns-by-nns} matrix or
 character value like "bari", "rds" or "convex" to initialize the starting matrix.}
 
-\item{max_iter}{A number. Maximum number of replacing matches equals to
-max_iter times number of total vertices of \eqn{G_1}.}
+\item{max_iter}{A number. Maximum number of replacing matches.}
 
 \item{tol}{A number. Tolerance of edge disagreements.}
 
@@ -65,7 +64,7 @@ max_iter times number of total vertices of \eqn{G_1}.}
 }
 \value{
 \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
-  return an object of class "gm" which is a list containing the following
+  return an object of class "\code{\link{graphMatch}}" which is a list containing the following
   components:
 
   \describe{
@@ -85,16 +84,15 @@ Match two given graphs, returns a list of graph matching
   to \eqn{G_1}, doubly stochastic matrix and permutation matrix.
 }
 \examples{
-cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+\donttest{
+cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.9, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 # match G_1 & G_2 with no seeds
-gm(g1, g2, method = "convex")
+gm(g1, g2, method = "convex", max_iter = 10)
 seeds <- 1:10 <= 3
-\donttest{
-gm(g1, g2, seeds, method = "convex")
+gm(g1, g2, seeds, method = "convex", max_iter = 10)
 }
-
 
 
 
@@ -103,7 +101,7 @@ cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
 g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 3
-GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "rds")
+GM_bari <- gm(g1, g2, seeds, method = "indefinite", start = "bari")
 GM_bari
 GM_bari[!GM_bari$seeds] # matching correspondence for non-seeds
 
@@ -112,13 +110,13 @@ summary(GM_bari, g1, g2, true_label = 1:10)
 # match G_1 & G_2 with some incorrect seeds
 hard_seeds <- matrix(c(4,6,5,4),2)
 seeds <- rbind(as.matrix(check_seeds(seeds, nv = 10)$seeds),hard_seeds)
-GM_convex <- gm(g1, g2, seeds, method = "indefinite", start = "convex")
+GM_badseed <- gm(g1, g2, seeds, method = "indefinite")
 
-get_perm_mat(GM_convex) # get the corresponding permutation matrix
-GM_convex \%*\% g2 # permute the second graph according to match result: PBP^T
-GM_convex$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
-GM_convex$iter # number of iterations
-GM_convex$max_iter # preset maximum number of iterations: 20
+GM_badseed[] # get the corresponding permutation matrix
+GM_badseed \%*\% g2 # permute the second graph according to match result: PBP^T
+GM_badseed$soft # doubly stochastic matrix from the last step of Frank-Wolfe iterations
+GM_badseed$iter # number of iterations
+GM_badseed$max_iter # preset maximum number of iterations: 20
 
 # match two multi-layer graphs
 gp_list <- replicate(3, sample_correlated_gnp_pair(20, .3, .5), simplify = FALSE)
@@ -128,15 +126,24 @@ B <- lapply(gp_list, function(gp)gp[[2]])
 match_multi_layer <- gm(A, B, seeds = 1:10, method = "indefinite", start = "bari", max_iter = 20)
 summary(match_multi_layer, A, B)
 
-
 # match G_1 & G_2 using PATH algorithm
 gm(g1, g2, method = "PATH")
 
 
-
 }
 \references{
+Y. Aflalo and A. Bronstein and R. Kimmel (2014), \emph{On convex
+relaxation of graph isomorphism}. Proceedings of the National Academy of Sciences,
+pages 2942-2947.
+
+V. Lyzinski and D. E. Fishkind and M. Fiori and J. T. Vogelstein and C. E. Priebe
+and G. Sapiro (2016), \emph{Graph Matching: Relax at Your Own Risk}. IEEE TPAMI, pages 60-73.
+
+V. Lyzinski and D. E. Fishkind and C. E. Priebe (2014), \emph{Seeded Graph Matching
+for Correlated Erdos-Renyi Graphs}.J. Mach. Learn. Res., pages 3513-3540.
+
 M. Zaslavskiy, F. Bach and J. Vert (2009), \emph{A Path following
 algorithm for the graph matching problem}. IEEE Trans Pattern Anal Mach Intell,
 pages 2227-2242.
 }
+\keyword{internal}

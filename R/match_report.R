@@ -7,8 +7,8 @@
 # #' based on several evaluation metrics associated with nodes and edges of two graphs.
 # #'
 # #' @param match Graph matching result see \link[=graph_match_FW]{graph match methods}.
-# #' @param A A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_1}.
-# #' @param B A matrix or an 'igraph' object. Adjacency matrix of \eqn{G_2}.
+# #' @param A A matrix or an igraph object. Adjacency matrix of \eqn{G_1}.
+# #' @param B A matrix or an igraph object. Adjacency matrix of \eqn{G_2}.
 # #' @param true_label A vector. NULL if the true correspondence
 # #'  between two graphs is unknown. A vector indicating the
 # #'  true correspondence in the second graph if the true
@@ -93,9 +93,9 @@
 # #'  a result of match method
 # #'
 # #' @param match Result from a a graph matching method.
-# #' @param A A matrix, 'igraph' object, or list of either.
+# #' @param A A matrix, igraph object, or list of either.
 # #'  Likely used in the call for creating match.
-# #' @param B A matrix, 'igraph' object, or list of either.
+# #' @param B A matrix, igraph object, or list of either.
 # #'  Likely used in the call for creating match.
 # #'
 # #' @return A list of aligned graphs named \code{A_m} and \code{B_m}.
@@ -146,7 +146,7 @@ edge_match_info <- function(corr, A, B,
   corr_B <- corr$corr_B[seq(nv)]
 
 
-  Reduce(rbind, lapply(layers, function(i) {
+  Reduce(rbind, lapply(seq_along(layers), function(i) {
     A_m <- A[[i]][corr_A, corr_A]
     B_m <- B[[i]][corr_B, corr_B]
     # computations below are fast for sparse matrices
@@ -170,7 +170,7 @@ edge_match_info <- function(corr, A, B,
     }
     res$fnorm <- Matrix::norm(A_m - B_m, "F")
     if(l > 1) {
-      res <- c(layer = i, res)
+      res <- c(layer = layers[i], res)
     }
     as.data.frame(res)
   }))

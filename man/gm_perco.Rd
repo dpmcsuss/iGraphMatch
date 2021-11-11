@@ -14,9 +14,9 @@ graph_match_percolation(
 )
 }
 \arguments{
-\item{A}{A matrix, 'igraph' object, or list of either.}
+\item{A}{A matrix, igraph object, or list of either.}
 
-\item{B}{A matrix, 'igraph' object, or list of either.}
+\item{B}{A matrix, igraph object, or list of either.}
 
 \item{seeds}{A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
@@ -32,7 +32,7 @@ the second column being the corresponding indices of \eqn{G_2}.}
 stops before matching all the vertices.}
 }
 \value{
-\code{graph_match_percolation} returns an object of class "gm" which is a
+\code{graph_match_percolation} returns an object of class "\code{\link{graphMatch}}" which is a
   list containing the following components:
 
   \describe{
@@ -66,7 +66,6 @@ GM_exp <- gm(g1, g2, seeds, method = "percolation", r = 4, ExpandWhenStuck = TRU
 GM_exp
 
 
-
 }
 \references{
 L. Yartseva and M. Grossglauser (2013), \emph{On the performance
@@ -76,3 +75,4 @@ E. Kazemi, S. H. Hassani, and M. Grossglauser (2015),
 \emph{Growing a graph matching from a handful of seeds}. Proc. of the VLDB
 Endowment, 8(10):1010–1021.
 }
+\keyword{internal}

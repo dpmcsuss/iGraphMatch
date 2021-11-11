@@ -17,9 +17,9 @@ check_graph(
 check_single_graph(A, square = TRUE, as_list = TRUE, as_igraph = FALSE)
 }
 \arguments{
-\item{A}{A matrix, an 'igraph' object, or list of either.}
+\item{A}{A matrix, an igraph object, or list of either.}
 
-\item{B}{A matrix, an 'igraph' object, or list of either.}
+\item{B}{A matrix, an igraph object, or list of either.}
 
 \item{same_order}{Whether the returned objects should have the same number of nodes.
 If the graphs start with different numbers of nodes the smaller graph is padded with
@@ -40,7 +40,7 @@ List containing A and B modified according to the parameters and the number of
  vertices in each graph in totv1 and totv2.
 }
 \description{
-Internal function that checks that the pair of graphs passed
+Function that checks that the pair of graphs passed
  to a matching-related functions satisfies necessary conditions and modifies
  them according to specified parameters. check_single_graph
  does similar checks and modifications but just for one graph or list of graphs.

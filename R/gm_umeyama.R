@@ -1,8 +1,8 @@
 #' @title Spectral Graph Matching Methods: Umeyama Algorithm
 #' @rdname gm_Umeyama
 #'
-#' @param A A matrix, 'igraph' object, or list of either.
-#' @param B A matrix, 'igraph' object, or list of either.
+#' @param A A matrix, igraph object, or list of either.
+#' @param B A matrix, igraph object, or list of either.
 #' @param similarity A matrix. An \code{n-by-n} matrix containing vertex similarities.
 #' @param seeds A vector of integers or logicals, a matrix or a data frame. If
 #'   the seed pairs have the same indices in both graphs then seeds can be a
@@ -10,7 +10,7 @@
 #'   or a data frame, with the first column being the indices of \eqn{G_1} and
 #'   the second column being the corresponding indices of \eqn{G_2}.
 #'
-#' @return \code{graph_match_Umeyama} returns an object of class "gm" which is a list
+#' @return \code{graph_match_Umeyama} returns an object of class "\code{\link{graphMatch}}" which is a list
 #'   containing the following components:
 #'
 #'   \describe{
@@ -36,7 +36,7 @@
 #' GM_Umeyama <- gm(g1, g2, similarity = startm, method = "Umeyama")
 #' GM_Umeyama
 #' # generate the corresponding permutation matrix
-#' get_perm_mat(GM_Umeyama)
+#' GM_Umeyama[]
 #'
 #' summary(GM_Umeyama, g1, g2)
 #' # visualize the edge-wise matching performance
@@ -44,6 +44,7 @@
 #' plot(g1[], g2[], GM_Umeyama)
 #'
 #'
+#' @keywords internal
 graph_match_Umeyama <- function(A, B, seeds = NULL,
                                 similarity = NULL){
 

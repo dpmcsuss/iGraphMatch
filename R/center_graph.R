@@ -2,9 +2,9 @@
 #'
 #' @description Center the adjacency matrix by re-weighting edges according to a specified scheme
 #'
-#' @param A A matrix, an 'igraph' object. Adjacency matrix.
-#' @param scheme A character vector, number or pair of numbers. Default c(-1, 1). See Details.
-#' @param use_splr A boolean indicating whether to use the 'splrMatrix' object when storing the
+#' @param A A matrix, an igraph object. Adjacency matrix.
+#' @param scheme A character vector, number or pair of numbers. Default \code{c(-1, 1)}. See Details.
+#' @param use_splr A boolean indicating whether to use the \link[iGraphMatch:splr]{splrMatrix} object when storing the
 #' centered graph.  Defaults to TRUE.
 #'
 #' @details  The options for scheme are
@@ -16,12 +16,12 @@
 #'  \item A pair of scalars: Returns s * A + a such that the
 #'    minimum of the returned matrix is min(scheme) and the
 #'    maximum is max(scheme).
-#'  \item "center": Same as scheme=c(-1,1)
+#'  \item "center": Same as \code{scheme=c(-1,1)}
 #' }
 #'
 #'
 #' @rdname center_graph
-#' @return centered adjacency matrix as a 'splrMatrix' if
+#' @return centered adjacency matrix as a \link[iGraphMatch:splr]{splrMatrix} if
 #'  useSplr = TRUE, otherwise as a Matrix object.
 #'  
 #' @examples
@@ -37,6 +37,9 @@ center_graph <- function(A, scheme = c(-1, 1), use_splr = TRUE){
   if (!(length(scheme) %in% c(1,2))) {
     stop("scheme must be either 'center', 'naive', ",
       "a positive integer, or a pair of scalars.")
+  }
+  if (inherits(A, "matrix_list")) {
+    stop("center_graph does not support matrix lists. Please call on individual elements.")
   }
   
   A <- check_single_graph(A)

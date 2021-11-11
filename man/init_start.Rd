@@ -36,11 +36,18 @@ Initialize the start matrix for graph matching iteration.
 When \code{start} is a character, there are five options.
 \itemize{
 \item \code{"bari"} initializes at the barycenter.
-\item \code{"rds_perm_bari"} gives a linear combination of barycenter and a random permutation matrix.
-\item \code{"rds"} gives a random doubly stochastic matrix. Users can specify a random
-deviates generator to the \code{distribution} argument, and the default is \code{runif}.
-\item \code{"rds_from_sim"} gives a random doubly stochastic matrix derived from similarity scores. One
-needs to input a similarity score matrix to the \code{sim} argument for this method.
+\item \code{"rds_perm_bari"} gives a random linear combination of barycenter and
+  a random permutation matrix, (1-a) B + a P. The argument \code{g} controls a
+  with a being sampled as \code{g * runif()}.
+\item \code{"rds"} gives a random doubly stochastic matrix. Users can specify a
+  random deviates generator to the \code{distribution} argument, and the default is \code{runif}. 
+  A random matrix with iid entries from \code{distribution} and the the Sainkhorn algorithm is applied
+  to produce the output.
+\item \code{"rds_from_sim"} gives a random doubly stochastic matrix derived from
+  similarity scores. One needs to input a similarity score matrix to the \code{sim}
+  argument for this method. The procedure is the same as \code{"rds"} but before 
+  the Sinkhorn algorithm is applied, the entries of the random matrix are scaled by 
+  \code{sim}.
 \item \code{"convex"} returns the doubly stochastic matrix from the last iteration of running the Frank-
 Wolfe algorithm with convex relaxation initialized at the barycenter. For this method, one needs to
 input two graphs \code{A} and \code{B}, as well as \code{seeds} if applicable.
@@ -59,6 +66,7 @@ init_start(start = "bari", nns = 5, ns = 1, soft_seeds = ss)
 init_start(start = "rds", nns = 5, soft_seeds = ss)
 init_start(start = "rds_perm_bari", nns = 5, soft_seeds = ss)
 
+\donttest{
 # initialize start matrix for convex graph matching
 cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
 g1 <- cgnp_pair$graph1
@@ -66,7 +74,6 @@ g2 <- cgnp_pair$graph2
 seeds <- 1:10 <= 2
 init_start(start = "convex", nns = 8, A = g1, B = g2, seeds = seeds)
 
-\donttest{
 # FW graph matching with incorrect seeds to start at convex start
 init_start(start = "convex", nns = 8, ns = 2, soft_seeds = ss, A = g1, B = g2, seeds = seeds)
 }

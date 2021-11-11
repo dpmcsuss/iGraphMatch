@@ -3,22 +3,24 @@ setOldClass("igraph")
 
 #'
 #' @title Graph matching results class
-#' @description An 'S4' class for the results of a graph matching function
+#' @description An S4 class for the results of a graph matching function
 #'
 #' @slot corr data.frame indicating the correspondence between two graphs
 #' @slot nnodes of the original two graphs
 #' @slot call The call to the graph matching function
 #'
-#' @details graphMatch objects are returned by any of the graph
-#' matching methods implemented in the iGraphMatch package. These
-#' objects are primarily to represent the found correspondence between
-#' the two vertex sets. This is represented by a data.frame with two columns
-#' indicating the aligned vertex-pairs across the two graphs.
+#' @details graphMatch objects are returned by any of the graph matching methods
+#'   implemented in the iGraphMatch package. These objects are primarily to
+#'   represent the found correspondence between the two vertex sets. This is
+#'   represented by a data.frame with two columns indicating the aligned
+#'   vertex-pairs across the two graphs.
 #'
-#' @seealso graphMatch_methods
-#' @seealso graphMatch_operators
+#' @seealso \link[iGraphMatch:as.data.frame,graphMatch-method]{graphMatch_methods},
+#' \link[iGraphMatch:summary,graphMatch-method]{graphMatch_summary},
+#' \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators},
+#' \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}
 #'
-#' @rdname gm_constructor
+#' @rdname graphMatch_constructor
 setClass("graphMatch",
   slots = c(
     corr = "data.frame",
@@ -28,15 +30,47 @@ setClass("graphMatch",
   contains = 'list'
 )
 
-#' @rdname gm_constructor
+#' @rdname graphMatch_constructor
 #'
 #' @param corr data.frame indicating the correspondence between two graphs
 #' @param nnodes dimensions of the original two graphs
 #' @param call The call to the graph matching function
 #' @param detail List with other more detailed information
+#' @param from object to convert to graphMatch object
 #'
 #' @return graphMatch object
+#' 
+#' @examples
+#' # sample a pair of correlated random graphs from G(n,p)
+#' set.seed(123)
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
 #'
+#' # match g1 & g2 using percolation algorithm with some known node pairs as seeds
+#' match <- gm(A = g1, B = g2, seeds = 1:3, method = 'indefinite')
+#'
+#' # graphMatch object
+#' match
+#'
+#' match$corr_A # matching correspondence in the first graph
+#' match$corr_B # matching correspondence in the second graph
+#' match$seeds # vector of logicals indicating seeded nodes
+#' 
+#' as.data.frame(match)
+#' match[]
+#' dim(match)
+#' length(match)
+#'
+#' # matching details unique to the FW methodology with indefinite relaxation
+#' match$iter # number of iterations
+#' match$soft # doubly stochastic matrix from the last iteration, can be used to extract soft matching
+#' match$lap_method # method for solving lap
+#' 
+#' # create a graphMatch object from a data.frame or matrix
+#' as.graphMatch(data.frame(1:5, 1:5))
+#' as.graphMatch(1:5)
+#' 
 #' @export
 setGeneric(
   name = "graphMatch",
@@ -55,6 +89,10 @@ setGeneric(
       corr = corr,
       nnodes = nnodes
     )
+    if (is.null(call)) {
+      #browser()
+      call <- call("no call")
+    }
     gm@call <- call
     for (n in names(detail)) {
       gm[[n]] <- detail[[n]]
@@ -71,6 +109,8 @@ setGeneric(
   }
 )
 
+
+
 #' @method as.character graphMatch
 #' @export
 as.character.graphMatch <- function(x, ...) {
@@ -83,11 +123,43 @@ as.character.graphMatch <- function(x, ...) {
   )
 }
 
+#' @rdname graphMatch_constructor
+#' @export
+setGeneric(
+  name = "as.graphMatch",
+  function(from) { as(from, "graphMatch") }
+)
 
+
+as.graphMatch.data.frame <- function(from) {
+  if("corr_A" %in% names(from) && "corr_B" %in% names(from)){
+    from <- from[ ,c("corr_A", "corr_B")]
+  } else {
+    names(from)[1:2] <- c("corr_A", "corr_B")
+  }
+  nnodes <- as.integer(c(max(from[,1]), max(from[,2])))
+  call <- match.call()
+  graphMatch(from, nnodes, call)
+}
+
+setAs("data.frame", "graphMatch", as.graphMatch.data.frame)
+
+
+as.graphMatch.vector <- function(from) {
+  nnodes <- c(length(from), as.integer(max(from)))
+  call <- match.call()
+  graphMatch(
+    data.frame(corr_A = seq_along(from), corr_B = from),
+    nnodes,
+    call
+  )
+}
+
+setAs("vector", "graphMatch", as.graphMatch.vector)
 
 #'
 # #' @rdname graphMatch_methods
-setAs("graphMatch", "character", 
+setAs("graphMatch", "character",
   function(from)  as.character.graphMatch(from)
   )
 
@@ -107,33 +179,65 @@ setAs("graphMatch", "data.frame", function(from) {
 
 #' @title Methods for the graphMatch class
 #'
-#' @description These methods provide functionality to plot,
-#'  view, inspect, and convert graphMatch objects.
+#' @description These methods provide functionality to view, inspect, and
+#'   convert \link{graphMatch} objects.
 #'
-#' @details Methods for the graphmatch
+#' @details Methods for the graphMatch class
 #'
-#' @return dim returns a vector of length two
-#' indicating the number of vertices in each original graph.
-#' length returns the number of found vertex-pair matches.
-#' m[i,j] will index the 2xlength data.frame of vertex-pair matches.
-#' This is true for any i,j unless both are missing.
-#' In that case, m[] returns a sparse matrix of dimension dim(m)
-#' where m[][i,j] is 0 unless m matches node i with node j.
-#' (Note this is not guaranteed to be a permutation matrix unless
-#' dim(m)[1] = dim(m)[2] = length(m).
+#' @return \code{dim} returns a vector of length two indicating the number of
+#'   vertices in each original graph. \code{length} returns the number of found
+#'   vertex-pair matches. \code{m[i,j]} will index the 2 x length data.frame of
+#'   vertex-pair matches. This is true for any i,j unless both are missing. In
+#'   that case, \code{m[]} returns a sparse matrix of dimension dim(m) where
+#'   \code{m[][i,j]} is 0 unless m matches node i with node j. (Note this is not
+#'   guaranteed to be a permutation matrix unless \code{dim(m)[1] = dim(m)[2] =
+#'   length(m)}.
 #'
 #'
 #' @param x graphMatch object
 #'
-#' @seealso graphMatch_operators
-#' @seealso graphMatch_constructor
+#' @examples
+#' # sample a pair of correlated random graphs from G(n,p)
+#' set.seed(123)
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
+#'
+#' # match g1 & g2 using FW methodology with indefinite relaxation
+#' match <- gm(A = g1, B = g2, seeds = 1:3, method = 'indefinite')
+#'
+#' # print graphMatch object
+#' match
+#' print(match)
+#' show(match)
+#'
+#' # print matching correspondence
+#' match$corr_A # matching correspondence in the first graph
+#' match$corr_B # matching correspondence in the second graph
+#'
+#' # get nonseed matching correspondence
+#' match[!match$seeds]
+#' 
+#' # create graphMatch object from a vector
+#' as.graphMatch(sample(10))
+#' # or data.frame
+#' as.graphMatch(data.frame(a = 1:10, b = sample(1000, 10)))
+#'
+#' @seealso \link[iGraphMatch:plot,igraph,igraph-method]{graphMatch_plot}, \link[iGraphMatch:\%*\%,graphMatch,ANY-method]{graphMatch_operators}
 #'
 #' @rdname graphMatch_methods
+#' @keywords internal
+#' @export
 setMethod("as.data.frame", signature("graphMatch"),
   function(x) {
     x@corr
   }
 )
+
+as.data.frame.graphMatch <- function(x) {
+  x@corr
+}
+
 
 show.graphMatch <- function(object){
     print(object@call)
@@ -165,6 +269,13 @@ setMethod(
 #' @param i row index for the correspondence data.frame
 #' @param j col index for the correspondence data.frame
 #' @param drop ignored
+#'
+#' @examples
+#' # get corresponding permutation matrix for the match result
+#' match[] # preferred approach
+#' # or equivalently
+#' get_perm_mat(match)
+#'
 setMethod("[",
   signature(x = "graphMatch",
     i = 'missing', j = 'missing', drop = 'missing') ,
@@ -177,7 +288,7 @@ setMethod("[",
 #'
 #' @title Operator methods for graphMatch objects
 #'
-#' @description Methods to use graphMatch objects as operators on
+#' @description Methods to use \link[iGraphMatch:graphMatch]{graphMatch} objects as operators on
 #'  igraph and matrix-like objects.
 #'
 #'
@@ -190,6 +301,30 @@ setMethod("[",
 #'  permuted so as to match with g1. Conversely, g1 %*% m
 #'  returns g1 permuted so as to match with g2.
 #'
+#' @examples
+#'
+#' set.seed(123)
+#' cgnp_pair <- sample_correlated_gnp_pair(n = 10, corr =  0.3, p =  0.5)
+#' g1 <- cgnp_pair$graph1
+#' g2 <- cgnp_pair$graph2
+#'
+#' # match g1 & g2 using FW methodology with indefinite relaxation
+#' match <- gm(A = g1, B = g2, seeds = 1:3, method = 'indefinite')
+#'
+#' # permute the second graph according to the match result: P %*% g2 %*% P^T
+#' match %*% g2 # return an igraph object
+#' # equivalent to the matrix operation
+#' match[] %*% g2[] %*% t(match[])
+#'
+#' match %*% g2[] # return a matrix
+#' # equivalent to:
+#' P <- match[]
+#' P %*% g2[] %*% Matrix::t(P)
+#' 
+#' # the inverse operations are performed via right multiplication
+#' all(g1[] %*% match == t(P) %*% g1[] %*% P)
+#' 
+#' 
 setMethod("%*%", signature(x = "graphMatch", y = "ANY"),
   function(x, y) {
     x[] %*% y %*% t(x[])
@@ -225,9 +360,20 @@ setMethod("%*%", signature(x = "igraph", y = "graphMatch"),
 )
 
 #' @rdname graphMatch_methods
+#'
+#' @examples
+#'
+#' # sizes of two graphs
+#' dim(match)
 setMethod("dim", signature(x = "graphMatch"), function(x) { x@nnodes })
 
 #' @rdname graphMatch_methods
+#'
+#' @examples
+#'
+#' # number of matched node pairs
+#' length(match)
+#'
 setMethod("length", signature(x = "graphMatch"), function(x) { nrow(x@corr)})
 
 
@@ -248,6 +394,13 @@ reverse_match <- function(x) {
 }
 
 #' @rdname graphMatch_methods
+#'
+#' @examples
+#'
+#' # reverse the matching correspondence between two graphs
+#' t(match)
+#' rev(match)
+#' @export
 setMethod("t", signature(x = "graphMatch"), reverse_match)
 
 
@@ -314,7 +467,7 @@ identity_match <- function(x, y) {
 #' @title Plotting methods for visualizing matches
 #'
 #' @description Two functions are provided, \code{match_plot_igraph}
-#' which makes a ball and stick plot from 'igraph' objects
+#' which makes a ball and stick plot from igraph objects
 #' and \code{match_plot_matrix} which shows an adjacency
 #' matrix plot.
 #'
@@ -328,20 +481,20 @@ identity_match <- function(x, y) {
 #' @param linetype Whether to set edge line types according
 #'  to which graph(s) they are in.
 #' @param ... additional parameters passed to either the
-#'  'igraph' plot function or the Matrix image function.
+#'  igraph plot function or the Matrix image function.
 #'
 #' @returns Both functions return values invisibly.
 #' \code{match_plot_igraph} returns the union of the
-#'  matched graphs as an 'igraph' object with additional
+#'  matched graphs as an igraph object with additional
 #'  edge attributes \code{edge_match, color, lty}.
 #'  \code{match_plot_matrix} returns the difference between
 #'  the matched graphs.
 #'
 #' @details
-#' Grey edges/pixels indicate common edges, red
-#' indicates edges only in graph A and green
+#' Grey edges/pixels indicate common edges, blue
+#' indicates edges only in graph A and red
 #' represents edges only graph B. The corresponding
-#' linetypes are solid, short dash, and long dash.
+#' linetypes are solid, long dash, and short dash.
 #'
 #' The plots can be recreated from the output with the code \cr
 #' \code{plot(g)} \cr
@@ -370,6 +523,8 @@ setMethod("plot", signature(x = "igraph", y = "igraph"),
     color = TRUE, linetype = TRUE,...) {
     if(is.null(match)) {
       match <- identity_match(x,y)
+    } else {
+      match <- as(match, "graphMatch")
     }
     match_plot_igraph(x, y, match,
       color, linetype, ...)
@@ -448,10 +603,26 @@ setGeneric("summary")
 #' @param A igraph or matrix-like object
 #' @param B igraph or matrix-like object
 #' @param true_label the true correspondence (if available)
-#' @param directed whether to treat the graphs
-#'  as directed (TRUE) or not directed (FALSE) default is NULL
-#'  which will treat the graphs as directed if either adjacency
-#'  matrix is not symmetric.
+#' @param directed whether to treat the graphs as directed (TRUE) or not
+#'   directed (FALSE) default is NULL which will treat the graphs as directed if
+#'   either adjacency matrix is not symmetric.
+#'
+#' @return \code{summary} returns the graph matching formula, and a summary of
+#'   graph matching results including the number of matches, the number of
+#'   correct matches (if the true correspondence is available), and common
+#'   edges, missing edges, extra edges, common non-edges and the objective
+#'   function value.
+#'
+#' @examples
+#' set.seed(123)
+#' graphs <- sample_correlated_gnp_pair(20, .9, .3)
+#' A <- graphs$graph1
+#' B <- graphs$graph2
+#' match <- gm(A, B, 1:4, method = "percolation")
+#'
+#' summary(match, A, B)
+#' summary(match, A, B, true_label = 1:20) # also output the number of correct matches
+#'
 #' @rdname graphMatch_summary
 setMethod("summary", signature("graphMatch"), summary_graphMatch)
 
@@ -467,10 +638,20 @@ show.summary.graphMatch <- function(match) {
     }
     cat(", # Vertices: ", paste(dim(match), collapse = ", "))
     cat("\n")
+    match$edge_match_info
     if(!is.null(match$edge_match_info)) {
       ep <- as.data.frame(t(match$edge_match_info))
-      colnames(ep) <- NULL
-      print(ep)
+      ep <- cbind(
+        data.frame(name = rownames(ep)),
+        ep)
+      rownames(ep) <- NULL
+      if(ep$name[1] == "layer") {
+        colnames(ep) <- sapply(ep[1,], as.character)
+        ep <- ep[2:nrow(ep),]
+      } else {
+        colnames(ep) <- NULL
+      }
+      print(ep, row.names = FALSE)
     }
 }
 

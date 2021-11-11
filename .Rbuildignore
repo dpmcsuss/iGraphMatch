@@ -10,4 +10,4 @@
 ^\.github$
 ^CRAN-RELEASE$
 ^cran-comments\.md$
-^todo\.md$
+^todo\.R?md$

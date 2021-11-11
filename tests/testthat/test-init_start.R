@@ -20,8 +20,10 @@ set.seed(123)
 test_that("bari start w/o soft seeds", {
   expected <- splr(Matrix(0,2,2),
     a = Matrix(c(1,1),2), b = Matrix(c(.5,.5),2))
-  expect_equal(init_start(start = "bari", nns = 2),
-               expected)
+  s <- init_start(start = "bari", nns = 2)
+  expect_equal(as.matrix(s@x), as.matrix(expected@x), ignore_attr = TRUE)
+  expect_equal(as.matrix(s@a), as.matrix(expected@a), ignore_attr = TRUE)
+  expect_equal(as.matrix(s@b), as.matrix(expected@b), ignore_attr = TRUE)
 })
 set.seed(123)
 test_that("random doubly stochastic start w/o soft seeds", {
@@ -33,7 +35,7 @@ set.seed(123)
 test_that("doubly stochastic matrix start w/o soft seeds",
   {
     expect_snapshot_output(
-      init_start(start = "rds_perm_bari", nns = 2)
+      as.matrix(init_start(start = "rds_perm_bari", nns = 2))
     )
   }
 )

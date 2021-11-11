@@ -31,6 +31,6 @@ Internal function that checks that a similarity matrix satisfies
 \details{
 The goal here is to be flexible in terms of the dimensions of the similarity matrix
  passed to \link{gm}. This is useful when the graphs have different orders in which case
- accept either similarity matrices with dimension equal that of orders of the original graphs
+ the function accepts matrices with dimensions equal to that of orders of the original graphs
  or the number of nonseeds.
 }

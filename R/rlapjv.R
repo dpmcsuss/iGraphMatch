@@ -2,7 +2,7 @@
 
 #' @title Solves a linear assignment problem using the Jonker-Vogenant algorithm or LAPMOD variant
 #'
-#' @description Find the matching of rows to columns that minimizes or maximizes 
+#' @description Find the matching of rows to columns that minimizes or maximizes
 #' the cost. See \link{do_lap} for usage.
 #'
 #' @param cost For lapjv, an object that can be coerced to a matrix. For lapmod, a sparseMatrix.
@@ -11,13 +11,18 @@
 #'
 #' @details The C++ code for these method is modified from code in the
 #'  \href{https://github.com/Bram94/lapjv}{python lapjv} package.
-#'  
+#'
 #'  The cost matrix is padded with a single row and column of very large entries that
 #'  helps to avoid stability issues with the algorithms.
 #'
 #' @return The assignment of rows to columns as a vector.
 #'
+#' @references R. Jonker, A. Volgenant (1987). \emph{A shortest augmenting path algorithm
+#' for dense and sparse linear assignment problems}. Computing, pages 325-340.
+#'
 #' @rdname lapjv
+#'
+#' @keywords internal
 lapjv <- function(cost, maximize = FALSE) {
     m <- max(cost, 10)
     n <- nrow(cost)
@@ -44,23 +49,25 @@ lapmod_index <- function(n, cc, ii, kk, maximize = FALSE) {
 }
 
 #' @rdname lapjv
+#'
+#' @references A. Volgenant (1996). \emph{Linear and Semi-Assignment Problems: A
+#'   Core Oriented Approach}. Computer Ops Res., pages 917-932.
+#'
+#' @keywords internal
 lapmod <- function(cost, maximize = FALSE){
     cost <- Matrix::Matrix(cost, sparse = TRUE)
     n <- nrow(cost)
     m <- max(abs(cost@x), 2)
     sign <- ifelse(maximize, -1, 1)
     pad_vec <- sign * 1e5 * m * rep(1, n)
-    cost <- 
-        Matrix::rBind(
-            Matrix::cBind(
+    cost <-
+        rbind(
+            cbind(
                 cost,
                 sign * ceiling(m * 1e5 * stats::runif(n))
             ),
             c(pad_vec, - sign * 1e5 * m)
         )
-
-    rbind2(cbind2(cost, sign * 1e5 * (m * ceiling(stats::runif(n))),
-        c(pad_vec, - sign * 1e5 * m)))
     ind <- cpp_lapmod(n + 1, cost@x,
         cost@p, cost@i, maximize)
     if (ind[n + 1] <= n){
