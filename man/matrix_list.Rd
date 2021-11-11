@@ -29,6 +29,9 @@
 \alias{/,ANY,matrix_list-method}
 \alias{-,matrix_list,missing-method}
 \alias{names<-,matrix_list-method}
+\alias{tcrossprod,matrix_list,matrix_list-method}
+\alias{tcrossprod,ANY,matrix_list-method}
+\alias{tcrossprod,matrix_list,ANY-method}
 \title{Lists of Matrices}
 \usage{
 matrix_list(ml)
@@ -82,6 +85,12 @@ matrix_list(ml)
 \S4method{-}{matrix_list,missing}(e1, e2)
 
 \S4method{names}{matrix_list}(x) <- value
+
+\S4method{tcrossprod}{matrix_list,matrix_list}(x, y)
+
+\S4method{tcrossprod}{ANY,matrix_list}(x, y)
+
+\S4method{tcrossprod}{matrix_list,ANY}(x, y)
 }
 \arguments{
 \item{ml}{A list of matrices}
