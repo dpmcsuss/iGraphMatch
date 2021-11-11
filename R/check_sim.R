@@ -36,6 +36,10 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
   # if not we need to check dimensions
   dim_sim <- dim(sim)
 
+  # TODO: it feels like this could get a little buggy based
+  # on the fact the error checking is now a bit conditional on
+  # square
+
   # first, if the sim is not square, we pad it to be square
   if(square && dim_sim[1] != dim_sim[2]){
     # has to be one of these dimensions
