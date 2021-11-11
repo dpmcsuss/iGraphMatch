@@ -273,3 +273,43 @@ setMethod(
     ))
   }
 )
+
+
+
+#' @rdname matrix_list
+setMethod(
+  "crossprod",
+  signature(x = "matrix_list", y = "matrix_list"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(x),
+      function(i) crossprod(x[[i]], y[[i]])
+    ))
+  }
+)
+
+#' @rdname matrix_list
+setMethod(
+  "crossprod",
+  signature(x = "ANY", y = "matrix_list"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(y),
+      function(i) crossprod(x, y[[i]])
+    ))
+  }
+)
+
+
+
+#' @rdname matrix_list
+setMethod(
+  "crossprod",
+  signature(x = "matrix_list", y = "ANY"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(x),
+      function(i) crossprod(x[[i]], y)
+    ))
+  }
+)

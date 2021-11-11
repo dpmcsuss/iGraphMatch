@@ -263,7 +263,7 @@ md <- Matrix(runif(30), 3, 10)
 ms <- rsparsematrix(3, 10, .2)
 m <- matrix(runif(100), 10, 10)
 
-test_that("tcrossproduct works",{
+test_that("tcrossprod works",{
   expect_lt(
     sum(abs(
       as.matrix(tcrossprod(s,s))-
@@ -310,6 +310,63 @@ test_that("tcrossproduct works",{
     sum(abs(
       as.matrix(tcrossprod(m,s))-
       tcrossprod(as.matrix(m), as.matrix(s))
+    )),
+    1e12
+  )
+})
+  
+
+md <- Matrix(runif(30), 10, 3)
+ms <- rsparsematrix(10, 3, .2)
+m <- matrix(runif(100), 10, 10)
+
+test_that("crossproduct works",{
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(s,s))-
+      crossprod(as.matrix(s), as.matrix(s))
+    )),
+    1e12
+  )
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(s,md))-
+      crossprod(as.matrix(s), as.matrix(md))
+    )),
+    1e12
+  )
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(md,s))-
+      crossprod(as.matrix(md), as.matrix(s))
+    )),
+    1e12
+  )
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(s,ms))-
+      crossprod(as.matrix(s), as.matrix(ms))
+    )),
+    1e12
+  )
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(ms,s))-
+      crossprod(as.matrix(ms), as.matrix(s))
+    )),
+    1e12
+  )
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(s,m))-
+      crossprod(as.matrix(s), as.matrix(m))
+    )),
+    1e12
+  )
+  expect_lt(
+    sum(abs(
+      as.matrix(crossprod(m,s))-
+      crossprod(as.matrix(m), as.matrix(s))
     )),
     1e12
   )

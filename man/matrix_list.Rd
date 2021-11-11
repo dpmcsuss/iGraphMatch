@@ -32,6 +32,9 @@
 \alias{tcrossprod,matrix_list,matrix_list-method}
 \alias{tcrossprod,ANY,matrix_list-method}
 \alias{tcrossprod,matrix_list,ANY-method}
+\alias{crossprod,matrix_list,matrix_list-method}
+\alias{crossprod,ANY,matrix_list-method}
+\alias{crossprod,matrix_list,ANY-method}
 \title{Lists of Matrices}
 \usage{
 matrix_list(ml)
@@ -91,6 +94,12 @@ matrix_list(ml)
 \S4method{tcrossprod}{ANY,matrix_list}(x, y)
 
 \S4method{tcrossprod}{matrix_list,ANY}(x, y)
+
+\S4method{crossprod}{matrix_list,matrix_list}(x, y)
+
+\S4method{crossprod}{ANY,matrix_list}(x, y)
+
+\S4method{crossprod}{matrix_list,ANY}(x, y)
 }
 \arguments{
 \item{ml}{A list of matrices}
