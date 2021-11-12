@@ -46,6 +46,10 @@ do_lap <- function(score, method = "clue"){
   if (!inherits(score, c("matrix", "Matrix"))) {
     stop("score must a matrix-like object.")
   }
+  diff <- dim(score)[1] - dim(score)[2]
+  if (method != "rect" && diff != 0){
+    score <- pad(score, max(-diff, 0), max(diff, 0))
+  }
   n <- nrow(score)
   method <- set_lap_method(method, n, n)
   switch(method,

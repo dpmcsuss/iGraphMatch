@@ -83,13 +83,13 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   nonseeds <- check_seeds(seeds, c(totv1, totv2))$nonseeds
   ns <- nrow(seeds)
   nn <- totv1 - ns
-
+  
   # TODO: remove [[1]]
   # TODO: modify initstart to take nn1 and nn2
-  P <- init_start(start = start, nns = nn, ns = ns,
+  P <- init_start(start = start, nns = totv2 - ns, ns = ns,
     A = A[[1]], B = B[[1]], seeds = seeds)
 
-  P <- P[seq(totv1), seq(totv2)]
+  P <- P[seq(totv1 - ns), seq(totv2 - ns)]
 
   iter <- 0
   toggle <- TRUE
@@ -99,7 +99,7 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   rpmat <- Matrix::Diagonal(totv2 - ns)[rp, ]
 
   # similarity and seed to non-seed
-  similarity <- similarity %*% Matrix::t(rpmat) +
+  similarity <- similarity[seq(totv1 - ns), seq(totv2 - ns)] %*% Matrix::t(rpmat) +
     get_s_to_ns(A, B, seeds, nonseeds, rp)
 
   # keep only nonseeds
@@ -116,10 +116,10 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
     Grad <- tAnn_P_Bnn + similarity +
       ml_sum(tcrossprod(A %*% P, B))
 
-    ind <- do_lap(Grad, lap_method)
+    ind <- do_lap(Grad, lap_method)[seq(totv1 - ns)]
 
     ind2 <- cbind(1:nn, ind)
-    Pdir <- Matrix::Diagonal(nn)
+    Pdir <- Matrix::Diagonal(totv2 - ns)
     Pdir <- Pdir[ind, ]
     tAnn_Pdir_Bnn <- ml_sum(crossprod(A, B[ind, ]))
 
@@ -153,13 +153,13 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
     warning("Frank-Wolfe iterations reached the maximum iteration, convergence may not occur.")
   }
 
-  corr_ns <- do_lap(P, lap_method)
+  corr_ns <- do_lap(P, lap_method)[seq(totv1 - ns)]
 
 
   # undo rand perm here
   corr_ns <- rp[corr_ns]
 
-  corr <- 1:nv
+  corr <- 1:totv1
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
 
@@ -175,7 +175,7 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   cl <- match.call()
 
   graphMatch(
-    corr = data.frame(corr_A = 1:nv, corr_B = corr),
+    corr = data.frame(corr_A = 1:totv1, corr_B = corr),
     nnodes = c(totv1, totv2),
     call = cl,
     detail = list(

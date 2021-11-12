@@ -102,7 +102,7 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   }
 
   # A, B argument checks
-  same_order <- method != "indefinite"  
+  same_order <- is.function(method) || method != "indefinite"  
   graph_pair <- check_graph(A, B, same_order = same_order)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
@@ -114,13 +114,14 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   seeds <- seed_check$seeds
   nonseeds <- seed_check$nonseeds
 
+
   # similarity score matrix argument check
   sim_missing <- is.null(similarity)
   similarity <- check_sim(
     similarity, 
     seeds, nonseeds, 
     totv1, totv2, 
-    for_nonseeds = method == "IsoRank",
+    for_nonseeds = is.function(method) || method != "IsoRank",
     square = same_order
   )
 
@@ -133,7 +134,7 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   } else if(method == "PATH"){
     m <- graph_match_PATH(A, B, seeds, similarity, ...)
   } else if(method == "percolation"){
-    if(nrow(seeds) == 0 & sim_missing){
+    if(nrow(seeds) == 0 && sim_missing){
       stop("At least one of seeds and similarity score should be known for this method.")
     }
     m <- graph_match_percolation(A, B, seeds, similarity, ...)

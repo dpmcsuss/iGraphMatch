@@ -59,14 +59,14 @@ check_seeds <- function(seeds, nv, logical = FALSE){
     stop("Unrecognized seeds input format: seeds must be a vector of integers or logicals, a matrix or a data frame.")
   }
 
-  if(logical==TRUE){
+  if(logical == TRUE){
     if(nv[1] != nv[2]) {
       stop("logical seed vector can only be returned if graph are of the same order")
     }
-    if(seeds_g1 != seeds_g2) {
-      stop("logical seed vector can only be returned if seed indices are equal")
-    }
-    seeds <- rep(FALSE, nv)
+    # if(seed_g1 != seed_g2) {
+    #   stop("logical seed vector can only be returned if seed indices are equal")
+    # }
+    seeds <- rep(FALSE, nv[1])
     seeds[seed_g1] <- TRUE
     seeds
   } else{

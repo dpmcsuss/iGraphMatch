@@ -63,11 +63,14 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
   if(for_nonseeds){
     if(dim_sim == nn || (square && dim_sim[1] == max(nn))){
       return(sim)
-    } else if(dim_sim == nv){
+    } else {
       # otherwise keep only nonseeds
       return(sim[nonseeds$A, nonseeds$B])
     }
   } else {
+    if(all(dim_sim + ns == c(totv1, totv2))) {
+      return(pad(sim, ns, ns))
+    }
     if(any(dim_sim < nv)){
       stop(paste0("Similarity matrices must have dimension equal to ",
                   totv1, " x ", totv2, "."))

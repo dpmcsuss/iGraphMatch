@@ -4,7 +4,15 @@
 \alias{check_sim}
 \title{Check the similarity matrix passed to a matching function}
 \usage{
-check_sim(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE)
+check_sim(
+  sim,
+  seeds,
+  nonseeds,
+  totv1,
+  totv2,
+  for_nonseeds = TRUE,
+  square = TRUE
+)
 }
 \arguments{
 \item{sim}{Similarity matrix}
