@@ -111,17 +111,18 @@ rect_lap <- function(g_rect) {
 
 
 rect_lap_inner <- function(x, maximize) {
+  x <- as.matrix(x)
   if(maximize) {
-    x <- (1 + max(x)) - x
+    x <- (1 + max(x)) - as.matrix(x)
   }
 
   n <- nrow(x)
   m <- ncol(x)
-  k <- n + m
+  k <- max(n, m)
 
   xpad <- matrix(max(x) + 1, k, k)
   xpad[1:n, 1:m] <- as.matrix(x)
-  xpad[(n + 1):k, (m + 1):k] <- 0
+  # xpad[(n + 1):k, (m + 1):k] <- 0
 
   ind <- cpp_lapjv(xpad, maximize = FALSE)
 
