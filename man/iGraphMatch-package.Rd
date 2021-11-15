@@ -6,12 +6,7 @@
 \alias{iGraphMatch-package}
 \title{iGraphMatch: Tools Graph Matching}
 \description{
-Graph matching methods and analysis. The package
-  works for both 'igraph' objects and matrix objects. You provide the adjacency
-  matrices of two graphs and some other information you might know, choose the
-  graph matching method, and it returns the graph matching results. 'iGraphMatch'
-  also provides a bunch of useful functions you might need related to graph
-  matching.
+Graph matching methods and analysis. The package works for both 'igraph' objects and matrix objects. You provide the adjacency matrices of two graphs and some other information you might know, choose the graph matching method, and it returns the graph matching results. 'iGraphMatch' also provides a bunch of useful functions you might need related to graph matching.
 }
 \author{
 \strong{Maintainer}: Daniel Sussman \email{sussman@bu.edu}
