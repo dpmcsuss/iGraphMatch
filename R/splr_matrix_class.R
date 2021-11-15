@@ -519,6 +519,16 @@ setMethod("-", signature("ANY","splrMatrix"), function(e1, e2) {
 })
 
 
+setMethod("max", signature("splrMatrix"),
+  function(x, ..., na.rm = FALSE) {
+    max(
+      sapply(
+        seq(nrow(x)), 
+        function(r) max(x[r,])
+      )
+    )
+  }
+)
 
 
 #frobenius norm
@@ -740,6 +750,9 @@ row_index <- function(x, i, ..., drop) {
     j <- numeric()
   }
 
+  if(length(i) == 1) {
+    return(x@x[i, j,...] + tcrossprod(x@a[i, ], x@b[j, ]))
+  }
 
   if (drop) {
    warning("drop = TRUE is ignored for the splrMatrix class. cast to another class first")
