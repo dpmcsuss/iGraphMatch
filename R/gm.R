@@ -95,7 +95,7 @@
 #'
 gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...){
 
-  methods <- c("indefinite", "convex", "PATH", "percolation", "IsoRank", "Umeyama")
+  methods <- c("indefinite", "convex", "PATH", "percolation", "IsoRank", "Umeyama", "sinkhorn")
   if (!is.function(method) && !(method %in% methods)) {
     stop("Method must be one of: ", paste0(paste(methods, collapse = ", "),
                                            " or a function that takes a pair of graphs and other prior knowledge if applicable."))
@@ -145,6 +145,8 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
     m <- graph_match_IsoRank(A, B, seeds, similarity, ...)
   } else if(method == "Umeyama"){
     m <- graph_match_Umeyama(A, B, seeds, similarity)
+  } else if(method == "sinkhorn") {
+    m <- graph_match_sinkhorn(A, B, seeds, similarity, ...)
   }
   tryCatch(
     {

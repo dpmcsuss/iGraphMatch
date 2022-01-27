@@ -523,8 +523,8 @@ setMethod("max", signature("splrMatrix"),
   function(x, ..., na.rm = FALSE) {
     max(
       sapply(
-        seq(nrow(x)), 
-        function(r) max(x[r,])
+        seq(ncol(x)), 
+        function(r) max(x[,r])
       )
     )
   }

@@ -15,15 +15,37 @@ rds_sinkhorn_start <- function(nns, ns = 0, soft_seeds = NULL, distribution = "r
     distribution = distribution)
 }
 
-sinkhorn <- function(m, niter=20){
-  # m <- matrix(abs(runif(n^2)), n)
-  for(i in 1:niter){
-    r <- Matrix::colSums(m)
-    r[r == 0] <- 1
-    m <- t(m %*% Matrix::Diagonal(x = 1 / r))
+# sinkhorn <- function(m, niter=20){
+#   # m <- matrix(abs(runif(n^2)), n)
+#   for(i in 1:niter){
+#     cs <- Matrix::colSums(m)
+#     cs[cs == 0] <- 1
+#     rs <- Matrix::rowSums(m)
+#     rs[rs == 0] <- 1
+#     m <- Matrix::Diagonal(x = 1 / rs) %*%
+#       m %*% Matrix::Diagonal(x = 1 / cs)
+#   }
+#   m
+# }
+
+sinkhorn <- function(m, niter = 20) {
+  d <- dim(m)
+  if(d[1] != d[2]) {
+    if(d[1] < d[2]) {
+      return(Matrix::Diagonal(x = 1 / rowSums(m)) %*% m)
+    } else {
+      return(m %*% Matrix::Diagonal(x = 1 / colSums(m)))
+    }
+    
   }
-  m
+  rs <- rep(1, d[1])
+  for(i in 1:niter) {
+    cs <- 1 / crossprod(m, rs)
+    rs <- 1 / (m %*% cs)
+  }
+  Matrix::Diagonal(x = rs) %*% m %*% Matrix::Diagonal(x = cs)
 }
+
 
 rds_sinkhorn <- function(n, distribution="runif"){
   sinkhorn(matrix(abs(do.call(distribution, list(n^2))), n))
