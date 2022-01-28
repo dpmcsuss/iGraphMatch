@@ -518,7 +518,7 @@ setMethod("-", signature("ANY","splrMatrix"), function(e1, e2) {
   .leftadd(-e2, e1)
 })
 
-
+#' @rdname splrMatrix_method
 setMethod("max", signature("splrMatrix"),
   function(x, ..., na.rm = FALSE) {
     max(

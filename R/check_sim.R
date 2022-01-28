@@ -10,6 +10,7 @@
 #' @param totv2 total number of vertices in the second graph
 #' @param for_nonseeds Whether the similarities are between non-seed nodes only (default = TRUE), or 
 #'  if similarities among seed nodes are included (FALSE)
+#' @param square logical whether to return a square (padded) similarity matrix
 #'
 #' @details The goal here is to be flexible in terms of the dimensions of the similarity matrix
 #'  passed to \link{gm}. This is useful when the graphs have different orders in which case
@@ -25,8 +26,6 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
   ns <- nrow(seeds)
   nn <- sapply(nonseeds, length)
   nv <- ns + nn
-
-  # nv == max(totv1, totv2)
 
   # if its null then start with the zero matrix
   if (is.null(sim)) {
@@ -48,7 +47,8 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
       diff <- totv1 - totv2
       sim <- pad(sim, max(-diff, 0), max(diff, 0))
     } else {
-      stop(paste0("Non square similarity matrices must have dimension equal to ",
+      stop(paste0("Non square similarity matrices ",
+        "must have dimension equal to ",
         "that of the original graphs, ", totv1, " x ", totv2,
         ", or that of the nonseeds, ", totv1 - ns, " x ", totv2 - ns,
         "."))
@@ -61,7 +61,7 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
 
   # if they are nonseeds x nonseeds we're good
   if(for_nonseeds){
-    if(dim_sim == nn || (square && dim_sim[1] == max(nn))){
+    if(all(dim_sim == nn) || (square && dim_sim[1] == max(nn))){
       return(sim)
     } else {
       # otherwise keep only nonseeds
@@ -81,7 +81,8 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
 
 
   # otherwise, things seem wrong
-  stop(paste0("Square similarity matrices must have dimension equal to the number of nonseeds, ",
-      nn, ", or the total number of vertices, ", nv, "."))
+  stop(paste0("Square similarity matrices must have dimension ",
+      "equal to the number of nonseeds, ",
+      max(nn), ", or the total number of vertices, ", nv, "."))
 
 }

@@ -1,8 +1,12 @@
-#' @rdname gm_sinkhorn
+#' @rdname gm_fw
 #'
-#' @references Y. Aflalo and A. Bronstein and R. Kimmel (2014), \emph{On convex
-#' relaxation of graph isomorphism}. Proceedings of the National Academy of Sciences,
-#' pages 2942-2947.
+#' @details The "sinkhorn" method solves the convex problem but uses an
+#' approximate solution to the linear assignment problem to find the
+#' gradient ascent direction.
+#'
+#' @references M. Cuturi,
+#' \emph{Sinkhorn Distances: Lightspeed Computation of Optimal Transport},
+#' in Advances in Neural Information Processing Systems 26, pp. 2292–2300.
 #'
 #' @examples
 #' cgnp_pair <- sample_correlated_gnp_pair(n = 500, corr =  0.9, p =  0.5)

@@ -27,6 +27,8 @@ check_sim(
 
 \item{for_nonseeds}{Whether the similarities are between non-seed nodes only (default = TRUE), or 
 if similarities among seed nodes are included (FALSE)}
+
+\item{square}{logical whether to return a square (padded) similarity matrix}
 }
 \value{
 Standardized similarity matrix for similarities only between nonseeds across

@@ -49,6 +49,7 @@
 \alias{-,Matrix,splrMatrix-method}
 \alias{-,numeric,splrMatrix-method}
 \alias{-,ANY,splrMatrix-method}
+\alias{max,splrMatrix,ANY-method}
 \alias{norm,splrMatrix,character-method}
 \alias{rowSums,splrMatrix-method}
 \alias{colSums,splrMatrix-method}
@@ -191,6 +192,8 @@
 
 \S4method{-}{ANY,splrMatrix}(e1, e2)
 
+\S4method{max}{splrMatrix,ANY}(x, ..., na.rm = FALSE)
+
 \S4method{norm}{splrMatrix,character}(x, type, ...)
 
 \S4method{rowSums}{splrMatrix}(x, na.rm = FALSE, dims = 1, ...)
@@ -298,11 +301,11 @@
 
 \item{e2}{As in "Matrix"}
 
-\item{type}{As in "Matrix"}
-
 \item{...}{As in "Matrix"}
 
 \item{na.rm}{As in "Matrix"}
+
+\item{type}{As in "Matrix"}
 
 \item{dims}{As in "Matrix"}
 

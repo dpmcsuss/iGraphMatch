@@ -18,7 +18,8 @@ Imports:
     igraph (>= 1.1.2),
     irlba,
     methods,
-    Rcpp
+    Rcpp,
+    stats
 Suggests:
     spelling,
     dplyr (>= 0.5.0),
@@ -34,6 +35,6 @@ LazyData: TRUE
 RoxygenNote: 7.1.2
 Language: en-US
 Encoding: UTF-8
-LinkingTo:  
+LinkingTo: 
     Rcpp
 Config/testthat/edition: 3

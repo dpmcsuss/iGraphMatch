@@ -43,7 +43,8 @@ sinkhorn <- function(m, niter = 20) {
     cs <- 1 / crossprod(m, rs)
     rs <- 1 / (m %*% cs)
   }
-  Matrix::Diagonal(x = rs) %*% m %*% Matrix::Diagonal(x = cs)
+  Matrix::Diagonal(x = as.vector(rs)) %*% m %*%
+    Matrix::Diagonal(x = as.vector(cs))
 }
 
 
