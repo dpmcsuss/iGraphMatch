@@ -63,7 +63,7 @@ check_sim <- function(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE, s
   if(for_nonseeds){
     if(all(dim_sim == nn) || (square && dim_sim[1] == max(nn))){
       return(sim)
-    } else {
+    } else if (all(dim_sim == nn + ns) || all(dim_sim == max(nn) + ns)) {
       # otherwise keep only nonseeds
       return(sim[nonseeds$A, nonseeds$B])
     }

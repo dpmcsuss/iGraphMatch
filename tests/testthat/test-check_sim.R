@@ -31,10 +31,10 @@ test_that(
   "error on wrong square dim",
   {
     expect_error({
-      sim_bad <- matrix(runif((n / 2) * (n / 2)), (n / 2))
-      gm(A, B, start = "bari", sim = sim_bad, method = "indefinite")
-    },
-    ".*")
-    # "Square similarity matrices.*")
+        sim_bad <- matrix(runif((n / 2) * (n / 2)), (n / 2))
+        gm(A, B, start = "bari", sim = sim_bad, method = "indefinite")
+      },
+      ".*Square similarity matrices must have dimension equal.*"
+    )
   }
 )

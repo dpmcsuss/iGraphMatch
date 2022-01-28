@@ -61,7 +61,7 @@ check_seeds <- function(seeds, nv, logical = FALSE){
 
   if(logical == TRUE){
     if(nv[1] != nv[2]) {
-      stop("logical seed vector can only be returned if graph are of the same order")
+      stop("logical seed vector can only be returned if graphs are of the same order")
     }
     # if(seed_g1 != seed_g2) {
     #   stop("logical seed vector can only be returned if seed indices are equal")
@@ -72,8 +72,8 @@ check_seeds <- function(seeds, nv, logical = FALSE){
   } else{
     seeds <- data.frame(A=seed_g1, B=seed_g2)
     nonseeds <- list(
-        A = which(!(1:nv[1] %in% seeds$A)),
-        B = which(!(1:nv[2] %in% seeds$B))
+        A = which(!(1:(nv[1]) %in% seeds$A)),
+        B = which(!(1:(nv[2]) %in% seeds$B))
       )
 
     list(seeds = seeds, nonseeds = nonseeds)

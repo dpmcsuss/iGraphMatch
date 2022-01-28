@@ -18,7 +18,21 @@ test_that("no seeds", {
                     nonseeds = list(A = 1:3, B = 1:3)))
 })
 
-## TODO Check seeds for different sized graphs
+
+test_that("different size graphs", {
+  expect_equal(
+    check_seeds(seeds = NULL, nv = c(3, 5)),
+    list(seeds = structure(
+      list(A = numeric(0), B = numeric(0)),
+      class = "data.frame", row.names = integer(0)
+    ),
+    nonseeds = list(A = 1:3, B = 1:5))
+  )
+  expect_error(
+    check_seeds(seeds = NULL, nv = c(3, 5), logical = TRUE),
+    ".*logical seed vector can only be returned if graphs are of the same order.*"
+  )
+})
 
 test_that("example in documentation", {
   expect_equal(check_seeds(1:10 <= 3, nv = 10)$seeds, data.frame(A = 1:3, B = 1:3))
