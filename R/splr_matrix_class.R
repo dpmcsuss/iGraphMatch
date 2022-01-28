@@ -603,7 +603,7 @@ setMethod(
   signature(x = "matrix_list", y = "matrix_list"),
   function(x, y){
     sum(sapply(
-      seq_along(x),
+      named_idx(x),
       function(i) innerproduct(x[[i]], y[[i]])
     ))
   }

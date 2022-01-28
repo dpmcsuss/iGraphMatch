@@ -33,6 +33,7 @@ matrix_list <- matrix_list <- function(ml)
 named_idx <- function(x) {
   i <- seq_along(x)
   names(i) <- names(x)
+  i
 }
 
 #' @rdname matrix_list
