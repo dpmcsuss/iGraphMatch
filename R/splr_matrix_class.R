@@ -518,7 +518,17 @@ setMethod("-", signature("ANY","splrMatrix"), function(e1, e2) {
   .leftadd(-e2, e1)
 })
 
-
+#' @rdname splrMatrix_method
+setMethod("max", signature("splrMatrix"),
+  function(x, ..., na.rm = FALSE) {
+    max(
+      sapply(
+        seq(ncol(x)), 
+        function(r) max(x[,r])
+      )
+    )
+  }
+)
 
 
 #frobenius norm
@@ -593,7 +603,7 @@ setMethod(
   signature(x = "matrix_list", y = "matrix_list"),
   function(x, y){
     sum(sapply(
-      seq_along(x),
+      named_idx(x),
       function(i) innerproduct(x[[i]], y[[i]])
     ))
   }
@@ -740,6 +750,9 @@ row_index <- function(x, i, ..., drop) {
     j <- numeric()
   }
 
+  if(length(i) == 1) {
+    return(x@x[i, j,...] + tcrossprod(x@a[i, ], x@b[j, ]))
+  }
 
   if (drop) {
    warning("drop = TRUE is ignored for the splrMatrix class. cast to another class first")
@@ -945,3 +958,224 @@ setAs(
   "splrMatrix", "dgeMatrix",
   function(from) from@x + Matrix::tcrossprod(from@a, from@b)
 )
+
+
+#_/\_/\_/\_/\_/\_/\_/\_/\_#
+
+
+# tcrossproduct aka  x %*% t(y)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "splrMatrix"),
+  function(x, y) {
+    splr(
+      Matrix::tcrossprod(x@x, y@x),
+      cbind(
+        x@a,
+        x@x %*% y@b
+      ),
+      cbind(
+        y@x %*% x@b + y@a %*% Matrix::crossprod(y@b, x@b),
+        y@a
+      )
+    )
+  }
+)
+
+.tcrossprod_left <- function(x, y) {
+  Matrix::tcrossprod(x@x, y) +
+  Matrix::tcrossprod(x@a, y %*% x@b)
+}
+
+.tcrossprod_right <- function(x, y) {
+  Matrix::tcrossprod(x, y@x) +
+  Matrix::tcrossprod(x %*% y@b, y@a)
+}
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "Matrix"),
+  function(x, y) {
+    if (is(y, "sparseMatrix")) {
+      splr(
+        Matrix::tcrossprod(x@x, y),
+        x@a,
+        y %*% x@b
+      )
+    } else {
+      .tcrossprod_left(x, y)
+    }
+  }
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "Matrix", y = "splrMatrix"),
+  function(x, y) {
+    if (is(x, "sparseMatrix")) {
+      splr(
+        Matrix::tcrossprod(x, y@x),
+        x %*% y@b,
+        y@a
+      )
+    } else {
+      .tcrossprod_right(x, y)
+    }
+  }
+)
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "matrix"),
+  .tcrossprod_left
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "matrix", y = "splrMatrix"),
+  .tcrossprod_right
+)
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "splrMatrix", y = "ANY"),
+  .tcrossprod_left
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "tcrossprod", 
+  signature(x = "ANY", y = "splrMatrix"),
+  .tcrossprod_right
+)
+
+
+
+
+
+#_/\_/\_/\_/\_/\_/\_/\_/\_#
+
+
+# crossprod aka  t(x) %*% y
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "splrMatrix", y = "splrMatrix"),
+  function(x, y) {
+    splr(
+      Matrix::crossprod(x@x, y@x),
+      cbind(
+        x@b,
+        crossprod(x@x, y@a)
+      ),
+      cbind(
+        crossprod(y@x, x@a)  + y@b %*% crossprod(y@a, x@a),
+        y@b
+      )
+    )
+  }
+)
+
+.crossprod_left <- function(x, y) {
+  Matrix::crossprod(x@x, y) +
+  x@b %*% Matrix::crossprod(x@a, y)
+}
+
+.crossprod_right <- function(x, y) {
+  Matrix::crossprod(x, y@x) +
+  Matrix::tcrossprod(Matrix::crossprod(x, y@a), y@b)
+}
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "splrMatrix", y = "Matrix"),
+  function(x, y) {
+    if (is(y, "sparseMatrix")) {
+      splr(
+        Matrix::crossprod(x@x, y),
+        x@b,
+        crossprod(y, x@a)
+      )
+    } else {
+      .crossprod_left(x, y)
+    }
+  }
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "Matrix", y = "splrMatrix"),
+  function(x, y) {
+    if (is(x, "sparseMatrix")) {
+      splr(
+        Matrix::crossprod(x, y@x),
+        crossprod(x, y@a),
+        y@b
+      )
+    } else {
+      .crossprod_right(x, y)
+    }
+  }
+)
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "splrMatrix", y = "matrix"),
+  .crossprod_left
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "matrix", y = "splrMatrix"),
+  .crossprod_right
+)
+
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "splrMatrix", y = "ANY"),
+  .crossprod_left
+)
+
+
+#' @rdname splrMatrix_method
+setMethod(
+  "crossprod", 
+  signature(x = "ANY", y = "splrMatrix"),
+  .crossprod_right
+)
+
+
+
+

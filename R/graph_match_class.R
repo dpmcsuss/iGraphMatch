@@ -30,6 +30,42 @@ setClass("graphMatch",
   contains = 'list'
 )
 
+
+.construct_graphMatch <- 
+  function(
+    corr,
+    nnodes,
+    call = NULL,
+    detail = list()
+  ) {
+
+  if (!is.data.frame(corr)) {
+    stop("Correspondence corr must be stored as a data.frame")
+  }
+  gm <- new(
+    "graphMatch",
+    corr = corr,
+    nnodes = nnodes
+  )
+  if (is.null(call)) {
+    #browser()
+    call <- call("no call")
+  }
+  gm@call <- call
+  for (n in names(detail)) {
+    gm[[n]] <- detail[[n]]
+  }
+  if ("seeds" %in% names(detail)) {
+    gm$seeds <- check_seeds(
+      gm$seeds,
+      max(nnodes),
+      logical = TRUE
+    )[corr$corr_A]
+  }
+  # gm@.Data <- detail
+  gm
+}
+
 #' @rdname graphMatch_constructor
 #'
 #' @param corr data.frame indicating the correspondence between two graphs
@@ -74,39 +110,7 @@ setClass("graphMatch",
 #' @export
 setGeneric(
   name = "graphMatch",
-  def = function(
-    corr,
-    nnodes,
-    call = NULL,
-    detail = list()
-  ) {
-
-    if (!is.data.frame(corr)) {
-      stop("Correspondence corr must be stored as a data.frame")
-    }
-    gm <- new(
-      "graphMatch",
-      corr = corr,
-      nnodes = nnodes
-    )
-    if (is.null(call)) {
-      #browser()
-      call <- call("no call")
-    }
-    gm@call <- call
-    for (n in names(detail)) {
-      gm[[n]] <- detail[[n]]
-    }
-    if ("seeds" %in% names(detail)) {
-      gm$seeds <- check_seeds(
-        gm$seeds,
-        max(nnodes),
-        logical = TRUE
-      )[corr$corr_A]
-    }
-    # gm@.Data <- detail
-    gm
-  }
+  def = .construct_graphMatch
 )
 
 
@@ -351,11 +355,11 @@ setMethod("%*%", signature(x = "graphMatch", y = "igraph"),
 #' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "igraph", y = "graphMatch"),
   function(x, y) {
-
     m <- min(dim(y))
     cA <- y[,1]
     cB <- y[,2]
-    permuted_subgraph(x, cA[order(cB[cB <= m])])
+    # below is also a bit hacky in that it assumes order(B)>=order(A)
+    permuted_subgraph(x, cA[order(cB)])
   }
 )
 

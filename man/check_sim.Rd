@@ -4,7 +4,15 @@
 \alias{check_sim}
 \title{Check the similarity matrix passed to a matching function}
 \usage{
-check_sim(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE)
+check_sim(
+  sim,
+  seeds,
+  nonseeds,
+  totv1,
+  totv2,
+  for_nonseeds = TRUE,
+  square = TRUE
+)
 }
 \arguments{
 \item{sim}{Similarity matrix}
@@ -19,6 +27,8 @@ check_sim(sim, seeds, nonseeds, totv1, totv2, for_nonseeds = TRUE)
 
 \item{for_nonseeds}{Whether the similarities are between non-seed nodes only (default = TRUE), or 
 if similarities among seed nodes are included (FALSE)}
+
+\item{square}{logical whether to return a square (padded) similarity matrix}
 }
 \value{
 Standardized similarity matrix for similarities only between nonseeds across
