@@ -28,7 +28,7 @@ test_that("error on no b and a is wrong dim",
 )
 
 s <- splr(x, ns, rank = 2)
-
+ml  <- matrix_list(list(ns, x))
 
 test_that("various operations work as expected",{
 
@@ -55,8 +55,13 @@ test_that("various operations work as expected",{
   expect_snapshot_output(s %*% s)
   expect_snapshot_output(s * s)
 
-  expect_snapshot_output(ml <- matrix_list(list(ns, x)))
+  expect_snapshot_output(ml)
+})
 
+names(ml) <- c("layer1", "layer2")
+
+test_that("various other operations work as expected", {
+  expect_snapshot_output(ml)
   expect_snapshot_output(s %*% ml)
   expect_snapshot_output(x %*% s)
   expect_snapshot_output(ns %*% s)
@@ -97,8 +102,16 @@ test_that("various operations work as expected",{
   expect_snapshot_output(s + 3)
   expect_snapshot_output(s + s)
 
+  expect_snapshot_output(ml * ml)
+  expect_snapshot_output(ml / ml)
+  expect_snapshot_output(ml / 2)
+  expect_snapshot_output(1 - ml)
+  expect_snapshot_output(2 * ml)
+  expect_snapshot_output(2 / ml)
 
+})
 
+test_that("various more operations work as expected", {
 
 
   expect_snapshot_output(s * Diagonal(10))
