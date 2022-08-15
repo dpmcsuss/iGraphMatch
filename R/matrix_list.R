@@ -30,11 +30,16 @@ matrix_list <- matrix_list <- function(ml)
 # ml <- matrix_list(list(matrix(1:9, 3), matrix(0:8, 3)))
 # ml %*% ml
 
+named_idx <- function(x) {
+  i <- seq_along(x)
+  names(i) <- names(x)
+  i
+}
 
 #' @rdname matrix_list
 setMethod("%*%", signature(x = "matrix_list", y = "matrix_list"), 
   function(x, y){
-    matrix_list(lapply(seq_along(x), function(i) x[[i]] %*% y[[i]]))
+    matrix_list(lapply(named_idx(x), function(i) x[[i]] %*% y[[i]]))
   })
 
 
@@ -87,14 +92,14 @@ setMethod("[",
 #' @rdname matrix_list
 setMethod("%*%", signature(x = "matrix_list", y = "ANY"), 
   function(x, y){
-    matrix_list(lapply(seq_along(x), function(i) x[[i]] %*% y))
+    matrix_list(lapply(named_idx(x), function(i) x[[i]] %*% y))
   })
 
 
 #' @rdname matrix_list
 setMethod("%*%", signature(x = "ANY", y = "matrix_list"), 
   function(x, y){
-    matrix_list(lapply(seq_along(y), function(i) x %*% y[[i]]))
+    matrix_list(lapply(named_idx(y), function(i) x %*% y[[i]]))
   })
 
 
@@ -116,7 +121,7 @@ setMethod("^", signature(e1 = "matrix_list", e2 = "ANY"),
 #' @rdname matrix_list
 setMethod("-", signature(e1 = "matrix_list", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] - e2[[i]]))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] - e2[[i]]))
   })
 
 
@@ -124,7 +129,7 @@ setMethod("-", signature(e1 = "matrix_list", e2 = "matrix_list"),
 #' @rdname matrix_list
 setMethod("+", signature(e1 = "matrix_list", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] + e2[[i]]))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] + e2[[i]]))
   })
 
 
@@ -132,7 +137,7 @@ setMethod("+", signature(e1 = "matrix_list", e2 = "matrix_list"),
 #' @rdname matrix_list
 setMethod("*", signature(e1 = "matrix_list", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] * e2[[i]]))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] * e2[[i]]))
   })
 
 
@@ -140,7 +145,7 @@ setMethod("*", signature(e1 = "matrix_list", e2 = "matrix_list"),
 #' @rdname matrix_list
 setMethod("/", signature(e1 = "matrix_list", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] / e2[[i]]))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] / e2[[i]]))
   })
 
 
@@ -148,7 +153,7 @@ setMethod("/", signature(e1 = "matrix_list", e2 = "matrix_list"),
 #' @rdname matrix_list
 setMethod("-", signature(e1 = "matrix_list", e2 = "ANY"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] - e2))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] - e2))
   })
 
 
@@ -156,7 +161,7 @@ setMethod("-", signature(e1 = "matrix_list", e2 = "ANY"),
 #' @rdname matrix_list
 setMethod("+", signature(e1 = "matrix_list", e2 = "ANY"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] + e2))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] + e2))
   })
 
 
@@ -164,7 +169,7 @@ setMethod("+", signature(e1 = "matrix_list", e2 = "ANY"),
 #' @rdname matrix_list
 setMethod("*", signature(e1 = "matrix_list", e2 = "ANY"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] * e2))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] * e2))
   })
 
 
@@ -172,7 +177,7 @@ setMethod("*", signature(e1 = "matrix_list", e2 = "ANY"),
 #' @rdname matrix_list
 setMethod("/", signature(e1 = "matrix_list", e2 = "ANY"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e1), function(i) e1[[i]] / e2))
+    matrix_list(lapply(named_idx(e1), function(i) e1[[i]] / e2))
   })
 
 
@@ -180,7 +185,7 @@ setMethod("/", signature(e1 = "matrix_list", e2 = "ANY"),
 #' @rdname matrix_list
 setMethod("-", signature(e1 = "ANY", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e2), function(i) e1 - e2[[i]]))
+    matrix_list(lapply(named_idx(e2), function(i) e1 - e2[[i]]))
   })
 
 
@@ -188,14 +193,14 @@ setMethod("-", signature(e1 = "ANY", e2 = "matrix_list"),
 #' @rdname matrix_list
 setMethod("+", signature(e1 = "ANY", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e2), function(i) e1 + e2[[i]]))
+    matrix_list(lapply(named_idx(e2), function(i) e1 + e2[[i]]))
   })
 
 
 #' @rdname matrix_list
 setMethod("*", signature(e1 = "ANY", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e2), function(i) e1 * e2[[i]]))
+    matrix_list(lapply(named_idx(e2), function(i) e1 * e2[[i]]))
   })
 
 
@@ -203,7 +208,7 @@ setMethod("*", signature(e1 = "ANY", e2 = "matrix_list"),
 #' @rdname matrix_list
 setMethod("/", signature(e1 = "ANY", e2 = "matrix_list"),
   function(e1, e2){
-    matrix_list(lapply(seq_along(e2), function(i) e1 / e2[[i]]))
+    matrix_list(lapply(named_idx(e2), function(i) e1 / e2[[i]]))
   })
 #########################
 
@@ -227,18 +232,86 @@ ml_sum <- function(x){
 #' @rdname matrix_list
 setMethod("names<-", signature(x = "matrix_list", value = "ANY"),
   function(x, value) {
-    x <- as.list(x)
+    class(x) <- "list"
     names(x) <- value
     matrix_list(x)
   }
 )
 
-# setMethod("%*%", signature(x = "Matrix", y = "splrMatrix"), .leftmult)
+#' @rdname matrix_list
+setMethod(
+  "tcrossprod",
+  signature(x = "matrix_list", y = "matrix_list"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(x),
+      function(i) tcrossprod(x[[i]], y[[i]])
+    ))
+  }
+)
 
-# setMethod("%*%", signature(x = "matrix", y = "splrMatrix"), .leftmult)
-# setMethod("%*%", signature(x = "numeric", y = "splrMatrix"), .leftmult)
+#' @rdname matrix_list
+setMethod(
+  "tcrossprod",
+  signature(x = "ANY", y = "matrix_list"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(y),
+      function(i) tcrossprod(x, y[[i]])
+    ))
+  }
+)
 
-# setMethod("%*%", signature(x = "numLike", y = "splrMatrix"), .leftmult)
 
 
-# setMethod("%*%",signature(x="ANY",y="splrMatrix"),.leftmult)
+#' @rdname matrix_list
+setMethod(
+  "tcrossprod",
+  signature(x = "matrix_list", y = "ANY"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(x),
+      function(i) tcrossprod(x[[i]], y)
+    ))
+  }
+)
+
+
+
+#' @rdname matrix_list
+setMethod(
+  "crossprod",
+  signature(x = "matrix_list", y = "matrix_list"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(x),
+      function(i) crossprod(x[[i]], y[[i]])
+    ))
+  }
+)
+
+#' @rdname matrix_list
+setMethod(
+  "crossprod",
+  signature(x = "ANY", y = "matrix_list"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(y),
+      function(i) crossprod(x, y[[i]])
+    ))
+  }
+)
+
+
+
+#' @rdname matrix_list
+setMethod(
+  "crossprod",
+  signature(x = "matrix_list", y = "ANY"),
+  function(x, y) {
+    r <- matrix_list(lapply(
+      named_idx(x),
+      function(i) crossprod(x[[i]], y)
+    ))
+  }
+)

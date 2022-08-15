@@ -5,6 +5,7 @@
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
 #' @importFrom Rcpp sourceCpp
+#' @importFrom stats setNames
 #' @useDynLib iGraphMatch, .registration = TRUE
 ## usethis namespace: end
 NULL

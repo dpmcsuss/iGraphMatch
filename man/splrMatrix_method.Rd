@@ -49,6 +49,7 @@
 \alias{-,Matrix,splrMatrix-method}
 \alias{-,numeric,splrMatrix-method}
 \alias{-,ANY,splrMatrix-method}
+\alias{max,splrMatrix,ANY-method}
 \alias{norm,splrMatrix,character-method}
 \alias{rowSums,splrMatrix-method}
 \alias{colSums,splrMatrix-method}
@@ -81,6 +82,20 @@
 \alias{str,splrMatrix-method}
 \alias{t,splrMatrix-method}
 \alias{diag,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,Matrix-method}
+\alias{tcrossprod,Matrix,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,matrix-method}
+\alias{tcrossprod,matrix,splrMatrix-method}
+\alias{tcrossprod,splrMatrix,ANY-method}
+\alias{tcrossprod,ANY,splrMatrix-method}
+\alias{crossprod,splrMatrix,splrMatrix-method}
+\alias{crossprod,splrMatrix,Matrix-method}
+\alias{crossprod,Matrix,splrMatrix-method}
+\alias{crossprod,splrMatrix,matrix-method}
+\alias{crossprod,matrix,splrMatrix-method}
+\alias{crossprod,splrMatrix,ANY-method}
+\alias{crossprod,ANY,splrMatrix-method}
 \title{"SPLR" Methods}
 \usage{
 \S4method{show}{splrMatrix}(object)
@@ -177,6 +192,8 @@
 
 \S4method{-}{ANY,splrMatrix}(e1, e2)
 
+\S4method{max}{splrMatrix,ANY}(x, ..., na.rm = FALSE)
+
 \S4method{norm}{splrMatrix,character}(x, type, ...)
 
 \S4method{rowSums}{splrMatrix}(x, na.rm = FALSE, dims = 1, ...)
@@ -244,6 +261,34 @@
 \S4method{t}{splrMatrix}(x)
 
 \S4method{diag}{splrMatrix}(x)
+
+\S4method{tcrossprod}{splrMatrix,splrMatrix}(x, y)
+
+\S4method{tcrossprod}{splrMatrix,Matrix}(x, y)
+
+\S4method{tcrossprod}{Matrix,splrMatrix}(x, y)
+
+\S4method{tcrossprod}{splrMatrix,matrix}(x, y)
+
+\S4method{tcrossprod}{matrix,splrMatrix}(x, y)
+
+\S4method{tcrossprod}{splrMatrix,ANY}(x, y)
+
+\S4method{tcrossprod}{ANY,splrMatrix}(x, y)
+
+\S4method{crossprod}{splrMatrix,splrMatrix}(x, y)
+
+\S4method{crossprod}{splrMatrix,Matrix}(x, y)
+
+\S4method{crossprod}{Matrix,splrMatrix}(x, y)
+
+\S4method{crossprod}{splrMatrix,matrix}(x, y)
+
+\S4method{crossprod}{matrix,splrMatrix}(x, y)
+
+\S4method{crossprod}{splrMatrix,ANY}(x, y)
+
+\S4method{crossprod}{ANY,splrMatrix}(x, y)
 }
 \arguments{
 \item{object}{As in "Matrix"}
@@ -256,11 +301,11 @@
 
 \item{e2}{As in "Matrix"}
 
-\item{type}{As in "Matrix"}
-
 \item{...}{As in "Matrix"}
 
 \item{na.rm}{As in "Matrix"}
+
+\item{type}{As in "Matrix"}
 
 \item{dims}{As in "Matrix"}
 
