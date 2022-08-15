@@ -20,8 +20,7 @@
 #'
 #' @rdname gm_fw
 #'
-#' @return \code{graph_match_indefinite}, \code{graph_match_convex},
-#'   \code{graph_match_sinkhorn} and \code{graph_match_PATH}.
+#' @return \code{graph_match_indefinite}, \code{graph_match_convex} and \code{graph_match_PATH}
 #'   return an object of class "\code{\link{graphMatch}}" which is a list containing the following
 #'   components:
 #'
@@ -81,54 +80,59 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
 
   totv1 <- nrow(A[[1]])
   totv2 <- nrow(B[[1]])
-  nonseeds <- check_seeds(seeds, c(totv1, totv2))$nonseeds
+  nv <- max(totv1, totv2)
+  nonseeds <- check_seeds(seeds, nv)$nonseeds
   ns <- nrow(seeds)
-  nn <- totv1 - ns
-  
-  # TODO: remove [[1]]
-  # TODO: modify initstart to take nn1 and nn2
-  P <- init_start(start = start, nns = totv2 - ns, ns = ns,
-    A = A[[1]], B = B[[1]], seeds = seeds)
+  nn <- nv - ns
 
-  P <- P[seq(totv1 - ns), seq(totv2 - ns)]
+  P <- init_start(start = start, nns = nn, ns = ns,
+    A = A[[1]], B = B[[1]], seeds = seeds)
 
   iter <- 0
   toggle <- TRUE
 
   # make a random permutation
-  rp <- sample(totv2 - ns)
-  rpmat <- Matrix::Diagonal(totv2 - ns)[rp, ]
+  rp <- sample(nn)
+  rpmat <- Matrix::Diagonal(nn)[rp, ]
 
-  # similarity and seed to non-seed
-  similarity <- similarity[seq(totv1 - ns), seq(totv2 - ns)] %*% Matrix::t(rpmat) +
-    get_s_to_ns(A, B, seeds, nonseeds, rp)
+  # seed to non-seed info
+  s_to_ns <- get_s_to_ns(A, B, seeds, nonseeds, rp)
+  P <- P[, rp]
+
+  zero_mat <- Matrix::Matrix(0, nn, nn)
+  similarity <- similarity %*% Matrix::t(rpmat)
 
   # keep only nonseeds
   A <- A[nonseeds$A, nonseeds$A]
   B <- B[nonseeds$B, nonseeds$B][rp, rp]
+  nc <- length(A)
 
   lap_method <- set_lap_method(lap_method, totv1, totv2)
+
+
 
   while(toggle && iter < max_iter){
     iter <- iter + 1
     # non-seed to non-seed info
-    tAnn_P_Bnn <- ml_sum(crossprod(A, P %*% B))
+    tAnn_P_Bnn <- ml_sum(t(A) %*% P %*% B)
 
-    Grad <- tAnn_P_Bnn + similarity +
-      ml_sum(tcrossprod(A %*% P, B))
 
-    ind <- do_lap(Grad, lap_method)[seq(totv1 - ns)]
+    Grad <- s_to_ns + tAnn_P_Bnn + similarity +
+      ml_sum(A %*% P %*% t(B))
+
+    ind <- do_lap(Grad, lap_method)
 
     ind2 <- cbind(1:nn, ind)
-    Pdir <- Matrix::Diagonal(totv2 - ns)
+    Pdir <- Matrix::Diagonal(nn)
     Pdir <- Pdir[ind, ]
-    tAnn_Pdir_Bnn <- ml_sum(crossprod(A, B[ind, ]))
+    tAnn_Pdir_Bnn <- ml_sum(t(A)[, order(ind)] %*% B)
 
+    
     c <- innerproduct(tAnn_P_Bnn, P)
     d <- innerproduct(tAnn_Pdir_Bnn, P) + sum(tAnn_P_Bnn[ind2])
     e <- sum(tAnn_Pdir_Bnn[ind2])
-    u <- innerproduct(P, similarity)
-    v <- sum(similarity[ind2])
+    u <- innerproduct(P, s_to_ns + similarity)
+    v <- sum((s_to_ns + similarity)[ind2])
     if (c - d + e == 0 && d - 2 * e + u - v == 0) {
       alpha <- 0
     } else {
@@ -154,13 +158,13 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
     warning("Frank-Wolfe iterations reached the maximum iteration, convergence may not occur.")
   }
 
-  corr_ns <- do_lap(P, lap_method)[seq(totv1 - ns)]
+  corr_ns <- do_lap(P, lap_method)
 
 
   # undo rand perm here
   corr_ns <- rp[corr_ns]
 
-  corr <- 1:totv1
+  corr <- 1:nv
   corr[nonseeds$A] <- nonseeds$B[corr_ns]
   corr[seeds$A] <- seeds$B
 
@@ -170,13 +174,15 @@ graph_match_indefinite <- function(A, B, seeds = NULL,
   D <- pad(P %*% rpmat, ns)[reorderA, reorderB]
   if (is(D, "splrMatrix")) {
     D@x[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+     # <- P[seeds$A, seeds$B]
   } else {
     D[seeds$A, seeds$B] <- Matrix::Diagonal(ns)
+     # <- P[seeds$A, seeds$B]
   }
   cl <- match.call()
 
   graphMatch(
-    corr = data.frame(corr_A = 1:totv1, corr_B = corr),
+    corr = data.frame(corr_A = 1:nv, corr_B = corr),
     nnodes = c(totv1, totv2),
     call = cl,
     detail = list(

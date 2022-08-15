@@ -1,10 +1,5 @@
 # iGraphMatch (development version)
 
-## New features
-
-* Implemented "rect" LAP method which is very efficient when #rows << #cols. Currently can only be used with the "indefinite" GM method.
-* `do_lap` pads rectangular matrices if necessary.
-* The "indefinite" method for "gm" now stores the gradient and solution as rectangular matrices.
 
 # iGraphMatch 2.0.0
 

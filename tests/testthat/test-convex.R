@@ -45,4 +45,3 @@ test_that("doubly stochastic", {
     "Cannot start convex with convex. Try \"bari\" or another option."
   )
 })
-

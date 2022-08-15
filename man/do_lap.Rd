@@ -26,7 +26,6 @@ Solves a linear assignment using one of three methods.
  "clue" uses \code{solve_lsap} from the clue package.
  "lapjv" uses the Jonker-Volgenaut approach implemented in this package.
  "lapmod" use a modification of JV that exploits sparsity in the score matrix.
- "rect" uses lapjv on a reduced problem.
  
  Scores do not need to be non-negative. For "clue" the scores are pre-translated to be
  non-negative which preserves the LAP solution.

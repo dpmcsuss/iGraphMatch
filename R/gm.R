@@ -95,35 +95,27 @@
 #'
 gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...){
 
-  methods <- c("indefinite", "convex", "PATH", "percolation", "IsoRank", "Umeyama", "sinkhorn")
+  methods <- c("indefinite", "convex", "PATH", "percolation", "IsoRank", "Umeyama")
   if (!is.function(method) && !(method %in% methods)) {
     stop("Method must be one of: ", paste0(paste(methods, collapse = ", "),
                                            " or a function that takes a pair of graphs and other prior knowledge if applicable."))
   }
 
   # A, B argument checks
-  same_order <- is.function(method) || method != "indefinite"  
-  graph_pair <- check_graph(A, B, same_order = same_order)
+  graph_pair <- check_graph(A, B)
   A <- graph_pair[[1]]
   B <- graph_pair[[2]]
   totv1 <- graph_pair$totv1
   totv2 <- graph_pair$totv2
 
   # seeds argument check
-  seed_check <- check_seeds(seeds, nv = c(totv1, totv2))
+  seed_check <- check_seeds(seeds, nv = max(totv1, totv2))
   seeds <- seed_check$seeds
   nonseeds <- seed_check$nonseeds
 
-
   # similarity score matrix argument check
-  sim_missing <- is.null(similarity)
-  similarity <- check_sim(
-    similarity, 
-    seeds, nonseeds, 
-    totv1, totv2, 
-    for_nonseeds = is.function(method) || method != "IsoRank",
-    square = same_order
-  )
+  similarity_raw <- similarity
+  similarity <- check_sim(similarity, seeds, nonseeds, totv1, totv2)
 
   if(is.function(method)){
     m <- method(A, B, seeds, similarity, ...)
@@ -134,19 +126,18 @@ gm <- function(A, B, seeds = NULL, similarity = NULL, method = "indefinite", ...
   } else if(method == "PATH"){
     m <- graph_match_PATH(A, B, seeds, similarity, ...)
   } else if(method == "percolation"){
-    if(nrow(seeds) == 0 && sim_missing){
+    if(nrow(seeds) == 0 & is.null(similarity_raw)){
       stop("At least one of seeds and similarity score should be known for this method.")
     }
     m <- graph_match_percolation(A, B, seeds, similarity, ...)
   } else if(method == "IsoRank"){
-    if(sim_missing){
+    if(is.null(similarity_raw)){
       stop("Similarity scores are mandatory for this method. Please input a value for the 'similarity' argument.")
     }
+    similarity <- check_sim(similarity_raw, seeds, nonseeds, totv1, totv2, for_nonseeds = FALSE)
     m <- graph_match_IsoRank(A, B, seeds, similarity, ...)
   } else if(method == "Umeyama"){
     m <- graph_match_Umeyama(A, B, seeds, similarity)
-  } else if(method == "sinkhorn") {
-    m <- graph_match_sinkhorn(A, B, seeds, similarity, ...)
   }
   tryCatch(
     {

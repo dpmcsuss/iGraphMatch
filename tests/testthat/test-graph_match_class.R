@@ -57,11 +57,3 @@ test_that("graphMatch class functions",
   m$not_in_there
 })
 
-test_that(
-  "as.graphMatch works",
-  {
-    expect_snapshot(as.graphMatch(data.frame(a = 1:5, b = 1:5)))
-    expect_snapshot(as.graphMatch(data.frame(corr_A = 1:5, corr_B = 1:5)))
-    expect_snapshot(as.graphMatch(1:10))
-  }
-)

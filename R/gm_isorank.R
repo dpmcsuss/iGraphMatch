@@ -67,7 +67,7 @@ graph_match_IsoRank <- function(A, B, seeds = NULL, similarity,
   tol <- 1e-2
   R_tot <- Matrix(0, nrow(R), ncol(R))
 
-  for( ch in 1:nc ) {
+  for( ch in 1:nc ){
 
     iter <- 1
     diff <- 1
