@@ -20,7 +20,7 @@ The largest_cc function returns the largest connected subgraph of a single graph
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -61,66 +61,73 @@ that has as many vertices as possible.
 The <code>largest_cc</code> function returns the largest connected subgraph of a single graph.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, min_degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, min_degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">largest_cc</span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-<span class="fu">largest_cc</span><span class="op">(</span><span class="va">A</span><span class="op">)</span></code></pre></div>
-
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>A</dt>
 <dd><p>A matrix or an igraph object. See <a href="check_graph.html">check_graph</a>. Must be single-layer.</p></dd>
+
+
 <dt>B</dt>
 <dd><p>A matrix or an igraph object. See <a href="check_graph.html">check_graph</a>. Must be single-layer.</p></dd>
+
+
 <dt>min_degree</dt>
 <dd><p>A number. Defines the level of connectedness of the
 obtained largest common connected subgraph. The induced subgraph is
 a graph with a minimum vertex-degree of at least min_degree.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>largest_common_cc</code> returns the common largest connected subgraphs of
+    
+
+<p><code>largest_common_cc</code> returns the common largest connected subgraphs of
 two aligned graphs in the igraph object form and a logical vector indicating which vertices in
 the original graphs remain in the induced subgraph.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.7</span>, p <span class="op">=</span>  <span class="fl">0.2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span>
-<span class="r-in"><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span>
-<span class="r-in"><span class="co"># put no constraint on the minimum degree of the common largest conncect subgraph</span></span>
-<span class="r-in"><span class="va">lccs1</span> <span class="op">&lt;-</span> <span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, min_degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># induced subgraph</span></span>
-<span class="r-in"><span class="va">lccs1</span><span class="op">$</span><span class="va">g1</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 18ee8da D--- 5 8 -- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 18ee8da:</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.7</span>, p <span class="op">=</span>  <span class="fl">0.2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span></span>
+<span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span></span>
+<span class="r-in"><span><span class="co"># put no constraint on the minimum degree of the common largest conncect subgraph</span></span></span>
+<span class="r-in"><span><span class="va">lccs1</span> <span class="op">&lt;-</span> <span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, min_degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># induced subgraph</span></span></span>
+<span class="r-in"><span><span class="va">lccs1</span><span class="op">$</span><span class="va">g1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 60ad409 D--- 5 8 -- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 60ad409:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1-&gt;4 2-&gt;3 2-&gt;4 3-&gt;2 4-&gt;1 4-&gt;2 4-&gt;5 5-&gt;4</span>
-<span class="r-in"><span class="va">lccs1</span><span class="op">$</span><span class="va">g2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 0fbdc76 D--- 5 8 -- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 0fbdc76:</span>
+<span class="r-in"><span><span class="va">lccs1</span><span class="op">$</span><span class="va">g2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH ecab676 D--- 5 8 -- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from ecab676:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1-&gt;4 2-&gt;3 2-&gt;4 3-&gt;2 4-&gt;1 4-&gt;2 4-&gt;5 5-&gt;4</span>
-<span class="r-in"><span class="co"># label of vertices of the induced subgraph in the original graph</span></span>
-<span class="r-in"><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g1</span><span class="op">)</span><span class="op">[</span><span class="va">lccs1</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + 5/10 vertices, from 88fd082:</span>
+<span class="r-in"><span><span class="co"># label of vertices of the induced subgraph in the original graph</span></span></span>
+<span class="r-in"><span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g1</span><span class="op">)</span><span class="op">[</span><span class="va">lccs1</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + 5/10 vertices, from 2c6296a:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 6 8 9</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span></span>
-<span class="r-in"><span class="va">lccs3</span> <span class="op">&lt;-</span> <span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, min_degree <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">.01</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lcc</span> <span class="op">&lt;-</span> <span class="fu">largest_cc</span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># induced subgraph</span></span>
-<span class="r-in"><span class="va">lcc</span><span class="op">$</span><span class="va">g</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 42c2a70 D--- 7 12 -- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 42c2a70:</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span></span></span>
+<span class="r-in"><span><span class="va">lccs3</span> <span class="op">&lt;-</span> <span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, min_degree <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">.01</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lcc</span> <span class="op">&lt;-</span> <span class="fu">largest_cc</span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># induced subgraph</span></span></span>
+<span class="r-in"><span><span class="va">lcc</span><span class="op">$</span><span class="va">g</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH b8d9414 D--- 7 12 -- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from b8d9414:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1-&gt;4 2-&gt;4 2-&gt;5 3-&gt;7 4-&gt;1 4-&gt;2 4-&gt;6 4-&gt;7 5-&gt;2 6-&gt;4 7-&gt;3 7-&gt;4</span>
-<span class="r-in"><span class="co"># label of vertices of the induced subgraph in the original graph</span></span>
-<span class="r-in"><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span><span class="va">lcc</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + 7/100 vertices, from 5a94a4d:</span>
+<span class="r-in"><span><span class="co"># label of vertices of the induced subgraph in the original graph</span></span></span>
+<span class="r-in"><span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span><span class="va">lcc</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + 7/100 vertices, from b93374b:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18 28 38 39 42 49 91</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -135,7 +142,7 @@ the original graphs remain in the induced subgraph.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

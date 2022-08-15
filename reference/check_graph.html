@@ -20,7 +20,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -61,42 +61,56 @@
  does similar checks and modifications but just for one graph or list of graphs.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">check_graph</span><span class="op">(</span>
-  <span class="va">A</span>,
-  <span class="va">B</span>,
-  same_order <span class="op">=</span> <span class="cn">TRUE</span>,
-  square <span class="op">=</span> <span class="cn">TRUE</span>,
-  as_list <span class="op">=</span> <span class="cn">TRUE</span>,
-  as_igraph <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_graph</span><span class="op">(</span></span>
+<span>  <span class="va">A</span>,</span>
+<span>  <span class="va">B</span>,</span>
+<span>  same_order <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  square <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  as_list <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  as_igraph <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">check_single_graph</span><span class="op">(</span><span class="va">A</span>, square <span class="op">=</span> <span class="cn">TRUE</span>, as_list <span class="op">=</span> <span class="cn">TRUE</span>, as_igraph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-<span class="fu">check_single_graph</span><span class="op">(</span><span class="va">A</span>, square <span class="op">=</span> <span class="cn">TRUE</span>, as_list <span class="op">=</span> <span class="cn">TRUE</span>, as_igraph <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>A</dt>
 <dd><p>A matrix, an igraph object, or list of either.</p></dd>
+
+
 <dt>B</dt>
 <dd><p>A matrix, an igraph object, or list of either.</p></dd>
+
+
 <dt>same_order</dt>
 <dd><p>Whether the returned objects should have the same number of nodes.
 If the graphs start with different numbers of nodes the smaller graph is padded with
 isolated vertices. (default = TRUE)</p></dd>
+
+
 <dt>square</dt>
 <dd><p>Whether the matrices need to be square. (default = TRUE)
 Currently non-square matrices are not supported.</p></dd>
+
+
 <dt>as_list</dt>
 <dd><p>Whether to return the results as a matrix_list. (default = TRUE)
 If FALSE and A and B have length &gt; 1</p></dd>
+
+
 <dt>as_igraph</dt>
 <dd><p>Whether to return an igraph object. (default=FALSE)
 Only allowed if the original parameters are igraph objects.
 If FALSE, then this converts the objects to sparse matrices.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>List containing A and B modified according to the parameters and the number of 
+    
+
+<p>List containing A and B modified according to the parameters and the number of 
  vertices in each graph in totv1 and totv2.</p>
     </div>
     <div id="details">
@@ -104,7 +118,6 @@ If FALSE, then this converts the objects to sparse matrices.</p></dd>
     <p>If A and B are lists of matrices or igraph objects, then the lists
  must be the same length. Additionally, within each list the graphs need to have the
  same number of vertices but this does not need to be true across lists.</p>
-    </div>
     </div>
 
   </div>
@@ -119,7 +132,7 @@ If FALSE, then this converts the objects to sparse matrices.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

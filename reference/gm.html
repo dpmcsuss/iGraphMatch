@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -59,39 +59,55 @@
   prior knowledge, and a graph matching method.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">gm</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, seeds <span class="op">=</span> <span class="cn">NULL</span>, similarity <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gm</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, seeds <span class="op">=</span> <span class="cn">NULL</span>, similarity <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>A</dt>
 <dd><p>A matrix, igraph object, or list of either.</p></dd>
+
+
 <dt>B</dt>
 <dd><p>A matrix, igraph object, or list of either.</p></dd>
+
+
 <dt>seeds</dt>
 <dd><p>A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be a matrix or a data frame, with the first
 column being the indices of \(G_1\) and the second column being the
 corresponding indices of \(G_2\).</p></dd>
+
+
 <dt>similarity</dt>
 <dd><p>A matrix. An <code>n-by-n</code> matrix containing vertex
 similarities. Mandatory for the "IsoRank" method.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>Choice for graph matching methods. One of "indefinite",
 "convex", "PATH", "percolation", "IsoRank", "Umeyama", or a user-defined
 graph matching function. Please check Details and Examples sections for
 instructions on how to define your own function.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Arguments passed to graph matching methods. Please refer to
 Details section for more information.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>gm</code> returns an object of class "<code><a href="graphMatch_constructor.html">graphMatch</a></code>".
+    
+
+<p><code>gm</code> returns an object of class "<code><a href="graphMatch_constructor.html">graphMatch</a></code>".
 See <a href="graphMatch_constructor.html">graphMatch-class</a> and links therein for details
-on the graph match class.
-Additionally, <code>gm</code> also returns a list of matching details of the specified method.
+on the graph match class.</p>
+
+
+<p>Additionally, <code>gm</code> also returns a list of matching details of the specified method.
 Please refer to the help page for each implemented method, i.e.
 <a href="gm_fw.html">"indefinite"</a>,
 <a href="gm_fw.html">"convex"</a>, <a href="gm_fw.html">"PATH"</a>,
@@ -116,19 +132,18 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
   For a detailed list of additional arguments for each one of the implemented method,
   please click on the corresponding method name for its help page.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># match G_1 &amp; G_2 with some known node pairs as seeds</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.5</span>, p <span class="op">=</span>  <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span>
-<span class="r-in"><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span>
-<span class="r-in"><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">4</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m_rds</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, start <span class="op">=</span> <span class="st">"rds"</span>, max_iter <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_rds</span>, <span class="va">g1</span>, <span class="va">g2</span>, true_label <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># match G_1 &amp; G_2 with some known node pairs as seeds</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.5</span>, p <span class="op">=</span>  <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span></span>
+<span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span></span>
+<span class="r-in"><span><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m_rds</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, start <span class="op">=</span> <span class="st">"rds"</span>, max_iter <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_rds</span>, <span class="va">g1</span>, <span class="va">g2</span>, true_label <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: gm(A = g1, B = g2, seeds = seeds, method = "indefinite", start = "rds", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     max_iter = 20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -139,16 +154,16 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
 <span class="r-out co"><span class="r-pr">#&gt;</span>  missing_edges  4.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    extra_edges  5.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          fnorm  4.242641</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># match two multi-layer graphs</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">gp_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">.3</span>, <span class="fl">.5</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m_perco</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"percolation"</span>, ExpandWhenStuck <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_perco</span>, <span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># match two multi-layer graphs</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">gp_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">.3</span>, <span class="fl">.5</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m_perco</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"percolation"</span>, ExpandWhenStuck <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_perco</span>, <span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: gm(A = A, B = B, seeds = seeds, method = "percolation", ExpandWhenStuck = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Matches: 16, # Seeds:  4, # Vertices:  20, 20</span>
@@ -157,10 +172,10 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
 <span class="r-out co"><span class="r-pr">#&gt;</span>  missing_edges 27.00000 41.00000 29.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    extra_edges 38.00000 30.00000 37.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          fnorm 11.40175 11.91638 11.48913</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="init_start.html">init_start</a></span><span class="op">(</span>start <span class="op">=</span> <span class="st">"bari"</span>, nns <span class="op">=</span> <span class="fl">20</span>, soft_seeds <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">m_Iso</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, similarity <span class="op">=</span> <span class="va">sim</span>, method <span class="op">=</span> <span class="st">"IsoRank"</span>, lap_method <span class="op">=</span> <span class="st">"greedy"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_Iso</span>, <span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="init_start.html">init_start</a></span><span class="op">(</span>start <span class="op">=</span> <span class="st">"bari"</span>, nns <span class="op">=</span> <span class="fl">20</span>, soft_seeds <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m_Iso</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, similarity <span class="op">=</span> <span class="va">sim</span>, method <span class="op">=</span> <span class="st">"IsoRank"</span>, lap_method <span class="op">=</span> <span class="st">"greedy"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_Iso</span>, <span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: gm(A = A, B = B, similarity = sim, method = "IsoRank", lap_method = "greedy")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Matches: 20, # Seeds:  0, # Vertices:  20, 20</span>
@@ -169,19 +184,19 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
 <span class="r-out co"><span class="r-pr">#&gt;</span>  missing_edges 30.00000 46.00000 32</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    extra_edges 41.00000 35.00000 40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          fnorm 11.91638 12.72792 12</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># customized graph matching algorithm</span></span>
-<span class="r-in"><span class="va">graph_match_rand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, <span class="va">seeds</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">similarity</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">rand_seed</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="va">rand_seed</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>, <span class="va">nm</span><span class="op">)</span>, corr_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span>, <span class="va">nm</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="graphMatch_constructor.html">as.graphMatch</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">m</span><span class="op">$</span><span class="va">rand_seed</span> <span class="op">&lt;-</span> <span class="va">rand_seed</span></span>
-<span class="r-in">  <span class="va">m</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">m_self</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, method <span class="op">=</span> <span class="va">graph_match_rand</span>, rand_seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_self</span>, <span class="va">g1</span>, <span class="va">g2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># customized graph matching algorithm</span></span></span>
+<span class="r-in"><span><span class="va">graph_match_rand</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, <span class="va">seeds</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">similarity</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">rand_seed</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">nm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="va">rand_seed</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span>, <span class="va">nm</span><span class="op">)</span>, corr_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span>, <span class="va">nm</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="graphMatch_constructor.html">as.graphMatch</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">m</span><span class="op">$</span><span class="va">rand_seed</span> <span class="op">&lt;-</span> <span class="va">rand_seed</span></span></span>
+<span class="r-in"><span>  <span class="va">m</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">m_self</span> <span class="op">&lt;-</span> <span class="fu">gm</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, method <span class="op">=</span> <span class="va">graph_match_rand</span>, rand_seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">m_self</span>, <span class="va">g1</span>, <span class="va">g2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: gm(A = g1, B = g2, method = graph_match_rand, rand_seed = 123)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Matches: 10, # Vertices:  10, 10</span>
@@ -190,7 +205,7 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
 <span class="r-out co"><span class="r-pr">#&gt;</span>  missing_edges 10.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    extra_edges 11.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          fnorm  6.480741</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -205,7 +220,7 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

@@ -21,7 +21,7 @@ computation.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/lib
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -63,31 +63,47 @@ of the form <code>x + a %*% t(b)</code> for faster
 computation.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">splr</span><span class="op">(</span><span class="va">x</span>, a <span class="op">=</span> <span class="cn">NULL</span>, b <span class="op">=</span> <span class="cn">NULL</span>, rank <span class="op">=</span> <span class="cn">NULL</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">splr</span><span class="op">(</span><span class="va">x</span>, a <span class="op">=</span> <span class="cn">NULL</span>, b <span class="op">=</span> <span class="cn">NULL</span>, rank <span class="op">=</span> <span class="cn">NULL</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for Matrix,Matrix,Matrix</span></span>
+<span><span class="fu">splr</span><span class="op">(</span><span class="va">x</span>, a <span class="op">=</span> <span class="cn">NULL</span>, b <span class="op">=</span> <span class="cn">NULL</span>, rank <span class="op">=</span> <span class="cn">NULL</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-<span class="co"># S4 method for Matrix,Matrix,Matrix</span>
-<span class="fu">splr</span><span class="op">(</span><span class="va">x</span>, a <span class="op">=</span> <span class="cn">NULL</span>, b <span class="op">=</span> <span class="cn">NULL</span>, rank <span class="op">=</span> <span class="cn">NULL</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="cn">NULL</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
-
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>as in "Matrix"</p></dd>
+
+
 <dt>a</dt>
 <dd><p>as in "Matrix"</p></dd>
+
+
 <dt>b</dt>
 <dd><p>as in "Matrix"</p></dd>
+
+
 <dt>rank</dt>
 <dd><p>rank of the matrix to be factorized.</p></dd>
+
+
 <dt>dimnames</dt>
 <dd><p>optional - the list of names for the matrix</p></dd>
+
+
 <dt>...</dt>
 <dd><p>as in "Matrix"</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>splrMatrix object
-splrMatrix object</p>
+    
+
+<p>splrMatrix object</p>
+
+
+<p>splrMatrix object</p>
     </div>
     <div id="slots">
     <h2>Slots</h2>
@@ -112,7 +128,6 @@ splrMatrix object</p>
     <div class="dont-index"><p>Methods are documented in <a href="splrMatrix_method.html">splrMatrix_method</a>.
  Other relevant methods are <a href="splr_sparse_plus_constant.html">splr_sparse_plus_constant</a> and</p></div>
     </div>
-    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -126,7 +141,7 @@ splrMatrix object</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

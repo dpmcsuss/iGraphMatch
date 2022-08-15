@@ -18,7 +18,7 @@ indices of \(G_1\) and the second column being the corresponding indices of \(G_
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -57,9 +57,10 @@ indices of \(G_1\) and the second column being the corresponding indices of \(G_
 indices of \(G_1\) and the second column being the corresponding indices of \(G_2\)</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">check_seeds</span><span class="op">(</span><span class="va">seeds</span>, <span class="va">nv</span>, logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_seeds</span><span class="op">(</span><span class="va">seeds</span>, <span class="va">nv</span>, logical <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>seeds</dt>
@@ -69,24 +70,30 @@ form of a vector of logicals indicate the location of seeds with TRUE and the in
 are identical in both graphs. Input in the form of a matrix or a data frame, with the first
 column being the indices of \(G_1\) and the second
 column being the corresponding indices of \(G_2\).</p></dd>
+
+
 <dt>nv</dt>
 <dd><p>An integer. Number of total vertices.</p></dd>
+
+
 <dt>logical</dt>
 <dd><p>A logical. TRUE indicates to return seeds in a vector of logicals where TRUE
 indicates the corresponding vertex is a seed. FALSE indicates to return a data frame.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>returns a data frame with the first column being the corresponding indices of
+    
+
+<p>returns a data frame with the first column being the corresponding indices of
 \(G_1\) and the second column being the corresponding indices of \(G_2\) or a vector of
 logicals where TRUE indicates the corresponding vertex is a seed.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">#input is a vector of logicals</span></span>
-<span class="r-in"><span class="fu">check_seeds</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#input is a vector of logicals</span></span></span>
+<span class="r-in"><span><span class="fu">check_seeds</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $seeds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1</span>
@@ -103,9 +110,9 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6  9  9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#input is a vector of integers</span></span>
-<span class="r-in"><span class="fu">check_seeds</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">7</span>,<span class="fl">3</span><span class="op">)</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#input is a vector of integers</span></span></span>
+<span class="r-in"><span><span class="fu">check_seeds</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">7</span>,<span class="fl">3</span><span class="op">)</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $seeds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 1</span>
@@ -122,9 +129,9 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4  9  9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#input is a matrix</span></span>
-<span class="r-in"><span class="fu">check_seeds</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#input is a matrix</span></span></span>
+<span class="r-in"><span><span class="fu">check_seeds</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $seeds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 3</span>
@@ -141,9 +148,9 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7  9  9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#input is a data frame</span></span>
-<span class="r-in"><span class="fu">check_seeds</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#input is a data frame</span></span></span>
+<span class="r-in"><span><span class="fu">check_seeds</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $seeds</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   A B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1 3</span>
@@ -160,7 +167,7 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7  9  9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8 10 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -175,7 +182,7 @@ logicals where TRUE indicates the corresponding vertex is a seed.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

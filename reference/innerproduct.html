@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -55,36 +55,41 @@
     <p>Matrix inner products</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for splrMatrix,splrMatrix</span></span>
+<span><span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for splrMatrix,Matrix</span></span>
+<span><span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for Matrix,splrMatrix</span></span>
+<span><span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S4 method for matrix_list,matrix_list</span></span>
+<span><span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-<span class="co"># S4 method for splrMatrix,splrMatrix</span>
-<span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>
-
-<span class="co"># S4 method for splrMatrix,Matrix</span>
-<span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>
-
-<span class="co"># S4 method for Matrix,splrMatrix</span>
-<span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span>
-
-<span class="co"># S4 method for matrix_list,matrix_list</span>
-<span class="fu">innerproduct</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></code></pre></div>
-
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>matrix like object</p></dd>
+
+
 <dt>y</dt>
 <dd><p>matrix like object</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>inner product &lt;x, y&gt; = sum over all elements i,j of x_ij * y_ij.</p>
+    
+
+<p>inner product &lt;x, y&gt; = sum over all elements i,j of x_ij * y_ij.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>For a matrix_list object, sums over all layers/list-elements as well.</p>
-    </div>
     </div>
 
   </div>
@@ -99,7 +104,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

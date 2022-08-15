@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -57,49 +57,58 @@
   correspondence.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">get_perm_mat</span><span class="op">(</span><span class="va">match</span>, dim <span class="op">=</span> <span class="cn">NULL</span>, padded <span class="op">=</span> <span class="cn">FALSE</span>, seeds <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">get_perm_mat</span><span class="op">(</span><span class="va">match</span>, dim <span class="op">=</span> <span class="cn">NULL</span>, padded <span class="op">=</span> <span class="cn">FALSE</span>, seeds <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>match</dt>
 <dd><p>Either a graphMatch object or 2-column matrix or data frame.
 The first and second columns correspond to indices in \(G_1\) and 
 \(G_2\) respectively.</p></dd>
+
+
 <dt>dim</dt>
 <dd><p>desired dimensions of the matrix. Note, this does not
 have to be square. If NULL and match is a graphMatch object then
 dim is set to dim(match)</p></dd>
+
+
 <dt>padded</dt>
 <dd><p>If FALSE then this returns a square matrix the size of
 the larger of the two graph otherwise dim = dim(match). This is 
 ignored if match is not a graphMatch object.</p></dd>
+
+
 <dt>seeds</dt>
 <dd><p>Whether to keep the seed vertices (TRUE) from the match
 or to remove them (FALSE). Ignored if match is not a graphMatch object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>get_perm_mat</code> returns an <code>m-by-n</code> sparse permutation matrix or whose
+    
+
+<p><code>get_perm_mat</code> returns an <code>m-by-n</code> sparse permutation matrix or whose
   submatrix is a permutation matrix if only parts of nodes from both graphs get
   matched or in the case of matching graphs of different order.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># returns a permutation matrix: m=n, all the nodes get matched</span></span>
-<span class="r-in"><span class="va">corr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>corr_A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>, corr_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">get_perm_mat</span><span class="op">(</span><span class="va">corr</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># returns a permutation matrix: m=n, all the nodes get matched</span></span></span>
+<span class="r-in"><span><span class="va">corr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>corr_A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span>, corr_B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">get_perm_mat</span><span class="op">(</span><span class="va">corr</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4 x 4 sparse Matrix of class "dgTMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1 . . .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] . . . 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] . 1 . .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,] . . 1 .</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># submatrix is a permutation matrix: parts of graphs get matched</span></span>
-<span class="r-in"><span class="fu">get_perm_mat</span><span class="op">(</span><span class="va">corr</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># submatrix is a permutation matrix: parts of graphs get matched</span></span></span>
+<span class="r-in"><span><span class="fu">get_perm_mat</span><span class="op">(</span><span class="va">corr</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 x 6 sparse Matrix of class "dgCMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1 . . . . .</span>
@@ -107,7 +116,7 @@ or to remove them (FALSE). Ignored if match is not a graphMatch object.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] . 1 . . . .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [4,] . . 1 . . .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [5,] . . . . . .</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -122,7 +131,7 @@ or to remove them (FALSE). Ignored if match is not a graphMatch object.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

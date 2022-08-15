@@ -18,7 +18,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -57,28 +57,42 @@
  necessary conditions and modifies it for use in graph matching.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">check_sim</span><span class="op">(</span><span class="va">sim</span>, <span class="va">seeds</span>, <span class="va">nonseeds</span>, <span class="va">totv1</span>, <span class="va">totv2</span>, for_nonseeds <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">check_sim</span><span class="op">(</span><span class="va">sim</span>, <span class="va">seeds</span>, <span class="va">nonseeds</span>, <span class="va">totv1</span>, <span class="va">totv2</span>, for_nonseeds <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>sim</dt>
 <dd><p>Similarity matrix</p></dd>
+
+
 <dt>seeds</dt>
 <dd><p>dataframe of seed matches from running <a href="check_seeds.html">check_seeds</a></p></dd>
+
+
 <dt>nonseeds</dt>
 <dd><p>dataframe of nonseed nodes from running <a href="check_seeds.html">check_seeds</a></p></dd>
+
+
 <dt>totv1</dt>
 <dd><p>total number of vertices in the first graph</p></dd>
+
+
 <dt>totv2</dt>
 <dd><p>total number of vertices in the second graph</p></dd>
+
+
 <dt>for_nonseeds</dt>
 <dd><p>Whether the similarities are between non-seed nodes only (default = TRUE), or 
 if similarities among seed nodes are included (FALSE)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Standardized similarity matrix for similarities only between nonseeds across
+    
+
+<p>Standardized similarity matrix for similarities only between nonseeds across
  the two graphs, if for_nonseeds = TRUE, or between all nodes, if for_nonseeds = FALSE</p>
     </div>
     <div id="details">
@@ -87,7 +101,6 @@ if similarities among seed nodes are included (FALSE)</p></dd>
  passed to <a href="gm.html">gm</a>. This is useful when the graphs have different orders in which case
  the function accepts matrices with dimensions equal to that of orders of the original graphs
  or the number of nonseeds.</p>
-    </div>
     </div>
 
   </div>
@@ -102,7 +115,7 @@ if similarities among seed nodes are included (FALSE)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

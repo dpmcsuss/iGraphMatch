@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -59,69 +59,94 @@
   to \(G_1\), doubly stochastic matrix and permutation matrix.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">graph_match_convex</span><span class="op">(</span>
-  <span class="va">A</span>,
-  <span class="va">B</span>,
-  seeds <span class="op">=</span> <span class="cn">NULL</span>,
-  similarity <span class="op">=</span> <span class="cn">NULL</span>,
-  start <span class="op">=</span> <span class="st">"bari"</span>,
-  max_iter <span class="op">=</span> <span class="fl">100</span>,
-  tol <span class="op">=</span> <span class="fl">1e-05</span>,
-  lap_method <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">graph_match_convex</span><span class="op">(</span></span>
+<span>  <span class="va">A</span>,</span>
+<span>  <span class="va">B</span>,</span>
+<span>  seeds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  similarity <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start <span class="op">=</span> <span class="st">"bari"</span>,</span>
+<span>  max_iter <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  lap_method <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">graph_match_indefinite</span><span class="op">(</span></span>
+<span>  <span class="va">A</span>,</span>
+<span>  <span class="va">B</span>,</span>
+<span>  seeds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  similarity <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start <span class="op">=</span> <span class="st">"bari"</span>,</span>
+<span>  max_iter <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  lap_method <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">graph_match_PATH</span><span class="op">(</span></span>
+<span>  <span class="va">A</span>,</span>
+<span>  <span class="va">B</span>,</span>
+<span>  seeds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  similarity <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  epsilon <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  tol <span class="op">=</span> <span class="fl">1e-05</span>,</span>
+<span>  max_iter <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  lap_method <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
-<span class="fu">graph_match_indefinite</span><span class="op">(</span>
-  <span class="va">A</span>,
-  <span class="va">B</span>,
-  seeds <span class="op">=</span> <span class="cn">NULL</span>,
-  similarity <span class="op">=</span> <span class="cn">NULL</span>,
-  start <span class="op">=</span> <span class="st">"bari"</span>,
-  max_iter <span class="op">=</span> <span class="fl">20</span>,
-  lap_method <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span>
-
-<span class="fu">graph_match_PATH</span><span class="op">(</span>
-  <span class="va">A</span>,
-  <span class="va">B</span>,
-  seeds <span class="op">=</span> <span class="cn">NULL</span>,
-  similarity <span class="op">=</span> <span class="cn">NULL</span>,
-  epsilon <span class="op">=</span> <span class="fl">1</span>,
-  tol <span class="op">=</span> <span class="fl">1e-05</span>,
-  max_iter <span class="op">=</span> <span class="fl">20</span>,
-  lap_method <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
-
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>A</dt>
 <dd><p>A matrix, igraph object, or list of either.</p></dd>
+
+
 <dt>B</dt>
 <dd><p>A matrix, igraph object, or list of either.</p></dd>
+
+
 <dt>seeds</dt>
 <dd><p>A vector of integers or logicals, a matrix or a data frame. If
 the seed pairs have the same indices in both graphs then seeds can be a
 vector. If not, seeds must be  a matrix or a data frame, with the first
 column being the indices of \(G_1\) and the second column being the
 corresponding indices of \(G_2\).</p></dd>
+
+
 <dt>similarity</dt>
 <dd><p>A matrix. An <code>n-by-n</code> matrix containing vertex similarities.</p></dd>
+
+
 <dt>start</dt>
 <dd><p>A matrix or a character. Any <code>nns-by-nns</code> matrix or
 character value like "bari", "rds" or "convex" to initialize the starting matrix.</p></dd>
+
+
 <dt>max_iter</dt>
 <dd><p>A number. Maximum number of replacing matches.</p></dd>
+
+
 <dt>tol</dt>
 <dd><p>A number. Tolerance of edge disagreements.</p></dd>
+
+
 <dt>lap_method</dt>
 <dd><p>Choice for lap method. One of "lapjv", "lapmod", or "clue".</p></dd>
+
+
 <dt>epsilon</dt>
 <dd><p>A small number</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>graph_match_indefinite</code>, <code>graph_match_convex</code> and <code>graph_match_PATH</code>  return an object of class "<code><a href="graphMatch_constructor.html">graphMatch</a></code>" which is a list containing the following
-  components:</p><dl><dt>corr_A</dt>
+    
+
+<p><code>graph_match_indefinite</code>, <code>graph_match_convex</code> and <code>graph_match_PATH</code></p>
+
+
+<p>return an object of class "<code><a href="graphMatch_constructor.html">graphMatch</a></code>" which is a list containing the following
+  components:</p>
+<p></p>
+<dl><dt>corr_A</dt>
 <dd><p>matching correspondence in \(G_1\)</p></dd>
 
     <dt>corr_B</dt>
@@ -158,16 +183,15 @@ for Correlated Erdos-Renyi Graphs</em>.J. Mach. Learn. Res., pages 3513-3540.</p
 algorithm for the graph matching problem</em>. IEEE Trans Pattern Anal Mach Intell,
 pages 2227-2242.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.9</span>, p <span class="op">=</span>  <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span>
-<span class="r-in"><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span>
-<span class="r-in"><span class="co"># match G_1 &amp; G_2 with no seeds</span></span>
-<span class="r-in"><span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, method <span class="op">=</span> <span class="st">"convex"</span>, max_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.9</span>, p <span class="op">=</span>  <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span></span>
+<span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span></span>
+<span class="r-in"><span><span class="co"># match G_1 &amp; G_2 with no seeds</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, method <span class="op">=</span> <span class="st">"convex"</span>, max_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gm(A = g1, B = g2, method = "convex", max_iter = 10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -183,8 +207,8 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8       8      9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9       9      8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10     10     10</span>
-<span class="r-in"><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span></span>
-<span class="r-in"><span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"convex"</span>, max_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"convex"</span>, max_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gm(A = g1, B = g2, seeds = seeds, method = "convex", max_iter = 10)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -200,17 +224,17 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8       8      8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9       9      9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10     10     10</span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># match G_1 &amp; G_2 with some known node pairs as seeds</span></span>
-<span class="r-in"><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.3</span>, p <span class="op">=</span>  <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span>
-<span class="r-in"><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span>
-<span class="r-in"><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span></span>
-<span class="r-in"><span class="va">GM_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, start <span class="op">=</span> <span class="st">"bari"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">GM_bari</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># match G_1 &amp; G_2 with some known node pairs as seeds</span></span></span>
+<span class="r-in"><span><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, corr <span class="op">=</span>  <span class="fl">0.3</span>, p <span class="op">=</span>  <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span></span></span>
+<span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph2</span></span></span>
+<span class="r-in"><span><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op">&lt;=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span><span class="va">GM_bari</span> <span class="op">&lt;-</span> <span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, start <span class="op">=</span> <span class="st">"bari"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">GM_bari</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gm(A = g1, B = g2, seeds = seeds, method = "indefinite", start = "bari")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Match (10 x 10):</span>
@@ -225,7 +249,7 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8       8      5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9       9      9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10     10     10</span>
-<span class="r-in"><span class="va">GM_bari</span><span class="op">[</span><span class="op">!</span><span class="va">GM_bari</span><span class="op">$</span><span class="va">seeds</span><span class="op">]</span> <span class="co"># matching correspondence for non-seeds</span></span>
+<span class="r-in"><span><span class="va">GM_bari</span><span class="op">[</span><span class="op">!</span><span class="va">GM_bari</span><span class="op">$</span><span class="va">seeds</span><span class="op">]</span> <span class="co"># matching correspondence for non-seeds</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    corr_A corr_B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4       4      4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5       5      7</span>
@@ -234,8 +258,8 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8       8      5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9       9      9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10     10     10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">GM_bari</span>, <span class="va">g1</span>, <span class="va">g2</span>, true_label <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">GM_bari</span>, <span class="va">g1</span>, <span class="va">g2</span>, true_label <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: gm(A = g1, B = g2, seeds = seeds, method = "indefinite", start = "bari")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Matches: 7</span>
@@ -245,13 +269,13 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  missing_edges  3.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    extra_edges 10.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          fnorm  5.09902</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># match G_1 &amp; G_2 with some incorrect seeds</span></span>
-<span class="r-in"><span class="va">hard_seeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">6</span>,<span class="fl">5</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="check_seeds.html">check_seeds</a></span><span class="op">(</span><span class="va">seeds</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="va">seeds</span><span class="op">)</span>,<span class="va">hard_seeds</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">GM_badseed</span> <span class="op">&lt;-</span> <span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"indefinite"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">GM_badseed</span><span class="op">[</span><span class="op">]</span> <span class="co"># get the corresponding permutation matrix</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># match G_1 &amp; G_2 with some incorrect seeds</span></span></span>
+<span class="r-in"><span><span class="va">hard_seeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>,<span class="fl">6</span>,<span class="fl">5</span>,<span class="fl">4</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">seeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="check_seeds.html">check_seeds</a></span><span class="op">(</span><span class="va">seeds</span>, nv <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="va">seeds</span><span class="op">)</span>,<span class="va">hard_seeds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">GM_badseed</span> <span class="op">&lt;-</span> <span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">seeds</span>, method <span class="op">=</span> <span class="st">"indefinite"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">GM_badseed</span><span class="op">[</span><span class="op">]</span> <span class="co"># get the corresponding permutation matrix</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 x 10 sparse Matrix of class "dgTMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 1 . . . . . . . . .</span>
@@ -264,16 +288,16 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] . . . . . 1 . . . .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] . . . . . . . . 1 .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,] . . . . . . . 1 . .</span>
-<span class="r-in"><span class="va">GM_badseed</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">g2</span> <span class="co"># permute the second graph according to match result: PBP^T</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 2920b36 UN-- 10 26 -- Erdos renyi (gnp) graph</span>
+<span class="r-in"><span><span class="va">GM_badseed</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">g2</span> <span class="co"># permute the second graph according to match result: PBP^T</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 316a805 UN-- 10 26 -- Erdos-Renyi (gnp) graph</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | loops (g/l), p (g/n), name (v/n)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 2920b36 (vertex names):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 316a805 (vertex names):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  8-- 9  7--10  7-- 9  8-- 7  6-- 9  6-- 7 10-- 5  9-- 5  8-- 5  7-- 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11]  6-- 5  4--10  4-- 9  6-- 4  3-- 9  3-- 8  3-- 6  3-- 5  2--10  2-- 8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21]  2-- 4  2-- 3  1-- 8  1-- 7  1-- 4  1-- 2</span>
-<span class="r-in"><span class="va">GM_badseed</span><span class="op">$</span><span class="va">soft</span> <span class="co"># doubly stochastic matrix from the last step of Frank-Wolfe iterations</span></span>
+<span class="r-in"><span><span class="va">GM_badseed</span><span class="op">$</span><span class="va">soft</span> <span class="co"># doubly stochastic matrix from the last step of Frank-Wolfe iterations</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10 x 10 sparse Matrix of class "dgCMatrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 1 . . . . . . . . .</span>
@@ -286,18 +310,18 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,] . . . . . 1 . . . .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [9,] . . . . . . . . 1 .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [10,] . . . . . . . 1 . .</span>
-<span class="r-in"><span class="va">GM_badseed</span><span class="op">$</span><span class="va">iter</span> <span class="co"># number of iterations</span></span>
+<span class="r-in"><span><span class="va">GM_badseed</span><span class="op">$</span><span class="va">iter</span> <span class="co"># number of iterations</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-in"><span class="va">GM_badseed</span><span class="op">$</span><span class="va">max_iter</span> <span class="co"># preset maximum number of iterations: 20</span></span>
+<span class="r-in"><span><span class="va">GM_badseed</span><span class="op">$</span><span class="va">max_iter</span> <span class="co"># preset maximum number of iterations: 20</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 20</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># match two multi-layer graphs</span></span>
-<span class="r-in"><span class="va">gp_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">.3</span>, <span class="fl">.5</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">match_multi_layer</span> <span class="op">&lt;-</span> <span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, seeds <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, start <span class="op">=</span> <span class="st">"bari"</span>, max_iter <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">match_multi_layer</span>, <span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># match two multi-layer graphs</span></span></span>
+<span class="r-in"><span><span class="va">gp_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fu"><a href="sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">.3</span>, <span class="fl">.5</span><span class="op">)</span>, simplify <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gp_list</span>, <span class="kw">function</span><span class="op">(</span><span class="va">gp</span><span class="op">)</span><span class="va">gp</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">match_multi_layer</span> <span class="op">&lt;-</span> <span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">A</span>, <span class="va">B</span>, seeds <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, method <span class="op">=</span> <span class="st">"indefinite"</span>, start <span class="op">=</span> <span class="st">"bari"</span>, max_iter <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">match_multi_layer</span>, <span class="va">A</span>, <span class="va">B</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call: gm(A = A, B = B, seeds = 1:10, method = "indefinite", start = "bari", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     max_iter = 20)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -307,9 +331,9 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  missing_edges 37.0000 30.00000 34.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    extra_edges 31.0000 30.00000 35.00000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          fnorm 11.6619 10.95445 11.74734</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># match G_1 &amp; G_2 using PATH algorithm</span></span>
-<span class="r-in"><span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, method <span class="op">=</span> <span class="st">"PATH"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># match G_1 &amp; G_2 using PATH algorithm</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="gm.html">gm</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, method <span class="op">=</span> <span class="st">"PATH"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Frank-Wolfe iterations reach the maximum iteration, convergence may not occur.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gm(A = g1, B = g2, method = "PATH")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -325,8 +349,8 @@ pages 2227-2242.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8       8      2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9       9      8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10     10      7</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -341,7 +365,7 @@ pages 2227-2242.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
