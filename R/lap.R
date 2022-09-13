@@ -55,7 +55,7 @@ do_lap <- function(score, method = "clue"){
         maximize = TRUE)
     },
     lapmod = {
-      if( class(score) == "splrMatrix" ){
+      if( inherits(score, "splrMatrix") ){
         lapmod(splr_to_sparse(score),
           maximize = TRUE)
       } else {

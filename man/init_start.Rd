@@ -41,7 +41,7 @@ When \code{start} is a character, there are five options.
   with a being sampled as \code{g * runif()}.
 \item \code{"rds"} gives a random doubly stochastic matrix. Users can specify a
   random deviates generator to the \code{distribution} argument, and the default is \code{runif}. 
-  A random matrix with iid entries from \code{distribution} and the the Sainkhorn algorithm is applied
+  A random matrix with iid entries from \code{distribution} and the the Sinkhorn algorithm is applied
   to produce the output.
 \item \code{"rds_from_sim"} gives a random doubly stochastic matrix derived from
   similarity scores. One needs to input a similarity score matrix to the \code{sim}
