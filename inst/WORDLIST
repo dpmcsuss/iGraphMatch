@@ -52,7 +52,6 @@ R'enyi
 RDPG
 Renyi
 SPLR
-Sainkhorn
 Sapiro
 Scheinerman
 Schierenberg
@@ -98,6 +97,7 @@ de
 defn
 devtools
 doi
+edu
 eg
 eigendecomposing
 eigendecomposition
@@ -154,6 +154,7 @@ polytope
 pre
 qap
 rVert
+rda
 rds
 rescaled
 sbm
@@ -166,6 +167,7 @@ splr
 splrMatrix
 subgraphs
 subpermutation
+sussman
 textbf
 th
 tm

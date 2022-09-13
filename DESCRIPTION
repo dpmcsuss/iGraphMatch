@@ -31,7 +31,7 @@ Suggests:
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 Language: en-US
 Encoding: UTF-8
 LinkingTo: 

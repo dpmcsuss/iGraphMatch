@@ -90,14 +90,9 @@ check_graph <- function(A, B,
 
 
   try({
-    A <- matrix_list(lapply(A, function(Al) as(Al, "dgCMatrix")))
-    B <- matrix_list(lapply(B, function(Bl) as(Bl, "dgCMatrix")))
+    A <- matrix_list(lapply(A, function(Al) as(Al, "dMatrix")))
+    B <- matrix_list(lapply(B, function(Bl) as(Bl, "dMatrix")))
   }, silent = TRUE)
-  # try({
-  #   A <- as(A, "dgCMatrix")
-  #   B <- as(B, "dgCMatrix")
-  # }, silent = TRUE)
-
   if (same_order) {
     if (totv1 > totv2) {
       diff <- totv1 - totv2
@@ -165,12 +160,8 @@ check_single_graph <- function(A, square = TRUE,
 
 
   try({
-    A <- matrix_list(lapply(A, function(Al) as(Al, "dgCMatrix")))
+    A <- matrix_list(lapply(A, function(Al) as(Al, "dMatrix")))
   }, silent = TRUE)
-  # try({
-  #   A <- as(A, "dgCMatrix")
-  #   B <- as(B, "dgCMatrix")
-  # }, silent = TRUE)
 
   if (!as_list) {
     if (length(A) > 1) {
