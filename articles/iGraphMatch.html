@@ -370,9 +370,9 @@ T_p(v,P^*):=\frac{T(v,P^*)-\mathbb{E}_PT(v,P)}{\sqrt{Var_PT(v,P)}}
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span>, corr <span class="op">=</span> <span class="fl">0.7</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">cgnp_g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## IGRAPH c6b4ce7 U--- 5 4 -- Erdos-Renyi (gnp) graph</span></span>
+<pre><code><span><span class="co">## IGRAPH 6581e3e U--- 5 4 -- Erdos-Renyi (gnp) graph</span></span>
 <span><span class="co">## + attr: name (g/c), type (g/c), loops (g/l), p (g/n)</span></span>
-<span><span class="co">## + edges from c6b4ce7:</span></span>
+<span><span class="co">## + edges from 6581e3e:</span></span>
 <span><span class="co">## [1] 1--2 2--3 2--5 3--5</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cgnp_g1</span><span class="op">[</span><span class="op">]</span></span></code></pre></div>
@@ -659,11 +659,11 @@ T_p(v,P^*):=\frac{T(v,P^*)-\mathbb{E}_PT(v,P)}{\sqrt{Var_PT(v,P)}}
 <p>Notably, multiplicity is applicable to the “graphMatch” object directly without converting to the permutation matrix. This enables obtaining the permuted second graph, that is <span class="math inline">\(PBP^T\)</span> simply by</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">match_convex</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">cgnp_g2</span></span></code></pre></div>
-<pre><code><span><span class="co">## IGRAPH f277f00 UN-- 5 5 -- Erdos-Renyi (gnp) graph</span></span>
+<pre><code><span><span class="co">## IGRAPH 2f5b7a0 UN-- 5 5 -- Erdos-Renyi (gnp) graph</span></span>
 <span><span class="co">## + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1</span></span>
 <span><span class="co">## | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),</span></span>
 <span><span class="co">## | loops (g/l), p (g/n), name (v/n)</span></span>
-<span><span class="co">## + edges from f277f00 (vertex names):</span></span>
+<span><span class="co">## + edges from 2f5b7a0 (vertex names):</span></span>
 <span><span class="co">## [1] 5--3 2--5 2--3 1--5 1--2</span></span></code></pre>
 </div>
 <div class="section level3">
@@ -859,9 +859,9 @@ Asymmetric adjacency matrices of aligned Enron Corporation communication network
 <span><span class="co">## </span></span>
 <span><span class="co">## # Matches: 151, # Seeds:  0, # Vertices:  146, 151</span></span>
 <span><span class="co">##                   </span></span>
-<span><span class="co">##   common_edges 399</span></span>
-<span><span class="co">##  missing_edges  88</span></span>
-<span><span class="co">##    extra_edges  82</span></span>
+<span><span class="co">##   common_edges 396</span></span>
+<span><span class="co">##  missing_edges  91</span></span>
+<span><span class="co">##    extra_edges  85</span></span>
 <span><span class="co">##          fnorm  13</span></span></code></pre>
 <p>From the summary tables, we would prefer matching Enron networks with the application of the centering scheme, since we get more matched common edges, as well as fewer missing edges and extra edges.</p>
 </div>
@@ -906,41 +906,41 @@ Asymmetric adjacency matrices of aligned Enron Corporation communication network
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">NaN</td>
-<td align="right">394</td>
-<td align="right">93</td>
-<td align="right">87</td>
-<td align="right">13</td>
+<td align="right">327</td>
+<td align="right">160</td>
+<td align="right">154</td>
+<td align="right">18</td>
 </tr>
 <tr class="even">
 <td align="right">20</td>
 <td align="right">1.00</td>
-<td align="right">402</td>
-<td align="right">85</td>
-<td align="right">79</td>
-<td align="right">13</td>
+<td align="right">411</td>
+<td align="right">76</td>
+<td align="right">70</td>
+<td align="right">12</td>
 </tr>
 <tr class="odd">
 <td align="right">40</td>
-<td align="right">1.00</td>
-<td align="right">410</td>
-<td align="right">77</td>
-<td align="right">71</td>
+<td align="right">0.98</td>
+<td align="right">407</td>
+<td align="right">80</td>
+<td align="right">74</td>
 <td align="right">12</td>
 </tr>
 <tr class="even">
 <td align="right">60</td>
-<td align="right">0.97</td>
-<td align="right">400</td>
-<td align="right">87</td>
-<td align="right">81</td>
+<td align="right">0.90</td>
+<td align="right">393</td>
+<td align="right">94</td>
+<td align="right">88</td>
 <td align="right">13</td>
 </tr>
 <tr class="odd">
 <td align="right">80</td>
-<td align="right">0.92</td>
-<td align="right">402</td>
-<td align="right">85</td>
-<td align="right">79</td>
+<td align="right">0.86</td>
+<td align="right">397</td>
+<td align="right">90</td>
+<td align="right">84</td>
 <td align="right">13</td>
 </tr>
 </tbody>
@@ -973,10 +973,10 @@ Asymmetric adjacency matrices of aligned Enron Corporation communication network
 <tr class="odd">
 <td align="right">0</td>
 <td align="right">NaN</td>
-<td align="right">394</td>
-<td align="right">93</td>
-<td align="right">87</td>
-<td align="right">13</td>
+<td align="right">327</td>
+<td align="right">160</td>
+<td align="right">154</td>
+<td align="right">18</td>
 </tr>
 <tr class="even">
 <td align="right">20</td>
@@ -988,27 +988,27 @@ Asymmetric adjacency matrices of aligned Enron Corporation communication network
 </tr>
 <tr class="odd">
 <td align="right">40</td>
-<td align="right">1.00</td>
-<td align="right">410</td>
-<td align="right">77</td>
-<td align="right">71</td>
+<td align="right">0.98</td>
+<td align="right">407</td>
+<td align="right">80</td>
+<td align="right">74</td>
 <td align="right">12</td>
 </tr>
 <tr class="even">
 <td align="right">60</td>
-<td align="right">0.97</td>
-<td align="right">400</td>
-<td align="right">87</td>
-<td align="right">81</td>
+<td align="right">0.90</td>
+<td align="right">398</td>
+<td align="right">89</td>
+<td align="right">83</td>
 <td align="right">13</td>
 </tr>
 <tr class="odd">
 <td align="right">80</td>
-<td align="right">0.92</td>
-<td align="right">409</td>
-<td align="right">78</td>
-<td align="right">72</td>
-<td align="right">12</td>
+<td align="right">0.86</td>
+<td align="right">398</td>
+<td align="right">89</td>
+<td align="right">83</td>
+<td align="right">13</td>
 </tr>
 </tbody>
 </table>
@@ -1022,7 +1022,7 @@ Asymmetric adjacency matrices of aligned Enron Corporation communication network
 <span><span class="va">nj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">v1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">v2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">core_precision</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">nc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">bm</span><span class="op">$</span><span class="va">A_best</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">.x</span><span class="op">]</span><span class="op">&lt;=</span><span class="va">nc</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">junk_precision</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="va">nj</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_dbl</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">bm</span><span class="op">$</span><span class="va">A_best</span><span class="op">[</span><span class="op">(</span><span class="va">nc</span><span class="op">+</span><span class="va">.x</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">nc</span><span class="op">+</span><span class="va">nj</span><span class="op">)</span><span class="op">]</span><span class="op">&gt;</span><span class="va">nc</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Core detection performance is substantially better than chance, as represented by the dotted horizontal lines. The top 88 are all core vertices indicating good overall performance for core identification. For junk identification, the junk vertices are ranked 63, 54, 50, 14, 6, 5 according to which have the lowest score, indicating that some junk vertices are difficult to identify.</p>
+<p>Core detection performance is substantially better than chance, as represented by the dotted horizontal lines. The top 88 are all core vertices indicating good overall performance for core identification. For junk identification, the junk vertices are ranked 63, 62, 61, 49, 15, 10 according to which have the lowest score, indicating that some junk vertices are difficult to identify.</p>
 <div class="figure">
 <img src="iGraphMatch_files/figure-html/unnamed-chunk-1-1.png" alt="\label{fig:core}Mean precision for identifying core and junk vertices for the Enron networks by using the row permutation test. The vertical lines separate the performance of identifying core vertices with low ranks from junk vertices with high ranks. The horizontal lines indicate the performance of a random classifier." width="0.5\textwidth" height="0.24\textheight"><p class="caption">
 Mean precision for identifying core and junk vertices for the Enron networks by using the row permutation test. The vertical lines separate the performance of identifying core vertices with low ranks from junk vertices with high ranks. The horizontal lines indicate the performance of a random classifier.
