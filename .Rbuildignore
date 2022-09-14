@@ -11,3 +11,4 @@
 ^CRAN-RELEASE$
 ^cran-comments\.md$
 ^todo\.R?md$
+^CRAN-SUBMISSION$
