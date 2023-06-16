@@ -14,7 +14,7 @@ Depends:
     R (>= 3.3.1)
 Imports:
     clue (>= 0.3-54),
-    Matrix (>= 1.2-11),
+    Matrix (>= 1.5-0),
     igraph (>= 1.1.2),
     irlba,
     methods,
@@ -31,9 +31,9 @@ Suggests:
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Language: en-US
 Encoding: UTF-8
-LinkingTo: 
+LinkingTo: y
     Rcpp
 Config/testthat/edition: 3
