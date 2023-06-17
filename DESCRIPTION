@@ -11,10 +11,10 @@ Description: Versatile tools and data for graph matching analysis with various f
     that supports working with 'igraph' objects, matrix objects, or lists of either.
 URL: https://github.com/dpmcsuss/iGraphMatch/, https://rdrr.io/github/dpmcsuss/iGraphMatch/
 Depends:
-    R (>= 3.3.1)
+    R (>= 3.6.0)
 Imports:
     clue (>= 0.3-54),
-    Matrix (>= 1.2-11),
+    Matrix (>= 1.5-0),
     igraph (>= 1.1.2),
     irlba,
     methods,
@@ -31,9 +31,9 @@ Suggests:
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Language: en-US
 Encoding: UTF-8
-LinkingTo: 
+LinkingTo:
     Rcpp
 Config/testthat/edition: 3
