@@ -101,31 +101,31 @@ the original graphs remain in the induced subgraph.</p>
 <span class="r-in"><span><span class="va">lccs1</span> <span class="op">&lt;-</span> <span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, min_degree <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># induced subgraph</span></span></span>
 <span class="r-in"><span><span class="va">lccs1</span><span class="op">$</span><span class="va">g1</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH f3a2b73 D--- 5 8 -- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from f3a2b73:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 4fb3f8f D--- 5 8 -- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 4fb3f8f:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1-&gt;4 2-&gt;3 2-&gt;4 3-&gt;2 4-&gt;1 4-&gt;2 4-&gt;5 5-&gt;4</span>
 <span class="r-in"><span><span class="va">lccs1</span><span class="op">$</span><span class="va">g2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 8d6e9f9 D--- 5 8 -- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 8d6e9f9:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 659a30a D--- 5 8 -- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 659a30a:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1-&gt;4 2-&gt;3 2-&gt;4 3-&gt;2 4-&gt;1 4-&gt;2 4-&gt;5 5-&gt;4</span>
 <span class="r-in"><span><span class="co"># label of vertices of the induced subgraph in the original graph</span></span></span>
-<span class="r-in"><span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g1</span><span class="op">)</span><span class="op">[</span><span class="va">lccs1</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + 5/10 vertices, from 9aa9c61:</span>
+<span class="r-in"><span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g1</span><span class="op">)</span><span class="op">[</span><span class="va">lccs1</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + 5/10 vertices, from fe188dd:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 2 6 8 9</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># obtain a common largest connect subgraph with each vertex having a minimum degree of 3</span></span></span>
 <span class="r-in"><span><span class="va">lccs3</span> <span class="op">&lt;-</span> <span class="fu">largest_common_cc</span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, min_degree <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">.01</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/sample_gnp.html" class="external-link">sample_gnp</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">.01</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lcc</span> <span class="op">&lt;-</span> <span class="fu">largest_cc</span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># induced subgraph</span></span></span>
 <span class="r-in"><span><span class="va">lcc</span><span class="op">$</span><span class="va">g</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 1899ca1 D--- 7 12 -- </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 1899ca1:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 4d288ba D--- 7 12 -- </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 4d288ba:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1-&gt;4 2-&gt;4 2-&gt;5 3-&gt;7 4-&gt;1 4-&gt;2 4-&gt;6 4-&gt;7 5-&gt;2 6-&gt;4 7-&gt;3 7-&gt;4</span>
 <span class="r-in"><span><span class="co"># label of vertices of the induced subgraph in the original graph</span></span></span>
-<span class="r-in"><span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span><span class="va">lcc</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + 7/100 vertices, from b2275ae:</span>
+<span class="r-in"><span><span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">[</span><span class="va">lcc</span><span class="op">$</span><span class="va">keep</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + 7/100 vertices, from 6fb7295:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18 28 38 39 42 49 91</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -142,7 +142,7 @@ the original graphs remain in the induced subgraph.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
