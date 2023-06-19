@@ -19,7 +19,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">iGraphMatch</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2.9000</span>
       </span>
     </div>
 
@@ -137,9 +137,9 @@ vector length should be the same as <code>block.sizes</code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.001</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.001</span>, <span class="fl">.05</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">sample_correlated_sbm_pair</span><span class="op">(</span>n<span class="op">=</span><span class="fl">1000</span>, pref.matrix<span class="op">=</span><span class="va">pm</span>, block.sizes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300</span>,<span class="fl">700</span><span class="op">)</span>, corr<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $graph1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 6927bdc U--- 1000 17089 -- Stochastic block model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH d244911 U--- 1000 17089 -- Stochastic block model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + attr: name (g/c), loops (g/l)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 6927bdc:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from d244911:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  4-- 6  2-- 7  9--10 10--11  5--12  6--12  7--12  7--13 11--13  3--14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11]  6--16 12--16 10--17 12--17 15--18  6--19  7--19 10--19  2--21 10--21</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21] 14--21 19--21 20--21  9--22 15--22  7--23  9--23 12--23 16--24 18--24</span>
@@ -151,10 +151,10 @@ vector length should be the same as <code>block.sizes</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + ... omitted several edges</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $graph2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 74ed8b6 U--- 1000 16833 -- Stochastic block model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 1723868 U--- 1000 16833 -- Stochastic block model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | (g/c), loops (g/l)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 74ed8b6:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 1723868:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 984-- 989 984-- 987 983-- 984 979-- 999 979-- 996 979-- 991 979-- 986</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 978--1000 978-- 998 978-- 980 975-- 991 974-- 981 973-- 997 972-- 985</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] 971-- 994 971-- 990 971-- 981 971-- 978 970-- 992 970-- 978 970-- 972</span>
@@ -167,9 +167,9 @@ vector length should be the same as <code>block.sizes</code>.</p></dd>
 <span class="r-in"><span><span class="fu">sample_correlated_sbm_pair</span><span class="op">(</span>n<span class="op">=</span><span class="fl">1000</span>, pref.matrix<span class="op">=</span><span class="va">pm</span>, block.sizes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">300</span>,<span class="fl">700</span><span class="op">)</span>, corr<span class="op">=</span><span class="fl">0.5</span>,</span></span>
 <span class="r-in"><span>core.block.sizes<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">200</span>,<span class="fl">500</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $graph1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 41af31f U--- 1000 16836 -- Stochastic block model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 5735072 U--- 1000 16836 -- Stochastic block model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + attr: name (g/c), loops (g/l)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 41af31f:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 5735072:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1-- 2  1-- 6  4-- 8  2-- 9  3-- 9  8--10  9--12  2--13 12--14 12--15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [11]  2--16  3--16  5--16 13--16  7--17  8--17 11--17 12--17 14--17  1--18</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [21] 16--19 18--19 10--20 11--20 17--20  3--21  2--23 11--23 15--23 21--23</span>
@@ -181,10 +181,10 @@ vector length should be the same as <code>block.sizes</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + ... omitted several edges</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $graph2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 664fa05 U--- 1000 17004 -- Stochastic block model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 263ac0f U--- 1000 17004 -- Stochastic block model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + attr: name_1 (g/c), name_2 (g/c), loops_1 (g/l), loops_2 (g/l), name</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | (g/c), loops (g/l)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 664fa05:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 263ac0f:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 999--1000 988-- 994 985-- 996 985-- 990 985-- 989 984-- 996 983-- 998</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 981-- 986 980-- 993 978-- 989 977-- 985 976-- 996 976-- 992 976-- 988</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [15] 976-- 977 975-- 995 975-- 979 974-- 995 974-- 984 974-- 981 974-- 978</span>
