@@ -13,6 +13,8 @@
 \alias{[,matrix_list,missing,missing,ANY-method}
 \alias{\%*\%,matrix_list,ANY-method}
 \alias{\%*\%,ANY,matrix_list-method}
+\alias{\%*\%,matrix_list,Matrix-method}
+\alias{\%*\%,Matrix,matrix_list-method}
 \alias{sum,matrix_list,logical-method}
 \alias{^,matrix_list,ANY-method}
 \alias{-,matrix_list,matrix_list-method}
@@ -50,6 +52,10 @@ matrix_list(ml)
 \S4method{\%*\%}{matrix_list,ANY}(x, y)
 
 \S4method{\%*\%}{ANY,matrix_list}(x, y)
+
+\S4method{\%*\%}{matrix_list,Matrix}(x, y)
+
+\S4method{\%*\%}{Matrix,matrix_list}(x, y)
 
 \S4method{sum}{matrix_list,logical}(x, na.rm = FALSE)
 

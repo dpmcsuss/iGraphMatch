@@ -339,6 +339,20 @@ setMethod("%*%", signature(x = "ANY", y = "graphMatch"),
 )
 
 #' @rdname graphMatch_operators
+setMethod("%*%", signature(x = "graphMatch", y = "Matrix"),
+  function(x, y) {
+    x[] %*% y %*% t(x[])
+  }
+)
+
+#' @rdname graphMatch_operators
+setMethod("%*%", signature(x = "Matrix", y = "graphMatch"),
+  function(x, y){
+    t(y[]) %*% x %*% y[]
+  }
+)
+
+#' @rdname graphMatch_operators
 setMethod("%*%", signature(x = "graphMatch", y = "igraph"),
   function(x, y) {
     m <- min(dim(x))

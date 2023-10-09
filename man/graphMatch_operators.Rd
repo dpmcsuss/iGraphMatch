@@ -3,6 +3,8 @@
 \name{\%*\%,graphMatch,ANY-method}
 \alias{\%*\%,graphMatch,ANY-method}
 \alias{\%*\%,ANY,graphMatch-method}
+\alias{\%*\%,graphMatch,Matrix-method}
+\alias{\%*\%,Matrix,graphMatch-method}
 \alias{\%*\%,graphMatch,igraph-method}
 \alias{\%*\%,igraph,graphMatch-method}
 \title{Operator methods for graphMatch objects}
@@ -10,6 +12,10 @@
 \S4method{\%*\%}{graphMatch,ANY}(x, y)
 
 \S4method{\%*\%}{ANY,graphMatch}(x, y)
+
+\S4method{\%*\%}{graphMatch,Matrix}(x, y)
+
+\S4method{\%*\%}{Matrix,graphMatch}(x, y)
 
 \S4method{\%*\%}{graphMatch,igraph}(x, y)
 

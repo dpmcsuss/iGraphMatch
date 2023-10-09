@@ -97,6 +97,18 @@ setMethod("%*%", signature(x = "ANY", y = "matrix_list"),
     matrix_list(lapply(seq_along(y), function(i) x %*% y[[i]]))
   })
 
+#' @rdname matrix_list
+setMethod("%*%", signature(x = "matrix_list", y = "Matrix"), 
+  function(x, y){
+    matrix_list(lapply(seq_along(x), function(i) x[[i]] %*% y))
+  })
+
+
+#' @rdname matrix_list
+setMethod("%*%", signature(x = "Matrix", y = "matrix_list"), 
+  function(x, y){
+    matrix_list(lapply(seq_along(y), function(i) x %*% y[[i]]))
+  })
 
 
 #' @rdname matrix_list
