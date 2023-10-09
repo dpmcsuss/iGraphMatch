@@ -905,9 +905,9 @@ a pair of graphs with 5 nodes from <span class="math inline">\(\mathrm{CorrER}(0
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">cgnp_pair</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sample_gnp.html">sample_correlated_gnp_pair</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span>, corr <span class="op">=</span> <span class="fl">0.7</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="op">(</span><span class="va">cgnp_g1</span> <span class="op">&lt;-</span> <span class="va">cgnp_pair</span><span class="op">$</span><span class="va">graph1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## IGRAPH 6c447aa U--- 5 4 -- Erdos-Renyi (gnp) graph</span></span>
+<pre><code><span><span class="co">## IGRAPH 292c00c U--- 5 4 -- Erdos-Renyi (gnp) graph</span></span>
 <span><span class="co">## + attr: name (g/c), type (g/c), loops (g/l), p (g/n)</span></span>
-<span><span class="co">## + edges from 6c447aa:</span></span>
+<span><span class="co">## + edges from 292c00c:</span></span>
 <span><span class="co">## [1] 1--2 2--3 2--5 3--5</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cgnp_g1</span><span class="op">[</span><span class="op">]</span></span></code></pre></div>
@@ -1321,11 +1321,11 @@ directly without converting to the permutation matrix. This enables
 obtaining the permuted second graph, that is <span class="math inline">\(PBP^T\)</span> simply by</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">match_convex</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">cgnp_g2</span></span></code></pre></div>
-<pre><code><span><span class="co">## IGRAPH b5c3730 UN-- 5 5 -- Erdos-Renyi (gnp) graph</span></span>
+<pre><code><span><span class="co">## IGRAPH 70d72a6 UN-- 5 5 -- Erdos-Renyi (gnp) graph</span></span>
 <span><span class="co">## + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1</span></span>
 <span><span class="co">## | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),</span></span>
 <span><span class="co">## | loops (g/l), p (g/n), name (v/n)</span></span>
-<span><span class="co">## + edges from b5c3730 (vertex names):</span></span>
+<span><span class="co">## + edges from 70d72a6 (vertex names):</span></span>
 <span><span class="co">## [1] 5--3 2--5 2--3 1--5 1--2</span></span></code></pre>
 </div>
 <div class="section level3">

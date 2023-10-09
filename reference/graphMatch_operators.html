@@ -64,6 +64,12 @@
 # S4 method for ANY,graphMatch
 %*%(x, y)
 
+# S4 method for graphMatch,Matrix
+%*%(x, y)
+
+# S4 method for Matrix,graphMatch
+%*%(x, y)
+
 # S4 method for graphMatch,igraph
 %*%(x, y)
 
@@ -109,11 +115,11 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># permute the second graph according to the match result: P %*% g2 %*% P^T</span></span></span>
 <span class="r-in"><span><span class="va">match</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">g2</span> <span class="co"># return an igraph object</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH 3e1d390 UN-- 10 19 -- Erdos-Renyi (gnp) graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> IGRAPH ce9ca28 UN-- 10 19 -- Erdos-Renyi (gnp) graph</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> + attr: name_1 (g/c), name_2 (g/c), type_1 (g/c), type_2 (g/c), loops_1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | (g/l), loops_2 (g/l), p_1 (g/n), p_2 (g/n), name (g/c), type (g/c),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> | loops (g/l), p (g/n), name (v/n)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from 3e1d390 (vertex names):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> + edges from ce9ca28 (vertex names):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 8--10 5-- 6 4--10 9-- 4 4-- 7 5-- 4 3--10 3-- 9 3-- 7 3-- 6 3-- 5 3-- 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] 2-- 9 2-- 7 2-- 5 2-- 4 1-- 8 1-- 5 1-- 3</span>
 <span class="r-in"><span><span class="co"># equivalent to the matrix operation</span></span></span>
