@@ -469,6 +469,7 @@ identity_match <- function(x, y) {
   } else {
     nmin <- min(nrow(x), nrow(y))
   }
+  nmin <- as.integer(nmin)
 
   graphMatch(
     corr = data.frame(corr_A = 1:nmin, corr_B = 1:nmin),
