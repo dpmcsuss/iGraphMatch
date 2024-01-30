@@ -1,5 +1,7 @@
 # iGraphMatch (development version)
 
+* Updates for iGraph 2.0.x. In particular, use `igraph::upgrade_graph` on the Enron and C.Elegans data.
+
 # iGraphMatch 2.0.3
 
 * Updates for changes in Matrix version 1.6-2
