@@ -9,7 +9,7 @@ Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussma
              person("Vince", "Lyzinski", role = "ctb"))
 Description: Versatile tools and data for graph matching analysis with various forms of prior information
     that supports working with 'igraph' objects, matrix objects, or lists of either.
-URL: https://github.com/dpmcsuss/iGraphMatch, https://rdrr.io/github/dpmcsuss/iGraphMatch/
+URL: https://github.com/dpmcsuss/iGraphMatch, https://dpmcsuss.github.io/iGraphMatch/
 Depends:
     R (>= 3.6.0)
 Imports:
