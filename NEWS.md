@@ -1,4 +1,4 @@
-# iGraphMatch (development version)
+# iGraphMatch 2.0.4
 
 * Updates for igraph 2.0.x.
   * Use `igraph::upgrade_graph` on the Enron and C.Elegans data.
