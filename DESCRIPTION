@@ -1,7 +1,7 @@
 Package: iGraphMatch
 Type: Package
 Title: Tools for Graph Matching
-Version: 2.0.3.9000
+Version: 2.0.4.9000
 Authors@R: c(person("Daniel", "Sussman", role = c("aut", "cre"), email = "sussman@bu.edu"),
              person("Zihuan", "Qiao", role = c("aut"), email = "zhqiao@bu.edu"),
              person("Joshua", "Agterberg", role = "ctb"),
@@ -14,8 +14,8 @@ Depends:
     R (>= 3.6.0)
 Imports:
     clue (>= 0.3-54),
-    Matrix (>= 1.5-0),
-    igraph (>= 1.1.2),
+    Matrix (>= 1.6-0),
+    igraph (>= 2.0.0),
     irlba,
     methods,
     Rcpp

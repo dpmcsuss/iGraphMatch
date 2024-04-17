@@ -1,5 +1,7 @@
 # iGraphMatch 2.0.4
 
+# iGraphMatch 2.0.4
+
 * Updates for igraph 2.0.x.
   * Use `igraph::upgrade_graph` on the Enron and C.Elegans data.
   * Explicitly cast `nnodes` to integer in `identity_match` function.
