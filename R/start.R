@@ -42,7 +42,7 @@ rds_perm_bari <- function(nns, g, ...){
 }
 
 rds_from_sim_start <- function(nns, ns = 0,
-    soft_seeds = NULL, sim) {
+    soft_seeds = NULL, sim, ...) {
 
   if (!is.null(soft_seeds) && nrow(soft_seeds) > 0) {
     warning("Ignoring soft_seeds in rds_from_sim_start")
@@ -58,7 +58,7 @@ rds_from_sim_start <- function(nns, ns = 0,
   rds_from_sim(nns, sim)
 }
 
-rds_from_sim <- function(nns, sim) {
+rds_from_sim <- function(nns, sim, ...) {
   if (inherits(sim, "sparseMatrix") &&
       "x" %in% slotNames(sim)) {
     sim@x <- exp(sim@x + stats::rnorm(Matrix::nnzero(sim)) * 2)
