@@ -36,7 +36,7 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
 
 
 
-rds_perm_bari <- function(nns, g){
+rds_perm_bari <- function(nns, g, ...){
   alpha <- g * stats::runif(1)
   (1 - alpha) * bari_start(nns) + alpha * rperm(nns)
 }
