@@ -58,7 +58,7 @@ rds_from_sim_start <- function(nns, ns = 0,
   rds_from_sim(nns, sim)
 }
 
-rds_from_sim <- function(nns, sim, ...) {
+rds_from_sim <- function(nns, sim) {
   if (inherits(sim, "sparseMatrix") &&
       "x" %in% slotNames(sim)) {
     sim@x <- exp(sim@x + stats::rnorm(Matrix::nnzero(sim)) * 2)

@@ -43,7 +43,7 @@ test_that("various operations work as expected",{
   # })
   expect_no_error(print(s))
   expect_no_error(show(s))
-  # expect_no_error(as.character(s))
+  expect_no_error(as.character(s))
 
   expect_no_error(str(s))
   # sink()
