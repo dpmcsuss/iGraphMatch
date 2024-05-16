@@ -24,11 +24,7 @@ test_that("degree of vertex in each graph", {
 set.seed(123)
 n <- 10
 p_mat <- matrix(runif(n^2),n)
-p_mat[row(p_mat) > col(p_mat)] <- p_mat[row(p_mat) < col(p_mat)]
-diag(p_mat) <- 0
 c_mat <- matrix(runif(n^2),n)
-c_mat[row(c_mat) > col(c_mat)] <- c_mat[row(c_mat) < col(c_mat)]
-diag(c_mat) <- 0
 
 g <- sample_correlated_ieg_pair(n, p_mat, c_mat, directed = FALSE,loops = TRUE, permutation = 1:n)
 

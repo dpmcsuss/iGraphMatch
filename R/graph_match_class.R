@@ -565,7 +565,7 @@ setMethod("plot", signature(x = "Matrix", y = "Matrix"),
 
 permuted_subgraph <- function(g, corr_g) {
   if(is.null(igraph::V(g)$name)){
-    g <- igraph::set.vertex.attribute(g, "name", corr_g, corr_g)
+    g <- igraph::set_vertex_attr(g, "name", corr_g, corr_g)
   }
 
   g <- igraph::permute(
