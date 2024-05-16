@@ -62,6 +62,15 @@ If \code{method} is a function, it should take two matrices or
   according to the specified method.
   For a detailed list of additional arguments for each one of the implemented method,
   please click on the corresponding method name for its help page.
+  
+  Most graph matching functions include as list elements additional details
+  about the match. Call names() on a graphMatch object to see these details.
+  As an example, PATH, IsoRank, Umeyama, Indefinite, and
+  Convex each include \code{soft}, which is the matrix found by the
+  algorithm prior to projection onto the set of permutation matrices.
+  Similarly, PATH, Indefinite, and Convex return \code{iter}, the number of
+  iterations, and IsoRank (with greedy LAP) and Percolation return
+  \code{match_order}, the order that the node-pairs were added to the match.
 }
 \examples{
 # match G_1 & G_2 with some known node pairs as seeds
