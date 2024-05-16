@@ -104,109 +104,6 @@
 
 ---
 
-      [1] "Sparse\n0\nLeft factor\n0.116135774413124\nRight factor\n0.204402445349842"      
-      [2] "Sparse\n-0.46\nLeft factor\n0.303021797677502\nRight factor\n0.98563308827579"   
-      [3] "Sparse\n-1.1\nLeft factor\n0.478802685858682\nRight factor\n0.566310757072642"   
-      [4] "Sparse\n-1.1\nLeft factor\n0.344830546760932\nRight factor\n0.280375145142898"   
-      [5] "Sparse\n-0.28\nLeft factor\n0.600714140105993\nRight factor\n0.185055723180994"  
-      [6] "Sparse\n-1.4\nLeft factor\n0.0760833232197911\nRight factor\n0.758061396190897"  
-      [7] "Sparse\n0\nLeft factor\n0.955992611125112\nRight factor\n0.566781281260774"      
-      [8] "Sparse\n-1.4\nLeft factor\n0.0222068231087178\nRight factor\n0.932173571083695"  
-      [9] "Sparse\n-0.86\nLeft factor\n0.841710632434115\nRight factor\n0.638693316373974"  
-     [10] "Sparse\n0\nLeft factor\n0.632442448753864\nRight factor\n0.700748134404421"      
-     [11] "Sparse\n0\nLeft factor\n0.310094165150076\nRight factor\n0.479222468566149"      
-     [12] "Sparse\n0\nLeft factor\n0.742569366237149\nRight factor\n0.850311916321516"      
-     [13] "Sparse\n0\nLeft factor\n0.638911313610151\nRight factor\n0.422330675413832"      
-     [14] "Sparse\n-1.1\nLeft factor\n0.992515987250954\nRight factor\n0.0313921230845153"  
-     [15] "Sparse\n0\nLeft factor\n0.128269788343459\nRight factor\n0.258146648295224"      
-     [16] "Sparse\n-0.97\nLeft factor\n0.883239577757195\nRight factor\n0.334844734752551"  
-     [17] "Sparse\n0.85\nLeft factor\n0.810083387885243\nRight factor\n0.133549668593332"   
-     [18] "Sparse\n0\nLeft factor\n0.821851178305224\nRight factor\n0.499546385370195"      
-     [19] "Sparse\n0\nLeft factor\n0.834702662425116\nRight factor\n0.802135632839054"      
-     [20] "Sparse\n0\nLeft factor\n0.732732220552862\nRight factor\n0.337153243133798"      
-     [21] "Sparse\n-0.77\nLeft factor\n0.983044024324045\nRight factor\n0.508920615306124"  
-     [22] "Sparse\n-1.1\nLeft factor\n0.639204582665116\nRight factor\n0.494438561843708"   
-     [23] "Sparse\n0\nLeft factor\n0.660754634300247\nRight factor\n0.797052904032171"      
-     [24] "Sparse\n0\nLeft factor\n0.528359377989545\nRight factor\n0.566958895418793"      
-     [25] "Sparse\n0\nLeft factor\n0.317493821494281\nRight factor\n0.10669681802392"       
-     [26] "Sparse\n-0.17\nLeft factor\n0.76785546913743\nRight factor\n0.807648445246741"   
-     [27] "Sparse\n0\nLeft factor\n0.526308492524549\nRight factor\n0.567112070973963"      
-     [28] "Sparse\n-0.47\nLeft factor\n0.732301884330809\nRight factor\n0.21224092785269"   
-     [29] "Sparse\n0.26\nLeft factor\n0.307665740605444\nRight factor\n0.749579254770651"   
-     [30] "Sparse\n0\nLeft factor\n0.404173251241446\nRight factor\n0.307218350004405"      
-     [31] "Sparse\n0\nLeft factor\n0.116135774413124\nRight factor\n0.204402445349842"      
-     [32] "Sparse\n1.3\nLeft factor\n0.303021797677502\nRight factor\n0.98563308827579"     
-     [33] "Sparse\n0\nLeft factor\n0.478802685858682\nRight factor\n0.566310757072642"      
-     [34] "Sparse\n0\nLeft factor\n0.344830546760932\nRight factor\n0.280375145142898"      
-     [35] "Sparse\n0\nLeft factor\n0.600714140105993\nRight factor\n0.185055723180994"      
-     [36] "Sparse\n0\nLeft factor\n0.0760833232197911\nRight factor\n0.758061396190897"     
-     [37] "Sparse\n0\nLeft factor\n0.955992611125112\nRight factor\n0.566781281260774"      
-     [38] "Sparse\n-0.99\nLeft factor\n0.0222068231087178\nRight factor\n0.932173571083695" 
-     [39] "Sparse\n0\nLeft factor\n0.841710632434115\nRight factor\n0.638693316373974"      
-     [40] "Sparse\n1.6\nLeft factor\n0.632442448753864\nRight factor\n0.700748134404421"    
-     [41] "Sparse\n1.4\nLeft factor\n0.310094165150076\nRight factor\n0.479222468566149"    
-     [42] "Sparse\n0.34\nLeft factor\n0.742569366237149\nRight factor\n0.850311916321516"   
-     [43] "Sparse\n0.0069\nLeft factor\n0.638911313610151\nRight factor\n0.422330675413832" 
-     [44] "Sparse\n0\nLeft factor\n0.992515987250954\nRight factor\n0.0313921230845153"     
-     [45] "Sparse\n0\nLeft factor\n0.128269788343459\nRight factor\n0.258146648295224"      
-     [46] "Sparse\n0\nLeft factor\n0.883239577757195\nRight factor\n0.334844734752551"      
-     [47] "Sparse\n-0.67\nLeft factor\n0.810083387885243\nRight factor\n0.133549668593332"  
-     [48] "Sparse\n1.8\nLeft factor\n0.821851178305224\nRight factor\n0.499546385370195"    
-     [49] "Sparse\n0.65\nLeft factor\n0.834702662425116\nRight factor\n0.802135632839054"   
-     [50] "Sparse\n0\nLeft factor\n0.732732220552862\nRight factor\n0.337153243133798"      
-     [51] "Sparse\n-0.15\nLeft factor\n0.983044024324045\nRight factor\n0.508920615306124"  
-     [52] "Sparse\n0\nLeft factor\n0.639204582665116\nRight factor\n0.494438561843708"      
-     [53] "Sparse\n0\nLeft factor\n0.660754634300247\nRight factor\n0.797052904032171"      
-     [54] "Sparse\n-0.37\nLeft factor\n0.528359377989545\nRight factor\n0.566958895418793"  
-     [55] "Sparse\n0\nLeft factor\n0.317493821494281\nRight factor\n0.10669681802392"       
-     [56] "Sparse\n-1\nLeft factor\n0.76785546913743\nRight factor\n0.807648445246741"      
-     [57] "Sparse\n-0.17\nLeft factor\n0.526308492524549\nRight factor\n0.567112070973963"  
-     [58] "Sparse\n0.7\nLeft factor\n0.732301884330809\nRight factor\n0.21224092785269"     
-     [59] "Sparse\n0\nLeft factor\n0.307665740605444\nRight factor\n0.749579254770651"      
-     [60] "Sparse\n-0.4\nLeft factor\n0.404173251241446\nRight factor\n0.307218350004405"   
-     [61] "Sparse\n0\nLeft factor\n0.116135774413124\nRight factor\n0.204402445349842"      
-     [62] "Sparse\n-0.16\nLeft factor\n0.303021797677502\nRight factor\n0.98563308827579"   
-     [63] "Sparse\n0\nLeft factor\n0.478802685858682\nRight factor\n0.566310757072642"      
-     [64] "Sparse\n0\nLeft factor\n0.344830546760932\nRight factor\n0.280375145142898"      
-     [65] "Sparse\n0\nLeft factor\n0.600714140105993\nRight factor\n0.185055723180994"      
-     [66] "Sparse\n-0.035\nLeft factor\n0.0760833232197911\nRight factor\n0.758061396190897"
-     [67] "Sparse\n0.66\nLeft factor\n0.955992611125112\nRight factor\n0.566781281260774"   
-     [68] "Sparse\n0\nLeft factor\n0.0222068231087178\nRight factor\n0.932173571083695"     
-     [69] "Sparse\n0\nLeft factor\n0.841710632434115\nRight factor\n0.638693316373974"      
-     [70] "Sparse\n-0.5\nLeft factor\n0.632442448753864\nRight factor\n0.700748134404421"   
-     [71] "Sparse\n-0.32\nLeft factor\n0.310094165150076\nRight factor\n0.479222468566149"  
-     [72] "Sparse\n0\nLeft factor\n0.742569366237149\nRight factor\n0.850311916321516"      
-     [73] "Sparse\n0\nLeft factor\n0.638911313610151\nRight factor\n0.422330675413832"      
-     [74] "Sparse\n0\nLeft factor\n0.992515987250954\nRight factor\n0.0313921230845153"     
-     [75] "Sparse\n0\nLeft factor\n0.128269788343459\nRight factor\n0.258146648295224"      
-     [76] "Sparse\n-0.19\nLeft factor\n0.883239577757195\nRight factor\n0.334844734752551"  
-     [77] "Sparse\n-0.72\nLeft factor\n0.810083387885243\nRight factor\n0.133549668593332"  
-     [78] "Sparse\n-0.58\nLeft factor\n0.821851178305224\nRight factor\n0.499546385370195"  
-     [79] "Sparse\n-1.8\nLeft factor\n0.834702662425116\nRight factor\n0.802135632839054"   
-     [80] "Sparse\n1.4\nLeft factor\n0.732732220552862\nRight factor\n0.337153243133798"    
-     [81] "Sparse\n-0.0076\nLeft factor\n0.983044024324045\nRight factor\n0.508920615306124"
-     [82] "Sparse\n0\nLeft factor\n0.639204582665116\nRight factor\n0.494438561843708"      
-     [83] "Sparse\n0\nLeft factor\n0.660754634300247\nRight factor\n0.797052904032171"      
-     [84] "Sparse\n1.6\nLeft factor\n0.528359377989545\nRight factor\n0.566958895418793"    
-     [85] "Sparse\n-0.18\nLeft factor\n0.317493821494281\nRight factor\n0.10669681802392"   
-     [86] "Sparse\n-1.3\nLeft factor\n0.76785546913743\nRight factor\n0.807648445246741"    
-     [87] "Sparse\n0\nLeft factor\n0.526308492524549\nRight factor\n0.567112070973963"      
-     [88] "Sparse\n0\nLeft factor\n0.732301884330809\nRight factor\n0.21224092785269"       
-     [89] "Sparse\n0\nLeft factor\n0.307665740605444\nRight factor\n0.749579254770651"      
-     [90] "Sparse\n-0.52\nLeft factor\n0.404173251241446\nRight factor\n0.307218350004405"  
-     [91] "Sparse\n0.55\nLeft factor\n0.116135774413124\nRight factor\n0.204402445349842"   
-     [92] "Sparse\n-1.2\nLeft factor\n0.303021797677502\nRight factor\n0.98563308827579"    
-     [93] "Sparse\n0.56\nLeft factor\n0.478802685858682\nRight factor\n0.566310757072642"   
-     [94] "Sparse\n0\nLeft factor\n0.344830546760932\nRight factor\n0.280375145142898"      
-     [95] "Sparse\n0\nLeft factor\n0.600714140105993\nRight factor\n0.185055723180994"      
-     [96] "Sparse\n2.5\nLeft factor\n0.0760833232197911\nRight factor\n0.758061396190897"   
-     [97] "Sparse\n0\nLeft factor\n0.955992611125112\nRight factor\n0.566781281260774"      
-     [98] "Sparse\n0\nLeft factor\n0.0222068231087178\nRight factor\n0.932173571083695"     
-     [99] "Sparse\n2.1\nLeft factor\n0.841710632434115\nRight factor\n0.638693316373974"    
-    [100] "Sparse\n0\nLeft factor\n0.632442448753864\nRight factor\n0.700748134404421"      
-
----
-
     splrMatrix
     Dimension:  10 10
     Lower rank matrix is rank:  3
@@ -2235,4 +2132,30 @@
 
      [1]  0.67263390  1.24613129  1.06763936  0.42739715  0.17815359 -0.02641877
      [7]  1.60850098  0.00667783  1.43775956  0.81439535
+
+---
+
+    10 x 10 Matrix of class "dgeMatrix"
+                 [,1]      [,2]       [,3]       [,4]       [,5]        [,6]
+     [1,]  0.67263390 0.8641989  0.2102693  0.5996417  1.6064290  0.83582542
+     [2,]  0.28309871 1.2461313 -0.1053058  1.7706733  0.6559688  0.99460716
+     [3,] -0.35967925 1.3419002  1.0676394  0.5289219  0.3309384  1.11055537
+     [4,] -0.28498685 0.3450658  1.0355816  0.4273971  0.3764018  0.65047011
+     [5,]  0.06583635 0.8581343  0.6474225  0.3524579  0.1781536  0.75475205
+     [6,] -0.57040265 0.2356767  0.8581274  0.4844011  0.3240127 -0.02641877
+     [7,]  0.85146663 2.7413087  1.3030077  0.5918621 -0.2278123  1.25102549
+     [8,] -0.62892780 1.0827959  0.4733523 -0.5427890  2.0944019  1.58346915
+     [9,] -0.13136658 1.6914973  1.3344162  0.4366317  1.0540660  1.16604989
+    [10,]  0.68610663 1.4462460  0.9897617  2.0294728  0.3493135  0.65121163
+               [,7]        [,8]       [,9]      [,10]
+     [1,] 0.6647327  0.15180729 1.05218213  1.0379403
+     [2,] 0.4734176  0.78908213 1.26831384 -0.5409230
+     [3,] 0.7314247  0.90573222 1.31358957  1.3139271
+     [4,] 0.6276327  0.92938918 3.01242063  0.7385910
+     [5,] 0.5376585  0.69143174 0.54454866  0.5617358
+     [6,] 0.5615391  0.48511236 0.03264038  3.0870016
+     [7,] 1.6085010  0.68752948 1.65489277  1.1047239
+     [8,] 0.5376416  0.00667783 1.22233777  0.5176278
+     [9,] 0.7630210 -0.53310763 1.43775956  3.0657704
+    [10,] 0.1855242  2.44136197 0.77464727  0.8143953
 

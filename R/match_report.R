@@ -192,11 +192,11 @@ match_plot_igraph <- function(A, B, match,
     A <- igraph::set.vertex.attribute(A, "name", corr_A, corr_A)
   }
 
-  A <- igraph::permute.vertices(
+  A <- igraph::permute(
     igraph::induced_subgraph(A, corr_A),
     rank(corr_A)
   )
-  B <- igraph::permute.vertices(
+  B <- igraph::permute(
     igraph::induced_subgraph(B, corr_B),
     rank(corr_B)
   )

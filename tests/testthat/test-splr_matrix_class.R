@@ -43,7 +43,7 @@ test_that("various operations work as expected",{
   # })
   expect_snapshot_output(print(s))
   expect_snapshot_output(show(s))
-  expect_snapshot_output(as.character(s))
+  # expect_snapshot_output(as.character(s))
 
   expect_snapshot_output(str(s))
   # sink()

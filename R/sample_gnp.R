@@ -1,4 +1,4 @@
-#' @importFrom igraph sample_gnp sample_sbm graph_from_adjacency_matrix %u% %s% is.igraph V
+#' @importFrom igraph sample_gnp sample_sbm graph_from_adjacency_matrix %u% %s% is_igraph V
 
 #' @title Sample correlated G(n,p) random graphs
 #'

@@ -464,7 +464,7 @@ setMethod("$", signature(x = "graphMatch"),
 )
 
 identity_match <- function(x, y) {
-  if(is.igraph(x)) {
+  if(is_igraph(x)) {
     nmin <- min(igraph::vcount(x), igraph::vcount(y))
   } else {
     nmin <- min(nrow(x), nrow(y))
@@ -568,7 +568,7 @@ permuted_subgraph <- function(g, corr_g) {
     g <- igraph::set.vertex.attribute(g, "name", corr_g, corr_g)
   }
 
-  g <- igraph::permute.vertices(
+  g <- igraph::permute(
     igraph::induced_subgraph(g, corr_g),
     rank(corr_g)
   )
