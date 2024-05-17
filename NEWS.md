@@ -1,3 +1,5 @@
+# iGraphMatch (development version)
+
 # iGraphMatch 2.0.5
 
 * More changes for igraph 2.0.x to avoid warnings due to use of deprecated functions.
