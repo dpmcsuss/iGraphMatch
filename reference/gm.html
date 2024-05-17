@@ -104,15 +104,19 @@ Details section for more information.</p></dd>
 
 <p><code>gm</code> returns an object of class "<code><a href="graphMatch_constructor.html">graphMatch</a></code>".
 See <a href="graphMatch_constructor.html">graphMatch-class</a> and links therein for details
-on the graph match class.</p>
+on the <code>graphMatch</code> class.</p>
 
 
-<p>Additionally, <code>gm</code> also returns a list of matching details of the specified method.
-Please refer to the help page for each implemented method, i.e.
+<p>Please also refer to the help page for each implemented method, i.e.
 <a href="gm_fw.html">"indefinite"</a>,
-<a href="gm_fw.html">"convex"</a>, <a href="gm_fw.html">"PATH"</a>,
-<a href="gm_perco.html">"percolation"</a>, <a href="gm_isorank.html">"IsoRank"</a>,
-and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding returned list.</p>
+<a href="gm_fw.html">"convex"</a>,
+<a href="gm_fw.html">"PATH"</a>,
+<a href="gm_perco.html">"percolation"</a>,
+<a href="gm_isorank.html">"IsoRank"</a>,
+and <a href="gm_Umeyama.html">"Umeyama"</a></p>
+
+
+<p>for details on the corresponding returned list.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -130,7 +134,15 @@ and <a href="gm_Umeyama.html">"Umeyama"</a> for details on the corresponding ret
   In this case, one can pass additional arguments to the <code>gm</code> function
   according to the specified method.
   For a detailed list of additional arguments for each one of the implemented method,
-  please click on the corresponding method name for its help page.</p>
+  please click on the corresponding method name for its help page.</p>  
+<p>Most graph matching functions include as list elements additional details
+  about the match. Call <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> on a <code>graphMatch</code> object to see
+  the available details. As an example, PATH, IsoRank, Umeyama, Indefinite,
+  and Convex each include <code>soft</code>, which is the matrix found by the
+  algorithm prior to projection onto the set of permutation matrices.
+  Similarly, PATH, Indefinite, and Convex return <code>iter</code>, the number of
+  iterations, and IsoRank (with greedy LAP) and Percolation return
+  <code>match_order</code>, the order that the node-pairs were added to the match.</p>
     </div>
 
     <div class="section level2">
