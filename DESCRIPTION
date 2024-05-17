@@ -14,7 +14,7 @@ Depends:
     R (>= 3.6.0)
 Imports:
     clue (>= 0.3-54),
-    Matrix (>= 1.6-0),
+    Matrix (>= 1.6-2),
     igraph (>= 2.0.0),
     irlba,
     methods,
