@@ -1,4 +1,4 @@
-# iGraphMatch (development version)
+# iGraphMatch 2.0.4
 
 # iGraphMatch 2.0.4
 

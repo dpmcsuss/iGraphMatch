@@ -136,6 +136,14 @@ setAs('splrMatrix','dMatrix', function(from) {
   as(from@x + from@a %*% t(from@b),'Matrix')
 })
 
+#' splr "Matrix" as character
+#'
+#' @param x splrMatrix
+#'
+#' @return character output of splr matrix
+#'
+#' @export
+#' @keywords internal
 as.character.splrMatrix <- function(x, ...) {
   paste0("Sparse\n", as.character(x@x, ...), "\n",
     "Left factor\n", as.character(x@a, ...), "\n",

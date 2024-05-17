@@ -25,6 +25,7 @@ set.seed(123)
 n <- 10
 p_mat <- matrix(runif(n^2),n)
 c_mat <- matrix(runif(n^2),n)
+
 g <- sample_correlated_ieg_pair(n, p_mat, c_mat, directed = FALSE,loops = TRUE, permutation = 1:n)
 
 test_that("sample undirected ieg pairs", {

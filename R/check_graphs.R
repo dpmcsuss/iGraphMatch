@@ -36,7 +36,7 @@ check_graph <- function(A, B,
 
 
   if (as_igraph) {
-    if (igraph::is.igraph(A) && igraph::is.igraph(B)) {
+    if (igraph::is_igraph(A) && igraph::is_igraph(B)) {
         totv1 <- igraph::gorder(A)
         totv2 <- igraph::gorder(B)
         if (totv1 > totv2 && same_order) {
@@ -54,12 +54,12 @@ check_graph <- function(A, B,
   }
 
   # this will make the graphs be matrices if they are igraph objects
-  if (is.list(A) && !igraph::is.igraph(A)) {
+  if (is.list(A) && !igraph::is_igraph(A)) {
     A <- matrix_list(lapply(A, function(Al) Al[]))
   } else {
     A <- matrix_list(list(A[]))
   }
-  if ( is.list(B) && !igraph::is.igraph(B)) {
+  if ( is.list(B) && !igraph::is_igraph(B)) {
     B <- matrix_list(lapply(B, function(Bl) Bl[]))
   } else {
     B <- matrix_list(list(B[]))
@@ -130,7 +130,7 @@ check_single_graph <- function(A, square = TRUE,
 
 
   if (as_igraph) {
-    if (igraph::is.igraph(A)) {
+    if (igraph::is_igraph(A)) {
         return(A)
     }
     stop("Check single graph only supports as_igraph = TRUE if both A is an igraph object")
@@ -138,7 +138,7 @@ check_single_graph <- function(A, square = TRUE,
   }
 
   # this will make the graphs be matrices if they are igraph objects
-  if (is.list(A) && !igraph::is.igraph(A)) {
+  if (is.list(A) && !igraph::is_igraph(A)) {
     A <- matrix_list(lapply(A, function(Al) Al[]))
   } else {
     A <- matrix_list(list(A[]))

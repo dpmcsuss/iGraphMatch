@@ -14,7 +14,7 @@ Depends:
     R (>= 3.6.0)
 Imports:
     clue (>= 0.3-54),
-    Matrix (>= 1.6-0),
+    Matrix (>= 1.6-2),
     igraph (>= 2.0.0),
     irlba,
     methods,
@@ -31,7 +31,7 @@ Suggests:
 VignetteBuilder: knitr
 License: GPL (>= 2)
 LazyData: TRUE
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Language: en-US
 Encoding: UTF-8
 LinkingTo:

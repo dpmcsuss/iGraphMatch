@@ -22,11 +22,11 @@
 #'
 #' @export
 split_igraph <- function(g, e_attr, strip_vertex_attr = FALSE) {
-  if (!igraph::is.igraph(g)) {
+  if (!igraph::is_igraph(g)) {
     stop("g must be an igraph object")
   }
 
-  all_attr <- igraph::get.edge.attribute(g, e_attr)
+  all_attr <- igraph::edge_attr(g, e_attr)
   u_attr <- unique(all_attr)
   try({
     u_attr <- sort(u_attr)

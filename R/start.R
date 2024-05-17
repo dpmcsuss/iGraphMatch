@@ -36,13 +36,13 @@ rds_perm_bari_start <- function(nns, ns = 0, soft_seeds = NULL, g = 1, is_splr =
 
 
 
-rds_perm_bari <- function(nns, g){
+rds_perm_bari <- function(nns, g, ...){
   alpha <- g * stats::runif(1)
   (1 - alpha) * bari_start(nns) + alpha * rperm(nns)
 }
 
 rds_from_sim_start <- function(nns, ns = 0,
-    soft_seeds = NULL, sim) {
+    soft_seeds = NULL, sim, ...) {
 
   if (!is.null(soft_seeds) && nrow(soft_seeds) > 0) {
     warning("Ignoring soft_seeds in rds_from_sim_start")

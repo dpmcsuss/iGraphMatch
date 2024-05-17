@@ -69,7 +69,9 @@ sample_correlated_ieg_pair<- function(n, p_mat, c_mat, ncore=n, directed=FALSE, 
     mode <- "directed"
   } else{
     g1[row(g1)>=col(g1)] <- 0
+    g1 <- g1 + t(g1)
     g2[row(g2)>=col(g2)] <- 0
+    g2 <- g2 + t(g2)
     mode <- "undirected"
   }
   list(graph1 = graph_from_adjacency_matrix(g1,

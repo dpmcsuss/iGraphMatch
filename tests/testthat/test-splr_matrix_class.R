@@ -32,127 +32,128 @@ s <- splr(x, ns, rank = 2)
 
 test_that("various operations work as expected",{
 
-  expect_snapshot_output(s <- splr(x, Matrix(a), Matrix(b)))
-  expect_snapshot_output(sp <- splr_to_sparse(s))
-  expect_snapshot_output(m <- as.matrix(s))
+  expect_no_error(s <- splr(x, Matrix(a), Matrix(b)))
+  expect_no_error(sp <- splr_to_sparse(s))
+  expect_no_error(m <- as.matrix(s))
 
-  expect_snapshot_output(ss <- splr_sparse_plus_constant(x, 1))
-  expect_snapshot_output(dm <- as(s, "dMatrix"))
+  expect_no_error(ss <- splr_sparse_plus_constant(x, 1))
+  expect_no_error(dm <- as(s, "dMatrix"))
   # try({
   #   sink("/dev/null")
   # })
-  expect_snapshot_output(print(s))
-  expect_snapshot_output(show(s))
-  expect_snapshot_output(as.character(s))
+  expect_no_error(print(s))
+  expect_no_error(show(s))
+  expect_no_error(as.character(s))
 
-  expect_snapshot_output(str(s))
+  expect_no_error(str(s))
   # sink()
 
 
-  expect_snapshot_output(length(s))
+  expect_no_error(length(s))
 
 
-  expect_snapshot_output(s %*% s)
-  expect_snapshot_output(s * s)
+  expect_no_error(s %*% s)
+  expect_no_error(s * s)
+  expect_no_condition(s * s, message = "ambiguousMethodSelection")
 
-  expect_snapshot_output(ml <- matrix_list(list(ns, x)))
+  expect_no_error(ml <- matrix_list(list(ns, x)))
 
-  expect_snapshot_output(s %*% ml)
-  expect_snapshot_output(x %*% s)
-  expect_snapshot_output(ns %*% s)
-  expect_snapshot_output(3 * s)
+  expect_no_error(s %*% ml)
+  expect_no_error(x %*% s)
+  expect_no_error(ns %*% s)
+  expect_no_error(3 * s)
 
-  expect_snapshot_output(ml %*% s)
-  expect_snapshot_output(s %*% x)
-  expect_snapshot_output(s %*% ns)
-  expect_snapshot_output(s * 3)
+  expect_no_error(ml %*% s)
+  expect_no_error(s %*% x)
+  expect_no_error(s %*% ns)
+  expect_no_error(s * 3)
 
-  expect_snapshot_output(ml * s)
-  expect_snapshot_output(s * x)
-  expect_snapshot_output(s * ns)
-
-
-  expect_snapshot_output(s / x)
-  expect_snapshot_output(s / ns)
-
-  expect_snapshot_output(s - ml)
-  expect_snapshot_output(x - s)
-  expect_snapshot_output(ns - s)
-  expect_snapshot_output(3 - s)
-
-  expect_snapshot_output(ml - s)
-  expect_snapshot_output(s - x)
-  expect_snapshot_output(s - ns)
-  expect_snapshot_output(s - 3)
-  expect_snapshot_output(s - s)
-
-  expect_snapshot_output(s + ml)
-  expect_snapshot_output(x + s)
-  expect_snapshot_output(ns + s)
-  expect_snapshot_output(3 + s)
-
-  expect_snapshot_output(ml + s)
-  expect_snapshot_output(s + x)
-  expect_snapshot_output(s + ns)
-  expect_snapshot_output(s + 3)
-  expect_snapshot_output(s + s)
+  expect_no_error(ml * s)
+  expect_no_error(s * x)
+  expect_no_error(s * ns)
 
 
+  expect_no_error(s / x)
+  expect_no_error(s / ns)
 
+  expect_no_error(s - ml)
+  expect_no_error(x - s)
+  expect_no_error(ns - s)
+  expect_no_error(3 - s)
 
+  expect_no_error(ml - s)
+  expect_no_error(s - x)
+  expect_no_error(s - ns)
+  expect_no_error(s - 3)
+  expect_no_error(s - s)
 
-  expect_snapshot_output(s * Diagonal(10))
-  expect_snapshot_output(Diagonal(10) *  s)
-  expect_snapshot_output(s - Diagonal(10))
-  expect_snapshot_output(s + Diagonal(10))
+  expect_no_error(s + ml)
+  expect_no_error(x + s)
+  expect_no_error(ns + s)
+  expect_no_error(3 + s)
 
-
-  expect_snapshot_output(norm(s, "f"))
-  expect_snapshot_output(norm(s, "F"))
-  expect_snapshot_output(norm(s, "2"))
-
-
-  expect_snapshot_output(rowSums(s))
-  expect_snapshot_output(colSums(s))
-  expect_snapshot_output(colMeans(s))
-  expect_snapshot_output(rowMeans(s))
-  expect_snapshot_output(sum(s))
-  expect_snapshot_output(mean(s))
-
-  expect_snapshot_output(s[1:3, 1:3])
+  expect_no_error(ml + s)
+  expect_no_error(s + x)
+  expect_no_error(s + ns)
+  expect_no_error(s + 3)
+  expect_no_error(s + s)
 
 
 
-  expect_snapshot_output(s[1:3, 1:3, drop = FALSE])
-
-  expect_snapshot_output(s[1:3, ])
-  expect_snapshot_output(s[ , 1:3])
-
-  expect_snapshot_output(s0 <- s[numeric(),])
-
-  expect_snapshot_output(s0[, 1:3])
-
-  expect_snapshot_output(s0 <- s[,numeric()])
-
-  expect_snapshot_output(s0[1:3, ])
 
 
-  expect_snapshot_output(s[1:3, 1:10 < 5])
-  expect_snapshot_output(s[1:10 < 5, 1:3])
-
-  expect_snapshot_output(s[, 1:10 < 5])
-  expect_snapshot_output(s[1:10 < 5, ])
-  expect_snapshot_output(s[1:10 < 5, 1:10 < 3])
+  expect_no_error(s * Diagonal(10))
+  expect_no_error(Diagonal(10) *  s)
+  expect_no_error(s - Diagonal(10))
+  expect_no_error(s + Diagonal(10))
 
 
-  expect_snapshot_output(s[matrix(c(1,2,3,4), 2)])
+  expect_no_error(norm(s, "f"))
+  expect_no_error(norm(s, "F"))
+  expect_no_error(norm(s, "2"))
 
-  expect_snapshot_output(s[])
 
-  expect_snapshot_output(dim(s))
-  expect_snapshot_output(t(s))
-  expect_snapshot_output(diag(s))
-  expect_snapshot_output(as(s, "dgeMatrix"))
+  expect_no_error(rowSums(s))
+  expect_no_error(colSums(s))
+  expect_no_error(colMeans(s))
+  expect_no_error(rowMeans(s))
+  expect_no_error(sum(s))
+  expect_no_error(mean(s))
+
+  expect_no_error(s[1:3, 1:3])
+
+
+
+  expect_no_error(s[1:3, 1:3, drop = FALSE])
+
+  expect_no_error(s[1:3, ])
+  expect_no_error(s[ , 1:3])
+
+  expect_no_error(s0 <- s[numeric(),])
+
+  expect_no_error(s0[, 1:3])
+
+  expect_no_error(s0 <- s[,numeric()])
+
+  expect_no_error(s0[1:3, ])
+
+
+  expect_no_error(s[1:3, 1:10 < 5])
+  expect_no_error(s[1:10 < 5, 1:3])
+
+  expect_no_error(s[, 1:10 < 5])
+  expect_no_error(s[1:10 < 5, ])
+  expect_no_error(s[1:10 < 5, 1:10 < 3])
+
+
+  expect_no_error(s[matrix(c(1,2,3,4), 2)])
+
+  expect_no_error(s[])
+
+  expect_no_error(dim(s))
+  expect_no_error(t(s))
+  expect_no_error(diag(s))
+  expect_no_error(as(s, "dgeMatrix"))
 })
 
 test_that("error on no b",

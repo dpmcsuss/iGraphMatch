@@ -189,14 +189,14 @@ match_plot_igraph <- function(A, B, match,
   corr_B <- match@corr$corr_B[seq(nv)]
 
   if(is.null(igraph::V(A)$name)){
-    A <- igraph::set.vertex.attribute(A, "name", corr_A, corr_A)
+    A <- igraph::set_vertex_attr(A, "name", corr_A, corr_A)
   }
 
-  A <- igraph::permute.vertices(
+  A <- igraph::permute(
     igraph::induced_subgraph(A, corr_A),
     rank(corr_A)
   )
-  B <- igraph::permute.vertices(
+  B <- igraph::permute(
     igraph::induced_subgraph(B, corr_B),
     rank(corr_B)
   )

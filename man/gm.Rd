@@ -31,14 +31,16 @@ Details section for more information.}
 \value{
 \code{gm} returns an object of class "\code{\link{graphMatch}}".
 See \link{graphMatch-class} and links therein for details
-on the graph match class.
+on the \code{graphMatch} class.
 
-Additionally, \code{gm} also returns a list of matching details of the specified method.
-Please refer to the help page for each implemented method, i.e.
+Please also refer to the help page for each implemented method, i.e.
 \link[=graph_match_indefinite]{"indefinite"},
-\link[=graph_match_convex]{"convex"}, \link[=graph_match_PATH]{"PATH"},
-\link[=graph_match_percolation]{"percolation"}, \link[=graph_match_IsoRank]{"IsoRank"},
-and \link[=graph_match_Umeyama]{"Umeyama"} for details on the corresponding returned list.
+\link[=graph_match_convex]{"convex"},
+\link[=graph_match_PATH]{"PATH"},
+\link[=graph_match_percolation]{"percolation"},
+\link[=graph_match_IsoRank]{"IsoRank"},
+and \link[=graph_match_Umeyama]{"Umeyama"}
+for details on the corresponding returned list.
 }
 \description{
 \code{gm} is used to match a pair of given graphs, with
@@ -62,6 +64,15 @@ If \code{method} is a function, it should take two matrices or
   according to the specified method.
   For a detailed list of additional arguments for each one of the implemented method,
   please click on the corresponding method name for its help page.
+  
+  Most graph matching functions include as list elements additional details
+  about the match. Call \code{names()} on a \code{graphMatch} object to see
+  the available details. As an example, PATH, IsoRank, Umeyama, Indefinite,
+  and Convex each include \code{soft}, which is the matrix found by the
+  algorithm prior to projection onto the set of permutation matrices.
+  Similarly, PATH, Indefinite, and Convex return \code{iter}, the number of
+  iterations, and IsoRank (with greedy LAP) and Percolation return
+  \code{match_order}, the order that the node-pairs were added to the match.
 }
 \examples{
 # match G_1 & G_2 with some known node pairs as seeds

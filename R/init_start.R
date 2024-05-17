@@ -91,7 +91,7 @@ init_start <- function(start, nns, ns = 0, soft_seeds = NULL, seeds = NULL, ...)
     }
     # otherwise add in soft seeds below after checking size
     if (all(dim(start) != nns - nss)) {
-      stop("Functions passed to init start must return",
+      stop("Function bs passed to init start must return",
         " a square matrix-like object with dimension ", nns,
         " or", nns - nss)
     }
