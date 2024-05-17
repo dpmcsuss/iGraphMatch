@@ -1,4 +1,8 @@
-# iGraphMatch 2.0.4
+# iGraphMatch 2.0.5
+
+* More changes for igraph 2.0.x to avoid warnings due to use of deprecated functions.
+* Changes to address https://github.com/dpmcsuss/iGraphMatch/issues/67. `init_start` and other functions with `start = 'rds_perm_bari'` and `start  = 'rds_from_sim_start'` will now work correctly.
+* Updates to documentation on value returned by `gm` to better explain the list elements that are components of `graphMatch` class.
 
 # iGraphMatch 2.0.4
 
