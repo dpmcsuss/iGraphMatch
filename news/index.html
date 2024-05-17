@@ -48,10 +48,13 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.0.4" id="igraphmatch-204">iGraphMatch 2.0.4<a class="anchor" aria-label="anchor" href="#igraphmatch-204"></a></h2><p class="text-muted">CRAN release: 2024-02-13</p>
-</div>
+<h2 class="pkg-version" data-toc-text="2.0.5" id="igraphmatch-205">iGraphMatch 2.0.5<a class="anchor" aria-label="anchor" href="#igraphmatch-205"></a></h2>
+<ul><li>More changes for igraph 2.0.x to avoid warnings due to use of deprecated functions.</li>
+<li>Changes to address <a href="https://github.com/dpmcsuss/iGraphMatch/issues/67" class="external-link uri">https://github.com/dpmcsuss/iGraphMatch/issues/67</a>. <code>init_start</code> and other functions with <code>start = 'rds_perm_bari'</code> and <code>start  = 'rds_from_sim_start'</code> will now work correctly.</li>
+<li>Updates to documentation on value returned by <code>gm</code> to better explain the list elements that are components of <code>graphMatch</code> class.</li>
+</ul></div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.0.4" id="igraphmatch-204-1">iGraphMatch 2.0.4<a class="anchor" aria-label="anchor" href="#igraphmatch-204-1"></a></h2><p class="text-muted">CRAN release: 2024-02-13</p>
+<h2 class="pkg-version" data-toc-text="2.0.4" id="igraphmatch-204">iGraphMatch 2.0.4<a class="anchor" aria-label="anchor" href="#igraphmatch-204"></a></h2><p class="text-muted">CRAN release: 2024-02-13</p>
 <ul><li>Updates for igraph 2.0.x.
 <ul><li>Use <code><a href="https://r.igraph.org/reference/upgrade_graph.html" class="external-link">igraph::upgrade_graph</a></code> on the Enron and C.Elegans data.</li>
 <li>Explicitly cast <code>nnodes</code> to integer in <code>identity_match</code> function.</li>
